@@ -1,0 +1,13 @@
+Description:
+UK Trains brings you train departure information for all UK national rail stations.
+
+Keywords:
+Train
+Rail
+Schedule
+Departures
+
+TODO:
+* Allow to search for a station in addition to showing the nearest ones
+* Filter by destination
+* Auto Refresh

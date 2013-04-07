@@ -1,0 +1,73 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="UKTrains.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    toolkit:TiltEffect.IsTiltEnabled="True">
+
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+
+        <Grid.Resources>
+            <DataTemplate x:Key="stationTemplate">
+                <Button Click="OnStationButtonClick"
+                        Padding="0"
+                        Margin="0"
+                        BorderThickness="0">
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="360"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Item1}"
+                                   Foreground="CornflowerBlue" 
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Column="1">
+                            <TextBlock Text="{Binding Item2.Name}"
+                                       FontSize="34" />
+                            <TextBlock Text="{Binding Item2.Code}" 
+                                       Margin="12,0,0,0"
+                                       VerticalAlignment="Bottom"
+                                       Foreground="Gray" />
+                        </StackPanel>
+                    </Grid>                    
+                </Button>
+            </DataTemplate>
+        </Grid.Resources>
+
+        <controls:Pivot Title="Stations" x:Name="pivot">
+            <controls:PivotItem Header="Nearest">
+                <ScrollViewer>
+                    <ItemsControl x:Name="nearestStations" ItemTemplate="{StaticResource stationTemplate}" />
+                </ScrollViewer>
+            </controls:PivotItem>
+        </controls:Pivot>
+
+        <TextBlock x:Name="messageTextBlock" 
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center" />
+    </Grid>   
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshButtonClick"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.settings.png" Text="Settings" Click="OnSettingsButtonClick"/>
+                <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.star.png" Text="Rate and Review" Click="OnRateAndReviewButtonClick"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
