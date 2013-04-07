@@ -1,0 +1,15 @@
+Description:
+Learn On The Go enables you to watch the lecture videos and read the PDF lecture notes of the Coursera courses you're enrolled in. This is not an official Coursera app.
+
+Keywords:
+Learn
+Coursera
+Videos
+MOOC
+Classes
+
+TODO:
+* Cache course images
+* Download videos locally
+* Announcements
+* Quizzes

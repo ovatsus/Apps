@@ -1,0 +1,106 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="LearnOnTheGo.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    toolkit:TiltEffect.IsTiltEnabled="True">
+
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+
+        <Grid.Resources>
+            <DataTemplate x:Key="courseTemplate">
+                <Button Click="OnCourseButtonClick"
+                        BorderThickness="0">
+                    <StackPanel>
+                        <TextBlock TextWrapping="Wrap"
+                                   Text="{Binding Topic.Name}" />
+                        <TextBlock TextWrapping="Wrap"
+                                   HorizontalAlignment="Right"
+                                   Text="{Binding Topic.Instructor}" />
+                        <Grid Height="232"
+                              Width="412"
+                              Margin="0,2,0,0">
+                            <TextBlock Text="Loading image..."
+                                       FontSize="18"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" />
+                            <Image Source="{Binding Topic.SmallIconHover}" />
+                        </Grid>
+                    </StackPanel>
+                </Button>
+            </DataTemplate>
+        </Grid.Resources>
+        
+        <controls:Pivot Title="Courses" x:Name="pivot">
+            <controls:PivotItem Header="Active">
+                <ScrollViewer>
+                    <Grid>
+                        <ItemsControl x:Name="activeCourses"
+                                      ItemTemplate="{StaticResource courseTemplate}" />
+                        <TextBlock x:Name="activeCoursesEmptyMessage" 
+                                   Visibility="Collapsed"
+                                   Text="No active courses"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Grid>
+                </ScrollViewer>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="Upcoming">
+                <ScrollViewer>
+                    <Grid>
+                        <ItemsControl x:Name="upcomingCourses"
+                                      ItemTemplate="{StaticResource courseTemplate}" />
+                        <TextBlock x:Name="upcomingCoursesEmptyMessage" 
+                                   Visibility="Collapsed"
+                                   Text="No upcoming courses"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Grid>
+                </ScrollViewer>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="Completed">
+                <ScrollViewer>
+                    <Grid>
+                        <ItemsControl x:Name="completedCourses"
+                                      ItemTemplate="{StaticResource courseTemplate}" />
+                        <TextBlock x:Name="completedCoursesEmptyMessage" 
+                                   Visibility="Collapsed"
+                                   Text="No completed courses"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Grid>                    
+                </ScrollViewer>
+            </controls:PivotItem>
+        </controls:Pivot>
+
+        <TextBlock x:Name="messageTextBlock" 
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center" />
+    </Grid>   
+ 
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshButtonClick"/>
+            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.settings.png" Text="Settings" Click="OnSettingsButtonClick"/>
+            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.star.png" Text="Rate and Review" Click="OnRateAndReviewButtonClick"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
