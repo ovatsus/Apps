@@ -62,7 +62,7 @@ module private Implementation =
                 cacheSet url html
                 return html }
 
-type Crawler private(email, password, cache:IDictionary<_,_>, cacheSet) =
+type Crawler private(email, password, cache:IDictionary<_,_>, cacheSet, forceRefreshOfCourseList) =
 
     let urlToFilename (url:string) = 
         url.Replace("https://www.coursera.org/", null)
@@ -109,11 +109,16 @@ type Crawler private(email, password, cache:IDictionary<_,_>, cacheSet) =
         courses
 
     let courses = 
+        let cacheGet = 
+            if forceRefreshOfCourseList then
+                fun _ -> None
+            else
+                cacheGet
         getTopicsJson email password cacheGet cacheSet
         |> LazyAsync.fromAsync 
         |> LazyAsync.map parseTopicsJson
 
-    new(email, password, cache, saver:Action<_,_>) = Crawler(email, password, cache, saver.Invoke)
+    new(email, password, cache, saver:Action<_,_>, forceRefreshOfCourseList) = Crawler(email, password, cache, saver.Invoke, forceRefreshOfCourseList)
 
     member __.Courses = courses
 

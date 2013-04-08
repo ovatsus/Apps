@@ -29,12 +29,11 @@ namespace LearnOnTheGo
 
             if (e.NavigationMode != NavigationMode.Back && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)))
             {
-                Cache.DeleteAllFiles();
                 OnSettingsButtonClick(null, null);
             }
             else
             {
-                LoadCourses(email, password);
+                LoadCourses(email, password, false);
             }
         }
 
@@ -57,14 +56,13 @@ namespace LearnOnTheGo
             else
             {
                 busy = true;
-                Cache.DeleteAllFiles();
-                LoadCourses(email, password);
+                LoadCourses(email, password, true);
             }
         }
 
-        private void LoadCourses(string email, string password)
+        private void LoadCourses(string email, string password, bool forceRefreshOfCourseList)
         {
-            App.Crawler = new Coursera.Crawler(email, password, Cache.GetFiles(), Cache.SaveFile);
+            App.Crawler = new Coursera.Crawler(email, password, Cache.GetFiles(), Cache.SaveFile, forceRefreshOfCourseList);
 
             activeCourses.ItemsSource = null;
             upcomingCourses.ItemsSource = null;
