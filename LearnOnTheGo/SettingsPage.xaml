@@ -27,11 +27,6 @@
                 </StackPanel>
             </controls:PivotItem>
         </controls:Pivot>       
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
     </Grid>
  
     <phone:PhoneApplicationPage.ApplicationBar>
