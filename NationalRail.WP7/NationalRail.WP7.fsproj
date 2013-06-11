@@ -13,7 +13,7 @@
     <RootNamespace>NationalRail</RootNamespace>
     <AssemblyName>NationalRail</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <Name>NationalRail</Name>
+    <Name>NationalRail.WP7</Name>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
@@ -56,6 +56,7 @@
     <Compile Include="GeoUtils.fs" />
     <Compile Include="DataModel.fs" />
     <Compile Include="LiveDepartures.fs" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
@@ -64,8 +65,7 @@
     <Reference Include="FSharp.Data">
       <HintPath>..\..\..\Forks\FSharp.Data\bin\sl4-windowsphone71\FSharp.Data.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.3\lib\sl3-wp\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.4.0.0, Culture=neutral, PublicKeyToken=null">
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

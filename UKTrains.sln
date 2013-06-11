@@ -1,31 +1,73 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{467B15DE-972E-45F6-914A-3AF8C6A91442}"
 	ProjectSection(SolutionItems) = preProject
 		README = README
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKTrains", "UKTrains\UKTrains.csproj", "{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKTrains.WP7", "UKTrains.WP7\UKTrains.WP7.csproj", "{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NationalRail", "NationalRail\NationalRail.fsproj", "{5C18B195-B7EE-499E-9650-27C22DE3B86D}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NationalRail.WP7", "NationalRail.WP7\NationalRail.WP7.fsproj", "{5C18B195-B7EE-499E-9650-27C22DE3B86D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NationalRail.Portable", "NationalRail.Portable\NationalRail.Portable.fsproj", "{5552F566-E77E-433B-8459-A41F865AF52C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKTrains.WP8", "UKTrains.WP8\UKTrains.WP8.csproj", "{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}.Release|x86.ActiveCfg = Release|Any CPU
 		{5C18B195-B7EE-499E-9650-27C22DE3B86D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5C18B195-B7EE-499E-9650-27C22DE3B86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C18B195-B7EE-499E-9650-27C22DE3B86D}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5C18B195-B7EE-499E-9650-27C22DE3B86D}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{5C18B195-B7EE-499E-9650-27C22DE3B86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C18B195-B7EE-499E-9650-27C22DE3B86D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C18B195-B7EE-499E-9650-27C22DE3B86D}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5C18B195-B7EE-499E-9650-27C22DE3B86D}.Release|x86.ActiveCfg = Release|Any CPU
+		{5552F566-E77E-433B-8459-A41F865AF52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5552F566-E77E-433B-8459-A41F865AF52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5552F566-E77E-433B-8459-A41F865AF52C}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5552F566-E77E-433B-8459-A41F865AF52C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5552F566-E77E-433B-8459-A41F865AF52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5552F566-E77E-433B-8459-A41F865AF52C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5552F566-E77E-433B-8459-A41F865AF52C}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5552F566-E77E-433B-8459-A41F865AF52C}.Release|x86.ActiveCfg = Release|Any CPU
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Debug|ARM.ActiveCfg = Debug|ARM
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Debug|ARM.Build.0 = Debug|ARM
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Debug|ARM.Deploy.0 = Debug|ARM
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Debug|x86.ActiveCfg = Debug|x86
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Debug|x86.Build.0 = Debug|x86
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Debug|x86.Deploy.0 = Debug|x86
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|ARM.ActiveCfg = Release|ARM
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|ARM.Build.0 = Release|ARM
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|ARM.Deploy.0 = Release|ARM
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|x86.ActiveCfg = Release|x86
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|x86.Build.0 = Release|x86
+		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
