@@ -25,7 +25,7 @@
     <Optimize>false</Optimize>
     <Tailcalls>false</Tailcalls>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;FX_NO_URI_WORKAROUND;FX_NO_WEBREQUEST_CONTENTLENGTH;FX_NO_WEBREQUEST_REFERER;FX_NO_WEBHEADERS_ADD;FX_NO_REGEX_COMPILATION</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT</DefineConstants>
     <WarningLevel>3</WarningLevel>
     <DocumentationFile>bin\Debug\NationalRail.xml</DocumentationFile>
   </PropertyGroup>
@@ -34,7 +34,7 @@
     <Optimize>true</Optimize>
     <Tailcalls>false</Tailcalls>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;FX_NO_URI_WORKAROUND;FX_NO_WEBREQUEST_CONTENTLENGTH;FX_NO_WEBREQUEST_REFERER;FX_NO_WEBHEADERS_ADD;FX_NO_REGEX_COMPILATION</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <WarningLevel>3</WarningLevel>
     <DocumentationFile>bin\Release\NationalRail.xml</DocumentationFile>
   </PropertyGroup>
@@ -55,9 +55,6 @@
     <EmbeddedResource Include="RailReferences.csv" />
     <Compile Include="GeoUtils.fs" />
     <Compile Include="DataModel.fs" />
-    <Compile Include="..\..\..\Forks\FSharp.Data\src\CsvProvider\CsvRuntime.fs">
-      <Link>CsvRuntime.fs</Link>
-    </Compile>
     <Compile Include="LiveDepartures.fs" />
   </ItemGroup>
   <ItemGroup>

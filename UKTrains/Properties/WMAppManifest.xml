@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{AA87DE2C-73A3-4EAB-A9E3-DD657AE454A9}" Title="UK Trains" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="UK Trains" Publisher="Code Beside">
+  <App xmlns="" ProductID="{9B25CBEE-8DF7-4FD8-9374-132B21574AD8}" Title="UK Trains" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="UK Trains" Publisher="Code Beside">
     <IconPath IsRelative="true" IsResource="false">Icon62x62.png</IconPath>
     <Capabilities>
       <!--<Capability Name="ID_CAP_GAMERSERVICES"/>

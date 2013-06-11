@@ -7,6 +7,8 @@ open System.Text
 open HtmlAgilityPack
 open HtmlAgilityPack.FSharp
 open FSharp.Control
+open FSharp.Data.Csv
+open FSharp.Data.Csv.Extensions
 open FSharp.GeoUtils
 open FSharp.Net
 
@@ -19,18 +21,17 @@ let getNearestStations currentLocation limit =
         let allStations = 
             //from http://www.data.gov.uk/dataset/naptan
             use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RailReferences.csv")
-            use streamReader = new StreamReader(stream)
-            FSharp.Data.RuntimeImplementation.CsvReader.readCsvFile streamReader "," '"'
-            |> Seq.skip 1
-            |> Seq.groupBy (fun station -> station.[0])
+            let csvFile = CsvFile.Load stream
+            csvFile.Data
+            |> Seq.groupBy (fun station -> station?CrsCode)
             |> Seq.map (fun (code, stations) -> 
                 let station = 
                     stations 
-                    |> Seq.sortBy (fun station -> -(Int32.Parse station.[4])) 
+                    |> Seq.sortBy (fun station -> -station?RevisionNumber.AsInteger()) 
                     |> Seq.head
                 { Code = code
-                  Name = station.[1].Replace(" Rail Station", null)
-                  LatLong = LatLong.FromUTM (Int32.Parse station.[2]) (Int32.Parse station.[3]) })
+                  Name = station?StationName.Replace(" Rail Station", null)
+                  LatLong = LatLong.FromUTM (station?Easting.AsInteger()) (station?Northing.AsInteger()) })
             |> Seq.toList
 
         stationsByCode := 
