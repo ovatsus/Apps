@@ -12,11 +12,12 @@ open FSharp.Data.Csv.Extensions
 open FSharp.GeoUtils
 open FSharp.Net
 
-let private stationsByCode = ref None
+let private stationInfo = ref None
 
-let getNearestStations currentLocation limit =
+let getStationInfo() = 
 
-    async {
+    match !stationInfo with
+    | None ->
 
         let allStations = 
             //from http://www.data.gov.uk/dataset/naptan
@@ -34,11 +35,21 @@ let getNearestStations currentLocation limit =
                   LatLong = LatLong.FromUTM (station?Easting.AsInteger()) (station?Northing.AsInteger()) })
             |> Seq.toList
 
-        stationsByCode := 
+        let stationsByCode =
             allStations 
             |> Seq.map (fun station -> station.Code, station) 
             |> dict 
-            |> Some
+
+        stationInfo := Some (allStations, stationsByCode)
+        allStations, stationsByCode
+
+    | Some stationInfo -> stationInfo
+
+let getNearestStations currentLocation limit = 
+    
+    async {
+
+        let allStations, _ = getStationInfo()
 
         let nearestStations =
             allStations
@@ -54,7 +65,8 @@ let getNearestStations currentLocation limit =
     } |> LazyAsync.fromAsync
 
 let getStation stationCode =
-    (!stationsByCode).Value.[stationCode]
+    let _, stationsByCode = getStationInfo()
+    stationsByCode.[stationCode]
 
 let getDepartures toStation fromStation =
 
