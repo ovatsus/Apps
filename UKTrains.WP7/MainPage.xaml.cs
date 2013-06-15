@@ -4,7 +4,6 @@ using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using NationalRail;
 using System;
-using System.Device.Location;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -18,11 +17,13 @@ namespace UKTrains
             InitializeComponent();
         }
 
+        private bool busy;
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            if (!Settings.Get(Setting.LocationServicesEnabled) && !Settings.Get(Setting.LocationServicesPromptShown))
+            if (!Settings.GetBool(Setting.LocationServicesEnabled) && !Settings.GetBool(Setting.LocationServicesPromptShown))
             {
                 Settings.Set(Setting.LocationServicesPromptShown, true);
                 var result = MessageBox.Show("This application uses your current location to improve the experience. Do you wish to give it permission to use your location?",
@@ -34,33 +35,9 @@ namespace UKTrains
                 }
             }
 
-            if (Settings.Get(Setting.LocationServicesEnabled))
-            {
-                var watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High)
-                {
-                    MovementThreshold = 20
-                };
-
-                watcher.PositionChanged += OnGeoPositionChanged;
-                watcher.Start();
-            }
-
+            LocationService.LocationChanged += LoadStations;
             LoadStations();
         }
-
-        private GeoCoordinate currentLocation;
-
-        private void OnGeoPositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
-        {
-            bool previousEmpty = currentLocation == null || currentLocation.IsUnknown;
-            currentLocation = e.Position.Location;
-            if (previousEmpty)
-            {
-                LoadStations();
-            }
-        }
-
-        private bool busy;
 
         private void OnRefreshButtonClick(object sender, EventArgs e)
         {
@@ -75,10 +52,10 @@ namespace UKTrains
 
         private void LoadStations()
         {
-            nearestStations.ItemsSource = null;
+            var currentLocation = LocationService.CurrentPosition;
             messageTextBlock.Text = null;
             messageTextBlock.Visibility = Visibility.Collapsed;
-            if (!Settings.Get(Setting.LocationServicesEnabled))
+            if (!Settings.GetBool(Setting.LocationServicesEnabled))
             {
                 messageTextBlock.Visibility = Visibility.Visible;
                 messageTextBlock.Text = "Locations Services are disabled";
@@ -87,17 +64,19 @@ namespace UKTrains
             else if (currentLocation == null || currentLocation.IsUnknown)
             {
                 messageTextBlock.Visibility = Visibility.Visible;
-                messageTextBlock.Text = "Acquiring location...";
-                var indicator = new ProgressIndicator { IsVisible = true, IsIndeterminate = true, Text = "Acquiring Position..." };
+                messageTextBlock.Text = "Acquiring position...";
+                var indicator = new ProgressIndicator { IsVisible = true, IsIndeterminate = true, Text = "Acquiring position..." };
                 SystemTray.SetProgressIndicator(this, indicator);
                 busy = true;
             }
             else
             {
                 var gpsPosition = GeoUtils.LatLong.Create(currentLocation.Latitude, currentLocation.Longitude);
-                LiveDepartures.getNearestStations(gpsPosition, 20).Display(
+                bool refreshing = nearestStations.ItemsSource != null;
+                LiveDepartures.getNearestStations(gpsPosition, 150).Display(
                     this,
-                    "Loading stations...",
+                    refreshing ? "Refreshing stations... " : "Loading stations...",
+                    refreshing,
                     "You're outside of the UK",
                     messageTextBlock,
                     nearest => nearestStations.ItemsSource = nearest,

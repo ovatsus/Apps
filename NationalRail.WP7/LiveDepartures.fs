@@ -33,7 +33,7 @@ let private getStationInfo() =
                     |> Seq.head
                 { Code = code
                   Name = station?StationName.Replace(" Rail Station", null)
-                  LatLong = LatLong.FromUTM (station?Easting.AsInteger()) (station?Northing.AsInteger()) })
+                  LatLong = LatLong.Create (station?Latitude.AsFloat()) (station?Longitude.AsFloat()) })
             |> Seq.toList
 
         let stationsByCode =
@@ -56,7 +56,7 @@ let getNearestStations currentLocation limit =
             allStations
             |> Seq.map (fun station -> station.LatLong - currentLocation, station)
             |> Seq.filter (fun (dist, _) -> dist < 1000.0)
-            |> Seq.sortBy fst
+            |> Seq.sortBy (fun (dist, station) -> dist, station.Name)
             |> Seq.truncate limit
             |> Seq.map (fun (distance, station) -> sprintf "%.1f km" distance, station)
             |> Seq.toArray

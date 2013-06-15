@@ -8,7 +8,7 @@ namespace UKTrains
         public SettingsPage()
         {
             InitializeComponent();
-            enableLocationServices.IsChecked = Settings.Get(Setting.LocationServicesEnabled);
+            enableLocationServices.IsChecked = Settings.GetBool(Setting.LocationServicesEnabled);
         }
 
         private void OnSaveButtonClick(object sender, EventArgs e)

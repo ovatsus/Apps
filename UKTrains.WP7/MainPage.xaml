@@ -49,9 +49,21 @@
 
         <controls:Pivot Title="Stations" x:Name="pivot">
             <controls:PivotItem Header="Nearest">
-                <ScrollViewer>
-                    <ItemsControl x:Name="nearestStations" ItemTemplate="{StaticResource stationTemplate}" />
-                </ScrollViewer>
+                <ItemsControl x:Name="nearestStations" 
+                                ItemTemplate="{StaticResource stationTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <ScrollViewer>
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                </ItemsControl>
             </controls:PivotItem>
         </controls:Pivot>
 
