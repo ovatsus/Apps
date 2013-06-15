@@ -14,7 +14,7 @@ open FSharp.Net
 
 let private stationInfo = ref None
 
-let getStationInfo() = 
+let private getStationInfo() = 
 
     match !stationInfo with
     | None ->

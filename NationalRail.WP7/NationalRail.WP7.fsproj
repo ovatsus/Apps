@@ -49,6 +49,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.Common.targets" />
   <ItemGroup>
+    <None Include="packages.config" />
     <Compile Include="HtmlAgilityPack.FSharp.fs" />
     <Compile Include="LazyAsync.fsi" />
     <Compile Include="LazyAsync.fs" />
@@ -56,7 +57,6 @@
     <Compile Include="GeoUtils.fs" />
     <Compile Include="DataModel.fs" />
     <Compile Include="LiveDepartures.fs" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

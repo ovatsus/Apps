@@ -93,9 +93,6 @@
     <Compile Include="..\UKTrains.WP7\LazyAsyncExtensions.cs">
       <Link>LazyAsyncExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\UKTrains.WP7\MainPage.xaml.cs">
-      <Link>MainPage.xaml.cs</Link>
-    </Compile>
     <Compile Include="..\UKTrains.WP7\Settings.cs">
       <Link>Settings.cs</Link>
     </Compile>
@@ -166,6 +163,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="..\UKTrains.WP7\MainPage.xaml.cs">
+      <Link>MainPage.xaml</Link>
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="..\UKTrains.WP7\SettingsPage.xaml">
       <Link>SettingsPage.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
@@ -184,6 +185,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Coding4Fun.Toolkit.Controls">
+      <HintPath>..\packages\Coding4Fun.Toolkit.Controls.2.0.6\lib\windowsphone8\Coding4Fun.Toolkit.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="FSharp.Core">
       <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\3.0\Runtime\.NETPortable\FSharp.Core.dll</HintPath>
     </Reference>

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
+﻿using Microsoft.Phone.Controls;
 using NationalRail;
+using System;
+using System.Windows.Navigation;
 
 namespace UKTrains
 {

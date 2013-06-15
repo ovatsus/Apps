@@ -1,13 +1,13 @@
-﻿using System;
-using System.Device.Location;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
-using FSharp;
+﻿using FSharp;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using NationalRail;
+using System;
+using System.Device.Location;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace UKTrains
 {

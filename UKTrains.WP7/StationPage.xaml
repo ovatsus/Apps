@@ -5,7 +5,7 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
-    xmlns:coding4fun="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls"
+    xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
@@ -20,6 +20,9 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
 
         <Grid.Resources>
+
+            <coding4funConverters:StringToVisibilityConverter x:Key="stringToVisibilityConverter" />
+            
             <DataTemplate x:Key="departureTemplate">
                 <Grid Margin="12,0,0,4">
                     <Grid.ColumnDefinitions>
@@ -48,6 +51,7 @@
                                TextWrapping="Wrap"
                                HorizontalAlignment="Left" />
                     <TextBlock Text="{Binding Via}" 
+                               Visibility="{Binding Via, Converter={StaticResource stringToVisibilityConverter}}"
                                Grid.Column="1" 
                                Grid.Row="1" 
                                Foreground="Gray"
