@@ -21,7 +21,7 @@ namespace UKTrains
 
             if (Settings.GetBool(Setting.LocationServicesEnabled))
             {
-                var watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.Default)
+                var watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High)
                 {
                     MovementThreshold = 50
                 };

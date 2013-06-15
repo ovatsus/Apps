@@ -10,6 +10,7 @@ namespace UKTrains
         LocationServicesPromptShown,
         CurrentLat,
         CurrentLong,
+        RecentStations,
     }
 
     public static class Settings

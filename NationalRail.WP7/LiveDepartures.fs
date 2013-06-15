@@ -65,6 +65,12 @@ let getNearestStations currentLocation limit =
 
     } |> LazyAsync.fromAsync
 
+let getAllStations() =     
+    let allStations, _ = getStationInfo()
+    allStations
+    |> Seq.sortBy (fun station -> station.Name)
+    |> Seq.toArray
+
 let getStation stationCode =
     let _, stationsByCode = getStationInfo()
     stationsByCode.[stationCode]

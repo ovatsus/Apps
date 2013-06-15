@@ -34,7 +34,7 @@ namespace UKTrains
 
 #if WP8
             var currentPosition = LocationService.CurrentPosition;
-            if (!currentPosition.IsUnknown)
+            if (!currentPosition.IsUnknown && Settings.GetBool(Setting.LocationServicesEnabled))
             {
                 var routeQuery = new RouteQuery
                 {

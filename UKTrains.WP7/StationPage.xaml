@@ -74,9 +74,21 @@
 
         <controls:Pivot x:Name="pivot">
             <controls:PivotItem Header="Departures">
-                <ScrollViewer>
-                    <ItemsControl x:Name="departures" ItemTemplate="{StaticResource departureTemplate}" />
-                </ScrollViewer>                
+                <ItemsControl x:Name="departures" 
+                                ItemTemplate="{StaticResource departureTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <ScrollViewer>
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                </ItemsControl>
             </controls:PivotItem>
         </controls:Pivot>
 
