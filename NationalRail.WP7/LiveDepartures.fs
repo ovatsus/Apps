@@ -4,6 +4,7 @@ open System
 open System.Reflection
 open System.IO
 open System.Text
+open System.Text.RegularExpressions
 open HtmlAgilityPack
 open HtmlAgilityPack.FSharp
 open FSharp.Control
@@ -120,6 +121,7 @@ let getDepartures toStation fromStation =
         let cells = tr.Elements "td" |> Seq.toArray        
         let destination, via = 
             let dest = cells.[1].InnerText.Trim()
+            let dest = Regex.Replace(dest, "\s+", " ")
             let pos = dest.IndexOf " via"
             if pos = -1
             then dest, ""
