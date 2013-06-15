@@ -64,7 +64,7 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:Pivot Title="Stations" x:Name="pivot">
+        <controls:Pivot Title="Rail Stations" x:Name="pivot">
             <controls:PivotItem Header="Recent">
                 <ItemsControl x:Name="recentStations" 
                                 ItemTemplate="{StaticResource stationTemplate}">

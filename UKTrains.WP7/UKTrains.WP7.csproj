@@ -124,6 +124,7 @@
     <Content Include="ApplicationIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SplashScreenImage.jpg" />
     <Content Include="Tile.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
