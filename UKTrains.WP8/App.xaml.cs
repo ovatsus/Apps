@@ -9,6 +9,7 @@ namespace UKTrains
     public partial class App : Application
     {
         public static PhoneApplicationFrame RootFrame { get; private set; }
+        public bool RunningInBackground { get; private set; }
 
         public App()
         {
@@ -30,6 +31,7 @@ namespace UKTrains
 
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            RunningInBackground = false;
         }
 
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
@@ -38,6 +40,11 @@ namespace UKTrains
 
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+        }
+
+        private void Application_RunningInBackground(object sender, RunningInBackgroundEventArgs args)
+        {
+            RunningInBackground = true;
         }
 
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)

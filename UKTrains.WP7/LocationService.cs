@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSharp;
+using System;
 using System.Device.Location;
 
 namespace UKTrains
@@ -20,7 +21,7 @@ namespace UKTrains
 
             if (Settings.GetBool(Setting.LocationServicesEnabled))
             {
-                var watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High)
+                var watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.Default)
                 {
                     MovementThreshold = 50
                 };
@@ -33,14 +34,15 @@ namespace UKTrains
         private static void OnGeoPositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
         {
             if (e.Position.Timestamp > currentPositionTimestamp)
-            {
-                if (CurrentPosition != e.Position.Location)
-                {
-                    bool previousEmpty = CurrentPosition == null || CurrentPosition.IsUnknown || currentPositionTimestamp == default(DateTimeOffset);
+            {       
+                var previousPosition = CurrentPosition;
+                if (previousPosition == null || previousPosition.IsUnknown || currentPositionTimestamp == default(DateTimeOffset) ||
+                    GeoUtils.LatLong.Create(previousPosition.Latitude, previousPosition.Longitude) - GeoUtils.LatLong.Create(CurrentPosition.Latitude, CurrentPosition.Longitude) >= 0.1)
+                {                    
                     CurrentPosition = e.Position.Location;
                     Settings.Set(Setting.CurrentLat, CurrentPosition.Latitude);
                     Settings.Set(Setting.CurrentLong, CurrentPosition.Longitude);
-                    if (previousEmpty && LocationChanged != null)
+                    if (LocationChanged != null)
                     {
                         LocationChanged();
                     }

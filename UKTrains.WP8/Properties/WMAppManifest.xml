@@ -9,7 +9,11 @@
       <Capability Name="ID_CAP_MAP" />
     </Capabilities>
     <Tasks>
-      <DefaultTask Name="_default" NavigationPage="MainPage.xaml" ActivationPolicy="Resume" />
+      <DefaultTask Name="_default" NavigationPage="MainPage.xaml" ActivationPolicy="Resume">
+        <BackgroundExecution>
+          <ExecutionType Name="LocationTracking" />
+        </BackgroundExecution>
+      </DefaultTask>
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="UKTrains.WP8Token" TaskName="_default">
