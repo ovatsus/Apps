@@ -138,6 +138,10 @@
       <Link>Icons\dark\appbar.map.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\UKTrains.WP7\Icons\dark\appbar.pin.png">
+      <Link>Icons\dark\appbar.pin.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\UKTrains.WP7\Icons\dark\appbar.refresh.png">
       <Link>Icons\dark\appbar.refresh.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
