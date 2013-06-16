@@ -4,11 +4,14 @@ Description:
 UK Trains brings you train departure information for all UK national rail stations.
 
 History:
-1.1 Fix crash when app resumes into a station page after tombstoning
-    Get walk directions to station (WP8 version only)
-	Allow to pin stations to start screen
-	Allow to filter by destination
-1.0 Initial version
+Version 1.1.0.0
+* Fix crash when app resumes into a station page after tombstoning
+* Show walk directions to station
+* Allow to pin stations to start screen
+* Allow to filter by destination
+* Compress HTTP requests
+Version 1.0.0.0
+* Initial version
 
 Keywords:
 Train

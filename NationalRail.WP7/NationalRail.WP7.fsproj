@@ -60,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
-      <HintPath>..\lib\FSharp.Core.dll</HintPath>
+      <HintPath>..\lib\wp7\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data">
       <HintPath>..\..\..\Forks\FSharp.Data\bin\sl4-windowsphone71\FSharp.Data.dll</HintPath>

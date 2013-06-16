@@ -1,12 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{427aeea6-d5fc-426d-b8c3-58c26b1c3c06}" Title="UK Trains" RuntimeType="Silverlight" Version="1.1" Genre="apps.normal" Author="Gustavo Guerra" Description="UK Trains brings you train departure information for all UK national rail stations." Publisher="Code Beside" PublisherID="{727c5425-db0a-40b3-8e8a-d1a6ecbba207}">
+  <App xmlns="" ProductID="{ef62d461-861c-4a9f-9198-8768532cc6aa}" Title="UK Trains" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="UK Trains brings you train departure information for all UK national rail stations." Publisher="Code Beside" PublisherID="{727c5425-db0a-40b3-8e8a-d1a6ecbba207}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_LOCATION" />
       <Capability Name="ID_CAP_MAP" />
+      <Capability Name="ID_CAP_IDENTITY_DEVICE" />
+      <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
+      <Capability Name="ID_CAP_PHONEDIALER" />
     </Capabilities>
     <Tasks>
       <DefaultTask Name="_default" NavigationPage="MainAndFilterPage.xaml" ActivationPolicy="Resume">

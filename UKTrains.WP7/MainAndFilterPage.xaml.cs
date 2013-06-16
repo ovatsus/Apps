@@ -45,9 +45,6 @@ namespace UKTrains
 
             fromStation = NavigationContext.QueryString.ContainsKey("fromStation") ? LiveDepartures.getStation(NavigationContext.QueryString["fromStation"]) : null;
 
-            LocationService.LocationChanged += LoadNearestStations;
-            LoadNearestStations();
-
             if (fromStation == null)
             {
                 if (!Settings.GetBool(Setting.LocationServicesEnabled) && !Settings.GetBool(Setting.LocationServicesPromptShown))
@@ -73,6 +70,9 @@ namespace UKTrains
                 recentStations.ItemsSource = recentStationsList.Except(new[] { fromStation });
                 nearest.Header = "Near " + fromStation.Name;
             }
+
+            LocationService.LocationChanged += LoadNearestStations;
+            LoadNearestStations();
 
             if (e.NavigationMode == NavigationMode.New)
             {

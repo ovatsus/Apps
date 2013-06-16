@@ -1,17 +1,20 @@
-﻿using Microsoft.Phone.Controls;
+﻿using Inneractive.Ad;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
+using NationalRail;
+using System;
+using System.Collections.Generic;
+using System.Device.Location;
+using System.Linq;
+using System.Windows.Navigation;
 #if WP8
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Toolkit;
 using System.Windows;
+using Windows.ApplicationModel.Store;
 #endif
-using NationalRail;
-using System;
-using System.Linq;
-using System.Windows.Navigation;
-using Microsoft.Phone.Shell;
-using Microsoft.Phone.Tasks;
-using System.Device.Location;
 
 namespace UKTrains
 {
@@ -55,11 +58,17 @@ namespace UKTrains
                 NavigationService.RemoveBackEntry();
             }
 
+            if (ApplicationBar.MenuItems.Count == 2)
+            {
+                ApplicationBar.MenuItems.RemoveAt(1);
+            }
+
             ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().Single().IsEnabled = callingAt != null;
+
+            var currentPosition = LocationService.CurrentPosition;
 
             bool createDirectionsButton;
 #if WP8
-            var currentPosition = LocationService.CurrentPosition;
             if (currentPosition != null && !currentPosition.IsUnknown && Settings.GetBool(Setting.LocationServicesEnabled))
             {
                 var routeQuery = new RouteQuery
@@ -104,6 +113,44 @@ namespace UKTrains
                     pinButton.Click += OnPinClick;
                     ApplicationBar.Buttons.Add(pinButton);
                 }
+            }
+
+#if WP8
+            var showAds = !CurrentApp.LicenseInformation.ProductLicenses["RemoveAds"].IsActive;
+            if (showAds)
+            {
+                var menuItem = new ApplicationBarMenuItem("Remove ads");
+                menuItem.Click += async delegate {
+                    await CurrentApp.RequestProductPurchaseAsync("RemoveAds", false);
+                    if (CurrentApp.LicenseInformation.ProductLicenses["RemoveAds"].IsActive)
+                    {
+                        ApplicationBar.MenuItems.RemoveAt(1);
+                    }
+                };
+                ApplicationBar.MenuItems.Add(menuItem);
+            }
+#else
+            var showAds = true;
+#endif            
+
+            if (showAds)
+            {
+                var parameters = new Dictionary<InneractiveAd.IaOptionalParams, string>();
+                if (currentPosition != null && !currentPosition.IsUnknown && Settings.GetBool(Setting.LocationServicesEnabled))
+                {
+                    parameters.Add(InneractiveAd.IaOptionalParams.Key_Gps_Coordinates, currentPosition.Latitude.ToString("0.0000") + "," + currentPosition.Longitude.ToString("0.0000"));
+                }
+                parameters.Add(InneractiveAd.IaOptionalParams.Key_OptionalAdWidth, "480");
+                parameters.Add(InneractiveAd.IaOptionalParams.Key_OptionalAdHeight, "80");
+                parameters.Add(InneractiveAd.IaOptionalParams.Key_Location, "UK");
+                adGrid.Width = 480;
+                adGrid.Height = 80;
+                InneractiveAd.DisplayAd("CodeBeside_UKTrains_WP", InneractiveAd.IaAdType.IaAdType_Text, adGrid, 60, parameters);
+            }
+            else
+            {
+                adGrid.Width = 0;
+                adGrid.Height = 0;
             }
         }
 

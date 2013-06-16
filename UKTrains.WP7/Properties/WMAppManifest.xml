@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{9B25CBEE-8DF7-4FD8-9374-132B21574AD8}" Title="UK Trains" RuntimeType="Silverlight" Version="1.1" Genre="apps.normal" Author="Gustavo Guerra" Description="UK Trains brings you train departure information for all UK national rail stations." Publisher="Code Beside" BitsPerPixel="32">
+  <App xmlns="" ProductID="{ef62d461-861c-4a9f-9198-8768532cc6aa}" Title="UK Trains" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="UK Trains brings you train departure information for all UK national rail stations." Publisher="Code Beside" BitsPerPixel="32">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_LOCATION" />

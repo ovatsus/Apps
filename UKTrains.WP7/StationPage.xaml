@@ -72,6 +72,11 @@
             </DataTemplate>
         </Grid.Resources>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
         <controls:Pivot x:Name="pivot">
             <controls:PivotItem Header="Departures">
                 <ItemsControl x:Name="departures" 
@@ -96,6 +101,8 @@
                    TextWrapping="Wrap"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center" />
+        
+        <Grid x:Name="adGrid" Grid.Row="1" />
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
