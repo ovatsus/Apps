@@ -99,9 +99,9 @@
     <Compile Include="..\UKTrains.WP7\Settings.cs">
       <Link>Settings.cs</Link>
     </Compile>
-    <Compile Include="..\UKTrains.WP7\MainPage.xaml.cs">
-      <Link>MainPage.xaml.cs</Link>
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="..\UKTrains.WP7\MainAndFilterPage.xaml.cs">
+      <Link>MainAndFilterPage.xaml.cs</Link>
+      <DependentUpon>MainAndFilterPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="..\UKTrains.WP7\SettingsPage.xaml.cs">
       <Link>SettingsPage.xaml.cs</Link>
@@ -132,6 +132,10 @@
   <ItemGroup>
     <Content Include="..\UKTrains.WP7\Icons\dark\appbar.check.png">
       <Link>Icons\dark\appbar.check.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\UKTrains.WP7\Icons\dark\appbar.filter.png">
+      <Link>Icons\dark\appbar.filter.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\UKTrains.WP7\Icons\dark\appbar.map.png">
@@ -178,8 +182,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="..\UKTrains.WP7\MainPage.xaml">
-      <Link>MainPage.xaml</Link>
+    <Page Include="..\UKTrains.WP7\MainAndFilterPage.xaml">
+      <Link>MainAndFilterPage.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

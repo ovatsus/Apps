@@ -77,6 +77,11 @@ let getStation stationCode =
 
 let getDepartures toStation fromStation =
 
+    let toStation =
+        if obj.ReferenceEquals(toStation, null)
+        then None
+        else Some toStation
+
     let getStatus due (statusCell:HtmlNode) = 
         if statusCell.InnerText.Trim() = "Cancelled" then
             Cancelled, None

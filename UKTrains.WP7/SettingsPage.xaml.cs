@@ -11,7 +11,7 @@ namespace UKTrains
             enableLocationServices.IsChecked = Settings.GetBool(Setting.LocationServicesEnabled);
         }
 
-        private void OnSaveButtonClick(object sender, EventArgs e)
+        private void OnSaveClick(object sender, EventArgs e)
         {
             Settings.Set(Setting.LocationServicesEnabled, enableLocationServices.IsChecked == true);
             NavigationService.GoBack();

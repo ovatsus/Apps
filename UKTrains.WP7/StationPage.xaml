@@ -100,7 +100,8 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar x:Name="applicationBar">
-            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshButtonClick" />
+            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
+            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.filter.png" Text="Filter" Click="OnFilterClick" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
