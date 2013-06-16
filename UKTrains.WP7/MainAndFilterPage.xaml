@@ -65,24 +65,7 @@
         </Grid.Resources>
 
         <controls:Pivot x:Name="pivot">
-            <controls:PivotItem Header="Recent">
-                <ItemsControl x:Name="recentStations" 
-                                ItemTemplate="{StaticResource stationTemplate}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="ItemsControl">
-                            <ScrollViewer>
-                                <ItemsPresenter/>
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                </ItemsControl>
-            </controls:PivotItem>
-            <controls:PivotItem x:Name="nearest">
+            <controls:PivotItem x:Name="nearest" Header="Near Me">
                 <Grid>
                     <ItemsControl x:Name="nearestStations" 
                                   ItemTemplate="{StaticResource stationTemplateWithDistance}">
@@ -103,6 +86,23 @@
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
                 </Grid>
+            </controls:PivotItem>
+            <controls:PivotItem Header="Recent">
+                <ItemsControl x:Name="recentStations" 
+                                ItemTemplate="{StaticResource stationTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <ScrollViewer>
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                </ItemsControl>
             </controls:PivotItem>
             <controls:PivotItem Header="All">
                 <ItemsControl x:Name="allStations" 

@@ -2,16 +2,12 @@ Source code for http://www.windowsphone.com/en-gb/store/app/uk-trains/ef62d461-8
 
 Description:
 UK Trains brings you train departure information for all UK national rail stations.
-
-History:
-Version 1.1.0.0
-* Fix crash when app resumes into a station page after tombstoning
-* Show walk directions to station
-* Allow to pin stations to start screen
+New in 1.1:
 * Allow to filter by destination
+* Allow to pin stations to start screen
+* Show walk directions to station
 * Compress HTTP requests
-Version 1.0.0.0
-* Initial version
+* Fix crash when app resumes into a station page after tombstoning
 
 Keywords:
 Train

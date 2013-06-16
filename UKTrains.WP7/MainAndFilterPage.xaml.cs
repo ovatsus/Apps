@@ -76,16 +76,17 @@ namespace UKTrains
 
             if (e.NavigationMode == NavigationMode.New)
             {
-                if (recentStationsList.Count == 0)
+                if (recentStationsList.Count != 0)
                 {
-                    if (Settings.GetBool(Setting.LocationServicesEnabled))
-                    {
-                        pivot.SelectedIndex = 1;
-                    }
-                    else
-                    {
-                        pivot.SelectedIndex = 2;
-                    }
+                    pivot.SelectedIndex = 1;
+                }
+                else if (Settings.GetBool(Setting.LocationServicesEnabled))
+                {
+                    pivot.SelectedIndex = 0;
+                }
+                else
+                {
+                    pivot.SelectedIndex = 2;
                 }
             }
 

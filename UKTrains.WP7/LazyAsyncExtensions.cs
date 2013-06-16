@@ -24,7 +24,7 @@ namespace UKTrains
                         messageTextBlock.Text = emptyMessage;
                         messageTextBlock.Visibility = Visibility.Visible;
                     }
-                    else if (!refreshing)
+                    else
                     {
                         messageTextBlock.Visibility = Visibility.Collapsed;
                         messageTextBlock.Text = "";

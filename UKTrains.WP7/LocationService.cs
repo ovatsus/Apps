@@ -36,10 +36,11 @@ namespace UKTrains
             if (e.Position.Timestamp > currentPositionTimestamp)
             {       
                 var previousPosition = CurrentPosition;
+                var newPosition = e.Position.Location;
                 if (previousPosition == null || previousPosition.IsUnknown || currentPositionTimestamp == default(DateTimeOffset) ||
-                    GeoUtils.LatLong.Create(previousPosition.Latitude, previousPosition.Longitude) - GeoUtils.LatLong.Create(CurrentPosition.Latitude, CurrentPosition.Longitude) >= 0.1)
-                {                    
-                    CurrentPosition = e.Position.Location;
+                    GeoUtils.LatLong.Create(previousPosition.Latitude, previousPosition.Longitude) - GeoUtils.LatLong.Create(newPosition.Latitude, newPosition.Longitude) >= 0.1)
+                {
+                    CurrentPosition = newPosition;
                     Settings.Set(Setting.CurrentLat, CurrentPosition.Latitude);
                     Settings.Set(Setting.CurrentLong, CurrentPosition.Longitude);
                     if (LocationChanged != null)
