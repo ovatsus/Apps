@@ -24,7 +24,7 @@ namespace UKTrains
                   .Select(stationCode => LiveDepartures.getStation(stationCode)));
         }
 
-        private bool busy;
+        private bool loadingNearest;
         private ObservableCollection<Station> recentStationsList;
         private Station fromStation;
 
@@ -32,6 +32,10 @@ namespace UKTrains
         {
             recentStationsList.Remove(station);
             recentStationsList.Insert(0, station);
+        }
+
+        private void SaveRecent()
+        {
             Settings.Set(Setting.RecentStations, string.Join(",", recentStationsList.Select(st => st.Code)));
         }
 
@@ -40,6 +44,9 @@ namespace UKTrains
             base.OnNavigatedTo(e);
 
             fromStation = NavigationContext.QueryString.ContainsKey("fromStation") ? LiveDepartures.getStation(NavigationContext.QueryString["fromStation"]) : null;
+
+            LocationService.LocationChanged += LoadNearestStations;
+            LoadNearestStations();
 
             if (fromStation == null)
             {
@@ -61,7 +68,6 @@ namespace UKTrains
             }
             else
             {
-                ApplicationBar.MenuItems.Clear();
                 pivot.Title = fromStation.Name + " calling at";
                 allStations.ItemsSource = LiveDepartures.getAllStations().Except(new [] { fromStation });
                 recentStations.ItemsSource = recentStationsList.Except(new[] { fromStation });
@@ -85,11 +91,10 @@ namespace UKTrains
 
             if (fromStation == null)
             {
-                this.RestoreState();
+                this.RestoreState(); // restore pivot and scroll state
             }
 
-            LocationService.LocationChanged += LoadNearestStations;
-            LoadNearestStations();
+            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().Single().IsEnabled = recentStationsList.Count != 0;
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -103,17 +108,15 @@ namespace UKTrains
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (busy)
+            if (!loadingNearest)
             {
-                return;
+                LoadNearestStations();
             }
-
-            busy = true;
-            LoadNearestStations();
         }
 
         private void LoadNearestStations()
         {
+            loadingNearest = true;
             GeoUtils.LatLong from;
             if (fromStation == null)
             {
@@ -123,7 +126,7 @@ namespace UKTrains
                     nearestStations.ItemsSource = null;
                     nearestStationsMessageTextBlock.Visibility = Visibility.Visible;
                     nearestStationsMessageTextBlock.Text = "Locations Services are disabled";
-                    busy = false;
+                    loadingNearest = false;
                     return;
                 }
                 else if (currentPosition == null || currentPosition.IsUnknown)
@@ -132,7 +135,6 @@ namespace UKTrains
                     nearestStationsMessageTextBlock.Text = "Acquiring position...";
                     var indicator = new ProgressIndicator { IsVisible = true, IsIndeterminate = true, Text = "Acquiring position..." };
                     SystemTray.SetProgressIndicator(this, indicator);
-                    busy = true;
                     return;
                 }
                 from = GeoUtils.LatLong.Create(currentPosition.Latitude, currentPosition.Longitude);
@@ -160,12 +162,7 @@ namespace UKTrains
                         nearestStations.ItemsSource = nearest.Where(t => t.Item2.Code != fromStation.Code);
                     }
                 },
-                () => busy = false);
-        }
-
-        private void OnSettingsClick(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+                () => loadingNearest = false);
         }
 
         private void OnStationClick(object sender, RoutedEventArgs e)
@@ -183,10 +180,22 @@ namespace UKTrains
             }
         }
 
+        private void OnSettingsClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+        }
+
         private void OnRateAndReviewClick(object sender, EventArgs e)
         {
             var task = new MarketplaceReviewTask();
             task.Show();
+        }
+
+        private void OnClearRecentItemsClick(object sender, EventArgs e)
+        {
+            recentStationsList.Clear();
+            SaveRecent();
+            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().Single().IsEnabled = false;
         }
     }
 }

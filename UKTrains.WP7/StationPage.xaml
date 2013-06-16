@@ -102,6 +102,11 @@
         <shell:ApplicationBar x:Name="applicationBar">
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.filter.png" Text="Filter" Click="OnFilterClick" />
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.settings.png" Text="Settings" Click="OnSettingsClick"/>
+                <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.star.png" Text="Rate and Review" Click="OnRateAndReviewClick"/>
+                <shell:ApplicationBarMenuItem Text="Clear filter" Click="OnClearFilterClick"/>
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

@@ -24,7 +24,7 @@ namespace UKTrains
 
         private Station station;
         private Station callingAt;
-        private bool busy;
+        private bool loadingDepartures;
 
         private Uri GetUriForThisPage()
         {
@@ -40,22 +40,22 @@ namespace UKTrains
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            busy = true;
+            base.OnNavigatedTo(e);
 
             station = LiveDepartures.getStation(NavigationContext.QueryString["stationCode"]);
             callingAt = NavigationContext.QueryString.ContainsKey("callingAt") ? LiveDepartures.getStation(NavigationContext.QueryString["callingAt"]) : null;
 
+            loadingDepartures = true;
+            LoadDepartures();
+
             pivot.Title = GetTitle();
 
-            if (callingAt != null)
+            if (callingAt != null && e.NavigationMode == NavigationMode.New)
             {
                 NavigationService.RemoveBackEntry();
-                var menuItem = new ApplicationBarMenuItem("Clear filter");
-                menuItem.Click += OnClearFilterClick;
-                ApplicationBar.MenuItems.Add(menuItem);
             }
 
-            Load();
+            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().Single().IsEnabled = callingAt != null;
 
             bool createDirectionsButton;
 #if WP8
@@ -84,7 +84,6 @@ namespace UKTrains
 #endif
             if (ApplicationBar.Buttons.Count == 2)
             {
-
                 if (createDirectionsButton)
                 {
                     var mapButton = new ApplicationBarIconButton(new Uri("/Icons/dark/appbar.map.png", UriKind.Relative))
@@ -93,7 +92,6 @@ namespace UKTrains
                     };
                     mapButton.Click += OnDirectionsClick;
                     ApplicationBar.Buttons.Add(mapButton);
-
                 }
 
                 var uri = GetUriForThisPage();
@@ -109,14 +107,9 @@ namespace UKTrains
             }
         }
 
-        private void OnClearFilterClick(object sender, EventArgs e)
+        private void LoadDepartures()
         {
-            var uri = new Uri("/StationPage.xaml?stationCode=" + station.Code, UriKind.Relative);
-            NavigationService.Navigate(uri);
-        }
-
-        private void Load()
-        {
+            loadingDepartures = true;
             bool refreshing = this.departures.ItemsSource != null;
             LiveDepartures.getDepartures(callingAt, station).Display(
                 this,
@@ -125,7 +118,7 @@ namespace UKTrains
                 "No more departures from this station today",
                 messageTextBlock,
                 departures => this.departures.ItemsSource = departures,
-                () => busy = false);
+                () => loadingDepartures = false);
         }
 
 #if WP8
@@ -178,13 +171,10 @@ namespace UKTrains
         
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (busy)
+            if (!loadingDepartures)
             {
-                return;
+                LoadDepartures();
             }
-            busy = true;
-
-            Load();
         }
 
         private void OnDirectionsClick(object sender, EventArgs e)
@@ -215,9 +205,26 @@ namespace UKTrains
 #endif
         }
 
+        private void OnSettingsClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+        }
+
+        private void OnRateAndReviewClick(object sender, EventArgs e)
+        {
+            var task = new MarketplaceReviewTask();
+            task.Show();
+        }
+
         private void OnFilterClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/MainAndFilterPage.xaml?fromStation=" + station.Code, UriKind.Relative));
+        }
+
+        private void OnClearFilterClick(object sender, EventArgs e)
+        {
+            var uri = new Uri("/StationPage.xaml?stationCode=" + station.Code, UriKind.Relative);
+            NavigationService.Navigate(uri);
         }
     }
 }
