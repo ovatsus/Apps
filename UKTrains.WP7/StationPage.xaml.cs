@@ -9,6 +9,7 @@ using System.Device.Location;
 using System.Linq;
 using System.Windows.Navigation;
 #if WP8
+using Microsoft.Phone.Maps;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Toolkit;
@@ -183,7 +184,11 @@ namespace UKTrains
                     ZoomLevel = 15,
                     PedestrianFeaturesEnabled = true,
                 };
-
+                map.Loaded += delegate
+                {
+                    MapsSettings.ApplicationContext.ApplicationId = "ef62d461-861c-4a9f-9198-8768532cc6aa";
+                    MapsSettings.ApplicationContext.AuthenticationToken = "r4y7eZta5Pa32rpsho9CFA";
+                };
                 var mapLayer = new MapLayer();
                 mapLayer.Add(new MapOverlay
                 {
