@@ -10,7 +10,7 @@ namespace UKTrains
     public partial class App : Application
     {
         public static PhoneApplicationFrame RootFrame { get; private set; }
-        public bool RunningInBackground { get; private set; }
+        public static bool RunningInBackground { get; private set; }
 
         public App()
         {

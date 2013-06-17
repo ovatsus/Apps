@@ -6,6 +6,7 @@ New in 1.1:
 * Allow to filter by destination
 * Allow to pin stations to start screen
 * Show walk directions to station
+* Refresh location in background
 * Compress HTTP requests
 * Fix crash when app resumes into a station page after tombstoning
 

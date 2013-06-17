@@ -71,7 +71,7 @@ namespace UKTrains
                 nearest.Header = "Near " + fromStation.Name;
             }
 
-            LocationService.LocationChanged += LoadNearestStations;
+            LocationService.PositionChanged += LoadNearestStations;
             LoadNearestStations();
 
             if (e.NavigationMode == NavigationMode.New)

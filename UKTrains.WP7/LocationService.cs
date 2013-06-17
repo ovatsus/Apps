@@ -6,7 +6,7 @@ namespace UKTrains
 {
     public static class LocationService
     {
-        public static event Action LocationChanged;
+        public static event Action PositionChanged;
         public static GeoCoordinate CurrentPosition { get; private set; }
         private static DateTimeOffset currentPositionTimestamp;
 
@@ -43,9 +43,9 @@ namespace UKTrains
                     CurrentPosition = newPosition;
                     Settings.Set(Setting.CurrentLat, CurrentPosition.Latitude);
                     Settings.Set(Setting.CurrentLong, CurrentPosition.Longitude);
-                    if (LocationChanged != null)
+                    if (PositionChanged != null && !App.RunningInBackground)
                     {
-                        LocationChanged();
+                        PositionChanged();
                     }
                 }
                 currentPositionTimestamp = e.Position.Timestamp;

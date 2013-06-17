@@ -91,29 +91,28 @@ namespace UKTrains
 #else
             createDirectionsButton = true;
 #endif
-            if (ApplicationBar.Buttons.Count == 2)
+            while (ApplicationBar.Buttons.Count > 2)
             {
-                if (createDirectionsButton)
-                {
-                    var mapButton = new ApplicationBarIconButton(new Uri("/Icons/dark/appbar.map.png", UriKind.Relative))
-                    {
-                        Text = "Directions",
-                    };
-                    mapButton.Click += OnDirectionsClick;
-                    ApplicationBar.Buttons.Add(mapButton);
-                }
-
-                var uri = GetUriForThisPage();
-                if (!ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri))
-                {
-                    var pinButton = new ApplicationBarIconButton(new Uri("/Icons/dark/appbar.pin.png", UriKind.Relative))
-                    {
-                        Text = "Pin to Start",
-                    };
-                    pinButton.Click += OnPinClick;
-                    ApplicationBar.Buttons.Add(pinButton);
-                }
+                ApplicationBar.Buttons.RemoveAt(ApplicationBar.Buttons.Count - 1);
             }
+            if (createDirectionsButton)
+            {
+                var mapButton = new ApplicationBarIconButton(new Uri("/Icons/dark/appbar.map.png", UriKind.Relative))
+                {
+                    Text = "Directions",
+                };
+                mapButton.Click += OnDirectionsClick;
+                ApplicationBar.Buttons.Add(mapButton);
+            }
+
+            var uri = GetUriForThisPage();
+            var pinButton = new ApplicationBarIconButton(new Uri("/Icons/dark/appbar.pin.png", UriKind.Relative))
+            {
+                IsEnabled = !ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri),
+                Text = "Pin to Start",
+            };
+            pinButton.Click += OnPinClick;
+            ApplicationBar.Buttons.Add(pinButton);
 
             var showAds = false;
 #if WP8
@@ -242,7 +241,7 @@ namespace UKTrains
                 BackgroundImage = new Uri("/Assets/Tiles/FlipCycleTileMedium.png", UriKind.Relative),
                 WideBackgroundImage = new Uri("/Assets/Tiles/FlipCycleTileLarge.png", UriKind.Relative),
             };
-            ShellTile.Create(new Uri("/StationPage.xaml?stationCode=" + station.Code, UriKind.Relative), tileData, true);
+            ShellTile.Create(GetUriForThisPage(), tileData, true);
 #else
             var tileData = new StandardTileData()
             {
