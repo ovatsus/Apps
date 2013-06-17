@@ -115,8 +115,9 @@ namespace UKTrains
                 }
             }
 
+            var showAds = false;
 #if WP8
-            var showAds = !CurrentApp.LicenseInformation.ProductLicenses["RemoveAds"].IsActive;
+            //var showAds = !CurrentApp.LicenseInformation.ProductLicenses["RemoveAds"].IsActive;
             if (showAds)
             {
                 var menuItem = new ApplicationBarMenuItem("Remove ads");
@@ -130,7 +131,7 @@ namespace UKTrains
                 ApplicationBar.MenuItems.Add(menuItem);
             }
 #else
-            var showAds = true;
+            //var showAds = true;
 #endif            
 
             if (showAds)
