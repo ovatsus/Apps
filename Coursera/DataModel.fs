@@ -29,7 +29,6 @@ and Topic =
       ShortName : string
       SmallIcon : string
       SmallIconHover : string
-      SocialLink : string
       Visibility : int }
 
     override x.ToString() = sprintf "%A" x

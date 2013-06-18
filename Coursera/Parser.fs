@@ -21,7 +21,6 @@ let parseTopicsJson getLectureSections topicsJsonStr =
           ShortName = json?short_name.AsString()
           SmallIcon = json?small_icon.AsString()
           SmallIconHover = json?small_icon_hover.AsString()
-          SocialLink = json?social_link.AsString()
           Visibility = json?visibility.AsInteger() }
 
     let parseCourse topic json =        
