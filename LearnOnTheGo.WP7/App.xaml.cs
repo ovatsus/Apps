@@ -1,6 +1,7 @@
 ﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Diagnostics;
+using System.Net;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -19,6 +20,9 @@ namespace LearnOnTheGo
             InitializeComponent();
 
             InitializePhoneApplication();
+
+            WebRequest.RegisterPrefix("http://", SharpGIS.WebRequestCreator.GZip);
+            WebRequest.RegisterPrefix("https://", SharpGIS.WebRequestCreator.GZip);
 
             if (Debugger.IsAttached)
             {
