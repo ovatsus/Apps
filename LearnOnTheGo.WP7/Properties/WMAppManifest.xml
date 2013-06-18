@@ -2,7 +2,7 @@
 
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
   <App xmlns="" ProductID="{aca60941-2945-49e7-afd2-adbe5625df12}" Title="Learn On The Go" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="Learn On The Go" Publisher="Code Beside">
-    <IconPath IsRelative="true" IsResource="false">Icon62x62.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <!--<Capability Name="ID_CAP_GAMERSERVICES"/>
       <Capability Name="ID_CAP_IDENTITY_DEVICE"/>
@@ -25,7 +25,7 @@
     <Tokens>
       <PrimaryToken TokenID="LearnOnTheGoToken" TaskName="_default">
         <TemplateType5>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Icon173x173.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Tile.png</BackgroundImageURI>
           <Count>0</Count>
           <Title>Learn On The Go</Title>
         </TemplateType5>

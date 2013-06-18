@@ -54,9 +54,8 @@
     <Reference Include="CS.Windows.Controls">
       <HintPath>..\packages\WindowsPhoneControls.0.3.0\lib\sl4-windowsphone71\CS.Windows.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=a19089b1c74d0809, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\FSharp.Core.dll</HintPath>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\lib\wp7\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
@@ -117,10 +116,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icon62x62.png">
+    <Content Include="ApplicationIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Icon173x173.png">
+    <Content Include="Tile.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icons\dark\appbar.check.png">
@@ -144,9 +143,9 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coursera\Coursera.fsproj">
+    <ProjectReference Include="..\Coursera.WP7\Coursera.WP7.fsproj">
       <Project>{5C18B195-B7EE-499E-9650-27C22DE3B86D}</Project>
-      <Name>Coursera</Name>
+      <Name>Coursera.WP7</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

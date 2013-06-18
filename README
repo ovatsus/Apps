@@ -1,7 +1,12 @@
 Source code for http://www.windowsphone.com/en-gb/store/app/learn-on-the-go/aca60941-2945-49e7-afd2-adbe5625df12
 
 Description:
-Learn On The Go enables you to watch the lecture videos and read the PDF lecture notes of the Coursera courses you're enrolled in. This is not an official Coursera app.
+Learn On The Go enables you to watch the lecture videos and read the PDF lecture notes of the Coursera courses you're enrolled in.
+This is not an official Coursera app.
+
+New in 1.1:
+* Compress HTTP requests
+* Fix crash on some courses
 
 Keywords:
 Learn
@@ -9,9 +14,3 @@ Coursera
 Videos
 MOOC
 Classes
-
-TODO:
-* Cache course images
-* Download videos locally
-* Announcements
-* Quizzes
