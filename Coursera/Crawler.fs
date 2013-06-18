@@ -32,8 +32,8 @@ module private Implementation =
                               headers = ["Origin", "https://www.coursera.org"
                                          "X-CSRFToken", csrfToken
                                          "Referer", "https://www.coursera.org/account/signin"], 
-                              bodyParameters = ["email_address", email
-                                                "password", password],
+                              bodyValues = ["email_address", email
+                                            "password", password],
                               cookies = ["csrftoken", csrfToken],
                               cookieContainer = cookieContainer)
         return cookieContainer, JsonValue.Parse loginInfo }
