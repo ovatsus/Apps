@@ -100,6 +100,7 @@
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshButtonClick"/>
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.settings.png" Text="Settings" Click="OnSettingsButtonClick"/>
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.star.png" Text="Rate and Review" Click="OnRateAndReviewButtonClick"/>
+            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.reply.email.png" Text="Give Feedback" Click="OnGiveFeedbackButtonClick"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

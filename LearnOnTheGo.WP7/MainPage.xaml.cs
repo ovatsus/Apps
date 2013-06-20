@@ -126,5 +126,16 @@ namespace LearnOnTheGo
             var task = new MarketplaceReviewTask();
             task.Show();
         }
+
+        private void OnGiveFeedbackButtonClick(object sender, EventArgs e)
+        {
+            var task = new EmailComposeTask
+            {
+                To = "learnonthego@codebeside.org",
+                Subject = "Feedback for Learn On The Go",
+                Body = "Put your feedback here"
+            };
+            task.Show();
+        }
     }
 }

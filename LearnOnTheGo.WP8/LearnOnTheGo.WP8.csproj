@@ -142,6 +142,9 @@
     <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.refresh.png">
       <Link>Icons\dark\appbar.refresh.png</Link>
     </Content>
+    <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.reply.email.png">
+      <Link>Icons\dark\appbar.reply.email.png</Link>
+    </Content>
     <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.settings.png">
       <Link>Icons\dark\appbar.settings.png</Link>
     </Content>
@@ -170,7 +173,6 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="README_FIRST.txt" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="..\LearnOnTheGo.WP7\CoursePage.xaml">
