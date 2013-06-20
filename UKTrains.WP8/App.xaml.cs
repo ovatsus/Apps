@@ -53,6 +53,7 @@ namespace UKTrains
 
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
+            LittleWatson.ReportException(e.Exception, "NavigationFailed: " + e.Uri);
             if (Debugger.IsAttached)
             {
                 Debugger.Break();
@@ -61,6 +62,7 @@ namespace UKTrains
 
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            LittleWatson.ReportException(e.ExceptionObject, "UnhandledException");
             if (Debugger.IsAttached)
             {
                 Debugger.Break();

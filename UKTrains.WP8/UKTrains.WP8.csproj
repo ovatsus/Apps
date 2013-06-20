@@ -93,6 +93,9 @@
     <Compile Include="..\UKTrains.WP7\LazyAsyncExtensions.cs">
       <Link>LazyAsyncExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\UKTrains.WP7\LittleWatson.cs">
+      <Link>LittleWatson.cs</Link>
+    </Compile>
     <Compile Include="..\UKTrains.WP7\LocationService.cs">
       <Link>LocationService.cs</Link>
     </Compile>
