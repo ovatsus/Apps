@@ -67,10 +67,15 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
         |> Seq.map (fun h3 ->
             let title = h3 |> innerText |> trim
             let completed = h3 |> parent |> hasClass "course_item_list_header contracted"
-            let lectures =
+            let ul = 
                 h3 
                 |> parent
                 |> followingSibling "ul"
+            ul, title, completed)
+        |> Seq.filter (fun (ul, _, _) -> ul <> null)
+        |> Seq.map (fun (ul, title, completed) -> 
+            let lectures =
+                ul
                 |> elements "li"
                 |> Seq.map (element "a")
                 |> Seq.map (fun a ->
