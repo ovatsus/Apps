@@ -64,8 +64,6 @@ namespace UKTrains
                 ApplicationBar.MenuItems.RemoveAt(1);
             }
 
-            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().Single().IsEnabled = callingAt != null;
-
             var currentPosition = LocationService.CurrentPosition;
 
             bool createDirectionsButton;
@@ -92,8 +90,9 @@ namespace UKTrains
 #else
             createDirectionsButton = true;
 #endif
-            while (ApplicationBar.Buttons.Count > 2)
+            while (ApplicationBar.Buttons.Count > 4)
             {
+                // remove buy option
                 ApplicationBar.Buttons.RemoveAt(ApplicationBar.Buttons.Count - 1);
             }
             if (createDirectionsButton)
@@ -125,7 +124,8 @@ namespace UKTrains
                     await CurrentApp.RequestProductPurchaseAsync("RemoveAds", false);
                     if (CurrentApp.LicenseInformation.ProductLicenses["RemoveAds"].IsActive)
                     {
-                        ApplicationBar.MenuItems.RemoveAt(1);
+                        // remove buy option
+                        ApplicationBar.MenuItems.RemoveAt(ApplicationBar.Buttons.Count - 1);
                     }
                 };
                 ApplicationBar.MenuItems.Add(menuItem);
@@ -265,6 +265,17 @@ namespace UKTrains
         private void OnRateAndReviewClick(object sender, EventArgs e)
         {
             var task = new MarketplaceReviewTask();
+            task.Show();
+        }
+
+        private void OnGiveFeedbackClick(object sender, EventArgs e)
+        {
+            var task = new EmailComposeTask
+            {
+                To = "uktrains@codebeside.org",
+                Subject = "Feedback for UK Trains",
+                Body = "Put your feedback here"
+            };
             task.Show();
         }
 

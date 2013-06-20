@@ -95,7 +95,7 @@ namespace UKTrains
                 this.RestoreState(); // restore pivot and scroll state
             }
 
-            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().Single().IsEnabled = recentStationsList.Count != 0;
+            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().First().IsEnabled = recentStationsList.Count != 0;
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -192,11 +192,22 @@ namespace UKTrains
             task.Show();
         }
 
+        private void OnGiveFeedbackClick(object sender, EventArgs e)
+        {
+            var task = new EmailComposeTask
+            {
+                To = "uktrains@codebeside.org",
+                Subject = "Feedback for UK Trains",
+                Body = "Put your feedback here"
+            };
+            task.Show();
+        }
+
         private void OnClearRecentItemsClick(object sender, EventArgs e)
         {
             recentStationsList.Clear();
             SaveRecent();
-            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().Single().IsEnabled = false;
+            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().First().IsEnabled = false;
         }
     }
 }
