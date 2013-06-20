@@ -20,7 +20,7 @@
 
         <Grid.Resources>
             <DataTemplate x:Key="stationTemplateWithDistance">
-                <Button Click="OnStationClick"
+                <Button Tap="OnStationClick"
                         Padding="0"
                         Margin="0"
                         BorderThickness="0">
@@ -46,7 +46,7 @@
                 </Button>
             </DataTemplate>
             <DataTemplate x:Key="stationTemplate">
-                <Button Click="OnStationClick"
+                <Button Tap="OnStationClick"
                         Padding="0"
                         Margin="0"
                         BorderThickness="0">
