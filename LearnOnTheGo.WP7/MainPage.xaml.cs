@@ -19,6 +19,8 @@ namespace LearnOnTheGo
         {
             base.OnNavigatedTo(e);
 
+            LittleWatson.CheckForPreviousException();
+
             if (App.Crawler != null)
             {
                 return;

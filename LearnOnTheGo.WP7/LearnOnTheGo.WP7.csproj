@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Cache.cs" />
     <Compile Include="LazyAsyncExtensions.cs" />
+    <Compile Include="LittleWatson.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>

@@ -48,6 +48,7 @@ namespace LearnOnTheGo
 
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
+            LittleWatson.ReportException(e.Exception, "NavigationFailed: " + e.Uri);
             if (Debugger.IsAttached)
             {
                 Debugger.Break();
@@ -56,6 +57,7 @@ namespace LearnOnTheGo
 
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            LittleWatson.ReportException(e.ExceptionObject, "UnhandledException");
             if (Debugger.IsAttached)
             {
                 Debugger.Break();
