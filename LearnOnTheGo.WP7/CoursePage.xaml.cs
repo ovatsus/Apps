@@ -101,5 +101,27 @@ namespace LearnOnTheGo
 
             busy = false;
         }
+
+        private void OnSettingsClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+        }
+
+        private void OnRateAndReviewClick(object sender, EventArgs e)
+        {
+            var task = new MarketplaceReviewTask();
+            task.Show();
+        }
+
+        private void OnGiveFeedbackClick(object sender, EventArgs e)
+        {
+            var task = new EmailComposeTask
+            {
+                To = "learnonthego@codebeside.org",
+                Subject = "Feedback for Learn On The Go",
+                Body = "Put your feedback here"
+            };
+            task.Show();
+        }
     }
 }

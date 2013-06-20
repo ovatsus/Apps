@@ -110,15 +110,15 @@ namespace LearnOnTheGo
                 () => busy = false);
         }
 
-        private void OnSettingsClick(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
-        }
-
         private void OnCourseClick(object sender, RoutedEventArgs e)
         {
             var course = (Coursera.Course)((Button)sender).DataContext;
             NavigationService.Navigate(new Uri("/CoursePage.xaml?courseId=" + course.Id, UriKind.Relative));
+        }
+
+        private void OnSettingsClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
         }
 
         private void OnRateAndReviewClick(object sender, EventArgs e)
