@@ -32,10 +32,10 @@
                     <StackPanel Grid.Column="1"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center">
-                        <coding4fun:RoundButton Click="OnLectureVideoButtonClick"
+                        <coding4fun:RoundButton Tap="OnLectureVideoClick"
                                                 Margin="4,0,0,0"
                                                 ImageSource="/Icons/dark/appbar.control.play.png" />
-                        <coding4fun:RoundButton Click="OnLecturePdfButtonClick"
+                        <coding4fun:RoundButton Tap="OnLecturePdfClick"
                                                 Margin="4,0,0,0"
                                                 ImageSource="/Icons/dark/appbar.page.pdf.png" 
                                                 IsEnabled="{Binding HasPdf}"/>
@@ -76,7 +76,7 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Mode="Minimized">
-            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshButtonClick"/>
+            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

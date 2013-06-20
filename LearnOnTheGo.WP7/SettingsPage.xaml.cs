@@ -12,7 +12,7 @@ namespace LearnOnTheGo
             password.Password = Settings.Get(Setting.Password);
         }
 
-        private void OnSaveButtonClick(object sender, EventArgs e)
+        private void OnSaveClick(object sender, EventArgs e)
         {
             if (email.Text != Settings.Get(Setting.Email))
             {

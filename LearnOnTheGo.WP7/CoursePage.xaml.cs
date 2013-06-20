@@ -51,7 +51,7 @@ namespace LearnOnTheGo
                 () => busy = false);
         }
 
-        private void OnRefreshButtonClick(object sender, EventArgs e)
+        private void OnRefreshClick(object sender, EventArgs e)
         {
             if (busy)
             {
@@ -63,7 +63,7 @@ namespace LearnOnTheGo
             Load();
         }
 
-        private void OnLectureVideoButtonClick(object sender, RoutedEventArgs e)
+        private void OnLectureVideoClick(object sender, RoutedEventArgs e)
         {
             if (busy)
             {
@@ -85,7 +85,7 @@ namespace LearnOnTheGo
                 () => busy = false);
         }
 
-        private void OnLecturePdfButtonClick(object sender, RoutedEventArgs e)
+        private void OnLecturePdfClick(object sender, RoutedEventArgs e)
         {
             if (busy)
             {

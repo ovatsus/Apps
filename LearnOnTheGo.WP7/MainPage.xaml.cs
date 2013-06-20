@@ -29,7 +29,7 @@ namespace LearnOnTheGo
 
             if (e.NavigationMode != NavigationMode.Back && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)))
             {
-                OnSettingsButtonClick(null, null);
+                OnSettingsClick(null, null);
             }
             else
             {
@@ -39,7 +39,7 @@ namespace LearnOnTheGo
 
         private bool busy;
 
-        private void OnRefreshButtonClick(object sender, EventArgs e)
+        private void OnRefreshClick(object sender, EventArgs e)
         {
             if (busy)
             {
@@ -51,7 +51,7 @@ namespace LearnOnTheGo
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                OnSettingsButtonClick(null, null);
+                OnSettingsClick(null, null);
             }
             else
             {
@@ -110,24 +110,24 @@ namespace LearnOnTheGo
                 () => busy = false);
         }
 
-        private void OnSettingsButtonClick(object sender, EventArgs e)
+        private void OnSettingsClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
         }
 
-        private void OnCourseButtonClick(object sender, RoutedEventArgs e)
+        private void OnCourseClick(object sender, RoutedEventArgs e)
         {
             var course = (Coursera.Course)((Button)sender).DataContext;
             NavigationService.Navigate(new Uri("/CoursePage.xaml?courseId=" + course.Id, UriKind.Relative));
         }
 
-        private void OnRateAndReviewButtonClick(object sender, EventArgs e)
+        private void OnRateAndReviewClick(object sender, EventArgs e)
         {
             var task = new MarketplaceReviewTask();
             task.Show();
         }
 
-        private void OnGiveFeedbackButtonClick(object sender, EventArgs e)
+        private void OnGiveFeedbackClick(object sender, EventArgs e)
         {
             var task = new EmailComposeTask
             {
