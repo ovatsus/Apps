@@ -42,16 +42,19 @@ namespace UKTrains
 
             if (fromStation == null)
             {
-                LittleWatson.CheckForPreviousException();
-                if (!Settings.GetBool(Setting.LocationServicesEnabled) && !Settings.GetBool(Setting.LocationServicesPromptShown))
+                if (e.NavigationMode == NavigationMode.New)
                 {
-                    Settings.Set(Setting.LocationServicesPromptShown, true);
-                    var result = MessageBox.Show("This application uses your current location to improve the experience. Do you wish to give it permission to use your location?",
-                                                 "Location Services",
-                                                 MessageBoxButton.OKCancel);
-                    if (result == MessageBoxResult.OK)
+                    LittleWatson.CheckForPreviousException();
+                    if (!Settings.GetBool(Setting.LocationServicesEnabled) && !Settings.GetBool(Setting.LocationServicesPromptShown))
                     {
-                        Settings.Set(Setting.LocationServicesEnabled, true);
+                        Settings.Set(Setting.LocationServicesPromptShown, true);
+                        var result = MessageBox.Show("This application uses your current location to improve the experience. Do you wish to give it permission to use your location?",
+                                                     "Location Services",
+                                                     MessageBoxButton.OKCancel);
+                        if (result == MessageBoxResult.OK)
+                        {
+                            Settings.Set(Setting.LocationServicesEnabled, true);
+                        }
                     }
                 }
                 pivot.Title = "Rail Stations";
@@ -88,6 +91,8 @@ namespace UKTrains
             {
                 this.RestoreState(); // restore pivot and scroll state
             }
+
+            AdControl.InitAds(adGrid, ApplicationBar);
         }
 
         private bool Filter(Station station)

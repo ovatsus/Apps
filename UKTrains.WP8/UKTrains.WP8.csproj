@@ -102,6 +102,10 @@
     <Compile Include="..\UKTrains.WP7\Settings.cs">
       <Link>Settings.cs</Link>
     </Compile>
+    <Compile Include="..\UKTrains.WP7\AdControl.xaml.cs">
+      <Link>AdControl.xaml.cs</Link>
+      <DependentUpon>AdControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="..\UKTrains.WP7\MainAndFilterPage.xaml.cs">
       <Link>MainAndFilterPage.xaml.cs</Link>
       <DependentUpon>MainAndFilterPage.xaml</DependentUpon>
@@ -164,6 +168,15 @@
     <Content Include="..\UKTrains.WP7\SplashScreenImage.jpg">
       <Link>SplashScreenImage.jpg</Link>
     </Content>
+    <Content Include="..\UKTrains.WP7\Ads\AdSettings.xml">
+      <Link>Ads\AdSettings.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\UKTrains.WP7\Ads\UnifiedAd.xsd">
+      <Link>Ads\UnifiedAd.xsd</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -185,6 +198,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="..\UKTrains.WP7\AdControl.xaml">
+      <Link>AdControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="..\UKTrains.WP7\MainAndFilterPage.xaml">
       <Link>MainAndFilterPage.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
@@ -208,6 +226,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="AdDuplex.WindowsPhone, Version=2.7.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AdDuplexWP7.2.7.0.3\lib\sl4-windowsphone71\AdDuplex.WindowsPhone.dll</HintPath>
+    </Reference>
     <Reference Include="Coding4Fun.Toolkit.Controls">
       <HintPath>..\packages\Coding4Fun.Toolkit.Controls.2.0.6\lib\windowsphone8\Coding4Fun.Toolkit.Controls.dll</HintPath>
     </Reference>
@@ -217,15 +239,36 @@
     <Reference Include="FSharp.Core">
       <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\3.0\Runtime\.NETPortable\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Inneractive.Ad">
-      <HintPath>..\lib\wp8\Inneractive.Ad.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
+    <Reference Include="Inneractive.Nokia.Ad">
+      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\Inneractive.Nokia.Ad.dll</HintPath>
+    </Reference>
+    <Reference Include="MC.Phone.Ads">
+      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\MC.Phone.Ads.dll</HintPath>
+    </Reference>
+    <Reference Include="MC.Phone.Ads.AdDuplex">
+      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\MC.Phone.Ads.AdDuplex.dll</HintPath>
+    </Reference>
+    <Reference Include="MC.Phone.Ads.InnerActive">
+      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\MC.Phone.Ads.InnerActive.dll</HintPath>
+    </Reference>
+    <Reference Include="MC.Phone.Ads.MobFox">
+      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\MC.Phone.Ads.MobFox.dll</HintPath>
+    </Reference>
+    <Reference Include="MC.Phone.Ads.Smaato">
+      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\MC.Phone.Ads.Smaato.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPToolkit.4.2013.06.11\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="MobFox.Ads">
+      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\MobFox.Ads.dll</HintPath>
+    </Reference>
     <Reference Include="SharpGIS.GZipWebClient">
       <HintPath>..\packages\SharpGIS.GZipWebClient.1.4.0.0\lib\wp71\SharpGIS.GZipWebClient.dll</HintPath>
+    </Reference>
+    <Reference Include="SOMAWP7">
+      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\SOMAWP7.dll</HintPath>
     </Reference>
     <Reference Include="TombstoneHelper">
       <HintPath>..\packages\WP7TombstoneHelper.2.5\lib\TombstoneHelper.dll</HintPath>
