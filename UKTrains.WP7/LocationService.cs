@@ -1,4 +1,4 @@
-﻿using FSharp;
+﻿using FSharp.GeoUtils;
 using System;
 using System.Device.Location;
 
@@ -9,6 +9,7 @@ namespace UKTrains
         public static event Action PositionChanged;
         public static GeoCoordinate CurrentPosition { get; private set; }
         private static DateTimeOffset currentPositionTimestamp;
+        private static GeoCoordinateWatcher watcher;
 
         static LocationService()
         {
@@ -18,16 +19,23 @@ namespace UKTrains
             {
                 CurrentPosition = new GeoCoordinate(latitude, longitude);
             }
-
-            if (Settings.GetBool(Setting.LocationServicesEnabled))
+            watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High)
             {
-                var watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High)
-                {
-                    MovementThreshold = 50
-                };
+                MovementThreshold = 50
+            };
+            watcher.PositionChanged += OnGeoPositionChanged;
+            Setup();
+        }
 
-                watcher.PositionChanged += OnGeoPositionChanged;
+        public static void Setup()
+        {
+            if (Settings.GetBool(Setting.LocationServicesEnabled))
+            {                
                 watcher.Start();
+            }
+            else
+            {
+                watcher.Stop();    
             }
         }
 
@@ -38,7 +46,7 @@ namespace UKTrains
                 var previousPosition = CurrentPosition;
                 var newPosition = e.Position.Location;
                 if (previousPosition == null || previousPosition.IsUnknown || currentPositionTimestamp == default(DateTimeOffset) ||
-                    GeoUtils.LatLong.Create(previousPosition.Latitude, previousPosition.Longitude) - GeoUtils.LatLong.Create(newPosition.Latitude, newPosition.Longitude) >= 0.1)
+                    LatLong.Create(previousPosition.Latitude, previousPosition.Longitude) - LatLong.Create(newPosition.Latitude, newPosition.Longitude) >= 0.1)
                 {
                     CurrentPosition = newPosition;
                     Settings.Set(Setting.CurrentLat, CurrentPosition.Latitude);

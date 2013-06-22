@@ -15,7 +15,8 @@ namespace UKTrains
         private void OnSaveClick(object sender, EventArgs e)
         {
             Settings.Set(Setting.LocationServicesEnabled, enableLocationServices.IsChecked == true);
-            Settings.Set(Setting.UseMilesInsteadOfKMs, useMilesInsteadOfKms.IsChecked == true);            
+            Settings.Set(Setting.UseMilesInsteadOfKMs, useMilesInsteadOfKms.IsChecked == true);
+            LocationService.Setup();
             NavigationService.GoBack();
         }
     }
