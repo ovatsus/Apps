@@ -110,10 +110,10 @@
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.filter.png" Text="Filter" Click="OnFilterClick" />
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Settings" Click="OnSettingsClick"/>
-                <shell:ApplicationBarMenuItem Text="Rate and Review" Click="OnRateAndReviewClick"/>
-                <shell:ApplicationBarMenuItem Text="Give Feedback" Click="OnGiveFeedbackClick"/>
-                <shell:ApplicationBarMenuItem Text="Clear filter" Click="OnClearFilterClick"/>
+                <shell:ApplicationBarMenuItem Text="Clear filter" Click="OnClearFilterClick" />
+                <shell:ApplicationBarMenuItem Text="Settings" Click="OnSettingsClick" />
+                <shell:ApplicationBarMenuItem Text="Rate and Review" Click="OnRateAndReviewClick" />
+                <shell:ApplicationBarMenuItem Text="Give Feedback" Click="OnGiveFeedbackClick" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

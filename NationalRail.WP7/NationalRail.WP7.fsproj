@@ -55,8 +55,9 @@
     <Compile Include="LazyAsync.fs" />
     <EmbeddedResource Include="RailReferences.csv" />
     <Compile Include="GeoUtils.fs" />
-    <Compile Include="DataModel.fs" />
+    <Compile Include="Stations.fs" />
     <Compile Include="LiveDepartures.fs" />
+    <Compile Include="Schedules.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

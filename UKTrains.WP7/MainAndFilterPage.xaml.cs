@@ -1,10 +1,11 @@
-﻿using FSharp;
+﻿using FSharp.GeoUtils;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using NationalRail;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,33 +19,18 @@ namespace UKTrains
         public MainAndFilterPage()
         {
             InitializeComponent();
-            recentStationsList = new ObservableCollection<Station>(
-                Settings.GetString(Setting.RecentStations)
-                  .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                  .Select(stationCode => LiveDepartures.getStation(stationCode)));
         }
 
         private bool loadingNearest;
-        private ObservableCollection<Station> recentStationsList;
+        private List<DeparturesTable> allRecentItems;
         private Station fromStation;
-
-        private void AddToRecent(Station station)
-        {
-            recentStationsList.Remove(station);
-            recentStationsList.Insert(0, station);
-            SaveRecent();
-        }
-
-        private void SaveRecent()
-        {
-            Settings.Set(Setting.RecentStations, string.Join(",", recentStationsList.Select(st => st.Code)));
-        }
-
+        private bool hasRecentItemsToDisplay;
+        
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            fromStation = NavigationContext.QueryString.ContainsKey("fromStation") ? LiveDepartures.getStation(NavigationContext.QueryString["fromStation"]) : null;
+            fromStation = NavigationContext.QueryString.ContainsKey("fromStation") ? Stations.Get(NavigationContext.QueryString["fromStation"]) : null;
 
             if (fromStation == null)
             {
@@ -61,24 +47,24 @@ namespace UKTrains
                     }
                 }
                 pivot.Title = "Rail Stations";
-                allStations.ItemsSource = LiveDepartures.getAllStations();
-                recentStations.ItemsSource = recentStationsList;
+                allStations.ItemsSource = Stations.GetAll();
                 nearest.Header = "Near me";
             }
             else
             {
                 pivot.Title = fromStation.Name + " calling at";
-                allStations.ItemsSource = LiveDepartures.getAllStations().Except(new [] { fromStation });
-                recentStations.ItemsSource = recentStationsList.Except(new[] { fromStation });
+                allStations.ItemsSource = Stations.GetAll().Except(new[] { fromStation });
                 nearest.Header = "Near " + fromStation.Name;
             }
 
             LocationService.PositionChanged += LoadNearestStations;
             LoadNearestStations();
 
+            LoadRecentItems();
+
             if (e.NavigationMode == NavigationMode.New)
             {
-                if (recentStationsList.Count != 0)
+                if (hasRecentItemsToDisplay)
                 {
                     pivot.SelectedIndex = 1;
                 }
@@ -96,8 +82,6 @@ namespace UKTrains
             {
                 this.RestoreState(); // restore pivot and scroll state
             }
-
-            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().First().IsEnabled = recentStationsList.Count != 0;
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -108,19 +92,11 @@ namespace UKTrains
                 this.SaveState(e); // save pivot and scroll state
             }
         }
-
-        private void OnRefreshClick(object sender, EventArgs e)
-        {
-            if (!loadingNearest)
-            {
-                LoadNearestStations();
-            }
-        }
-
+       
         private void LoadNearestStations()
         {
             loadingNearest = true;
-            GeoUtils.LatLong from;
+            LatLong from;
             if (fromStation == null)
             {
                 var currentPosition = LocationService.CurrentPosition;
@@ -140,15 +116,15 @@ namespace UKTrains
                     SystemTray.SetProgressIndicator(this, indicator);
                     return;
                 }
-                from = GeoUtils.LatLong.Create(currentPosition.Latitude, currentPosition.Longitude);
+                from = LatLong.Create(currentPosition.Latitude, currentPosition.Longitude);
             }
             else
             {
-                from = fromStation.LatLong;
+                from = fromStation.Location;
             }
 
             bool refreshing = nearestStations.ItemsSource != null;
-            LiveDepartures.getNearestStations(from, 150, Settings.GetBool(Setting.UseMilesInsteadOfKMs)).Display(
+            Stations.GetNearest(from, 150, Settings.GetBool(Setting.UseMilesInsteadOfKMs)).Display(
                 this,
                 refreshing ? "Refreshing stations... " : "Loading stations...",
                 refreshing,
@@ -168,19 +144,65 @@ namespace UKTrains
                 () => loadingNearest = false);
         }
 
-        private void OnStationClick(object sender, RoutedEventArgs e)
+        private void LoadRecentItems()
         {
-            var dataContext = ((Button)sender).DataContext;
-            var station = dataContext as Station ?? ((Tuple<string, Station>)dataContext).Item2;
-            AddToRecent(station);
-            if (fromStation == null)
+            allRecentItems =
+                Settings.GetString(Setting.RecentStations)
+                    .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(DeparturesTable.Parse)
+                    .ToList();
+
+            var recentItemsToDisplay = fromStation == null ? allRecentItems :
+                (from item in allRecentItems
+                    where item.CallingAt != null && item.Station.Code == fromStation.Code
+                    select item.HasDestinationFilter ? DeparturesTable.Create(item.CallingAt.Value) : item).ToList();
+
+            hasRecentItemsToDisplay = recentItemsToDisplay.Count != 0;
+            recentStations.ItemsSource = recentItemsToDisplay;
+
+            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().Single(item => item.Text == "Clear recent items").IsEnabled = hasRecentItemsToDisplay;
+        }
+
+        private void OnRefreshClick(object sender, EventArgs e)
+        {
+            if (!loadingNearest)
             {
-                NavigationService.Navigate(new Uri("/StationPage.xaml?stationCode=" + station.Code, UriKind.Relative));
+                LoadNearestStations();
+            }
+        }
+
+        private void OnStationClick(object sender, RoutedEventArgs e)
+        {        
+            var dataContext = ((Button)sender).DataContext;
+            var target = dataContext as DeparturesTable;
+            if (target != null)
+            {
+                if (fromStation != null)
+                {
+                    Debug.Assert(!target.HasDestinationFilter);
+                    target = DeparturesTable.Create(fromStation, target.Station);
+                }
             }
             else
             {
-                NavigationService.Navigate(new Uri("/StationPage.xaml?stationCode=" + fromStation.Code + "&callingAt=" + station.Code, UriKind.Relative));
+                var station = dataContext as Station ?? ((Tuple<string, Station>)dataContext).Item2;
+                target = fromStation == null ? DeparturesTable.Create(station) :
+                         DeparturesTable.Create(fromStation, station);
             }
+            AddToRecentItems(target);
+            SaveRecentItems();
+            NavigationService.Navigate(StationPage.GetUri(target));
+        }
+
+        private void AddToRecentItems(DeparturesTable recentItem)
+        {
+            allRecentItems.Remove(recentItem);
+            allRecentItems.Insert(0, recentItem);
+        }
+
+        private void SaveRecentItems()
+        {
+            Settings.Set(Setting.RecentStations, string.Join(",", allRecentItems.Select(item => item.Serialize())));
         }
 
         private void OnSettingsClick(object sender, EventArgs e)
@@ -207,9 +229,9 @@ namespace UKTrains
 
         private void OnClearRecentItemsClick(object sender, EventArgs e)
         {
-            recentStationsList.Clear();
-            SaveRecent();
-            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().First().IsEnabled = false;
+            allRecentItems.Clear();
+            SaveRecentItems();
+            LoadRecentItems();
         }
     }
 }

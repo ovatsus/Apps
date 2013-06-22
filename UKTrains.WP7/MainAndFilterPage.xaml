@@ -5,6 +5,7 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
@@ -19,6 +20,9 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
 
         <Grid.Resources>
+
+            <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+            
             <DataTemplate x:Key="stationTemplateWithDistance">
                 <Button Tap="OnStationClick"
                         Padding="0"
@@ -62,6 +66,24 @@
                     </StackPanel>
                 </Button>
             </DataTemplate>
+            <DataTemplate x:Key="recentItemTemplate">
+                <Button Tap="OnStationClick"
+                        Padding="0"
+                        Margin="0"
+                        BorderThickness="0">
+                    <StackPanel Margin="0,0,0,4"
+                                Orientation="Vertical"
+                                Grid.Column="1">
+                        <TextBlock Text="{Binding Station.Name}"
+                                   HorizontalAlignment="Center"
+                                   FontSize="34" />
+                        <TextBlock Text="{Binding CallingAt.Value.Name, StringFormat='calling at {0}'}" 
+                                   Visibility="{Binding HasDestinationFilter, Converter={StaticResource booleanToVisibilityConverter}}"
+                                   HorizontalAlignment="Center"
+                                   Foreground="Gray" />
+                    </StackPanel>
+                </Button>
+            </DataTemplate>
         </Grid.Resources>
 
         <controls:Pivot x:Name="pivot">
@@ -89,7 +111,7 @@
             </controls:PivotItem>
             <controls:PivotItem Header="Recent">
                 <ItemsControl x:Name="recentStations" 
-                                ItemTemplate="{StaticResource stationTemplate}">
+                                ItemTemplate="{StaticResource recentItemTemplate}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel />

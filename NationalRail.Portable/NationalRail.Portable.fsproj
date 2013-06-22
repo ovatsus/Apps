@@ -53,11 +53,14 @@
     <Compile Include="..\NationalRail.WP7\GeoUtils.fs">
       <Link>GeoUtils.fs</Link>
     </Compile>
-    <Compile Include="..\NationalRail.WP7\DataModel.fs">
-      <Link>DataModel.fs</Link>
+    <Compile Include="..\NationalRail.WP7\Stations.fs">
+      <Link>Stations.fs</Link>
     </Compile>
     <Compile Include="..\NationalRail.WP7\LiveDepartures.fs">
       <Link>LiveDepartures.fs</Link>
+    </Compile>
+    <Compile Include="..\NationalRail.WP7\Schedules.fs">
+      <Link>Schedules.fs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@ Description:
 UK Trains brings you train departure information for all UK national rail stations.
 New in 1.2:
 * Option to display distances in miles
+* Include filters in recent items
 New in 1.1:
 * Allow to filter by destination
 * Allow to pin stations to start screen
