@@ -1,5 +1,6 @@
 ﻿using FSharp.GeoUtils;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Reactive;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using NationalRail;
@@ -9,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Navigation;
 using TombstoneHelper;
 
@@ -19,6 +21,12 @@ namespace UKTrains
         public MainAndFilterPage()
         {
             InitializeComponent();
+            var allStationsView = new CollectionViewSource { Source = Stations.GetAll() }.View;
+            allStationsView.Filter = x => Filter((Station)x);
+            allStations.ItemsSource = allStationsView;
+            Observable.FromEvent<TextChangedEventArgs>(filter, "TextChanged")
+                .Throttle(TimeSpan.FromMilliseconds(300))
+                .Subscribe(_ => Dispatcher.BeginInvoke(() => allStationsView.Refresh()));
         }
 
         private bool loadingNearest;
@@ -47,13 +55,11 @@ namespace UKTrains
                     }
                 }
                 pivot.Title = "Rail Stations";
-                allStations.ItemsSource = Stations.GetAll();
                 nearest.Header = "Near me";
             }
             else
             {
                 pivot.Title = fromStation.Name + " calling at";
-                allStations.ItemsSource = Stations.GetAll().Except(new[] { fromStation });
                 nearest.Header = "Near " + fromStation.Name;
             }
 
@@ -82,6 +88,16 @@ namespace UKTrains
             {
                 this.RestoreState(); // restore pivot and scroll state
             }
+        }
+
+        private bool Filter(Station station)
+        {
+            if (fromStation != null && station.Code == fromStation.Code) {
+                return false;
+            }
+            return string.IsNullOrEmpty(filter.Text) ||
+                   station.Name.IndexOf(filter.Text, StringComparison.OrdinalIgnoreCase) != -1 ||
+                   station.Code.IndexOf(filter.Text, StringComparison.OrdinalIgnoreCase) != -1;
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
