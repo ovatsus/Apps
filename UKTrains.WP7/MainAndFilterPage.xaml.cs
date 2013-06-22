@@ -32,6 +32,7 @@ namespace UKTrains
         {
             recentStationsList.Remove(station);
             recentStationsList.Insert(0, station);
+            SaveRecent();
         }
 
         private void SaveRecent()

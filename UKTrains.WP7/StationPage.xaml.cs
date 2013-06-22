@@ -90,9 +90,9 @@ namespace UKTrains
 #else
             createDirectionsButton = true;
 #endif
-            while (ApplicationBar.Buttons.Count > 4)
+            while (ApplicationBar.Buttons.Count > 2)
             {
-                // remove buy option
+                // remove directions and pin to start
                 ApplicationBar.Buttons.RemoveAt(ApplicationBar.Buttons.Count - 1);
             }
             if (createDirectionsButton)
