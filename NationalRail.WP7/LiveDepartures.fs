@@ -46,7 +46,7 @@ let private getStationInfo() =
 
     | Some stationInfo -> stationInfo
 
-let getNearestStations currentLocation limit = 
+let getNearestStations currentLocation limit useMilesInsteadOfKMs = 
     
     async {
 
@@ -58,7 +58,12 @@ let getNearestStations currentLocation limit =
             |> Seq.filter (fun (dist, _) -> dist < 1000.0)
             |> Seq.sortBy (fun (dist, station) -> dist, station.Name)
             |> Seq.truncate limit
-            |> Seq.map (fun (distance, station) -> sprintf "%.1f km" distance, station)
+            |> Seq.map (fun (distance, station) -> 
+                if useMilesInsteadOfKMs then
+                    let distance = distance * 0.621371192
+                    sprintf "%.1f mi" distance, station
+                else
+                    sprintf "%.1f km" distance, station)
             |> Seq.toArray
 
         return nearestStations

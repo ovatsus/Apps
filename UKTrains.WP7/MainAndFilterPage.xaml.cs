@@ -147,7 +147,7 @@ namespace UKTrains
             }
 
             bool refreshing = nearestStations.ItemsSource != null;
-            LiveDepartures.getNearestStations(from, 150).Display(
+            LiveDepartures.getNearestStations(from, 150, Settings.GetBool(Setting.UseMilesInsteadOfKMs)).Display(
                 this,
                 refreshing ? "Refreshing stations... " : "Loading stations...",
                 refreshing,
