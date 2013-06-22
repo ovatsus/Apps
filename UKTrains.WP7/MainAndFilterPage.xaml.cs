@@ -32,6 +32,7 @@ namespace UKTrains
         private bool loadingNearest;
         private List<DeparturesTable> allRecentItems;
         private Station fromStation;
+        private string excludeStation;
         private bool hasRecentItemsToDisplay;
         
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -39,6 +40,7 @@ namespace UKTrains
             base.OnNavigatedTo(e);
 
             fromStation = NavigationContext.QueryString.ContainsKey("fromStation") ? Stations.Get(NavigationContext.QueryString["fromStation"]) : null;
+            excludeStation = NavigationContext.QueryString.ContainsKey("excludeStation") ? NavigationContext.QueryString["excludeStation"] : null;
 
             if (fromStation == null)
             {
@@ -69,7 +71,7 @@ namespace UKTrains
             LocationService.PositionChanged += LoadNearestStations;
             LoadNearestStations();
 
-            LoadRecentItems();
+            LoadRecentItems(excludeStation);
 
             if (e.NavigationMode == NavigationMode.New)
             {
@@ -98,6 +100,10 @@ namespace UKTrains
         private bool Filter(Station station)
         {
             if (fromStation != null && station.Code == fromStation.Code) {
+                return false;
+            }
+            if (excludeStation != null && station.Code == excludeStation)
+            {
                 return false;
             }
             return string.IsNullOrEmpty(filter.Text) ||
@@ -153,19 +159,21 @@ namespace UKTrains
                 nearestStationsMessageTextBlock,
                 nearest =>
                 {
-                    if (fromStation == null)
+                    var nearestFiltered = nearest.AsEnumerable();
+                    if (fromStation != null)
                     {
-                        nearestStations.ItemsSource = nearest;
+                        nearestFiltered = nearestFiltered.Where(t => t.Item2.Code != fromStation.Code);
                     }
-                    else
+                    if (excludeStation != null)
                     {
-                        nearestStations.ItemsSource = nearest.Where(t => t.Item2.Code != fromStation.Code);
+                        nearestFiltered = nearestFiltered.Where(t => t.Item2.Code != excludeStation);
                     }
+                    nearestStations.ItemsSource = nearestFiltered;
                 },
                 () => loadingNearest = false);
         }
 
-        private void LoadRecentItems()
+        private void LoadRecentItems(string excludeStation)
         {
             allRecentItems =
                 Settings.GetString(Setting.RecentStations)
@@ -175,8 +183,8 @@ namespace UKTrains
 
             var recentItemsToDisplay = fromStation == null ? allRecentItems :
                 (from item in allRecentItems
-                    where item.CallingAt != null && item.Station.Code == fromStation.Code
-                    select item.HasDestinationFilter ? DeparturesTable.Create(item.CallingAt.Value) : item).ToList();
+                 where item.HasDestinationFilter && item.Station.Code == fromStation.Code && item.CallingAt.Value.Code != excludeStation
+                 select DeparturesTable.Create(item.CallingAt.Value)).ToList();
 
             hasRecentItemsToDisplay = recentItemsToDisplay.Count != 0;
             recentStations.ItemsSource = recentItemsToDisplay;
@@ -212,7 +220,7 @@ namespace UKTrains
             }
             AddToRecentItems(target);
             SaveRecentItems();
-            NavigationService.Navigate(StationPage.GetUri(target));
+            NavigationService.Navigate(StationPage.GetUri(target, removeBackEntry: fromStation != null));
         }
 
         private void AddToRecentItems(DeparturesTable recentItem)
@@ -252,7 +260,7 @@ namespace UKTrains
         {
             allRecentItems.Clear();
             SaveRecentItems();
-            LoadRecentItems();
+            LoadRecentItems(excludeStation);
         }
     }
 }

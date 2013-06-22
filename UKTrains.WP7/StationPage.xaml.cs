@@ -32,15 +32,15 @@ namespace UKTrains
 
             var from = Stations.Get(NavigationContext.QueryString["station"]);
             var to = NavigationContext.QueryString.ContainsKey("callingAt") ? Stations.Get(NavigationContext.QueryString["callingAt"]) : null;
+            var removeBackEntry = NavigationContext.QueryString.ContainsKey("removeBackEntry");
             departuresTable = DeparturesTable.Create(from, to);
             pivot.Title = departuresTable.ToString();
 
             loadingDepartures = true;
             LoadDepartures();
 
-            if (departuresTable.HasDestinationFilter && e.NavigationMode == NavigationMode.New)
+            if (removeBackEntry)
             {
-                // remove the intermediate page to select the filter
                 NavigationService.RemoveBackEntry();
             }
 
@@ -171,7 +171,7 @@ namespace UKTrains
 
         private void CreatePinToStartItem()
         {
-            var uri = GetUri(departuresTable);
+            var uri = GetUri(departuresTable, false);
             var pinButton = new ApplicationBarIconButton(new Uri("/Icons/dark/appbar.pin.png", UriKind.Relative))
             {
                 IsEnabled = !ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri),
@@ -191,23 +191,24 @@ namespace UKTrains
                 BackgroundImage = new Uri("/Assets/Tiles/FlipCycleTileMedium.png", UriKind.Relative),
                 WideBackgroundImage = new Uri("/Assets/Tiles/FlipCycleTileLarge.png", UriKind.Relative),
             };
-            ShellTile.Create(GetUri(departuresTable), tileData, true);
+            ShellTile.Create(GetUri(departuresTable, false), tileData, true);
 #else
             var tileData = new StandardTileData()
             {
                 Title = departuresTable.ToString(),
                 BackgroundImage = new Uri("Tile.png", UriKind.Relative),
             };
-            ShellTile.Create(GetUri(departuresTable), tileData);
+            ShellTile.Create(GetUri(departuresTable, false), tileData);
 #endif
         }
 
-        public static Uri GetUri(DeparturesTable departuresTable)
+        public static Uri GetUri(DeparturesTable departuresTable, bool removeBackEntry)
         {
             return new Uri(
                 departuresTable.Match(
                     station => "/StationPage.xaml?station=" + station.Code,
-                    (station, callingAt) => "/StationPage.xaml?station=" + station.Code + "&callingAt=" + callingAt.Code),
+                    (station, callingAt) => "/StationPage.xaml?station=" + station.Code + "&callingAt=" + callingAt.Code)
+                + (removeBackEntry ? "&removeBackEntry" : ""),
                 UriKind.Relative);
         }
 
@@ -243,12 +244,17 @@ namespace UKTrains
 
         private void OnFilterClick(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/MainAndFilterPage.xaml?fromStation=" + departuresTable.Station.Code, UriKind.Relative));
+            var uri = "/MainAndFilterPage.xaml?fromStation=" + departuresTable.Station.Code;
+            if (departuresTable.HasDestinationFilter)
+            {
+                uri += "&excludeStation=" + departuresTable.CallingAt.Value.Code;
+            }
+            NavigationService.Navigate(new Uri(uri, UriKind.Relative));
         }
 
         private void OnClearFilterClick(object sender, EventArgs e)
         {
-            NavigationService.Navigate(GetUri(departuresTable.WithoutFilter));
+            NavigationService.Navigate(GetUri(departuresTable.WithoutFilter, false));
         }
     }
 }
