@@ -65,6 +65,9 @@ and JourneyElement = {
     Platform : string option
 }
 
+type Departure with
+    member x.PlatformIsKnown = x.Platform.IsSome
+
 type DeparturesTable with
     
     member x.Serialize() =

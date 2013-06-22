@@ -6,12 +6,14 @@ using System;
 using System.Device.Location;
 using System.Linq;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 #if WP8
 using Microsoft.Phone.Maps;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Toolkit;
 using System.Windows;
+using Windows.System;
 #endif
 
 namespace UKTrains
@@ -25,6 +27,7 @@ namespace UKTrains
 
         private DeparturesTable departuresTable;
         private bool loadingDepartures;
+        private DispatcherTimer refreshTimer;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -36,7 +39,6 @@ namespace UKTrains
             departuresTable = DeparturesTable.Create(from, to);
             pivot.Title = departuresTable.ToString();
 
-            loadingDepartures = true;
             LoadDepartures();
 
             if (removeBackEntry)
@@ -51,10 +53,22 @@ namespace UKTrains
             }
 
             ApplicationBar.MenuItems.Cast<ApplicationBarMenuItem>().Single(item => item.Text == "Clear filter").IsEnabled = departuresTable.HasDestinationFilter;
-
             CreateDirectionsItem();
             CreatePinToStartItem();
+#if WP8
+            AddLockScreenItem();
+#endif
             AdControl.InitAds(adGrid, ApplicationBar);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            if (refreshTimer != null)
+            {
+                refreshTimer.Stop();
+                refreshTimer = null;
+            }
         }
 
         private void LoadDepartures()
@@ -67,8 +81,48 @@ namespace UKTrains
                 refreshing,
                 "No more departures from this station today",
                 messageTextBlock,
-                departures => this.departures.ItemsSource = departures,
+                UpdateDepartures,
                 () => loadingDepartures = false);
+        }
+
+        private void UpdateDepartures(Departure[] departures)
+        {
+            this.departures.ItemsSource = departures;
+
+            refreshTimer = new DispatcherTimer();
+            refreshTimer.Interval = TimeSpan.FromSeconds(60);
+            refreshTimer.Tick += (sender, args) =>
+            {
+                refreshTimer.Stop();
+                refreshTimer = null;
+                LoadDepartures();
+            };
+            refreshTimer.Start();
+
+#if WP8
+            var departure = departures.FirstOrDefault(x => x.PlatformIsKnown);
+            string content;
+            if (departure == null)
+            {
+                content = departuresTable.ToString() + "\nNo platform information available";
+            }
+            else
+            {
+                content = departuresTable.ToString() + "\nPlatform " + departure.Platform.Value;
+            }
+            var tileData = new FlipTileData
+            {
+                Title = "UK Trains",
+                BackTitle = "UK Trains",
+                BackContent = content,
+                WideBackContent = content,
+                SmallBackgroundImage = new Uri("Assets/Tiles/FlipCycleTileSmall.png", UriKind.Relative),
+                BackgroundImage = new Uri("Assets/Tiles/FlipCycleTileMedium.png", UriKind.Relative),
+                WideBackgroundImage = new Uri("Assets/Tiles/FlipCycleTileLarge.png", UriKind.Relative),
+            };
+            var primaryTile = ShellTile.ActiveTiles.First();
+            primaryTile.Update(tileData);
+#endif
         }
 
         private void CreateDirectionsItem()
@@ -211,6 +265,23 @@ namespace UKTrains
                 + (removeBackEntry ? "&removeBackEntry" : ""),
                 UriKind.Relative);
         }
+
+#if WP8
+        private void AddLockScreenItem() 
+        {
+            if (!ApplicationBar.MenuItems.Cast<ApplicationBarMenuItem>().Any(item => item.Text == "Show platform on lock screen"))
+            {
+                var menuItem = new ApplicationBarMenuItem("Show platform on lock screen");
+                menuItem.Click += OnShowPlatformOnLockScreenClick;
+                ApplicationBar.MenuItems.Insert(2, menuItem);
+            }
+        }
+
+        private async void OnShowPlatformOnLockScreenClick(object sender, EventArgs e) 
+        {
+            await Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
+        }
+#endif
 
         private void OnRefreshClick(object sender, EventArgs e)
         {

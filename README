@@ -5,6 +5,8 @@ Description:
 UK Trains brings you train departure information for all UK national rail stations.
 
 New in 1.2:
+* Auto refresh departures every 60 seconds
+* Show platform of next departure on live tile and lock screen
 * Search stations by name or code
 * Include filters in recent items
 * Option to display distances in miles
