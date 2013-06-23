@@ -25,8 +25,8 @@ module ComputationResult =
 
 type AsyncState<'a> =
     | NotStarted of Async<ComputationResult<'a>>
-    | Started
-    | Completed of ComputationResult<'a>
+    | Started of Async<ComputationResult<'a>>
+    | Completed of Async<ComputationResult<'a>> * ComputationResult<'a>
 
 type LazyAsync<'a>(state:AsyncState<'a>) = 
 
@@ -35,31 +35,35 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
     let icompleted = completed.Publish
 
     member __.DoWhenCompleted startIfNotRunning f =
-        let continuation =      
-            lock state <| fun () -> 
-                match !state with
-                | Completed value ->
-                    Some <| fun () -> f value
-                | Started ->
-                    icompleted.Add f
+        let cancelationTokenSource = new CancellationTokenSource()
+        let startWithCancellationToken computation =
+            Async.Start(computation, cancelationTokenSource.Token)
+        lock state <| fun () -> 
+            match !state with
+            | Completed(asyncValue, value) ->
+                Some <| fun () -> f value
+            | Started(asyncValue) ->
+                icompleted.Add f
+                None
+            | NotStarted(asyncValue) ->
+                icompleted.Add f
+                if startIfNotRunning then
+                    state := Started asyncValue
+                    Some <| fun () ->
+                        async {
+                            let! value = asyncValue
+                            lock state <| fun () -> state := Completed(asyncValue, value)
+                            completed.Trigger value
+                        } |> startWithCancellationToken
+                else
                     None
-                | NotStarted asyncValue ->
-                    icompleted.Add f
-                    if startIfNotRunning then
-                        state := Started
-                        Some <| fun () ->
-                            async {
-                                let! value = asyncValue
-                                lock state <| fun () -> state := Completed value
-                                completed.Trigger value
-                            } |> Async.Start
-                    else
-                        None
-        match continuation with
-        | Some continuation -> continuation()
-        | _ -> ()
+        |> Option.iter (fun continuation -> continuation())
+        cancelationTokenSource
 
-    member x.GetValueAsync(onSuccess:Action<_>, onFailure:Action<_>) = 
+    member x.GetValueAsync(onSuccess:Action<_>, onFailure:Action<_>, resetIfFailed:bool) = 
+
+        if resetIfFailed then
+            x.ResetIfFailed()
 
         let synchronizationContext = SynchronizationContext.Current
 
@@ -73,6 +77,15 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
         |> doInOriginalThread
         |> x.DoWhenCompleted true
 
+    member __.ResetIfFailed() =
+        lock state <| fun () -> 
+            match !state with
+            | Completed(asyncValue, value) ->
+                match value with
+                | Failure _ -> state := NotStarted asyncValue
+                | _ -> ()
+            | _ -> ()
+
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module LazyAsync =
 
@@ -84,11 +97,11 @@ module LazyAsync =
         LazyAsync(NotStarted asyncValue)
 
     let fromValue value =
-        LazyAsync(Completed (Success value))
+        LazyAsync(Completed(async { return Success value }, Success value))
 
     let map f (x:LazyAsync<'a>) =
         let asyncValue = async { 
-            let! value = Async.FromContinuations <| fun (cont, _, _) -> cont |> x.DoWhenCompleted true
+            let! value = Async.FromContinuations <| fun (cont, _, _) -> cont |> x.DoWhenCompleted true |> ignore
             return value |> ComputationResult.map f
         }
         LazyAsync(NotStarted asyncValue)
@@ -96,4 +109,5 @@ module LazyAsync =
     let subscribe onSuccess onFailure (x:LazyAsync<'a>) =
         ComputationResult.combine onSuccess onFailure
         |> x.DoWhenCompleted false
+        |> ignore
         x

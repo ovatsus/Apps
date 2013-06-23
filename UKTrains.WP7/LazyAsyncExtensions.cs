@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Microsoft.Phone.Shell;
+using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Phone.Shell;
 
 namespace UKTrains
 {
     public static class LazyAsyncExtensions
     {
-        public static void Display<T>(this FSharp.Control.LazyAsync<T[]> lazyAsync, Page target, string loadingMessage, bool refreshing, string emptyMessage, TextBlock messageTextBlock, Action<T[]> display, Action onFinished)
+        public static CancellationTokenSource Display<T>(this FSharp.Control.LazyAsync<T[]> lazyAsync, Page target, string loadingMessage, bool refreshing, string emptyMessage, TextBlock messageTextBlock, Action<T[]> display, Action onFinished)
         {
             var indicator = new ProgressIndicator { IsVisible = true, IsIndeterminate = true, Text = loadingMessage };
             SystemTray.SetProgressIndicator(target, indicator);
@@ -16,7 +17,7 @@ namespace UKTrains
                 messageTextBlock.Text = loadingMessage;
                 messageTextBlock.Visibility = Visibility.Visible;
             }
-            lazyAsync.GetValueAsync(
+            return lazyAsync.GetValueAsync(
                 values =>
                 {
                     if (values.Length == 0)
@@ -43,7 +44,8 @@ namespace UKTrains
                         messageTextBlock.Text = exn.Message;
                     }
                     onFinished();
-                });
+                },
+                true);
         }
     }
 }

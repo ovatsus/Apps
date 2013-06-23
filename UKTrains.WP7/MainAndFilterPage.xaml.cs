@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -29,12 +30,12 @@ namespace UKTrains
                 .Subscribe(_ => Dispatcher.BeginInvoke(() => allStationsView.Refresh()));
         }
 
-        private bool loadingNearest;
+        private CancellationTokenSource nearestCts;
         private List<DeparturesTable> allRecentItems;
         private Station fromStation;
         private string excludeStation;
         private bool hasRecentItemsToDisplay;
-        
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -108,7 +109,8 @@ namespace UKTrains
 
         private bool Filter(Station station)
         {
-            if (fromStation != null && station.Code == fromStation.Code) {
+            if (fromStation != null && station.Code == fromStation.Code)
+            {
                 return false;
             }
             if (excludeStation != null && station.Code == excludeStation)
@@ -123,15 +125,19 @@ namespace UKTrains
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
+            if (nearestCts != null)
+            {
+                nearestCts.Cancel();
+                nearestCts = null;
+            }
             if (fromStation == null)
             {
                 this.SaveState(e); // save pivot and scroll state
             }
         }
-       
+
         private void LoadNearestStations()
         {
-            loadingNearest = true;
             LatLong from;
             if (fromStation == null)
             {
@@ -141,7 +147,6 @@ namespace UKTrains
                     nearestStations.ItemsSource = null;
                     nearestStationsMessageTextBlock.Visibility = Visibility.Visible;
                     nearestStationsMessageTextBlock.Text = "Locations Services are disabled";
-                    loadingNearest = false;
                     return;
                 }
                 else if (currentPosition == null || currentPosition.IsUnknown)
@@ -160,7 +165,7 @@ namespace UKTrains
             }
 
             bool refreshing = nearestStations.ItemsSource != null;
-            Stations.GetNearest(from, 150, Settings.GetBool(Setting.UseMilesInsteadOfKMs)).Display(
+            nearestCts = Stations.GetNearest(from, 150, Settings.GetBool(Setting.UseMilesInsteadOfKMs)).Display(
                 this,
                 refreshing ? "Refreshing stations... " : "Loading stations...",
                 refreshing,
@@ -179,7 +184,7 @@ namespace UKTrains
                     }
                     nearestStations.ItemsSource = nearestFiltered;
                 },
-                () => loadingNearest = false);
+                () => nearestCts = null);
         }
 
         private void LoadRecentItems(string excludeStation)
@@ -203,14 +208,14 @@ namespace UKTrains
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (!loadingNearest)
+            if (nearestCts == null)
             {
                 LoadNearestStations();
             }
         }
 
         private void OnStationClick(object sender, RoutedEventArgs e)
-        {        
+        {
             var dataContext = ((Button)sender).DataContext;
             var target = dataContext as DeparturesTable;
             if (target != null)
