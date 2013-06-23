@@ -48,7 +48,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
                     
 let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
 
-    let trim (text:string) = text.Replace("&nbsp;", "").Trim()
+    let trimAndUnescape (text:string) = text.Replace("&nbsp;", "").Trim().Replace("&amp;", "&").Replace("&quot;", "\"").Replace("apos;", "'").Replace("&lt;", "<").Replace("&gt;", ">")
     let endsWith suffix (text:string) = text.EndsWith suffix
 
     let getVideoUrlAsync iFrameUrl = async {
@@ -65,7 +65,7 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
         createDoc lecturesHtmlStr
         |> descendants "h3"
         |> Seq.map (fun h3 ->
-            let title = h3 |> innerText |> trim
+            let title = h3 |> innerText |> trimAndUnescape
             let completed = h3 |> parent |> hasClass "course_item_list_header contracted"
             let ul = 
                 h3 
@@ -80,7 +80,7 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
                 |> Seq.map (element "a")
                 |> Seq.map (fun a ->
                     let id = a |> attr "data-lecture-id" |> int
-                    let title = innerText a |> trim
+                    let title = innerText a |> trimAndUnescape
                     let videoUrl = a |> attr "data-modal-iframe" 
                                      |> getVideoUrlAsync 
                                      |> LazyAsync.fromAsync

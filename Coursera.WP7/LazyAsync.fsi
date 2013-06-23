@@ -1,6 +1,7 @@
 ﻿module FSharp.Control
 
 open System
+open System.Threading
 
 [<Class>]
 /// Allows to expose a F# async value in a C#-friendly API with the
@@ -9,7 +10,7 @@ type LazyAsync<'a> =
 
     /// Will start calculation if not started.
     /// callBack will be called on the same thread that called GetValueAsync
-    member GetValueAsync : onSuccess:Action<'a> * onFailure:Action<exn> -> unit
+    member GetValueAsync : onSuccess:Action<'a> * onFailure:Action<exn> * resetIfFailed:bool -> CancellationTokenSource
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module LazyAsync =

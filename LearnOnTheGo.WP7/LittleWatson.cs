@@ -1,7 +1,9 @@
-﻿using Microsoft.Phone.Tasks;
+﻿using Microsoft.Phone.Info;
+using Microsoft.Phone.Tasks;
 using System;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Reflection;
 using System.Windows;
 
 namespace LearnOnTheGo
@@ -10,18 +12,21 @@ namespace LearnOnTheGo
     {
         private const string filename = "LittleWatson.txt";
 
-        public static void ReportException(Exception ex, string extra)
+        public static void ReportException(Exception ex, string header)
         {
             try
             {
                 using (var store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    SafeDeleteFile(store);
-                    using (var output = new StreamWriter(store.CreateFile(filename)))
+                    using (var output = new StreamWriter(store.OpenFile(filename, FileMode.Append, FileAccess.Write)))
                     {
-                        output.WriteLine(extra);
-                        output.WriteLine(ex.Message);
-                        output.WriteLine(ex.StackTrace);
+                        output.WriteLine(header);
+                        if (ex != null)
+                        {
+                            output.WriteLine(ex.Message);
+                            output.WriteLine(ex.StackTrace);
+                        }
+                        output.WriteLine();
                     }
                 }
             }
@@ -53,8 +58,7 @@ namespace LearnOnTheGo
                         var email = new EmailComposeTask();
                         email.To = "learnonthego@codebeside.org";
                         email.Subject = "Learn On The Go auto-generated problem report";
-                        email.Body = contents;
-                        SafeDeleteFile(IsolatedStorageFile.GetUserStoreForApplication());
+                        email.Body = GetMailBody(contents);
                         email.Show();
                     }
                 }
@@ -62,10 +66,14 @@ namespace LearnOnTheGo
             catch
             {
             }
-            finally
-            {
-                SafeDeleteFile(IsolatedStorageFile.GetUserStoreForApplication());
-            }
+        }
+
+        public static string GetMailBody(string contents)
+        {
+            return "\n\n" + contents + "\n" +
+                   "App Version: " + new AssemblyName(Assembly.GetExecutingAssembly().FullName).Version + "\n" +
+                   "OS Version: " + Environment.OSVersion.Version + "\n" +
+                   "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName;
         }
 
         private static void SafeDeleteFile(IsolatedStorageFile store)

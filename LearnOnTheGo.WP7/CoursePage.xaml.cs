@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
+using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Tasks;
 
 namespace LearnOnTheGo
 {
@@ -15,7 +16,8 @@ namespace LearnOnTheGo
         }
 
         private int courseId;
-        private bool busy;
+        private CancellationTokenSource lecturesCts;
+        private CancellationTokenSource videoCts;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -26,11 +28,10 @@ namespace LearnOnTheGo
                 return;
             }
 
-            if (pivot.Items.Count != 0) {
+            if (pivot.Items.Count != 0)
+            {
                 return;
             }
-
-            busy = true;
 
             courseId = int.Parse(NavigationContext.QueryString["courseId"]);
             var course = App.Crawler.GetCourse(courseId);
@@ -39,25 +40,40 @@ namespace LearnOnTheGo
             Load();
         }
 
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+            if (lecturesCts != null)
+            {
+                lecturesCts.Cancel();
+                lecturesCts = null;
+            }
+            if (videoCts != null)
+            {
+                videoCts.Cancel();
+                videoCts = null;
+            }
+        }
+
         private void Load()
         {
-            pivot.ItemsSource = null;
-            App.Crawler.GetCourse(courseId).LectureSections.Display(
+            var refreshing = pivot.ItemsSource != null;
+            lecturesCts = App.Crawler.GetCourse(courseId).LectureSections.Display(
                 this,
-                "Loading lectures...",
+                refreshing ? "Refreshing lectures..." : "Loading lectures...",
+                refreshing,
                 "No lectures",
                 messageTextBlock,
                 lectureSections => pivot.ItemsSource = lectureSections,
-                () => busy = false);
+                () => lecturesCts = null);
         }
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (busy)
+            if (lecturesCts != null)
             {
                 return;
             }
-            busy = true;
 
             App.Crawler.RefreshCourse(courseId);
             Load();
@@ -65,15 +81,14 @@ namespace LearnOnTheGo
 
         private void OnLectureVideoClick(object sender, RoutedEventArgs e)
         {
-            if (busy)
+            if (videoCts != null)
             {
                 return;
             }
-            busy = true;
 
             var lecture = (Coursera.Lecture)((Button)sender).DataContext;
 
-            lecture.VideoUrl.Display(
+            videoCts = lecture.VideoUrl.Display(
                 this,
                 "Loading video...",
                 videoUrl =>
@@ -82,24 +97,21 @@ namespace LearnOnTheGo
                     launcher.Media = new Uri(videoUrl, UriKind.Absolute);
                     launcher.Show();
                 },
-                () => busy = false);
+                () => videoCts = null);
         }
 
         private void OnLecturePdfClick(object sender, RoutedEventArgs e)
         {
-            if (busy)
+            if (videoCts != null)
             {
                 return;
             }
-            busy = true;
 
             var lecture = (Coursera.Lecture)((Button)sender).DataContext;
 
             var task = new WebBrowserTask();
             task.Uri = new Uri(lecture.PdfUrl, UriKind.Absolute);
             task.Show();
-
-            busy = false;
         }
 
         private void OnSettingsClick(object sender, EventArgs e)
@@ -119,7 +131,7 @@ namespace LearnOnTheGo
             {
                 To = "learnonthego@codebeside.org",
                 Subject = "Feedback for Learn On The Go",
-                Body = "Put your feedback here"
+                Body = LittleWatson.GetMailBody("")
             };
             task.Show();
         }

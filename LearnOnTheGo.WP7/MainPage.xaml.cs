@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Tasks;
 
 namespace LearnOnTheGo
 {
@@ -14,6 +15,8 @@ namespace LearnOnTheGo
         {
             InitializeComponent();
         }
+
+        private CancellationTokenSource coursesCts;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -39,11 +42,19 @@ namespace LearnOnTheGo
             }
         }
 
-        private bool busy;
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+            if (coursesCts != null)
+            {
+                coursesCts.Cancel();
+                coursesCts = null;
+            }          
+        }
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (busy)
+            if (coursesCts != null)
             {
                 return;
             }
@@ -57,7 +68,6 @@ namespace LearnOnTheGo
             }
             else
             {
-                busy = true;
                 LoadCourses(email, password, true);
             }
         }
@@ -66,15 +76,14 @@ namespace LearnOnTheGo
         {
             App.Crawler = new Coursera.Crawler(email, password, Cache.GetFiles(), Cache.SaveFile, forceRefreshOfCourseList);
 
-            activeCourses.ItemsSource = null;
-            upcomingCourses.ItemsSource = null;
-            completedCourses.ItemsSource = null;
+            var refreshing = activeCourses.ItemsSource != null;
             activeCoursesEmptyMessage.Visibility = Visibility.Collapsed;
             upcomingCoursesEmptyMessage.Visibility = Visibility.Collapsed;
             completedCoursesEmptyMessage.Visibility = Visibility.Collapsed;
-            App.Crawler.Courses.Display(
+            coursesCts = App.Crawler.Courses.Display(
                 this,
-                "Loading courses...",
+                refreshing ? "Refreshing courses... " : "Loading courses...",
+                refreshing,
                 "No courses",
                 messageTextBlock,
                 courses =>
@@ -109,7 +118,7 @@ namespace LearnOnTheGo
                         }
                     }
                 },
-                () => busy = false);
+                () => coursesCts = null);
         }
 
         private void OnCourseClick(object sender, RoutedEventArgs e)
@@ -135,7 +144,7 @@ namespace LearnOnTheGo
             {
                 To = "learnonthego@codebeside.org",
                 Subject = "Feedback for Learn On The Go",
-                Body = "Put your feedback here"
+                Body = LittleWatson.GetMailBody("")
             };
             task.Show();
         }

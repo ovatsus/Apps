@@ -1,34 +1,39 @@
-﻿using System;
+﻿using Microsoft.Phone.Shell;
+using System;
 using System.Net;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Phone.Shell;
 
 namespace LearnOnTheGo
 {
     public static class LazyAsyncExtensions
     {
-        public static void Display<T>(this FSharp.Control.LazyAsync<T[]> lazyAsync, Page target, string loadingMessage, string emptyMessage, TextBlock messageTextBlock, Action<T[]> display, Action onFinished)
+        public static CancellationTokenSource Display<T>(this FSharp.Control.LazyAsync<T[]> lazyAsync, Page target, string loadingMessage, bool refreshing, string emptyMessage, TextBlock messageTextBlock, Action<T[]> display, Action onFinished)
         {
             var indicator = new ProgressIndicator { IsVisible = true, IsIndeterminate = true, Text = loadingMessage };
             SystemTray.SetProgressIndicator(target, indicator);
-            messageTextBlock.Text = loadingMessage;
-            messageTextBlock.Visibility = Visibility.Visible;
-            lazyAsync.GetValueAsync(
+            if (!refreshing)
+            {
+                messageTextBlock.Text = loadingMessage;
+                messageTextBlock.Visibility = Visibility.Visible;
+            }
+            return lazyAsync.GetValueAsync(
                 values =>
                 {
                     if (values.Length == 0)
                     {
                         messageTextBlock.Text = emptyMessage;
+                        messageTextBlock.Visibility = Visibility.Visible;
                     }
                     else
                     {
                         messageTextBlock.Visibility = Visibility.Collapsed;
                         messageTextBlock.Text = "";
-                        display(values);
                     }
                     indicator.IsVisible = false;
                     indicator.IsIndeterminate = false;
+                    display(values);
                     onFinished();
                 },
                 exn =>
@@ -49,16 +54,20 @@ namespace LearnOnTheGo
                     }
                     indicator.IsVisible = false;
                     indicator.IsIndeterminate = false;
-                    messageTextBlock.Text = message;
+                    if (!refreshing)
+                    {
+                        messageTextBlock.Text = message;
+                    }
                     onFinished();
-                });
+                },
+                true);
         }
 
-        public static void Display<T>(this FSharp.Control.LazyAsync<T> lazyAsync, Page target, string loadingMessage, Action<T> display, Action onFinished)
+        public static CancellationTokenSource Display<T>(this FSharp.Control.LazyAsync<T> lazyAsync, Page target, string loadingMessage, Action<T> display, Action onFinished)
         {
             var indicator = new ProgressIndicator { IsVisible = true, IsIndeterminate = true, Text = loadingMessage };
             SystemTray.SetProgressIndicator(target, indicator);
-            lazyAsync.GetValueAsync(
+            return lazyAsync.GetValueAsync(
                 value =>
                 {
                     display(value);
@@ -71,7 +80,8 @@ namespace LearnOnTheGo
                     indicator.IsVisible = false;
                     indicator.IsIndeterminate = false;
                     onFinished();
-                });
+                },
+                true);
         }
     }
 }
