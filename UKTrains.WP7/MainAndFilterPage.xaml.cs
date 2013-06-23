@@ -79,7 +79,7 @@ namespace UKTrains
                 {
                     pivot.SelectedIndex = 1;
                 }
-                else if (Settings.GetBool(Setting.LocationServicesEnabled))
+                else if (fromStation == null && Settings.GetBool(Setting.LocationServicesEnabled))
                 {
                     pivot.SelectedIndex = 0;
                 }
@@ -89,12 +89,21 @@ namespace UKTrains
                 }
             }
 
-            if (fromStation == null)
+            if (fromStation == null && !IsReset(e.NavigationMode))
             {
                 this.RestoreState(); // restore pivot and scroll state
             }
 
             AdControl.InitAds(adGrid, ApplicationBar);
+        }
+
+        private bool IsReset(NavigationMode navigationMode)
+        {
+#if WP8
+            return navigationMode == NavigationMode.Reset;
+#else
+            return false;
+#endif
         }
 
         private bool Filter(Station station)
@@ -251,7 +260,7 @@ namespace UKTrains
             {
                 To = "uktrains@codebeside.org",
                 Subject = "Feedback for UK Trains",
-                Body = "Put your feedback here"
+                Body = LittleWatson.GetMailBody("")
             };
             task.Show();
         }

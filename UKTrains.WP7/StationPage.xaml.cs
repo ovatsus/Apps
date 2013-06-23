@@ -74,13 +74,18 @@ namespace UKTrains
         private void LoadDepartures()
         {
             loadingDepartures = true;
+            if (refreshTimer != null)
+            {
+                refreshTimer.Stop();
+                refreshTimer = null;
+            }
             bool refreshing = this.departures.ItemsSource != null;
             departuresTable.GetDepartures().Display(
                 this,
                 refreshing ? "Refreshing departures..." : "Loading departures...",
                 refreshing,
-                "No more departures from this station today",
-                messageTextBlock,
+                "No more trains today",
+                departuresMessageTextBlock,
                 UpdateDepartures,
                 () => loadingDepartures = false);
         }
@@ -89,6 +94,10 @@ namespace UKTrains
         {
             this.departures.ItemsSource = departures;
 
+            if (refreshTimer != null)
+            {
+                refreshTimer.Stop();
+            }
             refreshTimer = new DispatcherTimer();
             refreshTimer.Interval = TimeSpan.FromSeconds(60);
             refreshTimer.Tick += (sender, args) =>
@@ -99,29 +108,67 @@ namespace UKTrains
             };
             refreshTimer.Start();
 
-#if WP8
-            var departure = departures.FirstOrDefault(x => x.PlatformIsKnown);
-            string content;
-            if (departure == null)
+            UpdateTiles();
+        }
+
+        private void UpdateTiles()
+        {
+            var primaryTile = ShellTile.ActiveTiles.First();
+            primaryTile.Update(GetTileData(forPrimaryTile: true));
+
+            var secondaryTileUri = GetUri(departuresTable, false);
+            var secondaryTile = ShellTile.ActiveTiles.FirstOrDefault(tile => tile.NavigationUri == secondaryTileUri);
+            if (secondaryTile != null)
             {
-                content = departuresTable.ToString() + "\nNo platform information available";
+                secondaryTile.Update(GetTileData(forPrimaryTile: false));
+            }                
+        }
+
+        private ShellTileData GetTileData(bool forPrimaryTile)
+        {
+            var firstDeparture = departures.ItemsSource == null ? null : departures.ItemsSource.Cast<Departure>().FirstOrDefault();
+
+            var departuresTableHeader =
+                departuresTable.ToString() +
+                (departuresTable.HasDestinationFilter || firstDeparture == null ? "" : " to " + firstDeparture.Destination);
+
+            string content;
+            string wideContent;
+            if (firstDeparture == null)
+            {
+                content = (forPrimaryTile ? departuresTableHeader + "\n" : "") + 
+                          "No more trains today";
+                wideContent = departuresTableHeader + "\n" + "No more trains today";
             }
             else
             {
-                content = departuresTable.ToString() + "\nPlatform " + departure.Platform.Value;
+                content = (forPrimaryTile ? departuresTableHeader + "\n" : "") +
+                          (firstDeparture.PlatformIsKnown ? "Platform " + firstDeparture.Platform.Value : "Platform not available") +
+                          (forPrimaryTile ? "" : "\n" + firstDeparture.Due + " " + firstDeparture.Status);
+                wideContent = departuresTableHeader + "\n" +
+                              (firstDeparture.PlatformIsKnown ? "Platform " + firstDeparture.Platform.Value : "Platform not available") + " " +
+                              firstDeparture.Due + " " + firstDeparture.Status;
             }
-            var tileData = new FlipTileData
+
+#if WP8
+            return new FlipTileData
             {
-                Title = "UK Trains",
+                Title = forPrimaryTile ? "UK Trains" : departuresTable.ToString(),
                 BackTitle = "UK Trains",
                 BackContent = content,
-                WideBackContent = content,
+                WideBackContent = wideContent,
                 SmallBackgroundImage = new Uri("Assets/Tiles/FlipCycleTileSmall.png", UriKind.Relative),
                 BackgroundImage = new Uri("Assets/Tiles/FlipCycleTileMedium.png", UriKind.Relative),
                 WideBackgroundImage = new Uri("Assets/Tiles/FlipCycleTileLarge.png", UriKind.Relative),
             };
-            var primaryTile = ShellTile.ActiveTiles.First();
-            primaryTile.Update(tileData);
+#else
+            return new StandardTileData
+            {
+                Title = forPrimaryTile ? "UK Trains" : departuresTable.ToString(),
+                BackTitle = "UK Trains",
+                BackContent = content,
+                BackgroundImage = new Uri("Tile.png", UriKind.Relative),
+            };
 #endif
         }
 
@@ -237,22 +284,15 @@ namespace UKTrains
 
         private void OnPinClick(object sender, EventArgs e)
         {
+            CreateTile(GetUri(departuresTable, false), GetTileData(forPrimaryTile: false));
+        }
+
+        private void CreateTile(Uri uri, ShellTileData tileData)
+        {
 #if WP8
-            var tileData = new FlipTileData()
-            {
-                Title = departuresTable.ToString(),
-                SmallBackgroundImage = new Uri("/Assets/Tiles/FlipCycleTileSmall.png", UriKind.Relative),
-                BackgroundImage = new Uri("/Assets/Tiles/FlipCycleTileMedium.png", UriKind.Relative),
-                WideBackgroundImage = new Uri("/Assets/Tiles/FlipCycleTileLarge.png", UriKind.Relative),
-            };
-            ShellTile.Create(GetUri(departuresTable, false), tileData, true);
+            ShellTile.Create(uri, tileData, true);
 #else
-            var tileData = new StandardTileData()
-            {
-                Title = departuresTable.ToString(),
-                BackgroundImage = new Uri("Tile.png", UriKind.Relative),
-            };
-            ShellTile.Create(GetUri(departuresTable, false), tileData);
+            ShellTile.Create(uri, tileData);
 #endif
         }
 
@@ -269,9 +309,9 @@ namespace UKTrains
 #if WP8
         private void AddLockScreenItem() 
         {
-            if (!ApplicationBar.MenuItems.Cast<ApplicationBarMenuItem>().Any(item => item.Text == "Show platform on lock screen"))
+            if (!ApplicationBar.MenuItems.Cast<ApplicationBarMenuItem>().Any(item => item.Text == "Show departures on lock screen"))
             {
-                var menuItem = new ApplicationBarMenuItem("Show platform on lock screen");
+                var menuItem = new ApplicationBarMenuItem("Show departures on lock screen");
                 menuItem.Click += OnShowPlatformOnLockScreenClick;
                 ApplicationBar.MenuItems.Insert(2, menuItem);
             }
@@ -308,7 +348,7 @@ namespace UKTrains
             {
                 To = "uktrains@codebeside.org",
                 Subject = "Feedback for UK Trains",
-                Body = "Put your feedback here"
+                Body = LittleWatson.GetMailBody("")
             };
             task.Show();
         }

@@ -79,29 +79,30 @@
 
         <controls:Pivot x:Name="pivot">
             <controls:PivotItem Header="Departures">
-                <ItemsControl x:Name="departures" 
-                                ItemTemplate="{StaticResource departureTemplate}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="ItemsControl">
-                            <ScrollViewer>
-                                <ItemsPresenter/>
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                </ItemsControl>
+                <Grid>
+                    <ItemsControl x:Name="departures" 
+                                    ItemTemplate="{StaticResource departureTemplate}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.Template>
+                            <ControlTemplate TargetType="ItemsControl">
+                                <ScrollViewer>
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                    </ItemsControl>
+                    <TextBlock x:Name="departuresMessageTextBlock" 
+                               TextWrapping="Wrap"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Grid>
             </controls:PivotItem>
         </controls:Pivot>
 
-        <TextBlock x:Name="messageTextBlock" 
-                   TextWrapping="Wrap"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center" />
-        
         <Grid x:Name="adGrid" Grid.Row="1" />
     </Grid>
 
