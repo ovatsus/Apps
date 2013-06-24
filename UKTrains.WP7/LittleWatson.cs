@@ -23,8 +23,7 @@ namespace UKTrains
                         output.WriteLine(header);
                         if (ex != null)
                         {
-                            output.WriteLine(ex.Message);
-                            output.WriteLine(ex.StackTrace);
+                            output.WriteLine(ex.ToString());
                         }
                         output.WriteLine();
                     }
@@ -35,7 +34,7 @@ namespace UKTrains
             }
         }
 
-        public static void CheckForPreviousException()
+        public static void CheckForPreviousException(bool startingUp)
         {
             try
             {
@@ -53,11 +52,16 @@ namespace UKTrains
                 }
                 if (contents != null)
                 {
-                    if (MessageBox.Show("A problem occurred the last time you ran this application. Would you like to send an email to report it?", "Problem Report", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    var title = "A problem occurred" + (startingUp ? " the last time you ran this application" : "") + ". Would you like to send an email to report it?";
+                    if (MessageBox.Show(title, "Problem Report", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                     {
                         var email = new EmailComposeTask();
                         email.To = "uktrains@codebeside.org";
                         email.Subject = "UK Trains auto-generated problem report";
+                        if (contents.Length > 32000)
+                        {
+                            contents = contents.Substring(0, 32000) + " ...";
+                        }
                         email.Body = GetMailBody(contents);
                         email.Show();
                     }

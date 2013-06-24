@@ -16,7 +16,11 @@ module ComputationResult =
         | Choice2Of2 exn -> Failure exn
     
     let map f = function
-        | Success value -> Success (f value)
+        | Success value -> 
+            try
+                Success (f value)
+            with exn ->
+                Failure exn
         | Failure exn -> Failure exn
 
     let combine onSuccess onFailure = function

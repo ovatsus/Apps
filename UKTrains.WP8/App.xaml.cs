@@ -63,10 +63,8 @@ namespace UKTrains
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
             LittleWatson.ReportException(e.ExceptionObject, "UnhandledException");
-            if (Debugger.IsAttached)
-            {
-                Debugger.Break();
-            }
+            LittleWatson.CheckForPreviousException(false);
+            e.Handled = true;
         }
 
         private bool phoneApplicationInitialized = false;

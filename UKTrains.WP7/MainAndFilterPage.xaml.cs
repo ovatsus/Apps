@@ -47,7 +47,7 @@ namespace UKTrains
             {
                 if (e.NavigationMode == NavigationMode.New)
                 {
-                    LittleWatson.CheckForPreviousException();
+                    LittleWatson.CheckForPreviousException(true);
                     if (!Settings.GetBool(Setting.LocationServicesEnabled) && !Settings.GetBool(Setting.LocationServicesPromptShown))
                     {
                         Settings.Set(Setting.LocationServicesPromptShown, true);

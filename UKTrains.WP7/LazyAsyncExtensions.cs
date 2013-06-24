@@ -37,11 +37,13 @@ namespace UKTrains
                 },
                 exn =>
                 {
+                    LittleWatson.ReportException(exn, loadingMessage);
+                    LittleWatson.CheckForPreviousException(false);
                     indicator.IsVisible = false;
                     indicator.IsIndeterminate = false;
                     if (!refreshing)
                     {
-                        messageTextBlock.Text = exn.Message;
+                        messageTextBlock.Text = "An error occurred";
                     }
                     onFinished();
                 },
