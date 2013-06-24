@@ -22,7 +22,7 @@ namespace LearnOnTheGo
         {
             base.OnNavigatedTo(e);
 
-            LittleWatson.CheckForPreviousException();
+            LittleWatson.CheckForPreviousException(true);
 
             if (App.Crawler != null)
             {

@@ -52,10 +52,19 @@ namespace LearnOnTheGo
                             message = emptyMessage;
                         }
                     }
+                    else
+                    {
+                        LittleWatson.ReportException(exn, loadingMessage);
+                        LittleWatson.CheckForPreviousException(false);
+                    }
                     indicator.IsVisible = false;
                     indicator.IsIndeterminate = false;
                     if (!refreshing)
                     {
+                        if (message.Length > 500)
+                        {
+                            message = message.Substring(0, 500) + " ...";
+                        }
                         messageTextBlock.Text = message;
                     }
                     onFinished();

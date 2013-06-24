@@ -1,9 +1,13 @@
 ﻿module Coursera.Parser
 
+open System
 open HtmlAgilityPack.FSharp
 open FSharp.Control
 open FSharp.Data.Json
 open FSharp.Data.Json.Extensions
+
+type ParseError(msg, exn) = 
+    inherit Exception(msg, exn)
 
 let parseTopicsJson getLectureSections topicsJsonStr = 
 
@@ -39,10 +43,13 @@ let parseTopicsJson getLectureSections topicsJsonStr =
           LectureSections = getLectureSections homeLink }
 
     let courses = 
-        [| for topicJson in JsonValue.Parse topicsJsonStr do
-            let topic = parseTopic topicJson
-            for courseJson in topicJson?courses do
-                yield parseCourse topic courseJson |]
+        try 
+            [| for topicJson in JsonValue.Parse topicsJsonStr do
+                let topic = parseTopic topicJson
+                for courseJson in topicJson?courses do
+                    yield parseCourse topic courseJson |]
+        with exn ->
+            raise <| ParseError(sprintf "Failed to parse topics JSON:\n%s\n" topicsJsonStr, exn)
 
     courses
                     
@@ -62,42 +69,45 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
             |> attr "src" }
 
     let lectureSections = 
-        createDoc lecturesHtmlStr
-        |> descendants "h3"
-        |> Seq.map (fun h3 ->
-            let title = h3 |> innerText |> trimAndUnescape
-            let completed = h3 |> parent |> hasClass "course_item_list_header contracted"
-            let ul = 
-                h3 
-                |> parent
-                |> followingSibling "ul"
-            ul, title, completed)
-        |> Seq.filter (fun (ul, _, _) -> ul <> null)
-        |> Seq.map (fun (ul, title, completed) -> 
-            let lectures =
-                ul
-                |> elements "li"
-                |> Seq.map (element "a")
-                |> Seq.map (fun a ->
-                    let id = a |> attr "data-lecture-id" |> int
-                    let title = innerText a |> trimAndUnescape
-                    let videoUrl = a |> attr "data-modal-iframe" 
-                                     |> getVideoUrlAsync 
-                                     |> LazyAsync.fromAsync
-                    let pdfUrl = a |> followingSibling "div" 
-                                   |> elements "a" 
-                                   |> Seq.map (attr "href") 
-                                   |> Seq.tryFind (endsWith ".pdf")
-                    let viewed = a |> parent |> hasClass "viewed"
-                    { Id = id
-                      Title = title
-                      VideoUrl = videoUrl
-                      PdfUrl = defaultArg pdfUrl ""
-                      Viewed = viewed })
-                |> Seq.toArray
-            { Title = title
-              Completed = completed
-              Lectures = lectures })
-        |> Seq.toArray 
+        try
+            createDoc lecturesHtmlStr
+            |> descendants "h3"
+            |> Seq.map (fun h3 ->
+                let title = h3 |> innerText |> trimAndUnescape
+                let completed = h3 |> parent |> hasClass "course_item_list_header contracted"
+                let ul = 
+                    h3 
+                    |> parent
+                    |> followingSibling "ul"
+                ul, title, completed)
+            |> Seq.filter (fun (ul, _, _) -> ul <> null)
+            |> Seq.map (fun (ul, title, completed) -> 
+                let lectures =
+                    ul
+                    |> elements "li"
+                    |> Seq.map (element "a")
+                    |> Seq.map (fun a ->
+                        let id = a |> attr "data-lecture-id" |> int
+                        let title = innerText a |> trimAndUnescape
+                        let videoUrl = a |> attr "data-modal-iframe" 
+                                         |> getVideoUrlAsync 
+                                         |> LazyAsync.fromAsync
+                        let pdfUrl = a |> followingSibling "div" 
+                                       |> elements "a" 
+                                       |> Seq.map (attr "href") 
+                                       |> Seq.tryFind (endsWith ".pdf")
+                        let viewed = a |> parent |> hasClass "viewed"
+                        { Id = id
+                          Title = title
+                          VideoUrl = videoUrl
+                          PdfUrl = defaultArg pdfUrl ""
+                          Viewed = viewed })
+                    |> Seq.toArray
+                { Title = title
+                  Completed = completed
+                  Lectures = lectures })
+            |> Seq.toArray 
+        with exn ->
+            raise <| ParseError(sprintf "Failed to parse lectures HTML:\n%s\n" lecturesHtmlStr, exn)
 
     lectureSections
