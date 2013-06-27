@@ -25,7 +25,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
           ShortName = json?short_name.AsString()
           SmallIcon = json?small_icon.AsString()
           SmallIconHover = json?small_icon_hover.AsString()
-          Visibility = json?visibility.AsInteger() }
+          Visible = json?visibility <> JsonValue.Null }
 
     let parseCourse topic json =        
         let homeLink = json?home_link.AsString()
@@ -46,8 +46,9 @@ let parseTopicsJson getLectureSections topicsJsonStr =
         try 
             [| for topicJson in JsonValue.Parse topicsJsonStr do
                 let topic = parseTopic topicJson
-                for courseJson in topicJson?courses do
-                    yield parseCourse topic courseJson |]
+                if topic.Visible then
+                    for courseJson in topicJson?courses do
+                        yield parseCourse topic courseJson |]
         with exn ->
             raise <| ParseError(sprintf "Failed to parse topics JSON:\n%s\n" topicsJsonStr, exn)
 

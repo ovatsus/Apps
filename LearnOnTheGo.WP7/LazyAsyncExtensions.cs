@@ -61,11 +61,7 @@ namespace LearnOnTheGo
                     indicator.IsIndeterminate = false;
                     if (!refreshing)
                     {
-                        if (message.Length > 500)
-                        {
-                            message = message.Substring(0, 500) + " ...";
-                        }
-                        messageTextBlock.Text = message;
+                        messageTextBlock.Text = "An error occurred";
                     }
                     onFinished();
                 },
@@ -86,6 +82,8 @@ namespace LearnOnTheGo
                 },
                 exn =>
                 {
+                    LittleWatson.ReportException(exn, loadingMessage);
+                    LittleWatson.CheckForPreviousException(false);
                     indicator.IsVisible = false;
                     indicator.IsIndeterminate = false;
                     onFinished();
