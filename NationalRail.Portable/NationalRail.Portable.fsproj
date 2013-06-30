@@ -70,7 +70,8 @@
       <HintPath>$(MSBuildExtensionsPath32)\..\Reference Assemblies\Microsoft\FSharp\3.0\Runtime\.NETPortable\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data">
-      <HintPath>..\..\..\Forks\FSharp.Data\bin\portable\FSharp.Data.dll</HintPath>
+      <HintPath>..\packages\FSharp.Data.1.1.6\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="HtmlAgilityPack-PCL">
       <HintPath>..\packages\HtmlAgilityPack-PCL.1.4.6\lib\HtmlAgilityPack-PCL.dll</HintPath>
