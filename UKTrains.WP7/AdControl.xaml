@@ -10,16 +10,11 @@
     d:Height="80" d:Width="480">
 
     <Ads:AdControl xmlns:Ads="clr-namespace:MC.Phone.Ads;assembly=MC.Phone.Ads"
-                   xmlns:Smaato="clr-namespace:MC.Phone.Ads.Smaato;assembly=MC.Phone.Ads.Smaato"
-                   xmlns:MobFox="clr-namespace:MC.Phone.Ads.MobFox;assembly=MC.Phone.Ads.MobFox"
                    xmlns:AdDuplex="clr-namespace:MC.Phone.Ads.AdDuplex;assembly=MC.Phone.Ads.AdDuplex"
                    xmlns:InnerActive="clr-namespace:MC.Phone.Ads.InnerActive;assembly=MC.Phone.Ads.InnerActive"
                    x:Name="adControl"
                    CountryCode="GB">
         <AdDuplex:AdDuplexAdProvider App="43787" />
-        <Smaato:SmaatoAdProvider AdSpace="65808292"
-                                 Publisher="923870801" />
-        <MobFox:MobFoxAdProvider Publisher="8849c682740f04ee7d0d1d5edeb4b742" />
         <InnerActive:InnerActiveAdProvider App="CodeBeside_UKTrains_WP" />
         <Ads:AdControl.AdProviderStrategy>
             <Strategy:RemoteAdProviderStrategy xmlns:Strategy="clr-namespace:MC.Phone.Ads.Strategy;assembly=MC.Phone.Ads"

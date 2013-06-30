@@ -252,23 +252,11 @@
     <Reference Include="MC.Phone.Ads.InnerActive">
       <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\MC.Phone.Ads.InnerActive.dll</HintPath>
     </Reference>
-    <Reference Include="MC.Phone.Ads.MobFox">
-      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\MC.Phone.Ads.MobFox.dll</HintPath>
-    </Reference>
-    <Reference Include="MC.Phone.Ads.Smaato">
-      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\MC.Phone.Ads.Smaato.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPToolkit.4.2013.06.11\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="MobFox.Ads">
-      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\MobFox.Ads.dll</HintPath>
-    </Reference>
     <Reference Include="SharpGIS.GZipWebClient">
       <HintPath>..\packages\SharpGIS.GZipWebClient.1.4.0.0\lib\wp71\SharpGIS.GZipWebClient.dll</HintPath>
-    </Reference>
-    <Reference Include="SOMAWP7">
-      <HintPath>..\packages\wpunifiedad.1.3.2\lib\sl4-wp71\SOMAWP7.dll</HintPath>
     </Reference>
     <Reference Include="TombstoneHelper">
       <HintPath>..\packages\WP7TombstoneHelper.2.5\lib\TombstoneHelper.dll</HintPath>

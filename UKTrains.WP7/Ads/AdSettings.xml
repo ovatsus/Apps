@@ -2,10 +2,8 @@
 <AdSettings xmlns="http://wpunifiedad.codeplex.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://wpunifiedad.codeplex.com UnifiedAd.xsd">
   <CountryDescriptors>
     <AdCountryDescriptor>
-      <Probability Value="0" AdProvider="AdDuplex" />
-      <Probability Value="0" AdProvider="Smaato" />
-      <Probability Value="0" AdProvider="MobFox" />
-      <Probability Value="100" AdProvider="InnerActive" />
+      <Probability Value="50" AdProvider="AdDuplex" />
+      <Probability Value="50" AdProvider="InnerActive" />
     </AdCountryDescriptor>
   </CountryDescriptors>
 </AdSettings>
