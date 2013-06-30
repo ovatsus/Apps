@@ -18,8 +18,7 @@
         <InnerActive:InnerActiveAdProvider App="CodeBeside_UKTrains_WP" />
         <Ads:AdControl.AdProviderStrategy>
             <Strategy:RemoteAdProviderStrategy xmlns:Strategy="clr-namespace:MC.Phone.Ads.Strategy;assembly=MC.Phone.Ads"
-                                               LocalProviderSettingsUri="Ads/AdSettings.xml"
-                                               RemoteProviderSettingsUri="http://blog.codebeside.org/UkTrainsAdSettings.xml" />
+                                               LocalProviderSettingsUri="Ads/AdSettings.xml" />
         </Ads:AdControl.AdProviderStrategy>
     </Ads:AdControl>
     
