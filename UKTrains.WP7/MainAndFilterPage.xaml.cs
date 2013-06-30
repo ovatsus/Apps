@@ -92,7 +92,11 @@ namespace UKTrains
 
             if (fromStation == null && !IsReset(e.NavigationMode))
             {
-                this.RestoreState(); // restore pivot and scroll state
+                try
+                {
+                    this.RestoreState(); // restore pivot and scroll state
+                }
+                catch { }
             }
 
             AdControl.InitAds(adGrid, ApplicationBar);
@@ -132,7 +136,11 @@ namespace UKTrains
             }
             if (fromStation == null)
             {
-                this.SaveState(e); // save pivot and scroll state
+                try
+                {
+                    this.SaveState(e); // save pivot and scroll state
+                }
+                catch { }
             }
         }
 
