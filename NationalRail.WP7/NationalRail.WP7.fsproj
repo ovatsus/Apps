@@ -64,7 +64,7 @@
       <HintPath>..\lib\wp7\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data">
-      <HintPath>..\packages\FSharp.Data.1.1.6\lib\sl4-windowsphone71\FSharp.Data.dll</HintPath>
+      <HintPath>..\packages\FSharp.Data.1.1.8\lib\sl4-windowsphone71\FSharp.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlAgilityPack">
