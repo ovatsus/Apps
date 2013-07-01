@@ -71,8 +71,15 @@ namespace UKTrains
             base.OnNavigatedFrom(e);
             if (refreshTimer != null)
             {
-                refreshTimer.Stop();
-                refreshTimer = null;
+                if (e.NavigationMode == NavigationMode.New && e.Uri.OriginalString == "app://external/")
+                {
+                    //running in background
+                }
+                else
+                {
+                    refreshTimer.Stop();
+                    refreshTimer = null;
+                }
             }
         }
 
@@ -97,7 +104,10 @@ namespace UKTrains
 
         private void UpdateDepartures(Departure[] departures)
         {
-            this.departures.ItemsSource = departures;
+            if (!App.RunningInBackground)
+            {
+                this.departures.ItemsSource = departures;
+            }
 
             if (refreshTimer != null)
             {
