@@ -1,8 +1,9 @@
-﻿using Microsoft.Phone.Shell;
-using System;
+﻿using System;
+using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Phone.Shell;
 
 namespace UKTrains
 {
@@ -37,13 +38,21 @@ namespace UKTrains
                 },
                 exn =>
                 {
-                    LittleWatson.ReportException(exn, loadingMessage);
-                    LittleWatson.CheckForPreviousException(false);
+                    if (!(exn is WebException))
+                    {
+                        LittleWatson.ReportException(exn, loadingMessage);
+                        LittleWatson.CheckForPreviousException(false);
+                    }
                     indicator.IsVisible = false;
                     indicator.IsIndeterminate = false;
                     if (!refreshing)
                     {
-                        messageTextBlock.Text = "An error occurred";
+                        var message = exn.Message;
+                        if (message.Length > 500)
+                        {
+                            message = message.Substring(0, 500) + " ...";
+                        }
+                        messageTextBlock.Text = message;
                     }
                     onFinished();
                 },
