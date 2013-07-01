@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Linq;
+using System.Windows.Controls;
 using Microsoft.Phone.Shell;
 
 #if WP8
@@ -17,8 +18,9 @@ namespace UKTrains
 
         public static void InitAds(Grid grid, IApplicationBar applicationBar)
         {
+            HideAds(grid, applicationBar);
 #if WP8
-            var showAds = !CurrentApp.LicenseInformation.ProductLicenses["RemoveAds"].IsActive;
+            var showAds = true;//!CurrentApp.LicenseInformation.ProductLicenses["RemoveAds"].IsActive;
             if (showAds)
             {
                 var menuItem = new ApplicationBarMenuItem("Remove ads");
@@ -26,11 +28,7 @@ namespace UKTrains
                     await CurrentApp.RequestProductPurchaseAsync("RemoveAds", false);
                     if (CurrentApp.LicenseInformation.ProductLicenses["RemoveAds"].IsActive)
                     {
-                        // remove buy option
-                        applicationBar.MenuItems.Remove(menuItem);
-                        grid.Children.Clear();
-                        grid.Width = 0;
-                        grid.Height = 0;
+                        HideAds(grid, applicationBar);
                     }
                 };
                 applicationBar.MenuItems.Add(menuItem);
@@ -42,20 +40,25 @@ namespace UKTrains
             if (showAds)
             {
                 var adControl = new AdControl();
-                adControl.adControl.AdError += (sender, args) => grid.Dispatcher.BeginInvoke(() => HideAdGrid(grid));
-                adControl.adControl.NoAd += (sender, args) => grid.Dispatcher.BeginInvoke(() => HideAdGrid(grid));
+                adControl.adControl.AdError += (sender, args) => grid.Dispatcher.BeginInvoke(() => HideAds(grid, applicationBar));
+                adControl.adControl.NoAd += (sender, args) => grid.Dispatcher.BeginInvoke(() => HideAds(grid, applicationBar));
                 grid.Children.Add(adControl);
                 grid.Width = 480;
                 grid.Height = 80;
             }
             else
             {
-                HideAdGrid(grid);
+                HideAds(grid, applicationBar);
             }                
         }
 
-        private static void HideAdGrid(Grid grid)
+        private static void HideAds(Grid grid, IApplicationBar applicationBar)
         {
+            var item = applicationBar.MenuItems.Cast<ApplicationBarMenuItem>().SingleOrDefault(i => i.Text == "Remove ads");
+            if (item != null)
+            {
+                applicationBar.MenuItems.Remove(item);
+            }
             grid.Children.Clear();
             grid.Width = 0;
             grid.Height = 0;
