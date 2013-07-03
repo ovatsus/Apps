@@ -34,7 +34,7 @@ namespace UKTrains
                 applicationBar.MenuItems.Add(menuItem);
             }
 #else
-            var showAds = true;
+            var showAds = false;
 #endif
 
             if (showAds)
