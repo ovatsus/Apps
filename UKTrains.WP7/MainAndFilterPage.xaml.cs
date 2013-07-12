@@ -1,10 +1,4 @@
-﻿using FSharp.GeoUtils;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Reactive;
-using Microsoft.Phone.Shell;
-using Microsoft.Phone.Tasks;
-using NationalRail;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,7 +6,14 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Navigation;
+using FSharp.GeoUtils;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Reactive;
+using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
+using NationalRail;
 using TombstoneHelper;
 
 namespace UKTrains
@@ -28,6 +29,16 @@ namespace UKTrains
             Observable.FromEvent<TextChangedEventArgs>(filter, "TextChanged")
                 .Throttle(TimeSpan.FromMilliseconds(300))
                 .Subscribe(_ => Dispatcher.BeginInvoke(() => allStationsView.Refresh()));
+            Observable.FromEvent<KeyEventArgs>(filter, "KeyDown")
+                .Where(x => x.EventArgs.Key == Key.Enter)
+                .Subscribe(_ => Dispatcher.BeginInvoke(() =>
+                {
+                    var stations = allStationsView.Cast<Station>().ToArray();
+                    if (stations.Length == 1)
+                    {
+                        GoToStation(stations[0]);
+                    }
+                }));
         }
 
         private CancellationTokenSource nearestCts;
@@ -225,6 +236,11 @@ namespace UKTrains
         private void OnStationClick(object sender, RoutedEventArgs e)
         {
             var dataContext = ((Button)sender).DataContext;
+            GoToStation(dataContext);
+        }
+
+        private void GoToStation(object dataContext)
+        {            
             var target = dataContext as DeparturesTable;
             if (target != null)
             {
