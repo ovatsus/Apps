@@ -19,7 +19,7 @@ namespace UKTrains
         public static void InitAds(Grid grid, IApplicationBar applicationBar)
         {
             HideAds(grid, applicationBar);
-#if WP8
+
             var showAds = !CurrentApp.LicenseInformation.ProductLicenses["RemoveAds"].IsActive;
             if (showAds)
             {
@@ -33,9 +33,6 @@ namespace UKTrains
                 };
                 applicationBar.MenuItems.Add(menuItem);
             }
-#else
-            var showAds = false;
-#endif
 
             if (showAds)
             {

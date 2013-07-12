@@ -105,10 +105,6 @@
     <Compile Include="..\UKTrains.WP7\Settings.cs">
       <Link>Settings.cs</Link>
     </Compile>
-    <Compile Include="..\UKTrains.WP7\AdControl.xaml.cs">
-      <Link>AdControl.xaml.cs</Link>
-      <DependentUpon>AdControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="..\UKTrains.WP7\MainAndFilterPage.xaml.cs">
       <Link>MainAndFilterPage.xaml.cs</Link>
       <DependentUpon>MainAndFilterPage.xaml</DependentUpon>
@@ -120,6 +116,9 @@
     <Compile Include="..\UKTrains.WP7\StationPage.xaml.cs">
       <Link>StationPage.xaml.cs</Link>
       <DependentUpon>StationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdControl.xaml.cs">
+      <DependentUpon>AdControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -133,6 +132,10 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Ads\UnifiedAd.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
@@ -172,13 +175,7 @@
     <Content Include="..\UKTrains.WP7\SplashScreenImage.jpg">
       <Link>SplashScreenImage.jpg</Link>
     </Content>
-    <Content Include="..\UKTrains.WP7\Ads\AdSettings.xml">
-      <Link>Ads\AdSettings.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\UKTrains.WP7\Ads\UnifiedAd.xsd">
-      <Link>Ads\UnifiedAd.xsd</Link>
+    <Content Include="Ads\AdSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\AlignmentGrid.png" />
@@ -202,11 +199,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="..\UKTrains.WP7\AdControl.xaml">
-      <Link>AdControl.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="..\UKTrains.WP7\MainAndFilterPage.xaml">
       <Link>MainAndFilterPage.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
@@ -219,6 +211,10 @@
     </Page>
     <Page Include="..\UKTrains.WP7\StationPage.xaml">
       <Link>StationPage.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AdControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

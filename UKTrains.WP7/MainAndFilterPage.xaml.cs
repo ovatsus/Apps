@@ -109,8 +109,9 @@ namespace UKTrains
                 }
                 catch { }
             }
-
+#if WP8
             AdControl.InitAds(adGrid, ApplicationBar);
+#endif
         }
 
         private bool IsReset(NavigationMode navigationMode)
