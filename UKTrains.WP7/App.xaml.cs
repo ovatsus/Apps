@@ -52,6 +52,10 @@ namespace UKTrains
 
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            if (Debugger.IsAttached)
+            {
+                Debugger.Break();
+            }
             LittleWatson.ReportException(e.ExceptionObject, "UnhandledException");
             LittleWatson.CheckForPreviousException(false);
             e.Handled = true;

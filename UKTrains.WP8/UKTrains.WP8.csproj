@@ -90,6 +90,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\UKTrains.WP7\Converters.cs">
+      <Link>Converters.cs</Link>
+    </Compile>
     <Compile Include="..\UKTrains.WP7\LazyAsyncExtensions.cs">
       <Link>LazyAsyncExtensions.cs</Link>
     </Compile>

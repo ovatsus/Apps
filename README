@@ -4,7 +4,9 @@ Description:
 UK Trains brings you train departure information for all UK national rail stations.
 
 New in 1.4:
-* Improved usability of all stations list
+* Allow to press enter to go to station when filtering the list of all stations
+* Highlight delayed and cancelled trains
+* More efficient use of space in departures list
 
 New in 1.3:
 * Fixed some reported crashes

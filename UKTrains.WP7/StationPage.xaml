@@ -9,6 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:src="clr-namespace:UKTrains"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -22,6 +23,8 @@
         <Grid.Resources>
 
             <coding4funConverters:StringToVisibilityConverter x:Key="stringToVisibilityConverter" />
+            <src:StatusToColorConverter x:Key="statusToColorConverter" />
+            <src:StatusToVisibilityConverter x:Key="statusToVisibilityConverter" />
             
             <DataTemplate x:Key="departureTemplate">
                 <Grid Margin="12,0,0,4">
@@ -39,17 +42,18 @@
                                Foreground="CornflowerBlue" 
                                FontSize="28"
                                HorizontalAlignment="Center" />
-                    <TextBlock Text="{Binding Expected.Value}" 
-                               Foreground="Red" 
-                               FontSize="16"
-                               Grid.Row="1"
-                               Grid.RowSpan="2"
-                               HorizontalAlignment="Center" />
                     <TextBlock Text="{Binding Destination}" 
                                Grid.Column="1" 
                                FontSize="28"
                                TextWrapping="Wrap"
                                HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding Platform.Value}" 
+                               Grid.Column="2"
+                               Grid.RowSpan="3"
+                               Foreground="CornflowerBlue" 
+                               FontSize="36"
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Center" />
                     <TextBlock Text="{Binding Via}" 
                                Visibility="{Binding Via, Converter={StaticResource stringToVisibilityConverter}}"
                                Grid.Column="1" 
@@ -57,17 +61,20 @@
                                Foreground="Gray"
                                FontSize="16"
                                HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding Expected.Value}" 
+                               Visibility="{Binding Status, Converter={StaticResource stringToVisibilityConverter}}"
+                               Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
+                               FontSize="16"
+                               Grid.Row="1"
+                               Grid.RowSpan="2"
+                               HorizontalAlignment="Center" />
                     <TextBlock Text="{Binding Status}" 
                                Grid.Column="1" 
                                Grid.Row="2" 
                                FontSize="16"
+                               Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
+                               Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
                                HorizontalAlignment="Left" />
-                    <TextBlock Text="{Binding Platform.Value}" 
-                               Grid.Column="2"
-                               Grid.RowSpan="3"
-                               FontSize="40"
-                               VerticalAlignment="Top"
-                               HorizontalAlignment="Center" />
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
