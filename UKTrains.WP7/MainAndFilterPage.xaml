@@ -38,15 +38,21 @@
                                    Foreground="CornflowerBlue" 
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Column="1">
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Item2.Name}"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Center"
                                        FontSize="34" />
                             <TextBlock Text="{Binding Item2.Code}" 
+                                       Grid.Column="1"
                                        Margin="12,0,0,0"
                                        VerticalAlignment="Bottom"
                                        Foreground="Gray" />
-                        </StackPanel>
+                        </Grid>
                     </Grid>
                 </Button>
             </DataTemplate>
@@ -55,16 +61,22 @@
                         Padding="0"
                         Margin="0"
                         BorderThickness="0">
-                    <StackPanel Margin="0,0,0,4"
-                                Orientation="Horizontal"
-                                Grid.Column="1">
+                    <Grid Margin="0,0,0,4"
+                          Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Name}"
-                                    FontSize="34" />
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   FontSize="34" />
                         <TextBlock Text="{Binding Code}" 
-                                    Margin="12,0,0,0"
-                                    VerticalAlignment="Bottom"
-                                    Foreground="Gray" />
-                    </StackPanel>
+                                   Grid.Column="1"
+                                   Margin="12,0,0,0"
+                                   VerticalAlignment="Bottom"
+                                   Foreground="Gray" />
+                    </Grid>
                 </Button>
             </DataTemplate>
             <DataTemplate x:Key="recentItemTemplate">
@@ -76,10 +88,14 @@
                                 Orientation="Vertical"
                                 Grid.Column="1">
                         <TextBlock Text="{Binding Station.Name}"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
                                    HorizontalAlignment="Center"
                                    FontSize="34" />
                         <TextBlock Text="{Binding CallingAt.Value.Name, StringFormat='calling at {0}'}" 
                                    Visibility="{Binding HasDestinationFilter, Converter={StaticResource booleanToVisibilityConverter}}"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
                                    HorizontalAlignment="Center"
                                    Foreground="Gray" />
                     </StackPanel>
