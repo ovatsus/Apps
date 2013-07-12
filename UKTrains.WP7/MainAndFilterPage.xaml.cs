@@ -110,7 +110,7 @@ namespace UKTrains
                 catch { }
             }
 #if WP8
-            AdControl.InitAds(adGrid, ApplicationBar);
+            Ads.Init(adGrid, ApplicationBar);
 #endif
         }
 

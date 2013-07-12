@@ -62,7 +62,7 @@ namespace UKTrains
             CreatePinToStartItem();
 #if WP8
             AddLockScreenItem();
-            AdControl.InitAds(adGrid, ApplicationBar);
+            Ads.Init(adGrid, ApplicationBar);
 #endif
         }
 

@@ -110,7 +110,7 @@
                     </ItemsControl>
                     <TextBlock x:Name="departuresMessageTextBlock" 
                                TextWrapping="Wrap"
-                               VerticalAlignment="Center"
+                               Margin="0,220,0,0"
                                HorizontalAlignment="Center" />
                 </Grid>
             </controls:PivotItem>
