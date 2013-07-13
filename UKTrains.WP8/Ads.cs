@@ -81,6 +81,7 @@ namespace UKTrains
 
             public override void AdFailedEventHandler(object sender)
             {
+                _hideAds();
             }
 
             public override void AdReceivedEventHandler(object sender)
