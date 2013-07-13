@@ -100,11 +100,6 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        
         <controls:Pivot x:Name="pivot">
             <controls:PivotItem x:Name="nearest" Header="Near Me">
                 <Grid>
@@ -174,8 +169,6 @@
             </controls:PivotItem>
         </controls:Pivot>
 
-        <Grid x:Name="adGrid" Grid.Row="1" />
-        
     </Grid>   
 
     <phone:PhoneApplicationPage.ApplicationBar>
@@ -183,9 +176,6 @@
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="Clear recent items" Click="OnClearRecentItemsClick"/>
-                <shell:ApplicationBarMenuItem Text="Settings" Click="OnSettingsClick"/>
-                <shell:ApplicationBarMenuItem Text="Rate and Review" Click="OnRateAndReviewClick"/>
-                <shell:ApplicationBarMenuItem Text="Give Feedback" Click="OnGiveFeedbackClick"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

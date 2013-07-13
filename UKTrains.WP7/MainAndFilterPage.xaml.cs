@@ -12,7 +12,6 @@ using FSharp.GeoUtils;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Reactive;
 using Microsoft.Phone.Shell;
-using Microsoft.Phone.Tasks;
 using NationalRail;
 using TombstoneHelper;
 
@@ -39,6 +38,7 @@ namespace UKTrains
                         GoToStation(stations[0]);
                     }
                 }));
+            CommonMenuItems.Init(ApplicationBar, NavigationService);
         }
 
         private CancellationTokenSource nearestCts;
@@ -109,9 +109,6 @@ namespace UKTrains
                 }
                 catch { }
             }
-#if WP8
-            Ads.Init(adGrid, ApplicationBar);
-#endif
         }
 
         private bool IsReset(NavigationMode navigationMode)
@@ -271,28 +268,6 @@ namespace UKTrains
         private void SaveRecentItems()
         {
             Settings.Set(Setting.RecentStations, string.Join(",", allRecentItems.Select(item => item.Serialize())));
-        }
-
-        private void OnSettingsClick(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
-        }
-
-        private void OnRateAndReviewClick(object sender, EventArgs e)
-        {
-            var task = new MarketplaceReviewTask();
-            task.Show();
-        }
-
-        private void OnGiveFeedbackClick(object sender, EventArgs e)
-        {
-            var task = new EmailComposeTask
-            {
-                To = "uktrains@codebeside.org",
-                Subject = "Feedback for UK Trains",
-                Body = LittleWatson.GetMailBody("")
-            };
-            task.Show();
         }
 
         private void OnClearRecentItemsClick(object sender, EventArgs e)

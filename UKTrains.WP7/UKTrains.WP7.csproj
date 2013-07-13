@@ -102,6 +102,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommonMenuItems.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="LittleWatson.cs" />
     <Compile Include="LocationService.cs" />

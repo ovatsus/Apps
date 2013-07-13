@@ -85,11 +85,6 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
         <controls:Pivot x:Name="pivot">
             <controls:PivotItem Header="Departures">
                 <Grid>
@@ -138,8 +133,6 @@
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>
-
-        <Grid x:Name="adGrid" Grid.Row="1" />
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
@@ -148,9 +141,6 @@
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.filter.png" Text="Filter" Click="OnFilterClick" />
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="Clear filter" Click="OnClearFilterClick" />
-                <shell:ApplicationBarMenuItem Text="Settings" Click="OnSettingsClick" />
-                <shell:ApplicationBarMenuItem Text="Rate and Review" Click="OnRateAndReviewClick" />
-                <shell:ApplicationBarMenuItem Text="Give Feedback" Click="OnGiveFeedbackClick" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

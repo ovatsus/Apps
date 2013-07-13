@@ -90,6 +90,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\UKTrains.WP7\CommonMenuItems.cs">
+      <Link>CommonMenuItems.cs</Link>
+    </Compile>
     <Compile Include="..\UKTrains.WP7\Converters.cs">
       <Link>Converters.cs</Link>
     </Compile>
@@ -117,7 +120,6 @@
       <Link>StationPage.xaml.cs</Link>
       <DependentUpon>StationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ads.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -221,9 +223,6 @@
     </Reference>
     <Reference Include="FSharp.Core">
       <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\3.0\Runtime\.NETPortable\FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Inneractive.Ad">
-      <HintPath>..\lib\wp8\Inneractive.Ad.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">

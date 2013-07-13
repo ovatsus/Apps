@@ -1,13 +1,13 @@
-﻿using Microsoft.Phone.Controls;
+﻿using System;
+using System.Device.Location;
+using System.Linq;
+using System.Threading;
+using System.Windows.Navigation;
+using System.Windows.Threading;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using NationalRail;
-using System;
-using System.Device.Location;
-using System.Linq;
-using System.Windows.Navigation;
-using System.Windows.Threading;
-using System.Threading;
 #if WP8
 using Microsoft.Phone.Maps;
 using Microsoft.Phone.Maps.Controls;
@@ -24,6 +24,10 @@ namespace UKTrains
         public StationPage()
         {
             InitializeComponent();
+#if WP8
+            AddLockScreenItem();
+#endif
+            CommonMenuItems.Init(ApplicationBar, NavigationService);
         }
 
         private DeparturesTable departuresTable;
@@ -68,10 +72,6 @@ namespace UKTrains
             ApplicationBar.MenuItems.Cast<ApplicationBarMenuItem>().Single(item => item.Text == "Clear filter").IsEnabled = departuresTable.HasDestinationFilter;
             CreateDirectionsItem();
             CreatePinToStartItem();
-#if WP8
-            AddLockScreenItem();
-            Ads.Init(adGrid, ApplicationBar);
-#endif
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -363,12 +363,9 @@ namespace UKTrains
 #if WP8
         private void AddLockScreenItem() 
         {
-            if (!ApplicationBar.MenuItems.Cast<ApplicationBarMenuItem>().Any(item => item.Text == "Show departures on lock screen"))
-            {
-                var menuItem = new ApplicationBarMenuItem("Show departures on lock screen");
-                menuItem.Click += OnShowPlatformOnLockScreenClick;
-                ApplicationBar.MenuItems.Insert(2, menuItem);
-            }
+            var menuItem = new ApplicationBarMenuItem("Show departures on lock screen");
+            menuItem.Click += OnShowPlatformOnLockScreenClick;
+            ApplicationBar.MenuItems.Add(menuItem);
         }
 
         private async void OnShowPlatformOnLockScreenClick(object sender, EventArgs e) 
@@ -383,29 +380,7 @@ namespace UKTrains
             {
                 LoadDepartures();
             }
-        }
-
-        private void OnSettingsClick(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
-        }
-
-        private void OnRateAndReviewClick(object sender, EventArgs e)
-        {
-            var task = new MarketplaceReviewTask();
-            task.Show();
-        }
-
-        private void OnGiveFeedbackClick(object sender, EventArgs e)
-        {
-            var task = new EmailComposeTask
-            {
-                To = "uktrains@codebeside.org",
-                Subject = "Feedback for UK Trains",
-                Body = LittleWatson.GetMailBody("")
-            };
-            task.Show();
-        }
+        }       
 
         private void OnFilterClick(object sender, EventArgs e)
         {
