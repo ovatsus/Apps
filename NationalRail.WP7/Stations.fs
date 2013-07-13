@@ -2,8 +2,12 @@
 
 open System.Reflection
 open FSharp.Control
+#if SILVERLIGHT
 open FSharp.Data.Csv
 open FSharp.Data.Csv.Extensions
+#else
+open FSharp.Data
+#endif
 open FSharp.GeoUtils
 
 type Station =
@@ -27,18 +31,33 @@ module Stations =
                 //from http://www.data.gov.uk/dataset/naptan
                 //osgb36 to latitude/longitude converted with http://gridreferencefinder.com/batchConvert/batchConvert.htm
                 use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RailReferences.csv")
+#if SILVERLIGHT
                 let csvFile = CsvFile.Load stream
                 csvFile.Data
                 |> Seq.groupBy (fun station -> station?CrsCode)
                 |> Seq.map (fun (code, stations) -> 
                     let station = 
                         stations 
-                        |> Seq.sortBy (fun station -> -station?RevisionNumber.AsInteger()) 
+                        |> Seq.sortBy (fun station -> - station?RevisionNumber.AsInteger()) 
                         |> Seq.head
                     { Code = code
                       Name = station?StationName.Replace(" Rail Station", null)
                       Location = LatLong.Create (station?Latitude.AsFloat()) (station?Longitude.AsFloat()) })
                 |> Seq.toList
+#else
+                let csvFile = CsvProvider<"../NationalRail.WP7/RailReferences.csv">.Load stream
+                csvFile.Data
+                |> Seq.groupBy (fun station -> station.CrsCode)
+                |> Seq.map (fun (code, stations) -> 
+                    let station = 
+                        stations 
+                        |> Seq.sortBy (fun station -> - station.RevisionNumber) 
+                        |> Seq.head
+                    { Code = code
+                      Name = station.StationName.Replace(" Rail Station", null)
+                      Location = LatLong.Create (float station.Latitude) (float station.Longitude) })
+                |> Seq.toList
+#endif
 
             let stationsByCode =
                 allStations 
