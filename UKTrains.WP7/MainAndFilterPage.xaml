@@ -30,25 +30,29 @@
                         Margin="0"
                         HorizontalAlignment="Left"
                         BorderThickness="0">
-                    <Grid Margin="0,0,0,4">
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="70"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Item1}"
                                    Foreground="CornflowerBlue" 
-                                   VerticalAlignment="Center"
+                                   Margin="0,6,0,0"
+                                   FontSize="22"
+                                   VerticalAlignment="Top"
                                    HorizontalAlignment="Right" />
                         <TextBlock Text="{Binding Item2.Name}"
                                    Grid.Column="1"
                                    TextWrapping="Wrap"
-                                   TextAlignment="Center"
-                                   Margin="12,0"
-                                   FontSize="34" />
+                                   VerticalAlignment="Top"
+                                   Margin="10,0"
+                                   FontSize="28" />
                         <TextBlock Text="{Binding Item2.Code}" 
+                                   Margin="0,6,0,0"
+                                   FontSize="22"
                                    Grid.Column="2"                                   
-                                   VerticalAlignment="Bottom"
+                                   VerticalAlignment="Top"
                                    Foreground="Gray" />
                     </Grid>
                 </Button>
@@ -58,8 +62,7 @@
                         Padding="0"
                         Margin="0"
                         BorderThickness="0">
-                    <Grid Margin="0,0,0,4"
-                          Grid.Column="1">
+                    <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
