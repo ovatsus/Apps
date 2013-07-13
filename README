@@ -1,12 +1,13 @@
 Store URL: http://www.windowsphone.com/en-gb/store/app/uk-trains/ef62d461-861c-4a9f-9198-8768532cc6aa
 
 Description:
-UK Trains brings you train departure information for all UK national rail stations.
+UK Trains brings you train departure and arrival information for all UK national rail stations.
 
 New in 1.4:
-* Allow to press enter to go to station when filtering the list of all stations
+* Added arrival information
 * Highlight delayed and cancelled trains
 * More efficient use of space in departures list
+* Allow to press enter to go to station when filtering the list of all stations
 * Fix stations with big names not displaying correctly
 * Fix crash
 

@@ -114,6 +114,29 @@
                                HorizontalAlignment="Center" />
                 </Grid>
             </controls:PivotItem>
+            <controls:PivotItem Header="Arrivals">
+                <Grid>
+                    <ItemsControl x:Name="arrivals" 
+                                  ItemTemplate="{StaticResource departureTemplate}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.Template>
+                            <ControlTemplate TargetType="ItemsControl">
+                                <ScrollViewer>
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                    </ItemsControl>
+                    <TextBlock x:Name="arrivalsMessageTextBlock" 
+                               TextWrapping="Wrap"
+                               Margin="0,220,0,0"
+                               HorizontalAlignment="Center" />
+                </Grid>
+            </controls:PivotItem>
         </controls:Pivot>
 
         <Grid x:Name="adGrid" Grid.Row="1" />

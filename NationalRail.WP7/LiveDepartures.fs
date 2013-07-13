@@ -65,6 +65,14 @@ and JourneyElement = {
     Platform : string option
 }
 
+type DepartureType = 
+    | Departure
+    | Arrival
+    override x.ToString() = 
+        match x with
+        | Departure -> "dep"
+        | Arrival -> "arr"
+
 type Departure with
     member x.PlatformIsKnown = x.Platform.IsSome
 
@@ -101,7 +109,7 @@ type DeparturesTable with
             let station = str |> Stations.get
             DeparturesTable.Create(station)
 
-    member journey.GetDepartures() = 
+    member journey.GetDepartures (departureType:DepartureType) = 
 
         let getStatus due (statusCell:HtmlNode) = 
             if statusCell.InnerText.Trim() = "Cancelled" then
@@ -172,8 +180,8 @@ type DeparturesTable with
 
         let url = 
             match journey.CallingAt with
-            | None -> "http://ojp.nationalrail.co.uk/service/ldbboard/dep/" + journey.Station.Code
-            | Some callingAt -> "http://ojp.nationalrail.co.uk/service/ldbboard/dep/" + journey.Station.Code + "/" + callingAt.Code + "/To"
+            | None -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/%s/%s" (departureType.ToString()) journey.Station.Code
+            | Some callingAt -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/%s/%s/%s/To" (departureType.ToString()) journey.Station.Code callingAt.Code 
 
         async {
             let! html = Http.AsyncRequest url

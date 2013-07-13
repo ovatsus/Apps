@@ -7,6 +7,7 @@ using System.Device.Location;
 using System.Linq;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using System.Threading;
 #if WP8
 using Microsoft.Phone.Maps;
 using Microsoft.Phone.Maps.Controls;
@@ -26,8 +27,9 @@ namespace UKTrains
         }
 
         private DeparturesTable departuresTable;
-        private bool loadingDepartures;
         private DispatcherTimer refreshTimer;
+        private CancellationTokenSource departuresCts;
+        private CancellationTokenSource arrivalsCts;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -57,6 +59,12 @@ namespace UKTrains
                 ApplicationBar.Buttons.RemoveAt(ApplicationBar.Buttons.Count - 1);
             }
 
+            while (pivot.Items.Count > 2)
+            {
+                // remove directions
+                pivot.Items.RemoveAt(pivot.Items.Count - 1);
+            }
+
             ApplicationBar.MenuItems.Cast<ApplicationBarMenuItem>().Single(item => item.Text == "Clear filter").IsEnabled = departuresTable.HasDestinationFilter;
             CreateDirectionsItem();
             CreatePinToStartItem();
@@ -66,40 +74,63 @@ namespace UKTrains
 #endif
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            base.OnNavigatedFrom(e);
+            base.OnNavigatingFrom(e);
+            if (e.NavigationMode == NavigationMode.New && e.Uri.OriginalString == "app://external/")
+            {
+                //running in background
+                return;
+            }
             if (refreshTimer != null)
             {
-                if (e.NavigationMode == NavigationMode.New && e.Uri.OriginalString == "app://external/")
-                {
-                    //running in background
-                }
-                else
-                {
-                    refreshTimer.Stop();
-                    refreshTimer = null;
-                }
+                refreshTimer.Stop();
+                refreshTimer = null;
+            }
+            if (departuresCts != null)
+            {
+                departuresCts.Cancel();
+                departuresCts = null;
+            }
+            if (arrivalsCts != null)
+            {
+                arrivalsCts.Cancel();
+                arrivalsCts = null;
             }
         }
 
         private void LoadDepartures()
         {
-            loadingDepartures = true;
             if (refreshTimer != null)
             {
                 refreshTimer.Stop();
                 refreshTimer = null;
             }
             bool refreshing = this.departures.ItemsSource != null;
-            departuresTable.GetDepartures().Display(
+            departuresCts = departuresTable.GetDepartures(DepartureType.Departure).Display(
                 this,
                 refreshing ? "Refreshing departures..." : "Loading departures...",
                 refreshing,
                 "No more trains today",
                 departuresMessageTextBlock,
                 UpdateDepartures,
-                () => loadingDepartures = false);
+                () => {
+                    departuresCts = null;
+                    LoadArrivals();
+                });
+        }
+
+        private void LoadArrivals()
+        {
+            bool refreshing = this.arrivals.ItemsSource != null;
+            arrivalsCts = departuresTable.GetDepartures(DepartureType.Arrival).Display(
+                this,
+                refreshing ? "Refreshing arrivals..." : "Loading arrivals...",
+                refreshing,
+                "No more trains today",
+                arrivalsMessageTextBlock,
+                UpdateArrivals,
+                () => arrivalsCts = null);
         }
 
         private void UpdateDepartures(Departure[] departures)
@@ -124,6 +155,14 @@ namespace UKTrains
             refreshTimer.Start();
 
             UpdateTiles();
+        }
+
+        private void UpdateArrivals(Departure[] arrivals)
+        {
+            if (!App.RunningInBackground)
+            {
+                this.arrivals.ItemsSource = arrivals;
+            }
         }
 
         private void UpdateTiles()
@@ -340,7 +379,7 @@ namespace UKTrains
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (!loadingDepartures)
+            if (departuresCts == null)
             {
                 LoadDepartures();
             }
