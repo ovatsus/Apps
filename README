@@ -8,6 +8,7 @@ New in 1.4:
 * Highlight delayed and cancelled trains
 * More efficient use of space in departures list
 * Allow to press enter to go to station when filtering the list of all stations
+* Allow to remove stations individually from the recent station list
 * Fix stations with long names not displaying correctly
 * Fix platforms with long names not displaying correctly
 * Fixed some reported crashes

@@ -362,7 +362,7 @@ namespace UKTrains
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (departuresCts == null)
+            if (departuresCts == null && arrivalsCts == null)
             {
                 LoadDepartures();
             }

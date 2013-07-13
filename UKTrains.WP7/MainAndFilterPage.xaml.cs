@@ -184,7 +184,7 @@ namespace UKTrains
             bool refreshing = nearestStations.ItemsSource != null;
             nearestCts = Stations.GetNearest(from, 150, Settings.GetBool(Setting.UseMilesInsteadOfKMs)).Display(
                 this,
-                refreshing ? "Refreshing stations... " : "Loading stations...",
+                refreshing ? "Refreshing nearest stations... " : "Loading nearest stations...",
                 refreshing,
                 "You're outside of the UK",
                 nearestStationsMessageTextBlock,
@@ -273,6 +273,14 @@ namespace UKTrains
         private void OnClearRecentItemsClick(object sender, EventArgs e)
         {
             allRecentItems.Clear();
+            SaveRecentItems();
+            LoadRecentItems(excludeStation);
+        }
+
+        private void OnRecentItemRemoveClick(object sender, RoutedEventArgs e)
+        {
+            var dataContext = (DeparturesTable)((MenuItem)sender).DataContext;
+            allRecentItems.Remove(dataContext);
             SaveRecentItems();
             LoadRecentItems(excludeStation);
         }

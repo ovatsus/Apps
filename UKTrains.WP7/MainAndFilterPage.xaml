@@ -81,6 +81,11 @@
                         Padding="0"
                         Margin="0"
                         BorderThickness="0">
+                    <toolkit:ContextMenuService.ContextMenu>
+                        <toolkit:ContextMenu>
+                            <toolkit:MenuItem Header="Remove" Click="OnRecentItemRemoveClick" />
+                        </toolkit:ContextMenu>
+                    </toolkit:ContextMenuService.ContextMenu>
                     <StackPanel Margin="0,0,0,4"
                                 Orientation="Vertical"
                                 Grid.Column="1">
