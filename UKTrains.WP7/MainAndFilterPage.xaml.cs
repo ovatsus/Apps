@@ -218,7 +218,7 @@ namespace UKTrains
                               item.Station.Code != excludeStation && item.Station.Code != fromStation.Code ? item.Station :
                               null
                  where target != null
-                 select DeparturesTable.Create(target)).ToList();
+                 select DeparturesTable.Create(target)).Distinct().ToList();
 
             hasRecentItemsToDisplay = recentItemsToDisplay.Count != 0;
             recentStations.ItemsSource = recentItemsToDisplay;

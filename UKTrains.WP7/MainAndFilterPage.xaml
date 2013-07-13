@@ -70,7 +70,7 @@
                         <TextBlock Text="{Binding Name}"
                                    TextWrapping="Wrap"
                                    TextAlignment="Center"
-                                   FontSize="34" />
+                                   FontSize="30" />
                         <TextBlock Text="{Binding Code}" 
                                    Grid.Column="1"
                                    Margin="12,0,0,0"
@@ -96,7 +96,7 @@
                                    TextWrapping="Wrap"
                                    TextAlignment="Center"
                                    HorizontalAlignment="Center"
-                                   FontSize="34" />
+                                   FontSize="32" />
                         <TextBlock Text="{Binding CallingAt.Value.Name, StringFormat='calling at {0}'}" 
                                    Visibility="{Binding HasDestinationFilter, Converter={StaticResource booleanToVisibilityConverter}}"
                                    TextWrapping="Wrap"
