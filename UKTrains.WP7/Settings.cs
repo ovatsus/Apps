@@ -11,7 +11,9 @@ namespace UKTrains
         CurrentLat,
         CurrentLong,
         RecentStations,
-        UseMilesInsteadOfKMs
+        UseMilesInsteadOfKMs,
+        RatingDone,
+        InstallationDate,
     }
 
     public static class Settings
