@@ -77,11 +77,13 @@ namespace UKTrains
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
+#if WP8
             if (e.NavigationMode == NavigationMode.New && e.Uri.OriginalString == "app://external/")
             {
                 //running in background
                 return;
             }
+#endif
             if (refreshTimer != null)
             {
                 refreshTimer.Stop();
@@ -129,16 +131,13 @@ namespace UKTrains
                 refreshing,
                 "No more trains today",
                 arrivalsMessageTextBlock,
-                UpdateArrivals,
+                arrivals => this.arrivals.ItemsSource = arrivals,
                 () => arrivalsCts = null);
         }
 
         private void UpdateDepartures(Departure[] departures)
         {
-            if (!App.RunningInBackground)
-            {
-                this.departures.ItemsSource = departures;
-            }
+            this.departures.ItemsSource = departures;
 
             if (refreshTimer != null)
             {
@@ -146,23 +145,10 @@ namespace UKTrains
             }
             refreshTimer = new DispatcherTimer();
             refreshTimer.Interval = TimeSpan.FromSeconds(60);
-            refreshTimer.Tick += (sender, args) =>
-            {
-                refreshTimer.Stop();
-                refreshTimer = null;
-                LoadDepartures();
-            };
+            refreshTimer.Tick += (sender, args) => LoadDepartures();
             refreshTimer.Start();
 
             UpdateTiles();
-        }
-
-        private void UpdateArrivals(Departure[] arrivals)
-        {
-            if (!App.RunningInBackground)
-            {
-                this.arrivals.ItemsSource = arrivals;
-            }
         }
 
         private void UpdateTiles()
