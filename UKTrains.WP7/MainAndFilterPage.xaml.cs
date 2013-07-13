@@ -214,8 +214,11 @@ namespace UKTrains
 
             var recentItemsToDisplay = fromStation == null ? allRecentItems :
                 (from item in allRecentItems
-                 where item.HasDestinationFilter && item.Station.Code == fromStation.Code && item.CallingAt.Value.Code != excludeStation
-                 select DeparturesTable.Create(item.CallingAt.Value)).ToList();
+                 let target = item.HasDestinationFilter && item.Station.Code == fromStation.Code && item.CallingAt.Value.Code != excludeStation ? item.CallingAt.Value :
+                              item.Station.Code != excludeStation && item.Station.Code != fromStation.Code ? item.Station :
+                              null
+                 where target != null
+                 select DeparturesTable.Create(target)).ToList();
 
             hasRecentItemsToDisplay = recentItemsToDisplay.Count != 0;
             recentStations.ItemsSource = recentItemsToDisplay;
@@ -261,8 +264,15 @@ namespace UKTrains
 
         private void AddToRecentItems(DeparturesTable recentItem)
         {
+            if (recentItem.HasDestinationFilter && 
+                allRecentItems.Count > 0 && 
+                !allRecentItems[0].HasDestinationFilter && 
+                allRecentItems[0].Station.Code == recentItem.Station.Code)
+            {
+                allRecentItems.RemoveAt(0);
+            }
             allRecentItems.Remove(recentItem);
-            allRecentItems.Insert(0, recentItem);
+            allRecentItems.Insert(0, recentItem);            
         }
 
         private void SaveRecentItems()
