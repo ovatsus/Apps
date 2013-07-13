@@ -31,7 +31,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="70" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="70"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -48,10 +48,9 @@
                                Margin="4,0"
                                FontSize="28"
                                TextWrapping="Wrap"
-                               TextAlignment="Center"
                                HorizontalAlignment="Left" />
-                    <TextBlock Text="{Binding Via}" 
-                               Visibility="{Binding Via, Converter={StaticResource stringToVisibilityConverter}}"
+                    <TextBlock Text="{Binding DestinationDetail}" 
+                               Visibility="{Binding DestinationDetail, Converter={StaticResource stringToVisibilityConverter}}"
                                Margin="4,0"
                                Grid.Column="1" 
                                Grid.Row="1" 
@@ -65,12 +64,14 @@
                                Foreground="CornflowerBlue" 
                                Margin="0,-4,4,0"
                                FontSize="32"
+                               HorizontalAlignment="Center"
                                VerticalAlignment="Top" />
                     <TextBlock Text="{Binding Expected.Value}" 
                                Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
                                Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
                                FontSize="16"
                                Grid.Row="2"
+                               TextAlignment="Center"
                                HorizontalAlignment="Center" />
                     <TextBlock Text="{Binding Status}" 
                                Margin="4,0"

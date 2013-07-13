@@ -24,7 +24,7 @@ type Departure = {
     Due : Time
     Expected : Time option
     Destination : string
-    Via : string
+    DestinationDetail : string
     Status : Status
     Platform : string option
     Details : LazyAsync<JourneyElement list>
@@ -159,19 +159,23 @@ type DeparturesTable with
 
         let rowToDeparture (tr:HtmlNode) =
             let cells = tr.Elements "td" |> Seq.toArray        
-            let destination, via = 
+            let destination, destinationDetail = 
                 let dest = cells.[1].InnerText.Trim()
                 let dest = Regex.Replace(dest, "\s+", " ")
                 let pos = dest.IndexOf " via"
                 if pos = -1
-                then dest, ""
+                then 
+                    let pos = dest.IndexOf " (circular route)"
+                    if pos = -1
+                    then dest, ""
+                    else dest.Substring(0, pos), dest.Substring(pos + 1)
                 else dest.Substring(0, pos), dest.Substring(pos + 1)
             let due = cells.[0] |> parseTime
             let status, expected = cells.[2] |> getStatus due
             { Due = due
               Expected = expected
               Destination = destination
-              Via = via
+              DestinationDetail = destinationDetail
               Status = status
               Platform = cells.[3] |> parsePlatform
               Details = 
