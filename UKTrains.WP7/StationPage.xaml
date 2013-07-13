@@ -67,11 +67,10 @@
                                FontSize="32"
                                VerticalAlignment="Top" />
                     <TextBlock Text="{Binding Expected.Value}" 
-                               Visibility="{Binding Status, Converter={StaticResource stringToVisibilityConverter}}"
+                               Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
                                Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
                                FontSize="16"
-                               Grid.Row="1"
-                               Grid.RowSpan="2"
+                               Grid.Row="2"
                                HorizontalAlignment="Center" />
                     <TextBlock Text="{Binding Status}" 
                                Margin="4,0"
