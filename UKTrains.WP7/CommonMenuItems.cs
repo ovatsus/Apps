@@ -3,9 +3,6 @@ using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
-#if WP8
-using Windows.ApplicationModel.Store;
-#endif
 
 namespace UKTrains
 {
@@ -37,21 +34,6 @@ namespace UKTrains
                     Body = LittleWatson.GetMailBody("")
                 }.Show();
             });
-
-#if WP8
-            AddMenuItem(applicationBar, "Donate", async () =>
-            {
-                try
-                {
-                    await CurrentApp.RequestProductPurchaseAsync("Donate", false);
-                    if (CurrentApp.LicenseInformation.ProductLicenses["Donate"].IsActive)
-                    {
-                        CurrentApp.ReportProductFulfillment("Donate");
-                    }
-                }
-                catch { }
-            });
-#endif
 
             var installationDateStr = Settings.GetString(Setting.InstallationDate);
             if (installationDateStr == "")
