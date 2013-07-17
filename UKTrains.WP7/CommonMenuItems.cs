@@ -1,4 +1,4 @@
-﻿using System;
+?using System;
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Shell;
@@ -8,24 +8,24 @@ namespace UKTrains
 {
     public static class CommonMenuItems
     {
-        private static void AddMenuItem(IApplicationBar applicationBar, string text, Action action) 
+        private static void AddMenuItem(PhoneApplicationPage page, string text, Action action) 
         {
             var menuItem = new ApplicationBarMenuItem(text);
             menuItem.Click += delegate { action(); };
-            applicationBar.MenuItems.Add(menuItem);
+            page.ApplicationBar.MenuItems.Add(menuItem);
         }
 
-        public static void Init(IApplicationBar applicationBar, NavigationService navigationService)
+        public static void Init(PhoneApplicationPage page)
         {
-            AddMenuItem(applicationBar, "Settings", () => navigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative)));
+            AddMenuItem(page, "Settings", () => page.NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative)));
 
-            AddMenuItem(applicationBar, "Rate and Review", () =>
+            AddMenuItem(page, "Rate and Review", () =>
             {
                 new MarketplaceReviewTask().Show();
                 Settings.Set(Setting.RatingDone, true);
             });
 
-            AddMenuItem(applicationBar, "Give Feedback", () =>
+            AddMenuItem(page, "Give Feedback", () =>
             {
                 new EmailComposeTask
                 {
