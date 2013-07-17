@@ -27,61 +27,68 @@
             <src:StatusToVisibilityConverter x:Key="statusToVisibilityConverter" />
             
             <DataTemplate x:Key="departureTemplate">
-                <Grid Margin="12,0,0,4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="70"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding Due}" 
-                               Foreground="CornflowerBlue" 
-                               FontSize="28"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Text="{Binding Destination}" 
-                               Grid.Column="1"
-                               Margin="4,0"
-                               FontSize="28"
-                               TextWrapping="Wrap"
-                               HorizontalAlignment="Left" />
-                    <TextBlock Text="{Binding DestinationDetail}" 
-                               Visibility="{Binding DestinationDetail, Converter={StaticResource stringToVisibilityConverter}}"
-                               Margin="4,0"
-                               Grid.Column="1" 
-                               Grid.Row="1" 
-                               Foreground="Gray"
-                               FontSize="16"
-                               TextWrapping="Wrap"
-                               HorizontalAlignment="Left" />
-                    <TextBlock Text="{Binding Platform.Value}" 
-                               Grid.Column="2"
-                               Grid.RowSpan="3"
-                               Foreground="CornflowerBlue" 
-                               Margin="0,-4,4,0"
-                               FontSize="32"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Top" />
-                    <TextBlock Text="{Binding Expected.Value}" 
-                               Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
-                               Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
-                               FontSize="16"
-                               Grid.Row="2"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Text="{Binding Status}" 
-                               Margin="4,0"
-                               Grid.Column="1" 
-                               Grid.Row="2" 
-                               FontSize="16"
-                               Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
-                               Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
-                               HorizontalAlignment="Left" />
-                </Grid>
+                <Button Tap="OnDetailsClick">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Margin="12,0,0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding Due}" 
+                                           Foreground="CornflowerBlue" 
+                                           FontSize="28"
+                                           TextAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding Destination}" 
+                                           Grid.Column="1"
+                                           Margin="4,0"
+                                           FontSize="28"
+                                           TextWrapping="Wrap"
+                                           HorizontalAlignment="Left" />
+                                <TextBlock Text="{Binding DestinationDetail}" 
+                                           Visibility="{Binding DestinationDetail, Converter={StaticResource stringToVisibilityConverter}}"
+                                           Margin="4,0"
+                                           Grid.Column="1" 
+                                           Grid.Row="1" 
+                                           Foreground="Gray"
+                                           FontSize="16"
+                                           TextWrapping="Wrap"
+                                           HorizontalAlignment="Left" />
+                                <TextBlock Text="{Binding Platform.Value}" 
+                                           Grid.Column="2"
+                                           Grid.RowSpan="3"
+                                           Foreground="CornflowerBlue" 
+                                           Margin="0,-4,4,0"
+                                           FontSize="32"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top" />
+                                <TextBlock Text="{Binding Expected.Value}" 
+                                           Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
+                                           Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
+                                           FontSize="16"
+                                           Grid.Row="2"
+                                           TextAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding Status}" 
+                                           Margin="4,0"
+                                           Grid.Column="1" 
+                                           Grid.Row="2" 
+                                           FontSize="16"
+                                           Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
+                                           Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
+                                           HorizontalAlignment="Left" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                    
+                </Button>
             </DataTemplate>
         </Grid.Resources>
 
@@ -136,7 +143,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar x:Name="applicationBar">
+        <shell:ApplicationBar>
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.filter.png" Text="Filter" Click="OnFilterClick" />
             <shell:ApplicationBar.MenuItems>

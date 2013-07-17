@@ -1,0 +1,113 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="UKTrains.DetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:src="clr-namespace:UKTrains"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    toolkit:TiltEffect.IsTiltEnabled="True">
+
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+
+        <Grid.Resources>
+
+            <coding4funConverters:StringToVisibilityConverter x:Key="stringToVisibilityConverter" />
+            <src:JourneyElementStatusToColorConverter x:Key="statusToColorConverter" />
+            <src:JourneyElementStatusToVisibilityConverter x:Key="statusToVisibilityConverter" />
+            <src:HasDepartedToColorConverter x:Key="hasDepartedToColorConverter" />            
+            
+            <DataTemplate x:Key="journeyElementTemplate">
+                <Grid Margin="12,0,0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="70"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding Departs}" 
+                               Foreground="CornflowerBlue" 
+                               FontSize="28"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding Station}" 
+                               Foreground="{Binding Status, Converter={StaticResource hasDepartedToColorConverter}}"
+                               Grid.Column="1"
+                               Margin="4,0"
+                               FontSize="28"
+                               TextWrapping="Wrap"
+                               HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding Platform.Value}" 
+                               Grid.Column="2"
+                               Grid.RowSpan="2"
+                               Foreground="CornflowerBlue" 
+                               Margin="0,-4,4,0"
+                               FontSize="32"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top" />
+                    <TextBlock Text="{Binding Expected.Value}" 
+                               Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
+                               Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
+                               FontSize="16"
+                               Grid.Row="1"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding Status}" 
+                               Margin="4,0"
+                               Grid.Column="1" 
+                               Grid.Row="1" 
+                               FontSize="16"
+                               Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
+                               Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
+                               HorizontalAlignment="Left" />
+                </Grid>
+            </DataTemplate>
+        </Grid.Resources>
+
+        <controls:Pivot x:Name="pivot">
+            <controls:PivotItem Header="Live Progress">
+                <Grid>
+                    <ItemsControl x:Name="journeyElements" 
+                                  ItemTemplate="{StaticResource journeyElementTemplate}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.Template>
+                            <ControlTemplate TargetType="ItemsControl">
+                                <ScrollViewer>
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                    </ItemsControl>
+                    <TextBlock x:Name="journeyElementsMessageTextBlock" 
+                               TextWrapping="Wrap"
+                               Margin="0,220,0,0"
+                               HorizontalAlignment="Center" />
+                </Grid>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar>
+            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

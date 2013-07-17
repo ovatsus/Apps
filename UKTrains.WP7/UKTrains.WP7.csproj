@@ -104,6 +104,9 @@
     </Compile>
     <Compile Include="CommonMenuItems.cs" />
     <Compile Include="Converters.cs" />
+    <Compile Include="DetailsPage.xaml.cs">
+      <DependentUpon>DetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LittleWatson.cs" />
     <Compile Include="LocationService.cs" />
     <Compile Include="StationPage.xaml.cs">
@@ -124,6 +127,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="DetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="StationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

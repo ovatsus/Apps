@@ -1,6 +1,7 @@
 ﻿namespace NationalRail
 
 open System
+open System.Linq
 open System.Text.RegularExpressions
 open FSharp.Control
 open FSharp.Net
@@ -27,7 +28,7 @@ type Departure = {
     DestinationDetail : string
     Status : Status
     Platform : string option
-    Details : LazyAsync<JourneyElement list>
+    Details : LazyAsync<JourneyElement[]>
 }
 
 and Time = 
@@ -60,10 +61,26 @@ and Status =
 
 and JourneyElement = {
     Departs : Time
+    Expected : Time option
     Station : string
-    Status : Status
+    Status : JourneyElementStatus
     Platform : string option
 }
+
+and JourneyElementStatus =
+    | OnTime of (*departed*)bool
+    | NoReport
+    | Delayed of (*departed*)bool * int
+    override x.ToString() =
+        match x with
+        | OnTime _ -> "On time"
+        | NoReport -> "No report"
+        | Delayed (_, mins) -> sprintf "Delayed %d mins" mins
+    member x.HasDeparted =
+        match x with
+        | OnTime hasDeparted -> hasDeparted
+        | NoReport -> true
+        | Delayed (hasDeparted, _) -> hasDeparted
 
 type DepartureType = 
     | Departure
@@ -113,14 +130,27 @@ type DeparturesTable with
 
         let getStatus due (statusCell:HtmlNode) = 
             if statusCell.InnerText.Trim() = "Cancelled" then
-                Cancelled, None
+                Status.Cancelled, None
             else
                 let statusSpan = statusCell.Element("span")
                 if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
-                    let delayMins = statusCell.Element("span").InnerText.Replace(" mins late", "") |> Int32.Parse
-                    Delayed delayMins, due + { Hours = 0; Minutes = delayMins } |> Some
+                    let delayMins = statusSpan.InnerText.Replace(" mins late", "") |> Int32.Parse
+                    Status.Delayed delayMins, due + { Hours = 0; Minutes = delayMins } |> Some
                 else
-                    OnTime, None
+                    Status.OnTime, None
+
+        let getJourneyElementStatus due (statusCell:HtmlNode) = 
+            if statusCell.InnerText.Trim() = "No report" then
+                NoReport, None
+            else
+                let statusSpan = statusCell.Element("span")
+                let hasDeparted = statusSpan <> null && statusSpan.InnerText = "Departed"
+                let statusSpan = statusCell.Elements("span").Last()
+                if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
+                    let delayMins = statusSpan.InnerText.Replace(" mins late", "") |> Int32.Parse
+                    Delayed (hasDeparted, delayMins), due + { Hours = 0; Minutes = delayMins } |> Some
+                else
+                    OnTime hasDeparted, None
 
         let parseTime (cell:HtmlNode) = 
             let time = cell.InnerText
@@ -138,8 +168,9 @@ type DeparturesTable with
         let rowToJourneyElement (tr:HtmlNode) = 
             let cells = tr.Elements "td" |> Seq.toArray
             let departs = cells.[0] |> parseTime
-            let status, _ = cells.[2] |> getStatus departs
+            let status, expected = cells.[2] |> getJourneyElementStatus departs
             { Departs = departs
+              Expected = expected
               Station = cells.[1].InnerText.Trim()
               Status = status
               Platform = cells.[3] |> parsePlatform}
@@ -155,7 +186,7 @@ type DeparturesTable with
                 |> Seq.head
                 |> elements "tr"
                 |> Seq.map rowToJourneyElement
-                |> Seq.toList }
+                |> Seq.toArray }
 
         let rowToDeparture (tr:HtmlNode) =
             let cells = tr.Elements "td" |> Seq.toArray        

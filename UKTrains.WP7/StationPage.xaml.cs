@@ -2,6 +2,7 @@
 using System.Device.Location;
 using System.Linq;
 using System.Threading;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 using Microsoft.Phone.Controls;
@@ -381,6 +382,13 @@ namespace UKTrains
         private void OnClearFilterClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(GetUri(departuresTable.WithoutFilter, false));
+        }
+
+        private void OnDetailsClick(object sender, EventArgs e)
+        {
+            var departure = (Departure)((Button)sender).DataContext;
+            DetailsPage.SetTarget(departure);
+            NavigationService.Navigate(new Uri("/DetailsPage.xaml", UriKind.Relative));
         }
     }
 }

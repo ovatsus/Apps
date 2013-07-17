@@ -12,6 +12,10 @@ type LazyAsync<'a> =
     /// callBack will be called on the same thread that called GetValueAsync
     member GetValueAsync : onSuccess:Action<'a> * onFailure:Action<exn> * resetIfFailed:bool -> CancellationTokenSource
 
+    member Reset : unit -> unit
+
+    member ResetIfFailed : unit -> unit
+
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module LazyAsync =
     

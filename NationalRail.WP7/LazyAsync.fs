@@ -81,6 +81,13 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
         |> doInOriginalThread
         |> x.DoWhenCompleted true
 
+    member __.Reset() =
+        lock state <| fun () -> 
+            match !state with
+            | Completed(asyncValue, value) ->
+                state := NotStarted asyncValue
+            | _ -> ()
+
     member __.ResetIfFailed() =
         lock state <| fun () -> 
             match !state with

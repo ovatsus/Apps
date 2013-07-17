@@ -4,6 +4,7 @@ Description:
 UK Trains brings you train departure and arrival information for all UK national rail stations.
 
 New in 1.5:
+* Added live progress information
 * Fixed crash when going to the settings page
 
 New in 1.4:

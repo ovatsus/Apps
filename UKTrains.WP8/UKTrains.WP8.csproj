@@ -120,6 +120,10 @@
       <Link>StationPage.xaml.cs</Link>
       <DependentUpon>StationPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="..\UKTrains.WP7\DetailsPage.xaml.cs">
+      <Link>DetailsPage.xaml.cs</Link>
+      <DependentUpon>DetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -204,6 +208,11 @@
     </Page>
     <Page Include="..\UKTrains.WP7\StationPage.xaml">
       <Link>StationPage.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\UKTrains.WP7\DetailsPage.xaml">
+      <Link>DetailsPage.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
