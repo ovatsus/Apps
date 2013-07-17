@@ -3,6 +3,9 @@ Store URL: http://www.windowsphone.com/en-gb/store/app/uk-trains/ef62d461-861c-4
 Description:
 UK Trains brings you train departure and arrival information for all UK national rail stations.
 
+New in 1.5:
+* Fixed crash when going to the settings page
+
 New in 1.4:
 * Added arrival information
 * Highlight delayed and cancelled trains
@@ -36,3 +39,4 @@ Train
 Rail
 Schedule
 Departures
+Arrivals
