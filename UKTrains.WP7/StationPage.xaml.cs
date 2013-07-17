@@ -27,7 +27,7 @@ namespace UKTrains
 #if WP8
             AddLockScreenItem();
 #endif
-            CommonMenuItems.Init(ApplicationBar, NavigationService);
+            CommonMenuItems.Init(this);
         }
 
         private DeparturesTable departuresTable;
