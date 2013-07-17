@@ -38,7 +38,7 @@ namespace UKTrains
                         GoToStation(stations[0]);
                     }
                 }));
-            CommonMenuItems.Init(ApplicationBar, NavigationService);
+            CommonMenuItems.Init(this);
         }
 
         private CancellationTokenSource nearestCts;
