@@ -107,12 +107,12 @@
     <Compile Include="DetailsPage.xaml.cs">
       <DependentUpon>DetailsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LazyBlockUI.cs" />
     <Compile Include="LittleWatson.cs" />
     <Compile Include="LocationService.cs" />
     <Compile Include="StationPage.xaml.cs">
       <DependentUpon>StationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LazyAsyncExtensions.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>

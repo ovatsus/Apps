@@ -1,6 +1,7 @@
 ﻿using Microsoft.Phone.Info;
 using Microsoft.Phone.Tasks;
 using System;
+using System.Globalization;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Reflection;
@@ -77,7 +78,8 @@ namespace UKTrains
             return "\n\n" + contents + "\n" +
                    "App Version: " + new AssemblyName(Assembly.GetExecutingAssembly().FullName).Version + "\n" +
                    "OS Version: " + Environment.OSVersion.Version + "\n" +
-                   "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName;
+                   "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName +
+                   "Culture: " + CultureInfo.CurrentCulture + "/" + CultureInfo.CurrentUICulture;
         }
 
         private static void SafeDeleteFile(IsolatedStorageFile store)

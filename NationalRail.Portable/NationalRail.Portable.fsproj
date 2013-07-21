@@ -47,6 +47,9 @@
     <Compile Include="..\NationalRail.WP7\LazyAsync.fs">
       <Link>LazyAsync.fs</Link>
     </Compile>
+    <Compile Include="..\NationalRail.WP7\LazyBlock.fs">
+      <Link>LazyBlock.fs</Link>
+    </Compile>
     <EmbeddedResource Include="..\NationalRail.WP7\RailReferences.csv">
       <Link>RailReferences.csv</Link>
     </EmbeddedResource>

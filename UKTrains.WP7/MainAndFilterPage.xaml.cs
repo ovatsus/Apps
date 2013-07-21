@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using FSharp.Control;
 using FSharp.GeoUtils;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Reactive;
@@ -41,7 +41,7 @@ namespace UKTrains
             CommonMenuItems.Init(this);
         }
 
-        private CancellationTokenSource nearestCts;
+        private LazyBlock<Tuple<string, Station>> nearestLazyBlock;
         private List<DeparturesTable> allRecentItems;
         private Station fromStation;
         private string excludeStation;
@@ -138,10 +138,9 @@ namespace UKTrains
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
-            if (nearestCts != null)
+            if (nearestLazyBlock != null)
             {
-                nearestCts.Cancel();
-                nearestCts = null;
+                nearestLazyBlock.Cancel();
             }
             if (fromStation == null)
             {
@@ -155,23 +154,22 @@ namespace UKTrains
 
         private void LoadNearestStations()
         {
+            var lazyBlockUI = new LazyBlockUI(this, nearestStations, nearestStationsMessageTextBlock, null);
+
             LatLong from;
             if (fromStation == null)
             {
                 var currentPosition = LocationService.CurrentPosition;
                 if (!Settings.GetBool(Setting.LocationServicesEnabled))
                 {
-                    nearestStations.ItemsSource = null;
-                    nearestStationsMessageTextBlock.Visibility = Visibility.Visible;
-                    nearestStationsMessageTextBlock.Text = "Locations Services are disabled";
+                    lazyBlockUI.SetItems<object>(null);
+                    lazyBlockUI.LocalProgressMessage = "Locations Services are disabled";
                     return;
                 }
                 else if (currentPosition == null || currentPosition.IsUnknown)
                 {
-                    nearestStationsMessageTextBlock.Visibility = Visibility.Visible;
-                    nearestStationsMessageTextBlock.Text = "Acquiring position...";
-                    var indicator = new ProgressIndicator { IsVisible = true, IsIndeterminate = true, Text = "Acquiring position..." };
-                    SystemTray.SetProgressIndicator(this, indicator);
+                    lazyBlockUI.LocalProgressMessage = "Acquiring position...";
+                    lazyBlockUI.GlobalProgressMessage = "Acquiring position...";
                     return;
                 }
                 from = LatLong.Create(currentPosition.Latitude, currentPosition.Longitude);
@@ -181,16 +179,19 @@ namespace UKTrains
                 from = fromStation.Location;
             }
 
-            bool refreshing = nearestStations.ItemsSource != null;
-            nearestCts = Stations.GetNearest(from, 150, Settings.GetBool(Setting.UseMilesInsteadOfKMs)).Display(
-                this,
-                refreshing ? "Refreshing nearest stations... " : "Loading nearest stations...",
-                refreshing,
+            lazyBlockUI.LocalProgressMessage = "";
+            lazyBlockUI.GlobalProgressMessage = "";
+
+            nearestLazyBlock = new LazyBlock<Tuple<string, Station>>(
+                "nearest stations",
                 "You're outside of the UK",
-                nearestStationsMessageTextBlock,
-                nearest =>
+                Stations.GetNearest(from, 150, Settings.GetBool(Setting.UseMilesInsteadOfKMs)),
+                lazyBlockUI,
+                false,
+                null,
+                nearestUnfiltered => 
                 {
-                    var nearestFiltered = nearest.AsEnumerable();
+                    var nearestFiltered = nearestUnfiltered.AsEnumerable();
                     if (fromStation != null)
                     {
                         nearestFiltered = nearestFiltered.Where(t => t.Item2.Code != fromStation.Code);
@@ -199,9 +200,8 @@ namespace UKTrains
                     {
                         nearestFiltered = nearestFiltered.Where(t => t.Item2.Code != excludeStation);
                     }
-                    nearestStations.ItemsSource = nearestFiltered;
-                },
-                () => nearestCts = null);
+                    return nearestFiltered.ToArray();
+                });
         }
 
         private void LoadRecentItems(string excludeStation)
@@ -228,7 +228,7 @@ namespace UKTrains
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (nearestCts == null)
+            if (nearestLazyBlock == null || nearestLazyBlock.CanRefresh)
             {
                 LoadNearestStations();
             }

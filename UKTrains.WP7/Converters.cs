@@ -58,7 +58,11 @@ namespace UKTrains
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var status = (JourneyElementStatus)value;
-            if (status.IsDelayed || status.IsNoReport)
+            if (status.IsCancelled)
+            {
+                return new SolidColorBrush(Colors.Red);
+            }
+            else if (status.IsDelayed || status.IsNoReport)
             {
                 return new SolidColorBrush(Colors.Orange);
             }

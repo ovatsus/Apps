@@ -114,6 +114,11 @@
                                TextWrapping="Wrap"
                                Margin="0,220,0,0"
                                HorizontalAlignment="Center" />
+                    <TextBlock x:Name="departuresLastUpdatedTextBlock" 
+                               VerticalAlignment="Top"
+                               Margin="12,-26,0,0"
+                               Foreground="Gray"
+                               FontSize="18" />
                 </Grid>
             </controls:PivotItem>
             <controls:PivotItem Header="Arrivals">
@@ -137,6 +142,11 @@
                                TextWrapping="Wrap"
                                Margin="0,220,0,0"
                                HorizontalAlignment="Center" />
+                    <TextBlock x:Name="arrivalsLastUpdatedTextBlock" 
+                               VerticalAlignment="Top"
+                               Margin="12,-26,0,0"
+                               Foreground="Gray"
+                               FontSize="18" />
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>

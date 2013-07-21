@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Threading;
 using System.Windows.Navigation;
-using System.Windows.Threading;
+using FSharp.Control;
 using Microsoft.Phone.Controls;
 using NationalRail;
 
@@ -17,8 +16,7 @@ namespace UKTrains
 
         private static Departure departure;
 
-        private DispatcherTimer refreshTimer;
-        private CancellationTokenSource journeyElementsCts;
+        private LazyBlock<JourneyElement> journeyElementsLazyBlock;
 
         //TODO: remove the static and pass in the page parameters
         public static void SetTarget(Departure departure) 
@@ -35,7 +33,14 @@ namespace UKTrains
             }
             else
             {
-                LoadJourneyElements();
+                journeyElementsLazyBlock = new LazyBlock<JourneyElement>(
+                    "live progress",
+                    "No information available",
+                    departure.Details,
+                    new LazyBlockUI(this, journeyElements, journeyElementsMessageTextBlock, journeyElementsLastUpdatedTextBlock),
+                    true,
+                    null,
+                    null);
             }
         }
 
@@ -49,60 +54,12 @@ namespace UKTrains
                 return;
             }
 #endif
-            if (refreshTimer != null)
-            {
-                refreshTimer.Stop();
-                refreshTimer = null;
-            }
-            if (journeyElementsCts != null)
-            {
-                journeyElementsCts.Cancel();
-                journeyElementsCts = null;
-            }
-        }
-
-        private void LoadJourneyElements()
-        {
-            if (refreshTimer != null)
-            {
-                refreshTimer.Stop();
-                refreshTimer = null;
-            }
-            bool refreshing = this.journeyElements.ItemsSource != null;
-            if (refreshing)
-            {
-                departure.Details.Reset();
-            }
-            journeyElementsCts = departure.Details.Display(
-                this,
-                refreshing ? "Refreshing live progress..." : "Loading live progress...",
-                refreshing,
-                "No information available",
-                journeyElementsMessageTextBlock,
-                UpdateJourneyElements,
-                () => journeyElementsCts = null);
-        }
-
-        private void UpdateJourneyElements(JourneyElement[] journeyElements)
-        {
-            this.journeyElements.ItemsSource = journeyElements;
-
-            if (refreshTimer != null)
-            {
-                refreshTimer.Stop();
-            }
-            refreshTimer = new DispatcherTimer();
-            refreshTimer.Interval = TimeSpan.FromSeconds(60);
-            refreshTimer.Tick += (sender, args) => LoadJourneyElements();
-            refreshTimer.Start();
+            journeyElementsLazyBlock.Cancel();
         }
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (journeyElementsCts == null)
-            {
-                LoadJourneyElements();
-            }
+            journeyElementsLazyBlock.Refresh();
         }       
     }
 }

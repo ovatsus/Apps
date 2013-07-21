@@ -35,15 +35,14 @@ namespace UKTrains
                 }.Show();
             });
 
-            var installationDateStr = Settings.GetString(Setting.InstallationDate);
-            if (installationDateStr == "")
+            var installationDate = Settings.GetDateTime(Setting.InstallationDate);
+            if (!installationDate.HasValue)
             {
-                Settings.Set(Setting.InstallationDate, DateTime.UtcNow.ToString());
+                Settings.Set(Setting.InstallationDate, DateTime.UtcNow);
             }
             else if (!Settings.GetBool(Setting.RatingDone))
             {
-                var installationDate = DateTime.Parse(installationDateStr);
-                if ((DateTime.UtcNow - installationDate).TotalDays >= 1)
+                if ((DateTime.UtcNow - installationDate.Value).TotalDays >= 1)
                 {
                     var result = MessageBox.Show("Would you mind reviewing the UK Trains app?", "Rate and Review", MessageBoxButton.OKCancel);
                     if (result == MessageBoxResult.OK)
@@ -51,7 +50,7 @@ namespace UKTrains
                         new MarketplaceReviewTask().Show();
                     }
                     Settings.Set(Setting.RatingDone, true);
-                }                
+                }
             }
         }
     }

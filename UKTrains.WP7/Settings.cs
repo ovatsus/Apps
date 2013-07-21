@@ -1,4 +1,6 @@
-﻿using System.IO.IsolatedStorage;
+﻿using System;
+using System.Globalization;
+using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -41,7 +43,21 @@ namespace UKTrains
         public static double GetDouble(Setting setting)
         {
             var value = GetString(setting);
-            return value == "" ? double.NaN : double.Parse(value);
+            return value == "" ? double.NaN : double.Parse(value, CultureInfo.InvariantCulture);
+        }
+
+        public static DateTime? GetDateTime(Setting setting)
+        {
+            var value = GetString(setting);
+            DateTime dateTime;
+            if (!DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out dateTime))
+            {
+                return null;
+            }
+            else
+            {
+                return dateTime;
+            }
         }
 
         public static void Set(Setting setting, string value)
@@ -60,6 +76,11 @@ namespace UKTrains
         public static void Set(Setting setting, double value)
         {
             Set(setting, double.IsNaN(value) ? "" : value.ToString());
+        }
+
+        public static void Set(Setting setting, DateTime value)
+        {
+            Set(setting, value.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

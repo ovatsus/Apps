@@ -1,4 +1,4 @@
-﻿module FSharp.Control
+﻿namespace FSharp.Control
 
 open System
 open System.Threading
@@ -35,12 +35,13 @@ type AsyncState<'a> =
 type LazyAsync<'a>(state:AsyncState<'a>) = 
 
     let state = ref state
-    let completed = Event<_>()
-    let icompleted = completed.Publish
+    let mutable completed = Event<_>()
+    let mutable icompleted = completed.Publish
 
-    member __.DoWhenCompleted startIfNotRunning f =
+    member __.DoWhenCompleted startIfNotRunning f cancelF =
         let cancelationTokenSource = new CancellationTokenSource()
         let startWithCancellationToken computation =
+            cancelationTokenSource.Token.Register(Action<obj>(fun _ -> cancelF()), ()) |> ignore
             Async.Start(computation, cancelationTokenSource.Token)
         lock state <| fun () -> 
             match !state with
@@ -64,10 +65,7 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
         |> Option.iter (fun continuation -> continuation())
         cancelationTokenSource
 
-    member x.GetValueAsync(onSuccess:Action<_>, onFailure:Action<_>, resetIfFailed:bool) = 
-
-        if resetIfFailed then
-            x.ResetIfFailed()
+    member x.GetValueAsync onSuccess onFailure onCancel = 
 
         let synchronizationContext = SynchronizationContext.Current
 
@@ -77,15 +75,19 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
             else
                 f arg
 
-        ComputationResult.combine onSuccess.Invoke onFailure.Invoke
+        let cancelF = doInOriginalThread (fun _ -> onCancel())
+
+        ComputationResult.combine onSuccess onFailure
         |> doInOriginalThread
-        |> x.DoWhenCompleted true
+        |> x.DoWhenCompleted true <| cancelF
 
     member __.Reset() =
         lock state <| fun () -> 
             match !state with
             | Completed(asyncValue, value) ->
                 state := NotStarted asyncValue
+                completed <- Event<_>()
+                icompleted <- completed.Publish
             | _ -> ()
 
     member __.ResetIfFailed() =
@@ -93,7 +95,10 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
             match !state with
             | Completed(asyncValue, value) ->
                 match value with
-                | Failure _ -> state := NotStarted asyncValue
+                | Failure _ -> 
+                    state := NotStarted asyncValue
+                    completed <- Event<_>()
+                    icompleted <- completed.Publish
                 | _ -> ()
             | _ -> ()
 

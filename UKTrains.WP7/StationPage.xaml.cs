@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Device.Location;
 using System.Linq;
-using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using System.Windows.Threading;
+using FSharp.Control;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
@@ -32,9 +31,8 @@ namespace UKTrains
         }
 
         private DeparturesTable departuresTable;
-        private DispatcherTimer refreshTimer;
-        private CancellationTokenSource departuresCts;
-        private CancellationTokenSource arrivalsCts;
+        private LazyBlock<Departure> departuresLazyBlock;
+        private LazyBlock<Departure> arrivalsLazyBlock;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -51,7 +49,23 @@ namespace UKTrains
             departuresTable = DeparturesTable.Create(from, to);
             pivot.Title = departuresTable.ToString();
 
-            LoadDepartures();
+            departuresLazyBlock = new LazyBlock<Departure>(
+                "departures",
+                "No more trains today",
+                departuresTable.GetDepartures(DepartureType.Departure),
+                new LazyBlockUI(this, departures, departuresMessageTextBlock, departuresLastUpdatedTextBlock),
+                true,
+                () => UpdateTiles(),
+                null);
+
+            arrivalsLazyBlock = new LazyBlock<Departure>(
+                "arrivals",
+                "No more trains today",
+                departuresTable.GetDepartures(DepartureType.Arrival),
+                new LazyBlockUI(this, arrivals, arrivalsMessageTextBlock, arrivalsLastUpdatedTextBlock),
+                true,
+                null,
+                null);
 
             if (removeBackEntry)
             {
@@ -85,72 +99,10 @@ namespace UKTrains
                 return;
             }
 #endif
-            if (refreshTimer != null)
-            {
-                refreshTimer.Stop();
-                refreshTimer = null;
-            }
-            if (departuresCts != null)
-            {
-                departuresCts.Cancel();
-                departuresCts = null;
-            }
-            if (arrivalsCts != null)
-            {
-                arrivalsCts.Cancel();
-                arrivalsCts = null;
-            }
+            departuresLazyBlock.Cancel();
+            arrivalsLazyBlock.Cancel();
         }
 
-        private void LoadDepartures()
-        {
-            if (refreshTimer != null)
-            {
-                refreshTimer.Stop();
-                refreshTimer = null;
-            }
-            bool refreshing = this.departures.ItemsSource != null;
-            departuresCts = departuresTable.GetDepartures(DepartureType.Departure).Display(
-                this,
-                refreshing ? "Refreshing departures..." : "Loading departures...",
-                refreshing,
-                "No more trains today",
-                departuresMessageTextBlock,
-                UpdateDepartures,
-                () => {
-                    departuresCts = null;
-                    LoadArrivals();
-                });
-        }
-
-        private void LoadArrivals()
-        {
-            bool refreshing = this.arrivals.ItemsSource != null;
-            arrivalsCts = departuresTable.GetDepartures(DepartureType.Arrival).Display(
-                this,
-                refreshing ? "Refreshing arrivals..." : "Loading arrivals...",
-                refreshing,
-                "No more trains today",
-                arrivalsMessageTextBlock,
-                arrivals => this.arrivals.ItemsSource = arrivals,
-                () => arrivalsCts = null);
-        }
-
-        private void UpdateDepartures(Departure[] departures)
-        {
-            this.departures.ItemsSource = departures;
-
-            if (refreshTimer != null)
-            {
-                refreshTimer.Stop();
-            }
-            refreshTimer = new DispatcherTimer();
-            refreshTimer.Interval = TimeSpan.FromSeconds(60);
-            refreshTimer.Tick += (sender, args) => LoadDepartures();
-            refreshTimer.Start();
-
-            UpdateTiles();
-        }
 
         private void UpdateTiles()
         {
@@ -363,9 +315,13 @@ namespace UKTrains
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (departuresCts == null && arrivalsCts == null)
+            if (pivot.SelectedIndex != 1)
             {
-                LoadDepartures();
+                departuresLazyBlock.Refresh();
+            }
+            if (pivot.SelectedIndex != 0)
+            {
+                arrivalsLazyBlock.Refresh();
             }
         }       
 

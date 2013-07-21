@@ -53,6 +53,7 @@
     <Compile Include="HtmlAgilityPack.FSharp.fs" />
     <Compile Include="LazyAsync.fsi" />
     <Compile Include="LazyAsync.fs" />
+    <Compile Include="LazyBlock.fs" />
     <EmbeddedResource Include="RailReferences.csv" />
     <Compile Include="GeoUtils.fs" />
     <Compile Include="Stations.fs" />

@@ -99,6 +99,11 @@
                                TextWrapping="Wrap"
                                Margin="0,220,0,0"
                                HorizontalAlignment="Center" />
+                    <TextBlock x:Name="journeyElementsLastUpdatedTextBlock" 
+                               VerticalAlignment="Top"
+                               Margin="12,-26,0,0"
+                               Foreground="Gray"
+                               FontSize="18" />
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>

@@ -1,6 +1,7 @@
 ﻿namespace NationalRail
 
 open System
+open System.Globalization
 open System.Linq
 open System.Text.RegularExpressions
 open FSharp.Control
@@ -29,7 +30,7 @@ type Departure = {
     Status : Status
     Platform : string option
     Details : LazyAsync<JourneyElement[]>
-}
+} with member x.PlatformIsKnown = x.Platform.IsSome
 
 and Time = 
     { Hours : int
@@ -70,16 +71,19 @@ and JourneyElement = {
 and JourneyElementStatus =
     | OnTime of (*departed*)bool
     | NoReport
+    | Cancelled
     | Delayed of (*departed*)bool * int
     override x.ToString() =
         match x with
         | OnTime _ -> "On time"
         | NoReport -> "No report"
+        | Cancelled -> "Cancelled"
         | Delayed (_, mins) -> sprintf "Delayed %d mins" mins
     member x.HasDeparted =
         match x with
         | OnTime hasDeparted -> hasDeparted
         | NoReport -> true
+        | Cancelled -> false
         | Delayed (hasDeparted, _) -> hasDeparted
 
 type DepartureType = 
@@ -90,8 +94,8 @@ type DepartureType =
         | Departure -> "dep"
         | Arrival -> "arr"
 
-type Departure with
-    member x.PlatformIsKnown = x.Platform.IsSome
+type ParseError(msg, exn) = 
+    inherit Exception(msg, exn)
 
 type DeparturesTable with
     
@@ -128,37 +132,49 @@ type DeparturesTable with
 
     member journey.GetDepartures (departureType:DepartureType) = 
 
+        let parseInt str = 
+            match Int32.TryParse(str, NumberStyles.Integer, CultureInfo.InvariantCulture) with
+            | true, i -> Some i
+            | false, _ -> None
+
         let getStatus due (statusCell:HtmlNode) = 
             if statusCell.InnerText.Trim() = "Cancelled" then
                 Status.Cancelled, None
             else
                 let statusSpan = statusCell.Element("span")
                 if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
-                    let delayMins = statusSpan.InnerText.Replace(" mins late", "") |> Int32.Parse
-                    Status.Delayed delayMins, due + { Hours = 0; Minutes = delayMins } |> Some
+                    match statusSpan.InnerText.Replace(" mins late", "") |> parseInt with
+                    | Some delayMins -> Status.Delayed delayMins, due + { Hours = 0; Minutes = delayMins } |> Some
+                    | _ -> failwithf "Invalid status: %s" statusCell.InnerText
                 else
                     Status.OnTime, None
 
         let getJourneyElementStatus due (statusCell:HtmlNode) = 
-            if statusCell.InnerText.Trim() = "No report" then
+            if statusCell.InnerText.Trim() = "Cancelled" then
+                Cancelled, None
+            elif statusCell.InnerText.Trim() = "No report" then
                 NoReport, None
             else
                 let statusSpan = statusCell.Element("span")
-                let hasDeparted = statusSpan <> null && statusSpan.InnerText = "Departed"
+                let hasDeparted = statusSpan <> null && (statusSpan.InnerText = "Departed" || statusSpan.InnerText = "Arrived")
                 let statusSpan = statusCell.Elements("span").Last()
                 if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
-                    let delayMins = statusSpan.InnerText.Replace(" mins late", "") |> Int32.Parse
-                    Delayed (hasDeparted, delayMins), due + { Hours = 0; Minutes = delayMins } |> Some
+                    match statusSpan.InnerText.Replace(" mins late", "") |> parseInt with
+                    | Some delayMins -> Delayed (hasDeparted, delayMins), due + { Hours = 0; Minutes = delayMins } |> Some
+                    | _ -> failwithf "Invalid status: %s" statusCell.InnerText
                 else
                     OnTime hasDeparted, None
 
         let parseTime (cell:HtmlNode) = 
             let time = cell.InnerText
             let pos = time.IndexOf ':'
-            let hours = time.Substring(0, pos) |> Int32.Parse
-            let minutes = time.Substring(pos+1) |> Int32.Parse
-            { Hours = hours
-              Minutes = minutes }
+            if pos >= 0 then
+                let hours = time.Substring(0, pos) |> parseInt
+                let minutes = time.Substring(pos+1) |> parseInt
+                match hours, minutes with
+                | Some hours, Some minutes -> { Hours = hours; Minutes = minutes }
+                | _ -> failwithf "Invalid time: %s" time
+            else failwithf "Invalid time: %s" time
 
         let parsePlatform (cell:HtmlNode) = 
             match cell.InnerText.Trim() with
@@ -178,15 +194,19 @@ type DeparturesTable with
         let getJourneyDetails url = async {
         
             let! html = Http.AsyncRequest url
-            let doc = createDoc html   
         
-            return 
-                doc 
-                |> descendants "tbody" 
-                |> Seq.head
-                |> elements "tr"
-                |> Seq.map rowToJourneyElement
-                |> Seq.toArray }
+            let getJourneyDetails() = 
+                try 
+                    createDoc html
+                    |> descendants "tbody"
+                    |> Seq.collect (fun body -> body |> elements "tr")
+                    |> Seq.map rowToJourneyElement
+                    |> Seq.toArray
+                with exn ->
+                    raise <| ParseError(sprintf "Failed to parse journey details html from %s:\n%s\n" url (html.Trim()), exn)
+
+            return getJourneyDetails()
+        }
 
         let rowToDeparture (tr:HtmlNode) =
             let cells = tr.Elements "td" |> Seq.toArray        
@@ -194,13 +214,13 @@ type DeparturesTable with
                 let dest = cells.[1].InnerText.Trim()
                 let dest = Regex.Replace(dest, "\s+", " ")
                 let pos = dest.IndexOf " via"
-                if pos = -1
-                then 
+                if pos >= 0
+                then dest.Substring(0, pos), dest.Substring(pos + 1)
+                else
                     let pos = dest.IndexOf " (circular route)"
-                    if pos = -1
-                    then dest, ""
-                    else dest.Substring(0, pos), dest.Substring(pos + 1)
-                else dest.Substring(0, pos), dest.Substring(pos + 1)
+                    if pos >= 0
+                    then dest.Substring(0, pos), dest.Substring(pos + 1)
+                    else dest, ""
             let due = cells.[0] |> parseTime
             let status, expected = cells.[2] |> getStatus due
             { Due = due
@@ -220,13 +240,17 @@ type DeparturesTable with
 
         async {
             let! html = Http.AsyncRequest url
-            let doc = createDoc html   
 
-            let departures = 
-                doc 
-                |> descendants "tbody" 
-                |> Seq.collect (fun body -> body |> elements "tr")                
-                |> Seq.map rowToDeparture
-                |> Seq.toArray
+            let getDepartures() = 
+                try 
+                    createDoc html
+                    |> descendants "tbody"
+                    |> Seq.collect (fun body -> body |> elements "tr")
+                    |> Seq.map rowToDeparture
+                    |> Seq.toArray
+                with exn ->
+                    raise <| ParseError(sprintf "Failed to parse departures html from %s:\n%s\n" url (html.Trim()), exn)
 
-            return departures } |> LazyAsync.fromAsync
+            return getDepartures()
+
+        } |> LazyAsync.fromAsync

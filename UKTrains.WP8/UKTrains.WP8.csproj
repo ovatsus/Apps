@@ -96,8 +96,8 @@
     <Compile Include="..\UKTrains.WP7\Converters.cs">
       <Link>Converters.cs</Link>
     </Compile>
-    <Compile Include="..\UKTrains.WP7\LazyAsyncExtensions.cs">
-      <Link>LazyAsyncExtensions.cs</Link>
+    <Compile Include="..\UKTrains.WP7\LazyBlockUI.cs">
+      <Link>LazyBlockUI.cs</Link>
     </Compile>
     <Compile Include="..\UKTrains.WP7\LittleWatson.cs">
       <Link>LittleWatson.cs</Link>
