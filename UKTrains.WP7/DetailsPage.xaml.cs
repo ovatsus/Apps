@@ -54,7 +54,10 @@ namespace UKTrains
                 return;
             }
 #endif
-            journeyElementsLazyBlock.Cancel();
+            if (journeyElementsLazyBlock != null)
+            {
+                journeyElementsLazyBlock.Cancel();
+            }
         }
 
         private void OnRefreshClick(object sender, EventArgs e)

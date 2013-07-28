@@ -78,7 +78,7 @@ namespace UKTrains
             return "\n\n" + contents + "\n" +
                    "App Version: " + new AssemblyName(Assembly.GetExecutingAssembly().FullName).Version + "\n" +
                    "OS Version: " + Environment.OSVersion.Version + "\n" +
-                   "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName +
+                   "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName + "\n" +
                    "Culture: " + CultureInfo.CurrentCulture + "/" + CultureInfo.CurrentUICulture;
         }
 
