@@ -1,15 +1,18 @@
-﻿using Microsoft.Phone.Info;
-using Microsoft.Phone.Tasks;
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Net;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
+using System.Xml;
+using Microsoft.Phone.Info;
+using Microsoft.Phone.Tasks;
 
 namespace UKTrains
 {
-    public class LittleWatson
+    public static class LittleWatson
     {
         private const string filename = "LittleWatson.txt";
 
@@ -91,6 +94,90 @@ namespace UKTrains
             catch
             {
             }
+        }
+
+        private static string GetManifestAttributeValue(string attributeName)
+        {
+            var xmlReaderSettings = new XmlReaderSettings
+            {
+                XmlResolver = new XmlXapResolver()
+            };
+
+            using (var xmlReader = XmlReader.Create("WMAppManifest.xml", xmlReaderSettings))
+            {
+                xmlReader.ReadToDescendant("App");
+
+                return xmlReader.GetAttribute(attributeName);
+            }
+        }
+
+        public static void CheckForNewVersion(Page page)
+        {
+            var lastNewVersionCheck = Settings.GetDateTime(Setting.LastNewVersionCheck);
+            if (!lastNewVersionCheck.HasValue)
+            {
+                Settings.Set(Setting.LastNewVersionCheck, DateTime.UtcNow);
+                return;
+            }
+            if ((DateTime.UtcNow - lastNewVersionCheck.Value).TotalDays < 7)
+            {
+                //only check once a week
+                return;
+            }
+            try
+            {
+                var cultureInfoName = CultureInfo.CurrentUICulture.Name;
+
+                var url = string.Format("http://marketplaceedgeservice.windowsphone.com/v8/catalog/apps/{0}?os={1}&cc={2}&oc=&lang={3}​",
+                    GetManifestAttributeValue("ProductID"),
+                    Environment.OSVersion.Version,
+                    cultureInfoName.Substring(cultureInfoName.Length - 2).ToUpperInvariant(),
+                    cultureInfoName);
+
+                var request = WebRequest.Create(url);
+                request.BeginGetResponse(result =>
+                {
+                    try
+                    {
+                        var response = (HttpWebResponse)request.EndGetResponse(result);
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            using (var outputStream = response.GetResponseStream())
+                            {
+                                using (var reader = XmlReader.Create(outputStream))
+                                {
+                                    reader.MoveToContent();
+
+                                    var aNamespace = reader.LookupNamespace("a");
+
+                                    reader.ReadToFollowing("entry", aNamespace);
+
+                                    reader.ReadToDescendant("version");
+
+                                    var updatedVersion = new Version(reader.ReadElementContentAsString());
+                                    var currentVersion = new Version(GetManifestAttributeValue("Version"));
+
+                                    Settings.Set(Setting.LastNewVersionCheck, DateTime.UtcNow);
+
+                                    if (updatedVersion > currentVersion)
+                                    {
+                                        page.Dispatcher.BeginInvoke(() =>
+                                        {
+                                            if (MessageBox.Show("Do you want to install the new version now?", "Update Available", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                                            {
+                                                new MarketplaceDetailTask().Show();
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch { }
+                },
+                null);
+            }
+            catch { }
         }
     }
 }

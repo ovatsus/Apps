@@ -70,6 +70,7 @@ namespace UKTrains
                             Settings.Set(Setting.LocationServicesEnabled, true);
                         }
                     }
+                    LittleWatson.CheckForNewVersion(this);
                 }
                 pivot.Title = "Rail Stations";
                 nearest.Header = "Near me";

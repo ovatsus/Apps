@@ -58,22 +58,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\wp7\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Inneractive.Nokia.Ad, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\wpunifiedad\Inneractive.Nokia.Ad.dll</HintPath>
-    </Reference>
-    <Reference Include="MC.Phone.Ads, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\wpunifiedad\MC.Phone.Ads.dll</HintPath>
-    </Reference>
-    <Reference Include="MC.Phone.Ads.AdDuplex, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\wpunifiedad\MC.Phone.Ads.AdDuplex.dll</HintPath>
-    </Reference>
-    <Reference Include="MC.Phone.Ads.InnerActive, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\wpunifiedad\MC.Phone.Ads.InnerActive.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">

@@ -16,6 +16,7 @@ namespace UKTrains
         UseMilesInsteadOfKMs,
         RatingDone,
         InstallationDate,
+        LastNewVersionCheck,
     }
 
     public static class Settings
