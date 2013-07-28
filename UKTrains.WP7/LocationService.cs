@@ -17,7 +17,14 @@ namespace UKTrains
             var longitude = Settings.GetDouble(Setting.CurrentLong);
             if (!double.IsNaN(latitude) && !double.IsNaN(longitude))
             {
-                CurrentPosition = new GeoCoordinate(latitude, longitude);
+                try
+                {
+                    CurrentPosition = new GeoCoordinate(latitude, longitude);
+                }
+                catch 
+                { 
+                    //previous versions stored this wrong
+                }
             }
             watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High)
             {
