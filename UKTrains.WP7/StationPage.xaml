@@ -112,7 +112,7 @@
                     </ItemsControl>
                     <TextBlock x:Name="departuresMessageTextBlock" 
                                TextWrapping="Wrap"
-                               Margin="0,220,0,0"
+                               Margin="12,220,12,0"
                                HorizontalAlignment="Center" />
                     <TextBlock x:Name="departuresLastUpdatedTextBlock" 
                                VerticalAlignment="Top"
@@ -140,7 +140,7 @@
                     </ItemsControl>
                     <TextBlock x:Name="arrivalsMessageTextBlock" 
                                TextWrapping="Wrap"
-                               Margin="0,220,0,0"
+                               Margin="12,220,12,0"
                                HorizontalAlignment="Center" />
                     <TextBlock x:Name="arrivalsLastUpdatedTextBlock" 
                                VerticalAlignment="Top"

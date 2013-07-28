@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using FSharp.Control;
+using Microsoft.FSharp.Collections;
 using Microsoft.Phone.Shell;
 
 namespace UKTrains
@@ -27,35 +28,34 @@ namespace UKTrains
             return SystemTray.GetProgressIndicator(page) ?? new ProgressIndicator();
         }
 
-        public string GlobalProgressMessage
+        public FSharpList<LazyBlockUIState> GlobalState
         {
-            get { return GetIndicator().Text ?? ""; }
-            set
+            get { return (FSharpList<LazyBlockUIState>)page.Tag ?? FSharpList<LazyBlockUIState>.Empty; }
+            set { page.Tag = value; }
+        }
+
+        public void SetGlobalProgressMessage(string value)
+        {
+            var indicator = GetIndicator();
+            indicator.Text = value;
+            if (value != "")
+            {                    
+                indicator.IsVisible = true;
+                indicator.IsIndeterminate = true;
+                SystemTray.SetProgressIndicator(page, indicator);
+            }
+            else
             {
-                var indicator = GetIndicator();
-                indicator.Text = value;
-                if (value != "")
-                {                    
-                    indicator.IsVisible = true;
-                    indicator.IsIndeterminate = true;
-                    SystemTray.SetProgressIndicator(page, indicator);
-                }
-                else
-                {
-                    indicator.IsVisible = false;
-                    indicator.IsIndeterminate = false;
-                    SystemTray.SetProgressIndicator(page, null);
-                }
+                indicator.IsVisible = false;
+                indicator.IsIndeterminate = false;
+                SystemTray.SetProgressIndicator(page, null);
             }
         }
 
-        public string LocalProgressMessage
+        public void SetLocalProgressMessage(string value)
         {
-            set
-            {
-                messageTextBlock.Text = value;
-                messageTextBlock.Visibility = value != "" ? Visibility.Visible : Visibility.Collapsed;
-            }
+            messageTextBlock.Text = value;
+            messageTextBlock.Visibility = value != "" ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public bool HasItems
@@ -68,13 +68,11 @@ namespace UKTrains
             itemsControl.ItemsSource = items;
         }
 
-        public string LastUpdated
+        public void SetLastUpdated(string value)
         {
-            set {
-                if (lastUpdatedTextBlock != null)
-                {
-                    lastUpdatedTextBlock.Text = value;
-                }
+            if (lastUpdatedTextBlock != null)
+            {
+                lastUpdatedTextBlock.Text = value;
             }
         }
 

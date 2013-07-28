@@ -163,13 +163,13 @@ namespace UKTrains
                 if (!Settings.GetBool(Setting.LocationServicesEnabled))
                 {
                     lazyBlockUI.SetItems<object>(null);
-                    lazyBlockUI.LocalProgressMessage = "Locations Services are disabled";
+                    lazyBlockUI.SetLocalProgressMessage("Locations Services are disabled");
                     return;
                 }
                 else if (currentPosition == null || currentPosition.IsUnknown)
                 {
-                    lazyBlockUI.LocalProgressMessage = "Acquiring position...";
-                    lazyBlockUI.GlobalProgressMessage = "Acquiring position...";
+                    lazyBlockUI.SetLocalProgressMessage("Acquiring position...");
+                    lazyBlockUI.SetGlobalProgressMessage("Acquiring position...");
                     return;
                 }
                 from = LatLong.Create(currentPosition.Latitude, currentPosition.Longitude);
@@ -179,8 +179,8 @@ namespace UKTrains
                 from = fromStation.Location;
             }
 
-            lazyBlockUI.LocalProgressMessage = "";
-            lazyBlockUI.GlobalProgressMessage = "";
+            lazyBlockUI.SetLocalProgressMessage("");
+            lazyBlockUI.SetGlobalProgressMessage("");
 
             nearestLazyBlock = new LazyBlock<Tuple<string, Station>>(
                 "nearest stations",

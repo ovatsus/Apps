@@ -97,7 +97,7 @@
                     </ItemsControl>
                     <TextBlock x:Name="journeyElementsMessageTextBlock" 
                                TextWrapping="Wrap"
-                               Margin="0,220,0,0"
+                               Margin="12,220,12,0"
                                HorizontalAlignment="Center" />
                     <TextBlock x:Name="journeyElementsLastUpdatedTextBlock" 
                                VerticalAlignment="Top"

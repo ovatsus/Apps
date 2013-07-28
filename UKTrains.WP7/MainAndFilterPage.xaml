@@ -128,7 +128,7 @@
                     </ItemsControl>
                     <TextBlock x:Name="nearestStationsMessageTextBlock" 
                                TextWrapping="Wrap"
-                               Margin="0,220,0,0"
+                               Margin="12,220,12,0"
                                HorizontalAlignment="Center" />
                 </Grid>
             </controls:PivotItem>

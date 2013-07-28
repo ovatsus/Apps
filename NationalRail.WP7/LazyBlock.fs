@@ -3,15 +3,23 @@ namespace FSharp.Control
 open System
 open System.Net
 
+type LazyBlockUIState =
+    | Loading of string
+    | Refreshing of string
+    static member Create s refreshing = 
+        s |> if refreshing then Refreshing else Loading
+
 type ILazyBlockUI = 
 
-    abstract GlobalProgressMessage : string with get, set
-    abstract LocalProgressMessage : string with set
+    abstract GlobalState : LazyBlockUIState list with get, set
+
+    abstract SetGlobalProgressMessage : string -> unit
+    abstract SetLocalProgressMessage : string -> unit
 
     abstract HasItems : bool
     abstract SetItems : 'a[] -> unit
 
-    abstract LastUpdated : string with set
+    abstract SetLastUpdated : string -> unit
 
     abstract StartTimer : Action -> unit
     abstract StopTimer : unit -> unit
@@ -22,6 +30,15 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync : LazyAsync<'a[]>, ui : ILaz
 
     let cts = ref None
 
+    let rec getMessage = function
+        | [] -> ""
+        | [Loading x] -> sprintf "Loading %s..." x
+        | [Refreshing x] -> sprintf "Refreshing %s..." x
+        | [Loading x; Loading y] -> sprintf "Loading %s & %s..." x y
+        | [Refreshing x; Refreshing y] -> sprintf "Refreshing %s & %s..." x y
+        | Loading x::xs -> sprintf "Loading %s & %s" x ((getMessage xs).ToLower())
+        | Refreshing x::xs -> sprintf "Refreshing %s & %s"  x ((getMessage xs).ToLower())        
+
     let load() = 
 
         if useRefreshTimer then 
@@ -29,32 +46,23 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync : LazyAsync<'a[]>, ui : ILaz
 
         let refreshing = ui.HasItems
 
-        let prefix = if refreshing then "Refreshing " else "Loading "
+        let state = LazyBlockUIState.Create subject refreshing
 
         if not refreshing then
-            ui.LocalProgressMessage <- prefix + subject + "..."
+            ui.SetLocalProgressMessage (getMessage [state])
 
-        let first = ui.GlobalProgressMessage = ""
-
-        let message = (if first || not (ui.GlobalProgressMessage.Contains prefix) then prefix else "") + subject + "...";
-        
-        ui.GlobalProgressMessage <- if first then message else ui.GlobalProgressMessage.Replace("...", " & " + message.ToLower())
+        ui.GlobalState <- ui.GlobalState @ [state]
+        ui.SetGlobalProgressMessage (getMessage ui.GlobalState)
 
         let removeGlobalProgressIndicator() =
-            if ui.GlobalProgressMessage = message || ui.GlobalProgressMessage = prefix + message then
-                ui.GlobalProgressMessage <- ""
-            elif first then
-                ui.GlobalProgressMessage <- 
-                    let message = ui.GlobalProgressMessage.Replace(message.Replace("...", " & "), null)
-                    if message.StartsWith prefix then message else prefix + message
-            else
-                ui.GlobalProgressMessage <- ui.GlobalProgressMessage.Replace(" & " + message.ToLower(), "...")
+            ui.GlobalState <- ui.GlobalState |> List.filter ((<>) state)
+            ui.SetGlobalProgressMessage (getMessage ui.GlobalState)        
 
         let onSucess values =             
-            ui.LocalProgressMessage <- if Array.length values = 0 then emptyMessage else ""
+            ui.SetLocalProgressMessage (if Array.length values = 0 then emptyMessage else "")
             removeGlobalProgressIndicator()
             ui.SetItems (if filter = null then values else filter.Invoke values)
-            ui.LastUpdated <- "last updated at " + DateTime.Now.ToString("HH:mm:ss")
+            ui.SetLastUpdated ("last updated at " + DateTime.Now.ToString("HH:mm:ss"))
             cts := None
             if afterRefresh <> null then 
                 afterRefresh.Invoke()
@@ -63,26 +71,27 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync : LazyAsync<'a[]>, ui : ILaz
 
         let onFailure (exn:exn) = 
             removeGlobalProgressIndicator()
+            let isWebException = exn :? WebException
             if not refreshing then
-                ui.LocalProgressMessage <- 
-                    if exn.Message.Length > 500 then
-                        exn.Message.Substring(0, 500) + " ..."
-                    else
-                        exn.Message
+                ui.SetLocalProgressMessage
+                    (if isWebException then "Unable to establish an internet connection. Please check your internet status and try again."
+                     elif exn.Message.Length > 500 then exn.Message.Substring(0, 500) + " ..."
+                     else exn.Message)
             cts := None
-            if (exn :? WebException) then
+            if isWebException then
                 if useRefreshTimer then
                     ui.StartTimer (fun () -> this.Refresh())
             else
-                ui.OnException (prefix + subject, exn)
+                ui.OnException (getMessage [state], exn)
 
         let onCancel() = 
             removeGlobalProgressIndicator()
-            ui.LocalProgressMessage <- ""
+            ui.SetLocalProgressMessage ""
             cts := None
             
         cts := lazyAsync.GetValueAsync onSucess onFailure onCancel |> Some
 
+    do lazyAsync.ResetIfFailed()
     do load()
 
     member x.CanRefresh = (!cts).IsNone
