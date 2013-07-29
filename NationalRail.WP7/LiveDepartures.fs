@@ -66,6 +66,7 @@ and JourneyElement = {
     Station : string
     Status : JourneyElementStatus
     Platform : string option
+    IsAlternateRoute : bool
 }
 
 and JourneyElementStatus =
@@ -145,7 +146,7 @@ type DeparturesTable with
                 if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
                     match statusSpan.InnerText.Replace(" mins late", "") |> parseInt with
                     | Some delayMins -> Status.Delayed delayMins, due + { Hours = 0; Minutes = delayMins } |> Some
-                    | _ -> failwithf "Invalid status: %s" statusCell.InnerText
+                    | _ -> raise <| ParseError(sprintf "Invalid status:\n%s" statusCell.OuterHtml, null)
                 else
                     Status.OnTime, None
 
@@ -161,7 +162,7 @@ type DeparturesTable with
                 if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
                     match statusSpan.InnerText.Replace(" mins late", "") |> parseInt with
                     | Some delayMins -> Delayed (hasDeparted, delayMins), due + { Hours = 0; Minutes = delayMins } |> Some
-                    | _ -> failwithf "Invalid status: %s" statusCell.InnerText
+                    | _ -> raise <| ParseError(sprintf "Invalid status:\n%s" statusCell.OuterHtml, null)
                 else
                     OnTime hasDeparted, None
 
@@ -173,8 +174,8 @@ type DeparturesTable with
                 let minutes = time.Substring(pos+1) |> parseInt
                 match hours, minutes with
                 | Some hours, Some minutes -> { Hours = hours; Minutes = minutes }
-                | _ -> failwithf "Invalid time: %s" time
-            else failwithf "Invalid time: %s" time
+                | _ -> raise <| ParseError(sprintf "Invalid time:\n%s" cell.OuterHtml, null)
+            else raise <| ParseError(sprintf "Invalid time:\n%s" cell.OuterHtml, null)
 
         let parsePlatform (cell:HtmlNode) = 
             match cell.InnerText.Trim() with
@@ -185,11 +186,16 @@ type DeparturesTable with
             let cells = tr.Elements "td" |> Seq.toArray
             let departs = cells.[0] |> parseTime
             let status, expected = cells.[2] |> getJourneyElementStatus departs
+            let station = cells.[1].InnerText
+            let pos = station.IndexOf "Train divides here"
+            let station = if pos >= 0 then station.Substring(0, pos) else station
+            let isAlternateRoute = tr.Ancestors("tbody") |> Seq.length > 1
             { Departs = departs
               Expected = expected
-              Station = cells.[1].InnerText.Trim()
+              Station = (if isAlternateRoute then "* " else "") + station.Trim()
               Status = status
-              Platform = cells.[3] |> parsePlatform}
+              Platform = cells.[3] |> parsePlatform 
+              IsAlternateRoute = isAlternateRoute }
 
         let getJourneyDetails url = async {
         
@@ -200,10 +206,12 @@ type DeparturesTable with
                     createDoc html
                     |> descendants "tbody"
                     |> Seq.collect (fun body -> body |> elements "tr")
+                    |> Seq.filter (not << (hasClass "callingpoints"))
                     |> Seq.map rowToJourneyElement
                     |> Seq.toArray
-                with exn ->
-                    raise <| ParseError(sprintf "Failed to parse journey details html from %s:\n%s\n" url (html.Trim()), exn)
+                with 
+                | :? ParseError -> reraise()
+                | exn -> raise <| ParseError(sprintf "Failed to parse journey details html from %s:\n%s" url (html.Trim()), exn)
 
             return getJourneyDetails()
         }
@@ -248,8 +256,9 @@ type DeparturesTable with
                     |> Seq.collect (fun body -> body |> elements "tr")
                     |> Seq.map rowToDeparture
                     |> Seq.toArray
-                with exn ->
-                    raise <| ParseError(sprintf "Failed to parse departures html from %s:\n%s\n" url (html.Trim()), exn)
+                with 
+                | :? ParseError -> reraise()
+                | exn -> raise <| ParseError(sprintf "Failed to parse departures html from %s:\n%s" url (html.Trim()), exn)
 
             return getDepartures()
 

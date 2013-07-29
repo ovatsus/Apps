@@ -78,7 +78,7 @@ namespace UKTrains
 
         public static string GetMailBody(string contents)
         {
-            return "\n\n" + contents + "\n" +
+            return "\n\n" + contents + "\n\n" +
                    "App Version: " + new AssemblyName(Assembly.GetExecutingAssembly().FullName).Version + "\n" +
                    "OS Version: " + Environment.OSVersion.Version + "\n" +
                    "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName + "\n" +
