@@ -139,10 +139,14 @@ namespace UKTrains
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
+            
+            LocationService.PositionChanged -= LoadNearestStations;
+            
             if (nearestLazyBlock != null)
             {
                 nearestLazyBlock.Cancel();
             }
+
             if (fromStation == null)
             {
                 try
@@ -182,6 +186,11 @@ namespace UKTrains
 
             lazyBlockUI.SetLocalProgressMessage("");
             lazyBlockUI.SetGlobalProgressMessage("");
+
+            if (nearestLazyBlock != null)
+            {
+                nearestLazyBlock.Cancel();
+            }
 
             nearestLazyBlock = new LazyBlock<Tuple<string, Station>>(
                 "nearest stations",

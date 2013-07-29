@@ -38,6 +38,11 @@ namespace UKTrains
         {
             base.OnNavigatedTo(e);
 
+            if (e.NavigationMode != NavigationMode.New)
+            {
+                return;
+            }
+
             string stationStr;
             if (!NavigationContext.QueryString.TryGetValue("station", out stationStr))
             {
@@ -70,18 +75,6 @@ namespace UKTrains
             if (removeBackEntry)
             {
                 NavigationService.RemoveBackEntry();
-            }
-
-            while (ApplicationBar.Buttons.Count > 2)
-            {
-                // remove directions and pin to start
-                ApplicationBar.Buttons.RemoveAt(ApplicationBar.Buttons.Count - 1);
-            }
-
-            while (pivot.Items.Count > 2)
-            {
-                // remove directions
-                pivot.Items.RemoveAt(pivot.Items.Count - 1);
             }
 
             ApplicationBar.MenuItems.Cast<ApplicationBarMenuItem>().Single(item => item.Text == "Clear filter").IsEnabled = departuresTable.HasDestinationFilter;

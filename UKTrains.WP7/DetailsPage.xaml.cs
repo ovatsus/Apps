@@ -27,6 +27,12 @@ namespace UKTrains
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            if (e.NavigationMode != NavigationMode.New)
+            {
+                return;
+            }
+
             if (departure == null)
             {
                 NavigationService.GoBack();
