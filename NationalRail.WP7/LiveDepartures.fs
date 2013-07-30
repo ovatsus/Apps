@@ -18,9 +18,13 @@ type DeparturesTable =
         | Some callingAt -> sprintf "%s calling at %s" x.Station.Name callingAt.Name
     member x.HasDestinationFilter = x.CallingAt.IsSome
     member x.WithoutFilter = 
-        assert not x.HasDestinationFilter
+        if not x.HasDestinationFilter then failwith "%A doesn't have a destination filter" x
         { Station = x.Station
           CallingAt = None }
+    member x.Reversed =
+        if not x.HasDestinationFilter then failwith "%A can't be reversed" x
+        { Station = x.CallingAt.Value
+          CallingAt = Some x.Station }
 
 type Departure = {
     Due : Time

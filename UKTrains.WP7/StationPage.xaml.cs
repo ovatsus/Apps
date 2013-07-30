@@ -85,7 +85,17 @@ namespace UKTrains
                 NavigationService.RemoveBackEntry();
             }
 
-            ApplicationBar.MenuItems.Cast<ApplicationBarMenuItem>().Single(item => item.Text == "Clear filter").IsEnabled = departuresTable.HasDestinationFilter;
+            if (departuresTable.HasDestinationFilter)
+            {
+                var clearFilterItem = new ApplicationBarMenuItem("Clear filter");
+                clearFilterItem.Click += OnClearFilterClick;
+                ApplicationBar.MenuItems.Insert(0, clearFilterItem);
+
+                var reverseJourneyItem = new ApplicationBarMenuItem("Reverse journey");
+                reverseJourneyItem.Click += OnReverseJourneyClick;
+                ApplicationBar.MenuItems.Insert(1, reverseJourneyItem);
+            }
+
             CreateDirectionsItem();
             CreatePinToStartItem();
         }
@@ -338,6 +348,11 @@ namespace UKTrains
         private void OnClearFilterClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(GetUri(departuresTable.WithoutFilter, false));
+        }
+
+        private void OnReverseJourneyClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(GetUri(departuresTable.Reversed, false));
         }
 
         private void OnDetailsClick(object sender, EventArgs e)
