@@ -19,7 +19,7 @@ namespace UKTrains
         private LazyBlock<JourneyElement> journeyElementsLazyBlock;
 
         //TODO: remove the static and pass in the page parameters
-        public static void SetTarget(Departure departure) 
+        public static void SetTarget(Departure departure)
         {
             DetailsPage.departure = departure;
         }
@@ -30,6 +30,10 @@ namespace UKTrains
 
             if (e.NavigationMode != NavigationMode.New)
             {
+                if (journeyElements.ItemsSource == null)
+                {
+                    journeyElementsLazyBlock.Refresh();
+                }
                 return;
             }
 
@@ -69,6 +73,6 @@ namespace UKTrains
         private void OnRefreshClick(object sender, EventArgs e)
         {
             journeyElementsLazyBlock.Refresh();
-        }       
+        }
     }
 }

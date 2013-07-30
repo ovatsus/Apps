@@ -41,7 +41,13 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
     member __.DoWhenCompleted startIfNotRunning f cancelF =
         let cancelationTokenSource = new CancellationTokenSource()
         let startWithCancellationToken computation =
-            cancelationTokenSource.Token.Register(Action<obj>(fun _ -> cancelF()), ()) |> ignore
+            let onCancel (_:obj) = 
+                lock state <| fun () -> 
+                    match !state with
+                    | Started(asyncValue) -> state := NotStarted(asyncValue)
+                    | _ -> ()
+                cancelF()
+            cancelationTokenSource.Token.Register(Action<obj>(onCancel), ()) |> ignore
             Async.Start(computation, cancelationTokenSource.Token)
         lock state <| fun () -> 
             match !state with

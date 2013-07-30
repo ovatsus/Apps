@@ -40,6 +40,14 @@ namespace UKTrains
 
             if (e.NavigationMode != NavigationMode.New)
             {
+                if (departures.ItemsSource == null)
+                {
+                    departuresLazyBlock.Refresh();
+                }
+                if (arrivals.ItemsSource == null)
+                {
+                    arrivalsLazyBlock.Refresh();
+                }
                 return;
             }
 
@@ -96,7 +104,6 @@ namespace UKTrains
             arrivalsLazyBlock.Cancel();
         }
 
-
         private void UpdateTiles()
         {
             var primaryTile = ShellTile.ActiveTiles.First();
@@ -107,7 +114,7 @@ namespace UKTrains
             if (secondaryTile != null)
             {
                 secondaryTile.Update(GetTileData(forPrimaryTile: false));
-            }                
+            }
         }
 
         private ShellTileData GetTileData(bool forPrimaryTile)
@@ -122,7 +129,7 @@ namespace UKTrains
             string wideContent;
             if (firstDeparture == null)
             {
-                content = (forPrimaryTile ? departuresTableHeader + "\n" : "") + 
+                content = (forPrimaryTile ? departuresTableHeader + "\n" : "") +
                           "No more trains today";
                 wideContent = departuresTableHeader + "\n" + "No more trains today";
             }
@@ -316,7 +323,7 @@ namespace UKTrains
             {
                 arrivalsLazyBlock.Refresh();
             }
-        }       
+        }
 
         private void OnFilterClick(object sender, EventArgs e)
         {
