@@ -37,22 +37,16 @@ type Departure = {
 } with member x.PlatformIsKnown = x.Platform.IsSome
 
 and Time = 
-    { Hours : int
-      Minutes : int }
+    private { TotalMinutes : int }
+    member x.Hours = x.TotalMinutes / 60
+    member x.Minutes = x.TotalMinutes % 1440 % 60
     override x.ToString() = sprintf "%02d:%02d" x.Hours x.Minutes
-    static member (+) (t1, t2) =
-        let hours = t1.Hours + t2.Hours
-        let minutes = t1.Minutes + t2.Minutes
-        let hours, minutes = 
-            if minutes > 59
-            then hours + 1, minutes - 60
-            else hours, minutes
-        let hours = 
-            if hours > 23
-            then hours - 24
-            else hours
-        { Hours = hours
-          Minutes = minutes }
+    static member FromHoursAndMinutes(hours, minutes) = 
+        { TotalMinutes = (minutes + hours * 60) % 1440 }
+    static member FromMinutes(minutes) = 
+        Time.FromHoursAndMinutes(0, minutes)
+    static member (+) (t1, t2) = 
+        Time.FromMinutes(t1.TotalMinutes + t2.TotalMinutes)
         
 and Status =
     | OnTime
@@ -149,7 +143,7 @@ type DeparturesTable with
                 let statusSpan = statusCell.Element("span")
                 if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
                     match statusSpan.InnerText.Replace(" mins late", "") |> parseInt with
-                    | Some delayMins -> Status.Delayed delayMins, due + { Hours = 0; Minutes = delayMins } |> Some
+                    | Some delayMins -> Status.Delayed delayMins, due + Time.FromMinutes(delayMins) |> Some
                     | _ -> raise <| ParseError(sprintf "Invalid status:\n%s" statusCell.OuterHtml, null)
                 else
                     Status.OnTime, None
@@ -165,7 +159,7 @@ type DeparturesTable with
                 let statusSpan = statusCell.Elements("span").Last()
                 if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
                     match statusSpan.InnerText.Replace(" mins late", "") |> parseInt with
-                    | Some delayMins -> Delayed (hasDeparted, delayMins), due + { Hours = 0; Minutes = delayMins } |> Some
+                    | Some delayMins -> Delayed (hasDeparted, delayMins), due + Time.FromMinutes(delayMins) |> Some
                     | _ -> raise <| ParseError(sprintf "Invalid status:\n%s" statusCell.OuterHtml, null)
                 else
                     OnTime hasDeparted, None
@@ -177,7 +171,7 @@ type DeparturesTable with
                 let hours = time.Substring(0, pos) |> parseInt
                 let minutes = time.Substring(pos+1) |> parseInt
                 match hours, minutes with
-                | Some hours, Some minutes -> { Hours = hours; Minutes = minutes }
+                | Some hours, Some minutes -> Time.FromHoursAndMinutes(hours, minutes)
                 | _ -> raise <| ParseError(sprintf "Invalid time:\n%s" cell.OuterHtml, null)
             else raise <| ParseError(sprintf "Invalid time:\n%s" cell.OuterHtml, null)
 
