@@ -38,7 +38,7 @@ namespace UKTrains
         {
             base.OnNavigatedTo(e);
 
-            if (e.NavigationMode != NavigationMode.New)
+            if (departuresTable != null)
             {
                 if (departures.ItemsSource == null)
                 {
@@ -110,8 +110,14 @@ namespace UKTrains
                 return;
             }
 #endif
-            departuresLazyBlock.Cancel();
-            arrivalsLazyBlock.Cancel();
+            if (departuresLazyBlock != null)
+            {
+                departuresLazyBlock.Cancel();
+            }
+            if (arrivalsLazyBlock != null)
+            {
+                arrivalsLazyBlock.Cancel();
+            }
         }
 
         private void UpdateTiles()
@@ -281,13 +287,15 @@ namespace UKTrains
                 IsEnabled = !ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri),
                 Text = "Pin to Start",
             };
-            pinButton.Click += OnPinClick;
+            pinButton.Click += delegate
+            {
+                if (!ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri))
+                {
+                    CreateTile(GetUri(departuresTable, false), GetTileData(forPrimaryTile: false));
+                }
+                pinButton.IsEnabled = false;
+            };
             ApplicationBar.Buttons.Add(pinButton);
-        }
-
-        private void OnPinClick(object sender, EventArgs e)
-        {
-            CreateTile(GetUri(departuresTable, false), GetTileData(forPrimaryTile: false));
         }
 
         private void CreateTile(Uri uri, ShellTileData tileData)
@@ -325,11 +333,11 @@ namespace UKTrains
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (pivot.SelectedIndex != 1)
+            if (pivot.SelectedIndex != 1 && departuresLazyBlock != null)
             {
                 departuresLazyBlock.Refresh();
             }
-            if (pivot.SelectedIndex != 0)
+            if (pivot.SelectedIndex != 0 && arrivalsLazyBlock != null)
             {
                 arrivalsLazyBlock.Refresh();
             }

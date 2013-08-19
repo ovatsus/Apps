@@ -13,7 +13,6 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Reactive;
 using Microsoft.Phone.Shell;
 using NationalRail;
-using TombstoneHelper;
 
 namespace UKTrains
 {
@@ -86,39 +85,18 @@ namespace UKTrains
 
             LoadRecentItems(excludeStation);
 
-            if (e.NavigationMode == NavigationMode.New)
+            if (hasRecentItemsToDisplay)
             {
-                if (hasRecentItemsToDisplay)
-                {
-                    pivot.SelectedIndex = 1;
-                }
-                else if (fromStation == null && Settings.GetBool(Setting.LocationServicesEnabled))
-                {
-                    pivot.SelectedIndex = 0;
-                }
-                else
-                {
-                    pivot.SelectedIndex = 2;
-                }
+                pivot.SelectedIndex = 1;
             }
-
-            if (fromStation == null && !IsReset(e.NavigationMode))
+            else if (fromStation == null && Settings.GetBool(Setting.LocationServicesEnabled))
             {
-                try
-                {
-                    this.RestoreState(); // restore pivot and scroll state
-                }
-                catch { }
+                pivot.SelectedIndex = 0;
             }
-        }
-
-        private bool IsReset(NavigationMode navigationMode)
-        {
-#if WP8
-            return navigationMode == NavigationMode.Reset;
-#else
-            return false;
-#endif
+            else
+            {
+                pivot.SelectedIndex = 2;
+            }
         }
 
         private bool Filter(Station station)
@@ -145,15 +123,6 @@ namespace UKTrains
             if (nearestLazyBlock != null)
             {
                 nearestLazyBlock.Cancel();
-            }
-
-            if (fromStation == null)
-            {
-                try
-                {
-                    this.SaveState(e); // save pivot and scroll state
-                }
-                catch { }
             }
         }
 

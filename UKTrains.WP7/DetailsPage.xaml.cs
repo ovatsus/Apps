@@ -28,29 +28,29 @@ namespace UKTrains
         {
             base.OnNavigatedTo(e);
 
-            if (e.NavigationMode != NavigationMode.New)
+            if (departure == null)
+            {
+                NavigationService.GoBack();
+                return;
+            }
+
+            if (journeyElementsLazyBlock != null)
             {
                 if (journeyElements.ItemsSource == null)
                 {
                     journeyElementsLazyBlock.Refresh();
                 }
-                return;
-            }
-
-            if (departure == null)
-            {
-                NavigationService.GoBack();
             }
             else
             {
                 journeyElementsLazyBlock = new LazyBlock<JourneyElement>(
-                    "live progress",
-                    "No information available",
-                    departure.Details,
-                    new LazyBlockUI(this, journeyElements, journeyElementsMessageTextBlock, journeyElementsLastUpdatedTextBlock),
-                    true,
-                    null,
-                    null);
+                        "live progress",
+                        "No information available",
+                        departure.Details,
+                        new LazyBlockUI(this, journeyElements, journeyElementsMessageTextBlock, journeyElementsLastUpdatedTextBlock),
+                        true,
+                        null,
+                        null);
             }
         }
 
@@ -72,7 +72,10 @@ namespace UKTrains
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            journeyElementsLazyBlock.Refresh();
+            if (journeyElementsLazyBlock != null)
+            {
+                journeyElementsLazyBlock.Refresh();
+            }
         }
     }
 }
