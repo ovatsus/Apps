@@ -105,6 +105,9 @@
     <Compile Include="..\UKTrains.WP7\LocationService.cs">
       <Link>LocationService.cs</Link>
     </Compile>
+    <Compile Include="..\UKTrains.WP7\RecentItems.cs">
+      <Link>RecentItems.cs</Link>
+    </Compile>
     <Compile Include="..\UKTrains.WP7\Settings.cs">
       <Link>Settings.cs</Link>
     </Compile>

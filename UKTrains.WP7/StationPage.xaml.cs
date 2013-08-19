@@ -62,6 +62,11 @@ namespace UKTrains
             departuresTable = DeparturesTable.Create(from, to);
             pivot.Title = departuresTable.ToString();
 
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                RecentItems.Add(departuresTable);
+            }
+
             departuresLazyBlock = new LazyBlock<Departure>(
                 "departures",
                 "No more trains today",

@@ -41,7 +41,6 @@ namespace UKTrains
         }
 
         private LazyBlock<Tuple<string, Station>> nearestLazyBlock;
-        private List<DeparturesTable> allRecentItems;
         private Station fromStation;
         private string excludeStation;
         private bool hasRecentItemsToDisplay;
@@ -83,7 +82,7 @@ namespace UKTrains
             LocationService.PositionChanged += LoadNearestStations;
             LoadNearestStations();
 
-            LoadRecentItems(excludeStation);
+            RefreshRecentItemsList();
 
             if (hasRecentItemsToDisplay)
             {
@@ -183,21 +182,9 @@ namespace UKTrains
                 });
         }
 
-        private void LoadRecentItems(string excludeStation)
+        private void RefreshRecentItemsList()
         {
-            allRecentItems =
-                Settings.GetString(Setting.RecentStations)
-                    .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(DeparturesTable.Parse)
-                    .ToList();
-
-            var recentItemsToDisplay = fromStation == null ? allRecentItems :
-                (from item in allRecentItems
-                 let target = item.HasDestinationFilter && item.Station.Code == fromStation.Code && item.CallingAt.Value.Code != excludeStation ? item.CallingAt.Value :
-                              item.Station.Code != excludeStation && item.Station.Code != fromStation.Code ? item.Station :
-                              null
-                 where target != null
-                 select DeparturesTable.Create(target)).Distinct().ToList();
+            var recentItemsToDisplay = RecentItems.GetItemsToDisplay(fromStation, excludeStation);
 
             hasRecentItemsToDisplay = recentItemsToDisplay.Count != 0;
             recentStations.ItemsSource = recentItemsToDisplay;
@@ -236,42 +223,20 @@ namespace UKTrains
                 target = fromStation == null ? DeparturesTable.Create(station) :
                          DeparturesTable.Create(fromStation, station);
             }
-            AddToRecentItems(target);
-            SaveRecentItems();
             NavigationService.Navigate(StationPage.GetUri(target, removeBackEntry: fromStation != null));
-        }
-
-        private void AddToRecentItems(DeparturesTable recentItem)
-        {
-            if (recentItem.HasDestinationFilter && 
-                allRecentItems.Count > 0 && 
-                !allRecentItems[0].HasDestinationFilter && 
-                allRecentItems[0].Station.Code == recentItem.Station.Code)
-            {
-                allRecentItems.RemoveAt(0);
-            }
-            allRecentItems.Remove(recentItem);
-            allRecentItems.Insert(0, recentItem);            
-        }
-
-        private void SaveRecentItems()
-        {
-            Settings.Set(Setting.RecentStations, string.Join(",", allRecentItems.Select(item => item.Serialize())));
         }
 
         private void OnClearRecentItemsClick(object sender, EventArgs e)
         {
-            allRecentItems.Clear();
-            SaveRecentItems();
-            LoadRecentItems(excludeStation);
+            RecentItems.Clear();
+            RefreshRecentItemsList();
         }
 
         private void OnRecentItemRemoveClick(object sender, RoutedEventArgs e)
         {
             var dataContext = (DeparturesTable)((MenuItem)sender).DataContext;
-            allRecentItems.Remove(dataContext);
-            SaveRecentItems();
-            LoadRecentItems(excludeStation);
+            RecentItems.Remove(dataContext);
+            RefreshRecentItemsList();
         }
     }
 }
