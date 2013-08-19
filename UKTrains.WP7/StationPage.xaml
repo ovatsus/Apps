@@ -92,7 +92,7 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:Pivot x:Name="pivot">
+        <controls:Pivot x:Name="pivot" SelectionChanged="OnPivotSelectionChanged">
             <controls:PivotItem Header="Departures">
                 <Grid>
                     <ItemsControl x:Name="departures" 

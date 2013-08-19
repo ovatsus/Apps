@@ -40,14 +40,7 @@ namespace UKTrains
 
             if (departuresTable != null)
             {
-                if (departures.ItemsSource == null)
-                {
-                    departuresLazyBlock.Refresh();
-                }
-                if (arrivals.ItemsSource == null)
-                {
-                    arrivalsLazyBlock.Refresh();
-                }
+                OnPivotSelectionChanged(null, null);
                 return;
             }
 
@@ -67,24 +60,6 @@ namespace UKTrains
                 RecentItems.Add(departuresTable);
             }
 
-            departuresLazyBlock = new LazyBlock<Departure>(
-                "departures",
-                "No more trains today",
-                departuresTable.GetDepartures(DepartureType.Departure),
-                new LazyBlockUI(this, departures, departuresMessageTextBlock, departuresLastUpdatedTextBlock),
-                true,
-                () => UpdateTiles(),
-                null);
-
-            arrivalsLazyBlock = new LazyBlock<Departure>(
-                "arrivals",
-                "No more trains today",
-                departuresTable.GetDepartures(DepartureType.Arrival),
-                new LazyBlockUI(this, arrivals, arrivalsMessageTextBlock, arrivalsLastUpdatedTextBlock),
-                true,
-                null,
-                null);
-
             if (removeBackEntry)
             {
                 NavigationService.RemoveBackEntry();
@@ -103,6 +78,44 @@ namespace UKTrains
 
             CreateDirectionsItem();
             CreatePinToStartItem();
+        }
+
+        private void LoadDepartures()
+        {
+            if (departuresLazyBlock == null)
+            {
+                departuresLazyBlock = new LazyBlock<Departure>(
+                    "departures",
+                    "No more trains today",
+                    departuresTable.GetDepartures(DepartureType.Departure),
+                    new LazyBlockUI(this, departures, departuresMessageTextBlock, departuresLastUpdatedTextBlock),
+                    true,
+                    () => UpdateTiles(),
+                    null);
+            }
+            else if (departures.ItemsSource == null)
+            {
+                departuresLazyBlock.Refresh();
+            }
+        }
+
+        private void LoadArrivals()
+        {
+            if (arrivalsLazyBlock == null)
+            {
+                arrivalsLazyBlock = new LazyBlock<Departure>(
+                    "arrivals",
+                    "No more trains today",
+                    departuresTable.GetDepartures(DepartureType.Arrival),
+                    new LazyBlockUI(this, arrivals, arrivalsMessageTextBlock, arrivalsLastUpdatedTextBlock),
+                    true,
+                    null,
+                    null);
+            }
+            else if (arrivals.ItemsSource == null)
+            {
+                arrivalsLazyBlock.Refresh();
+            }
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -373,6 +386,18 @@ namespace UKTrains
             var departure = (Departure)((Button)sender).DataContext;
             DetailsPage.SetTarget(departure);
             NavigationService.Navigate(new Uri("/DetailsPage.xaml", UriKind.Relative));
+        }
+
+        private void OnPivotSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (pivot.SelectedIndex == 0)
+            {
+                LoadDepartures();
+            }
+            if (pivot.SelectedIndex == 1)
+            {
+                LoadArrivals();
+            }
         }
     }
 }

@@ -4,7 +4,8 @@ Description:
 UK Trains brings you train departure and arrival information for all UK national rail stations.
 
 New in 1.8:
-* Fixed incorrect of time on trains delayed more than 90 minutes
+* Only load arrivals when swiping to the arrivals list
+* Fixed incorrect display of time on trains delayed more than 90 minutes
 * Fixed some reported crashes
 
 New in 1.7:
