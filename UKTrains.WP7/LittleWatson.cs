@@ -111,7 +111,7 @@ namespace UKTrains
             }
         }
 
-        public static void CheckForNewVersion(Page page)
+        public static async void CheckForNewVersion(Page page)
         {
             var lastNewVersionCheck = Settings.GetDateTime(Setting.LastNewVersionCheck);
             if (!lastNewVersionCheck.HasValue)
@@ -135,47 +135,43 @@ namespace UKTrains
                     cultureInfoName);
 
                 var request = WebRequest.Create(url);
-                request.BeginGetResponse(result =>
+                var response = (HttpWebResponse)await request.GetResponseAsync();
+
+                try
                 {
-                    try
+                    if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        var response = (HttpWebResponse)request.EndGetResponse(result);
-                        if (response.StatusCode == HttpStatusCode.OK)
+                        using (var outputStream = response.GetResponseStream())
                         {
-                            using (var outputStream = response.GetResponseStream())
+                            using (var reader = XmlReader.Create(outputStream))
                             {
-                                using (var reader = XmlReader.Create(outputStream))
+                                reader.MoveToContent();
+
+                                var aNamespace = reader.LookupNamespace("a");
+
+                                reader.ReadToFollowing("entry", aNamespace);
+
+                                reader.ReadToDescendant("version");
+
+                                var updatedVersion = new Version(reader.ReadElementContentAsString());
+                                var currentVersion = new Version(GetManifestAttributeValue("Version"));
+
+                                Settings.Set(Setting.LastNewVersionCheck, DateTime.UtcNow);
+
+                                if (updatedVersion > currentVersion)
                                 {
-                                    reader.MoveToContent();
 
-                                    var aNamespace = reader.LookupNamespace("a");
-
-                                    reader.ReadToFollowing("entry", aNamespace);
-
-                                    reader.ReadToDescendant("version");
-
-                                    var updatedVersion = new Version(reader.ReadElementContentAsString());
-                                    var currentVersion = new Version(GetManifestAttributeValue("Version"));
-
-                                    Settings.Set(Setting.LastNewVersionCheck, DateTime.UtcNow);
-
-                                    if (updatedVersion > currentVersion)
+                                    if (MessageBox.Show("Do you want to install the new version now?", "Update Available", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                                     {
-                                        page.Dispatcher.BeginInvoke(() =>
-                                        {
-                                            if (MessageBox.Show("Do you want to install the new version now?", "Update Available", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-                                            {
-                                                new MarketplaceDetailTask().Show();
-                                            }
-                                        });
+                                        new MarketplaceDetailTask().Show();
                                     }
                                 }
                             }
                         }
                     }
-                    catch { }
-                },
-                null);
+                }
+                catch { }
+
             }
             catch { }
         }
