@@ -1,10 +1,11 @@
-﻿using Microsoft.Phone.Controls;
-using Microsoft.Phone.Tasks;
-using System;
-using System.Threading;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Coursera;
+using FSharp.Control;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
 
 namespace LearnOnTheGo
 {
@@ -16,14 +17,14 @@ namespace LearnOnTheGo
         }
 
         private int courseId;
-        private CancellationTokenSource lecturesCts;
-        private CancellationTokenSource videoCts;
+        private LazyBlock<LectureSection[]> lecturesLazyBlock;
+        private LazyBlock<string> videoLazyBlock;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (App.Crawler == null)
             {
-                // app was tombstoned
+                // app was tombstoned or settings changed
                 NavigationService.GoBack();
                 return;
             }
@@ -37,72 +38,93 @@ namespace LearnOnTheGo
             var course = App.Crawler.GetCourse(courseId);
             pivot.Title = course.Topic.Name;
 
-            Load();
+            Load(false);
+        }
+
+        private void Load(bool refresh)
+        {
+            if (refresh)
+            {
+                App.Crawler.RefreshCourse(courseId);
+            }
+            lecturesLazyBlock = new LazyBlock<LectureSection[]>(
+                "lectures",
+                "No lectures",
+                App.Crawler.GetCourse(courseId).LectureSections,
+                a => a.Length == 0,
+                new LazyBlockUI<LectureSection[]>(
+                    this,
+                    lectureSections => pivot.ItemsSource = lectureSections,
+                    () => pivot.ItemsSource != null,
+                    messageTextBlock),
+                false,
+                null,
+                null,
+                null);
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
-            if (lecturesCts != null)
+            if (lecturesLazyBlock != null)
             {
-                lecturesCts.Cancel();
-                lecturesCts = null;
+                lecturesLazyBlock.Cancel();
             }
-            if (videoCts != null)
+            if (videoLazyBlock != null)
             {
-                videoCts.Cancel();
-                videoCts = null;
+                videoLazyBlock.Cancel();
             }
-        }
-
-        private void Load()
-        {
-            var refreshing = pivot.ItemsSource != null;
-            lecturesCts = App.Crawler.GetCourse(courseId).LectureSections.Display(
-                this,
-                refreshing ? "Refreshing lectures..." : "Loading lectures...",
-                refreshing,
-                "No lectures",
-                messageTextBlock,
-                lectureSections => pivot.ItemsSource = lectureSections,
-                () => lecturesCts = null);
         }
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            if (lecturesCts != null)
+            if (lecturesLazyBlock == null || lecturesLazyBlock.CanRefresh)
             {
-                return;
+                Load(true);
             }
-
-            App.Crawler.RefreshCourse(courseId);
-            Load();
         }
 
         private void OnLectureVideoClick(object sender, RoutedEventArgs e)
         {
-            if (videoCts != null)
+            if (videoLazyBlock != null)
             {
                 return;
             }
 
             var lecture = (Coursera.Lecture)((Button)sender).DataContext;
 
-            videoCts = lecture.VideoUrl.Display(
-                this,
-                "Loading video...",
-                videoUrl =>
-                {
-                    var launcher = new MediaPlayerLauncher();
-                    launcher.Media = new Uri(videoUrl, UriKind.Absolute);
-                    launcher.Show();
-                },
-                () => videoCts = null);
+            videoLazyBlock = new LazyBlock<string>(
+                "video",
+                null,
+                lecture.VideoUrl,
+                _ => false,
+                new LazyBlockUI<string>(
+                    this,
+                    videoUrl =>
+                    {
+                        try
+                        {
+                            var launcher = new MediaPlayerLauncher();
+                            launcher.Media = new Uri(videoUrl, UriKind.Absolute);
+                            launcher.Show();
+                        }
+                        catch (Exception ex)
+                        {
+                            LittleWatson.ReportException(ex, string.Format("Opening video for lecture '{0}' of course '{1}' ({2})", lecture.Title, pivot.Title, videoUrl));
+                            LittleWatson.CheckForPreviousException(false);
+                        }
+                    },
+                    () => false,
+                    null),
+                false,
+                null,
+                _ => videoLazyBlock = null,
+                null);
         }
 
         private void OnLecturePdfClick(object sender, RoutedEventArgs e)
         {
-            if (videoCts != null)
+            if (videoLazyBlock != null)
             {
                 return;
             }

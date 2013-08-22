@@ -53,6 +53,7 @@
     <Compile Include="HtmlAgilityPack.FSharp.fs" />
     <Compile Include="LazyAsync.fsi" />
     <Compile Include="LazyAsync.fs" />
+    <Compile Include="LazyBlock.fs" />
     <Compile Include="DataModel.fs" />
     <Compile Include="Parser.fs" />
     <Compile Include="Crawler.fs" />
@@ -74,7 +75,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.XPath">
-      <HintPath>..\..\..\..\Program Files (x86)\Microsoft SDKs\Silverlight\v4.0\Libraries\Client\System.Xml.XPath.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft SDKs\Silverlight\v4.0\Libraries\Client\System.Xml.XPath.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

@@ -8,13 +8,13 @@ namespace LearnOnTheGo
         public SettingsPage()
         {
             InitializeComponent();
-            email.Text = Settings.Get(Setting.Email);
-            password.Password = Settings.Get(Setting.Password);
+            email.Text = Settings.GetString(Setting.Email);
+            password.Password = Settings.GetString(Setting.Password);
         }
 
         private void OnSaveClick(object sender, EventArgs e)
         {
-            if (email.Text != Settings.Get(Setting.Email))
+            if (email.Text != Settings.GetString(Setting.Email))
             {
                 Cache.DeleteAllFiles();
             }

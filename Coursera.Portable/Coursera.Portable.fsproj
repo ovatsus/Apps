@@ -47,6 +47,9 @@
     <Compile Include="..\Coursera.WP7\LazyAsync.fs">
       <Link>LazyAsync.fs</Link>
     </Compile>
+    <Compile Include="..\Coursera.WP7\LazyBlock.fs">
+      <Link>LazyBlock.fs</Link>
+    </Compile>
     <Compile Include="..\Coursera.WP7\DataModel.fs">
       <Link>DataModel.fs</Link>
     </Compile>
@@ -64,7 +67,7 @@
       <HintPath>$(MSBuildExtensionsPath32)\..\Reference Assemblies\Microsoft\FSharp\3.0\Runtime\.NETPortable\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data">
-      <HintPath>..\packages\FSharp.Data.1.1.8\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
+      <HintPath>..\packages\FSharp.Data.1.1.9\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlAgilityPack-PCL">

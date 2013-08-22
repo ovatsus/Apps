@@ -1,4 +1,4 @@
-﻿module FSharp.Control
+﻿namespace FSharp.Control
 
 open System
 open System.Threading
@@ -9,8 +9,12 @@ open System.Threading
 type LazyAsync<'a> =
 
     /// Will start calculation if not started.
-    /// callBack will be called on the same thread that called GetValueAsync
-    member GetValueAsync : onSuccess:Action<'a> * onFailure:Action<exn> * resetIfFailed:bool -> CancellationTokenSource
+    /// The callbacks will be executed on the same thread that called GetValueAsync
+    member GetValueAsync : onSuccess:('a -> unit) -> onFailure:(exn -> unit) -> onCancel:(unit -> unit) -> CancellationTokenSource
+
+    member Reset : unit -> unit
+
+    member ResetIfFailed : unit -> unit
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module LazyAsync =

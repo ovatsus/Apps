@@ -1,4 +1,4 @@
-﻿module FSharp.Control
+﻿namespace FSharp.Control
 
 open System
 open System.Threading
@@ -35,12 +35,19 @@ type AsyncState<'a> =
 type LazyAsync<'a>(state:AsyncState<'a>) = 
 
     let state = ref state
-    let completed = Event<_>()
-    let icompleted = completed.Publish
+    let mutable completed = Event<_>()
+    let mutable icompleted = completed.Publish
 
-    member __.DoWhenCompleted startIfNotRunning f =
+    member __.DoWhenCompleted startIfNotRunning cancelF f =
         let cancelationTokenSource = new CancellationTokenSource()
         let startWithCancellationToken computation =
+            let onCancel (_:obj) = 
+                lock state <| fun () -> 
+                    match !state with
+                    | Started(asyncValue) -> state := NotStarted(asyncValue)
+                    | _ -> ()
+                cancelF()
+            cancelationTokenSource.Token.Register(Action<obj>(onCancel), ()) |> ignore
             Async.Start(computation, cancelationTokenSource.Token)
         lock state <| fun () -> 
             match !state with
@@ -64,10 +71,7 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
         |> Option.iter (fun continuation -> continuation())
         cancelationTokenSource
 
-    member x.GetValueAsync(onSuccess:Action<_>, onFailure:Action<_>, resetIfFailed:bool) = 
-
-        if resetIfFailed then
-            x.ResetIfFailed()
+    member x.GetValueAsync onSuccess onFailure onCancel = 
 
         let synchronizationContext = SynchronizationContext.Current
 
@@ -77,16 +81,28 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
             else
                 f arg
 
-        ComputationResult.combine onSuccess.Invoke onFailure.Invoke
+        ComputationResult.combine onSuccess onFailure
         |> doInOriginalThread
-        |> x.DoWhenCompleted true
+        |> x.DoWhenCompleted true (doInOriginalThread (fun _ -> onCancel()))
+
+    member __.Reset() =
+        lock state <| fun () -> 
+            match !state with
+            | Completed(asyncValue, value) ->
+                state := NotStarted asyncValue
+                completed <- Event<_>()
+                icompleted <- completed.Publish
+            | _ -> ()
 
     member __.ResetIfFailed() =
         lock state <| fun () -> 
             match !state with
             | Completed(asyncValue, value) ->
                 match value with
-                | Failure _ -> state := NotStarted asyncValue
+                | Failure _ -> 
+                    state := NotStarted asyncValue
+                    completed <- Event<_>()
+                    icompleted <- completed.Publish
                 | _ -> ()
             | _ -> ()
 
@@ -105,13 +121,13 @@ module LazyAsync =
 
     let map f (x:LazyAsync<'a>) =
         let asyncValue = async { 
-            let! value = Async.FromContinuations <| fun (cont, _, _) -> cont |> x.DoWhenCompleted true |> ignore
+            let! value = Async.FromContinuations <| fun (cont, _, _) -> cont |> x.DoWhenCompleted true ignore |> ignore
             return value |> ComputationResult.map f
         }
         LazyAsync(NotStarted asyncValue)
 
     let subscribe onSuccess onFailure (x:LazyAsync<'a>) =
         ComputationResult.combine onSuccess onFailure
-        |> x.DoWhenCompleted false
+        |> x.DoWhenCompleted false ignore
         |> ignore
         x

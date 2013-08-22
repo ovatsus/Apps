@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{aca60941-2945-49e7-afd2-adbe5625df12}" Title="Learn On The Go" RuntimeType="Silverlight" Version="1.4.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="Learn On The Go" Publisher="Code Beside" PublisherID="{417736af-53cd-4019-abc5-61895f426ea0}">
+  <App xmlns="" ProductID="{aca60941-2945-49e7-afd2-adbe5625df12}" Title="Learn On The Go" RuntimeType="Silverlight" Version="1.5.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="Learn On The Go" Publisher="Code Beside" PublisherID="{417736af-53cd-4019-abc5-61895f426ea0}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />

@@ -97,8 +97,11 @@
       <DependentUpon>CoursePage.xaml</DependentUpon>
       <Link>CoursePage.xaml.cs</Link>
     </Compile>
-    <Compile Include="..\LearnOnTheGo.WP7\LazyAsyncExtensions.cs">
-      <Link>LazyAsyncExtensions.cs</Link>
+    <Compile Include="..\LearnOnTheGo.WP7\CommonMenuItems.cs">
+      <Link>CommonMenuItems.cs</Link>
+    </Compile>
+    <Compile Include="..\LearnOnTheGo.WP7\LazyBlockUI.cs">
+      <Link>LazyBlockUI.cs</Link>
     </Compile>
     <Compile Include="..\LearnOnTheGo.WP7\LittleWatson.cs">
       <Link>LittleWatson.cs</Link>
@@ -202,8 +205,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Coding4Fun.Toolkit.Controls">
-      <HintPath>..\packages\Coding4Fun.Toolkit.Controls.2.0.6\lib\windowsphone8\Coding4Fun.Toolkit.Controls.dll</HintPath>
+    <Reference Include="Coding4Fun.Toolkit.Controls, Version=2.0.7.0, Culture=neutral, PublicKeyToken=c5fd7b72b1a17ce4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Coding4Fun.Toolkit.Controls.2.0.7\lib\windowsphone8\Coding4Fun.Toolkit.Controls.dll</HintPath>
     </Reference>
     <Reference Include="CS.Windows.Controls">
       <HintPath>..\lib\wp8\CS.Windows.Controls.dll</HintPath>
@@ -212,8 +216,9 @@
       <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\3.0\Runtime\.NETPortable\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit">
-      <HintPath>..\packages\WPToolkit.4.2013.06.11\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpGIS.GZipWebClient">
       <HintPath>..\packages\SharpGIS.GZipWebClient.1.4.0.0\lib\wp71\SharpGIS.GZipWebClient.dll</HintPath>

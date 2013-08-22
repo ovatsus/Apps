@@ -66,6 +66,7 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
             |> createDoc
             |> descendants "source" 
             |> Seq.filter (hasAttr "type" "video/mp4")
+            //TODO: this crashes on some courses
             |> Seq.head
             |> attr "src" }
 
