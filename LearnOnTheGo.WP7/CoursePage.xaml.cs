@@ -16,7 +16,7 @@ namespace LearnOnTheGo
             InitializeComponent();
         }
 
-        private int courseId;
+        private Course course;
         private LazyBlock<LectureSection[]> lecturesLazyBlock;
         private LazyBlock<string> videoLazyBlock;
 
@@ -29,13 +29,8 @@ namespace LearnOnTheGo
                 return;
             }
 
-            if (pivot.Items.Count != 0)
-            {
-                return;
-            }
-
-            courseId = int.Parse(NavigationContext.QueryString["courseId"]);
-            var course = App.Crawler.GetCourse(courseId);
+            var courseId = int.Parse(NavigationContext.QueryString["courseId"]);
+            course = App.Crawler.GetCourse(courseId);
             pivot.Title = course.Topic.Name;
 
             Load(false);
@@ -45,12 +40,12 @@ namespace LearnOnTheGo
         {
             if (refresh)
             {
-                App.Crawler.RefreshCourse(courseId);
+                App.Crawler.RefreshCourse(course.Id);
             }
             lecturesLazyBlock = new LazyBlock<LectureSection[]>(
                 "lectures",
-                "No lectures",
-                App.Crawler.GetCourse(courseId).LectureSections,
+                "No lectures available. Make sure you have acceted the honor code.",
+                course.LectureSections,
                 a => a.Length == 0,
                 new LazyBlockUI<LectureSection[]>(
                     this,

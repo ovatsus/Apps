@@ -24,7 +24,7 @@ and Topic =
       Name : string
       Photo : string
       PreviewLink : string
-      SelfServiceCourseId : string
+      SelfServiceCourseId : int option
       ShortDescription : string
       ShortName : string
       SmallIcon : string

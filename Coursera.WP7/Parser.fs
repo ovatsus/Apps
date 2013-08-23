@@ -3,13 +3,21 @@
 open System
 open HtmlAgilityPack.FSharp
 open FSharp.Control
+#if SILVERLIGHT
 open FSharp.Data.Json
 open FSharp.Data.Json.Extensions
+#else
+open FSharp.Data
+#endif
 
 type ParseError(msg, exn) = 
     inherit Exception(msg, exn)
 
+#if SILVERLIGHT
+
 let parseTopicsJson getLectureSections topicsJsonStr = 
+
+    let topicsJson = JsonValue.Parse topicsJsonStr
 
     let parseTopic json =
         { Display = json?display.AsBoolean()         
@@ -20,7 +28,9 @@ let parseTopicsJson getLectureSections topicsJsonStr =
           Name = json?name.AsString()
           Photo = json?photo.AsString()
           PreviewLink = json?preview_link.AsString()
-          SelfServiceCourseId = json?self_service_course_id.AsString()
+          SelfServiceCourseId = 
+              let ssId = json?self_service_course_id
+              if ssId = JsonValue.Null then None else Some <| ssId.AsInteger()
           ShortDescription = json?short_description.AsString()
           ShortName = json?short_name.AsString()
           SmallIcon = json?small_icon.AsString()
@@ -44,7 +54,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
 
     let courses = 
         try 
-            [| for topicJson in JsonValue.Parse topicsJsonStr do
+            [| for topicJson in topicsJson do
                 let topic = parseTopic topicJson
                 if topic.Visible then
                     for courseJson in topicJson?courses do
@@ -53,7 +63,60 @@ let parseTopicsJson getLectureSections topicsJsonStr =
             raise <| ParseError(sprintf "Failed to parse topics JSON:\n%s\n" topicsJsonStr, exn)
 
     courses
-                    
+
+#else
+
+type JsonT = JsonProvider<"topics.json", SampleList=true, RootName="topic">
+
+let parseTopicsJson getLectureSections topicsJsonStr = 
+
+    let topicsJson = JsonT.Parse topicsJsonStr
+
+    let parseTopic (json:JsonT.DomainTypes.Topic) =
+        { Display = json.Display
+          Id = json.Id
+          Instructor = json.Instructor
+          Language = json.Language
+          LargeIcon = json.LargeIcon
+          Name = json.Name
+          Photo = json.Photo
+          PreviewLink = json.PreviewLink
+          SelfServiceCourseId = json.SelfServiceCourseId.Number
+          ShortDescription = json.ShortDescription
+          ShortName = json.ShortName
+          SmallIcon = json.SmallIcon
+          SmallIconHover = json.SmallIcon
+          Visible = json.Visibility.Number.IsSome }
+
+    let parseCourse topic (json:JsonT.DomainTypes.Course) =
+        let homeLink = json.HomeLink
+        { Id = json.Id
+          Name = json.Name.String.Value
+          StartDate = 
+            match json.StartYear.Number, json.StartMonth.Number, json.StartDay.Number with
+            | Some y, Some m, Some d -> sprintf "%d/%02d/%02d" y m d
+            | _ -> ""
+          Duration = json.DurationString
+          HomeLink = homeLink
+          HasStarted = json.Active
+          HasFinished = json.CertificatesReady || not json.Status
+          Topic = topic 
+          LectureSections = getLectureSections homeLink }
+
+    let courses = 
+        try 
+            [| for topicJson in topicsJson do
+                let topic = parseTopic topicJson
+                if topic.Visible then
+                    for courseJson in topicJson.Courses do
+                        yield parseCourse topic courseJson |]
+        with exn ->
+            raise <| ParseError(sprintf "Failed to parse topics JSON:\n%s\n" topicsJsonStr, exn)
+
+    courses
+
+#endif
+
 let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
 
     let trimAndUnescape (text:string) = text.Replace("&nbsp;", "").Trim().Replace("&amp;", "&").Replace("&quot;", "\"").Replace("apos;", "'").Replace("&lt;", "<").Replace("&gt;", ">")
@@ -61,14 +124,19 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
 
     let getVideoUrlAsync iFrameUrl = async {
         let! iframeHtml = iFrameUrl |> getHtmlAsync
-        return
-            iframeHtml
-            |> createDoc
-            |> descendants "source" 
-            |> Seq.filter (hasAttr "type" "video/mp4")
-            //TODO: this crashes on some courses
-            |> Seq.head
-            |> attr "src" }
+        try 
+            return
+                iframeHtml
+                |> createDoc
+                |> descendants "source" 
+                |> Seq.filter (hasAttr "type" "video/mp4")
+                //TODO: this crashes on some courses
+                |> Seq.head
+                |> attr "src"
+        with exn ->
+            raise <| ParseError(sprintf "Failed to parse video HTML:\n%s\n" iframeHtml, exn)
+            return ""
+    }
 
     let lectureSections = 
         try

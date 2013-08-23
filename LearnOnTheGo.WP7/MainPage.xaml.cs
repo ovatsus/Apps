@@ -15,6 +15,13 @@ namespace LearnOnTheGo
         public MainPage()
         {
             InitializeComponent();
+#if DEBUG
+            if (string.IsNullOrEmpty(Settings.GetString(Setting.Email)) || string.IsNullOrEmpty(Settings.GetString(Setting.Password)))
+            {
+                Settings.Set(Setting.Email, "ovatsus@outlook.com");
+                Settings.Set(Setting.Password, "abc123");
+            }
+#endif
         }
 
         private LazyBlock<Course[]> coursesLazyBlock;
