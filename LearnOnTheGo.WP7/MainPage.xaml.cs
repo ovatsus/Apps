@@ -169,7 +169,7 @@ namespace LearnOnTheGo
             var task = new EmailComposeTask
             {
                 To = "learnonthego@codebeside.org",
-                Subject = "Feedback for Learn On The Go",
+                Subject = "Feedback for Learn On The Go " + LittleWatson.AppVersion,
                 Body = LittleWatson.GetMailBody("")
             };
             task.Show();
