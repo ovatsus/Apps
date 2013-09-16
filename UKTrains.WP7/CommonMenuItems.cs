@@ -30,7 +30,7 @@ namespace UKTrains
                 new EmailComposeTask
                 {
                     To = "uktrains@codebeside.org",
-                    Subject = "Feedback for UK Trains",
+                    Subject = "Feedback for UK Trains " + LittleWatson.AppVersion,
                     Body = LittleWatson.GetMailBody("")
                 }.Show();
             });

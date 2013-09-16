@@ -61,7 +61,7 @@ namespace UKTrains
                     {
                         var email = new EmailComposeTask();
                         email.To = "uktrains@codebeside.org";
-                        email.Subject = "UK Trains auto-generated problem report";
+                        email.Subject = "UK Trains " + LittleWatson.AppVersion + " auto-generated problem report";
                         if (contents.Length > 32000)
                         {
                             contents = contents.Substring(0, 32000) + " ...";
@@ -76,10 +76,15 @@ namespace UKTrains
             }
         }
 
+        public static string AppVersion
+        {
+            get { return new AssemblyName(Assembly.GetExecutingAssembly().FullName).Version.ToString(); }
+        }
+
         public static string GetMailBody(string contents)
         {
             return "\n\n" + contents + "\n\n" +
-                   "App Version: " + new AssemblyName(Assembly.GetExecutingAssembly().FullName).Version + "\n" +
+                   "App Version: " + AppVersion + "\n" +
                    "OS Version: " + Environment.OSVersion.Version + "\n" +
                    "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName + "\n" +
                    "Culture: " + CultureInfo.CurrentCulture + "/" + CultureInfo.CurrentUICulture;
