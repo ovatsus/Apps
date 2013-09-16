@@ -75,7 +75,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar>
+        <shell:ApplicationBar Opacity="0.7">
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.settings.png" Text="Settings" Click="OnSettingsClick"/>
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.star.png" Text="Rate and Review" Click="OnRateAndReviewClick"/>
