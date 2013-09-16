@@ -134,5 +134,7 @@ type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>) =
         | Some coursesById -> 
             let course = x.GetCourse(courseId)
             let lecturesSection = getLectureSections true course.HomeLink
-            coursesById.[courseId] <- { course with LectureSections = lecturesSection }
+            let refreshedCourse = { course with LectureSections = lecturesSection }
+            coursesById.[courseId] <- refreshedCourse
+            refreshedCourse
         | None -> failwithf "Courses not fetched yet"

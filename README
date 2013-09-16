@@ -6,6 +6,7 @@ This is not an official Coursera app.
 
 New in 1.6:
 * UI improvements
+* Fix lectures not refreshing in some situations
 
 New in 1.5:
 * Update to the new Coursera login API
