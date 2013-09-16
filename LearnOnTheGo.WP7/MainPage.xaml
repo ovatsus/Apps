@@ -20,30 +20,40 @@
 
         <Grid.Resources>
             <DataTemplate x:Key="courseTemplate">
-                <Button Tap="OnCourseClick"
-                        BorderThickness="0">
-                    <StackPanel>
-                        <TextBlock TextWrapping="Wrap"
-                                   Text="{Binding Topic.Name}" />
-                        <TextBlock TextWrapping="Wrap"
-                                   HorizontalAlignment="Right"
-                                   Text="{Binding Topic.Instructor}" />
-                        <Grid Height="232"
-                              Width="412"
-                              Margin="0,2,0,0">
-                            <TextBlock Text="Loading image..."
-                                       FontSize="18"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center" />
-                            <Image Source="{Binding Topic.SmallIconHover}" />
-                        </Grid>
-                    </StackPanel>
+                <Button Tap="OnCourseClick" 
+                        BorderThickness="0" 
+                        Padding="0"
+                        Margin="-12,0,0,12"
+                        HorizontalContentAlignment="Stretch">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding Topic.SmallIconHover}"
+                               Width="103"
+                               Height="58"
+                               VerticalAlignment="Top" />
+                        <StackPanel Grid.Column="1" 
+                                    VerticalAlignment="Top"
+                                    Margin="12,0,0,0">
+                            <TextBlock Text="{Binding Topic.Name}" 
+                                       Margin="0,-12,0,0"
+                                       TextWrapping="Wrap"
+                                       FontSize="34" 
+                                       FontFamily="Segoe WP SemiLight" />
+                            <TextBlock Text="{Binding Topic.Instructor}" 
+                                       TextWrapping="Wrap"
+                                       FontSize="16" 
+                                       Foreground="Gray" />
+                        </StackPanel>
+                    </Grid>
                 </Button>
             </DataTemplate>
         </Grid.Resources>
-        
+
         <controls:Pivot Title="Courses" x:Name="pivot">
-            <controls:PivotItem Header="Active">
+            <controls:PivotItem Header="Active" Margin="24,28,0,0">
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="activeCourses"
@@ -58,7 +68,7 @@
                 </ScrollViewer>
             </controls:PivotItem>
 
-            <controls:PivotItem Header="Upcoming">
+            <controls:PivotItem Header="Upcoming" Margin="24,28,0,0">
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="upcomingCourses"
@@ -73,7 +83,7 @@
                 </ScrollViewer>
             </controls:PivotItem>
 
-            <controls:PivotItem Header="Completed">
+            <controls:PivotItem Header="Completed" Margin="24,28,0,0">
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="completedCourses"
@@ -84,7 +94,7 @@
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
-                    </Grid>                    
+                    </Grid>
                 </ScrollViewer>
             </controls:PivotItem>
         </controls:Pivot>
@@ -93,8 +103,8 @@
                    TextWrapping="Wrap"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center" />
-    </Grid>   
- 
+    </Grid>
+
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Mode="Minimized">
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
