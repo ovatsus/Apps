@@ -8,7 +8,7 @@ type Course =
       StartDate : string
       Duration : string
       HomeLink : string
-      HasStarted : bool 
+      Active : bool 
       HasFinished : bool 
       Topic : Topic 
       LectureSections : LazyAsync<LectureSection[]> }

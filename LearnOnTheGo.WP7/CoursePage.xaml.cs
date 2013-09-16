@@ -38,24 +38,38 @@ namespace LearnOnTheGo
 
         private void Load(bool refresh)
         {
-            if (refresh)
+            if (!course.Active)
             {
-                App.Crawler.RefreshCourse(course.Id);
+                if (course.HasFinished)
+                {
+                    messageTextBlock.Text = "Lectures no longer available";
+                }
+                else
+                {
+                    messageTextBlock.Text = "Lectures not available yet";
+                }
             }
-            lecturesLazyBlock = new LazyBlock<LectureSection[]>(
-                "lectures",
-                "No lectures available. Make sure you have acceted the honor code.",
-                course.LectureSections,
-                a => a.Length == 0,
-                new LazyBlockUI<LectureSection[]>(
-                    this,
-                    lectureSections => pivot.ItemsSource = lectureSections,
-                    () => pivot.ItemsSource != null,
-                    messageTextBlock),
-                false,
-                null,
-                null,
-                null);
+            else
+            {
+                if (refresh)
+                {
+                    App.Crawler.RefreshCourse(course.Id);
+                }
+                lecturesLazyBlock = new LazyBlock<LectureSection[]>(
+                    "lectures",
+                    "No lectures available. Make sure you have accepted the honor code.",
+                    course.LectureSections,
+                    a => a.Length == 0,
+                    new LazyBlockUI<LectureSection[]>(
+                        this,
+                        lectureSections => pivot.ItemsSource = lectureSections,
+                        () => pivot.ItemsSource != null,
+                        messageTextBlock),
+                    false,
+                    null,
+                    null,
+                    null);
+            }
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

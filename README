@@ -4,6 +4,9 @@ Description:
 Learn On The Go enables you to watch the lecture videos and read the PDF lecture notes of the Coursera courses you're enrolled in.
 This is not an official Coursera app.
 
+New in 1.6:
+* UI improvements
+
 New in 1.5:
 * Update to the new Coursera login API
 * Improve error reporting

@@ -76,7 +76,7 @@ namespace LearnOnTheGo
                         {
                             if (course.HasFinished)
                                 completed.Add(course);
-                            else if (course.HasStarted)
+                            else if (course.Active)
                                 active.Add(course);
                             else
                                 upcoming.Add(course);
@@ -108,7 +108,13 @@ namespace LearnOnTheGo
                     upcomingCoursesEmptyMessage.Visibility = Visibility.Collapsed;
                     completedCoursesEmptyMessage.Visibility = Visibility.Collapsed;
                 },
-                null,
+                success =>
+                {
+                    if (success && !refresh)
+                    {
+                        LoadCourses(email, password, true);
+                    }
+                },
                 null);
         }
 

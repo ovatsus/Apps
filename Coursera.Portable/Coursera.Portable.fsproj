@@ -60,6 +60,7 @@
       <Link>Crawler.fs</Link>
     </Compile>
     <None Include="topics.json" />
+    <None Include="Tests.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

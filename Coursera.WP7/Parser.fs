@@ -47,7 +47,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
             | _ -> ""
           Duration = json?duration_string.AsString()
           HomeLink = homeLink
-          HasStarted = json?active.AsBoolean()
+          Active = json?active.AsBoolean()
           HasFinished = json?status.AsInteger() = 0 || json?certificates_ready.AsBoolean()
           Topic = topic 
           LectureSections = getLectureSections homeLink }
@@ -56,7 +56,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
         try 
             [| for topicJson in topicsJson do
                 let topic = parseTopic topicJson
-                if topic.Visible then
+                if topic.Visible && topic.Display then
                     for courseJson in topicJson?courses do
                         yield parseCourse topic courseJson |]
         with exn ->
@@ -98,7 +98,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
             | _ -> ""
           Duration = json.DurationString
           HomeLink = homeLink
-          HasStarted = json.Active
+          Active = json.Active
           HasFinished = json.CertificatesReady || not json.Status
           Topic = topic 
           LectureSections = getLectureSections homeLink }
@@ -107,7 +107,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
         try 
             [| for topicJson in topicsJson do
                 let topic = parseTopic topicJson
-                if topic.Visible then
+                if topic.Visible && topic.Display then
                     for courseJson in topicJson.Courses do
                         yield parseCourse topic courseJson |]
         with exn ->
