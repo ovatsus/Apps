@@ -162,15 +162,26 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
                         let videoUrl = a |> attr "data-modal-iframe" 
                                          |> getVideoUrlAsync 
                                          |> LazyAsync.fromAsync
-                        let pdfUrl = a |> followingSibling "div" 
-                                       |> elements "a" 
-                                       |> Seq.map (attr "href") 
-                                       |> Seq.tryFind (endsWith ".pdf")
+                        let lectureNotesUrl = 
+                            let urls = a |> followingSibling "div" 
+                                         |> elements "a" 
+                                         |> Seq.map (attr "href") 
+                            match Seq.tryFind (endsWith ".ppsx") urls with
+                            | Some url -> url
+                            | _ -> match Seq.tryFind (endsWith ".pps") urls with
+                                   | Some url -> url
+                                   | _ -> match Seq.tryFind (endsWith ".pptx") urls with
+                                          | Some url -> url
+                                          | _ -> match Seq.tryFind (endsWith ".ppt") urls with
+                                                 | Some url -> url
+                                                 | _ -> match Seq.tryFind (endsWith ".pdf") urls with
+                                                        | Some url -> url
+                                                        | _ -> ""
                         let viewed = a |> parent |> hasClass "viewed"
                         { Id = id
                           Title = title
                           VideoUrl = videoUrl
-                          PdfUrl = defaultArg pdfUrl ""
+                          LectureNotesUrl = lectureNotesUrl
                           Viewed = viewed })
                     |> Seq.toArray
                 { Title = title

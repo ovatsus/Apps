@@ -35,10 +35,10 @@
                         <coding4fun:RoundButton Tap="OnLectureVideoClick"
                                                 Margin="4,0,0,0"
                                                 ImageSource="/Icons/dark/appbar.control.play.png" />
-                        <coding4fun:RoundButton Tap="OnLecturePdfClick"
+                        <coding4fun:RoundButton Tap="OnLectureNotesClick"
                                                 Margin="4,0,0,0"
-                                                ImageSource="/Icons/dark/appbar.page.pdf.png" 
-                                                IsEnabled="{Binding HasPdf}"/>
+                                                ImageSource="/Icons/dark/appbar.page.png" 
+                                                IsEnabled="{Binding HasLectureNotes}"/>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
@@ -75,7 +75,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar Opacity="0.7">
+        <shell:ApplicationBar>
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.settings.png" Text="Settings" Click="OnSettingsClick"/>
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.star.png" Text="Rate and Review" Click="OnRateAndReviewClick"/>

@@ -132,7 +132,7 @@ namespace LearnOnTheGo
                 null);
         }
 
-        private void OnLecturePdfClick(object sender, RoutedEventArgs e)
+        private void OnLectureNotesClick(object sender, RoutedEventArgs e)
         {
             if (videoLazyBlock != null)
             {
@@ -142,7 +142,7 @@ namespace LearnOnTheGo
             var lecture = (Coursera.Lecture)((Button)sender).DataContext;
 
             var task = new WebBrowserTask();
-            task.Uri = new Uri(lecture.PdfUrl, UriKind.Absolute);
+            task.Uri = new Uri(lecture.LectureNotesUrl, UriKind.Absolute);
             task.Show();
         }
 

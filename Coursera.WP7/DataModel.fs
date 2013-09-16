@@ -44,8 +44,8 @@ and Lecture =
     { Id : int
       Title : string
       VideoUrl : LazyAsync<string>
-      PdfUrl : string
+      LectureNotesUrl : string
       Viewed : bool }
 
-    member x.HasPdf = x.PdfUrl <> ""
+    member x.HasLectureNotes = x.LectureNotesUrl <> ""
     override x.ToString() = sprintf "%A" x
