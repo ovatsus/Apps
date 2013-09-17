@@ -30,7 +30,11 @@ namespace LearnOnTheGo
         {
             base.OnNavigatedTo(e);
 
-            LittleWatson.CheckForPreviousException(true);
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                LittleWatson.CheckForPreviousException(true);
+                LittleWatson.CheckForNewVersion(this);
+            }
 
             if (App.Crawler != null)
             {
