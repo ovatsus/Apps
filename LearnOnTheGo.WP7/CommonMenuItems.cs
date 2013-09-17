@@ -8,24 +8,29 @@ namespace LearnOnTheGo
 {
     public static class CommonMenuItems
     {
-        private static void AddMenuItem(PhoneApplicationPage page, string text, Action action) 
+        private static void AddButton(PhoneApplicationPage page, string text, string iconUri, Action action) 
         {
-            var menuItem = new ApplicationBarMenuItem(text);
-            menuItem.Click += delegate { action(); };
-            page.ApplicationBar.MenuItems.Add(menuItem);
+            var button = new ApplicationBarIconButton(new Uri("/Icons/dark/" + iconUri, UriKind.Relative)) { Text = text };
+            button.Click += delegate { action(); };
+            page.ApplicationBar.MenuItems.Add(button);
+        }
+
+        public static void NavigateToSettings(this PhoneApplicationPage page)
+        {
+            page.NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
         }
 
         public static void Init(PhoneApplicationPage page)
         {
-            AddMenuItem(page, "Settings", () => page.NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative)));
+            AddButton(page, "Settings", "appbar.settings.png", () => page.NavigateToSettings());
 
-            AddMenuItem(page, "Rate and Review", () =>
+            AddButton(page, "Rate and Review", "appbar.star.png", () =>
             {
                 new MarketplaceReviewTask().Show();
                 Settings.Set(Setting.RatingDone, true);
             });
 
-            AddMenuItem(page, "Give Feedback", () =>
+            AddButton(page, "Give Feedback", "appbar.reply.email.png", () =>
             {
                 new EmailComposeTask
                 {

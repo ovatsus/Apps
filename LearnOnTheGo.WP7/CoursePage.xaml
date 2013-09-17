@@ -77,9 +77,6 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
             <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
-            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.settings.png" Text="Settings" Click="OnSettingsClick"/>
-            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.star.png" Text="Rate and Review" Click="OnRateAndReviewClick"/>
-            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.reply.email.png" Text="Give Feedback" Click="OnGiveFeedbackClick"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

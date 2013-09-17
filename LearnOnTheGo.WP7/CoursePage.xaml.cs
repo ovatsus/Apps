@@ -1,11 +1,11 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
-using Coursera;
+﻿using Coursera;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace LearnOnTheGo
 {
@@ -14,6 +14,7 @@ namespace LearnOnTheGo
         public CoursePage()
         {
             InitializeComponent();
+            CommonMenuItems.Init(this);
         }
 
         private int courseId;
@@ -143,28 +144,6 @@ namespace LearnOnTheGo
 
             var task = new WebBrowserTask();
             task.Uri = new Uri(lecture.LectureNotesUrl, UriKind.Absolute);
-            task.Show();
-        }
-
-        private void OnSettingsClick(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
-        }
-
-        private void OnRateAndReviewClick(object sender, EventArgs e)
-        {
-            var task = new MarketplaceReviewTask();
-            task.Show();
-        }
-
-        private void OnGiveFeedbackClick(object sender, EventArgs e)
-        {
-            var task = new EmailComposeTask
-            {
-                To = "learnonthego@codebeside.org",
-                Subject = "Feedback for Learn On The Go " + LittleWatson.AppVersion,
-                Body = LittleWatson.GetMailBody("")
-            };
             task.Show();
         }
     }

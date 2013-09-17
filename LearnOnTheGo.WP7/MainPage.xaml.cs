@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Coursera;
+using FSharp.Control;
+using Microsoft.Phone.Controls;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Coursera;
-using FSharp.Control;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Tasks;
 
 namespace LearnOnTheGo
 {
@@ -22,6 +21,7 @@ namespace LearnOnTheGo
                 Settings.Set(Setting.Password, "abc123");
             }
 #endif
+            CommonMenuItems.Init(this);
         }
 
         private LazyBlock<Course[]> coursesLazyBlock;
@@ -46,7 +46,7 @@ namespace LearnOnTheGo
 
             if (e.NavigationMode != NavigationMode.Back && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)))
             {
-                OnSettingsClick(null, null);
+                this.NavigateToSettings();
             }
             else
             {
@@ -143,7 +143,7 @@ namespace LearnOnTheGo
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                OnSettingsClick(null, null);
+                this.NavigateToSettings();
             }
             else
             {
@@ -155,28 +155,6 @@ namespace LearnOnTheGo
         {
             var course = (Coursera.Course)((Button)sender).DataContext;
             NavigationService.Navigate(new Uri("/CoursePage.xaml?courseId=" + course.Id, UriKind.Relative));
-        }
-
-        private void OnSettingsClick(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
-        }
-
-        private void OnRateAndReviewClick(object sender, EventArgs e)
-        {
-            var task = new MarketplaceReviewTask();
-            task.Show();
-        }
-
-        private void OnGiveFeedbackClick(object sender, EventArgs e)
-        {
-            var task = new EmailComposeTask
-            {
-                To = "learnonthego@codebeside.org",
-                Subject = "Feedback for Learn On The Go " + LittleWatson.AppVersion,
-                Body = LittleWatson.GetMailBody("")
-            };
-            task.Show();
         }
     }
 }
