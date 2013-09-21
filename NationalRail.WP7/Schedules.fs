@@ -1,4 +1,8 @@
-﻿namespace NationalRail
+﻿#if INTERACTIVE
+#r "../packages/FSharp.Data.1.1.10/lib/portable-net40+sl5+wp8+win8/FSharp.Data.dll"
+#else
+namespace NationalRail
+#endif
 
 open System
 open System.Text
@@ -6,14 +10,14 @@ open FSharp.Net
 
 type ScheduleType = 
     | Full
-    | DailyUpdate
-    member x.ToUrl() = 
+    | DailyUpdate of DayOfWeek
+    member x.ToUrlPart1() = 
         match x with 
-        | DailyUpdate -> "UPDATE"
+        | DailyUpdate _ -> "UPDATE"
         | Full -> "FULL"
-    member x.ToUrl(day:DayOfWeek) =
+    member x.ToUrlPart2() =
         match x with 
-        | DailyUpdate -> "toc-update-" + day.ToString().Substring(0,3).ToLowerInvariant()
+        | DailyUpdate day-> "toc-update-" + day.ToString().Substring(0,3).ToLowerInvariant()
         | Full -> "toc-full"
 
 type Toc = 
@@ -94,10 +98,10 @@ type Toc =
 
 module Schedules = 
 
-    let download (username:string) (password:string) (toc:Toc) (schedule:ScheduleType) day = 
+    let download (username:string) (password:string) (toc:Toc) (schedule:ScheduleType) = 
         let url = sprintf "https://datafeeds.networkrail.co.uk/ntrod/CifFileAuthenticate?type=CIF_%s_%s_DAILY&day=%s" 
                           (toc.ToUrl()) 
-                          (schedule.ToUrl()) 
-                          (schedule.ToUrl(day))    
+                          (schedule.ToUrlPart1()) 
+                          (schedule.ToUrlPart2())    
         let auth = "Basic " + (username + ":" + password |> Encoding.UTF8.GetBytes |> Convert.ToBase64String)
         Http.Request(url, headers=["Authorization", auth])

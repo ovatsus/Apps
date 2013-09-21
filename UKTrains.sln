@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{467B15DE-972E-45F6-914A-3AF8C6A91442}"
 	ProjectSection(SolutionItems) = preProject
-		README = README
+		UKTrains = UKTrains
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKTrains.WP7", "UKTrains.WP7\UKTrains.WP7.csproj", "{5B601644-3CE5-43F3-84B1-C32B01DFF5B7}"
