@@ -26,6 +26,12 @@ New in 1.2:
 New in 1.1:
 * Cache courses and lectures lists
 
+Certification Notes:
+You need a Coursera account to test this app. Either register for a free one at http://www.coursera.org or use the following credentials:
+email: ovatsus@outlook.com
+password: abc123
+Note that the videos from some courses are in a format not supported by Windows Phone 7. On those cases you might get a "Sorry, we can't play this
+file on your phone." message, but that's expected.
 
 Keywords:
 Learn
