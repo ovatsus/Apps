@@ -12,6 +12,9 @@ namespace UKTrains
         public PhoneApplicationFrame RootFrame { get; private set; }
         public static bool RunningInBackground { get; private set; }
 
+        public static readonly string Name = "UK Trains";
+        public static readonly string Email = "uktrains@codebeside.org";
+
         public App()
         {
             UnhandledException += Application_UnhandledException;
@@ -31,18 +34,22 @@ namespace UKTrains
 
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            LittleWatson.Log("Launching");
         }
 
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            LittleWatson.Log("Activated IsApplicationInstancePreserved=" + e.IsApplicationInstancePreserved);
         }
 
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            LittleWatson.Log("Deactivated");
         }
 
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            LittleWatson.Log("Closing");
         }
 
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
@@ -70,8 +77,8 @@ namespace UKTrains
 
             RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
-
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
+            RootFrame.Navigated += RootFrame_Navigated;
 
             phoneApplicationInitialized = true;
         }
@@ -82,6 +89,11 @@ namespace UKTrains
                 RootVisual = RootFrame;
 
             RootFrame.Navigated -= CompleteInitializePhoneApplication;
+        }
+
+        private void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            LittleWatson.Log("Navigated " + e.NavigationMode + " " + e.Uri);
         }
     }
 }

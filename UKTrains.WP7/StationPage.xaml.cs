@@ -40,6 +40,7 @@ namespace UKTrains
 
             if (departuresTable != null)
             {
+                LittleWatson.Log("departuresTable is not null");
                 OnPivotSelectionChanged(null, null);
                 return;
             }
@@ -180,8 +181,8 @@ namespace UKTrains
 #if WP8
             return new FlipTileData
             {
-                Title = forPrimaryTile ? "UK Trains" : departuresTable.ToString(),
-                BackTitle = "UK Trains",
+                Title = forPrimaryTile ? App.Name : departuresTable.ToString(),
+                BackTitle = App.Name,
                 BackContent = content,
                 WideBackContent = wideContent,
                 SmallBackgroundImage = new Uri("Assets/Tiles/FlipCycleTileSmall.png", UriKind.Relative),
@@ -191,8 +192,8 @@ namespace UKTrains
 #else
             return new StandardTileData
             {
-                Title = forPrimaryTile ? "UK Trains" : departuresTable.ToString(),
-                BackTitle = "UK Trains",
+                Title = forPrimaryTile ? App.Name : departuresTable.ToString(),
+                BackTitle = App.Name,
                 BackContent = content,
                 BackgroundImage = new Uri("Tile.png", UriKind.Relative),
             };
@@ -292,6 +293,7 @@ namespace UKTrains
 
         private void OnDirectionsClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnDirectionsClick");
             var task = new BingMapsDirectionsTask();
             task.End = new LabeledMapLocation(departuresTable.Station.Name + " Station", new GeoCoordinate(departuresTable.Station.Location.Lat, departuresTable.Station.Location.Long));
             task.Show();
@@ -307,6 +309,7 @@ namespace UKTrains
             };
             pinButton.Click += delegate
             {
+                LittleWatson.Log("OnPinToStartClick");
                 if (!ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri))
                 {
                     CreateTile(GetUri(departuresTable, false), GetTileData(forPrimaryTile: false));
@@ -345,12 +348,14 @@ namespace UKTrains
 
         private async void OnShowPlatformOnLockScreenClick(object sender, EventArgs e) 
         {
+            LittleWatson.Log("OnShowPlatformOnLockScreenClick");
             await Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
 #endif
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnRefreshClick");
             if (pivot.SelectedIndex != 1 && departuresLazyBlock != null)
             {
                 departuresLazyBlock.Refresh();
@@ -363,6 +368,7 @@ namespace UKTrains
 
         private void OnFilterClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnFilterClick");
             var uri = "/MainAndFilterPage.xaml?fromStation=" + departuresTable.Station.Code;
             if (departuresTable.HasDestinationFilter)
             {
@@ -373,16 +379,19 @@ namespace UKTrains
 
         private void OnClearFilterClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnClearFilterClick");
             NavigationService.Navigate(GetUri(departuresTable.WithoutFilter, false));
         }
 
         private void OnReverseJourneyClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnReverseJourneyClick");
             NavigationService.Navigate(GetUri(departuresTable.Reversed, false));
         }
 
         private void OnDetailsClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnDetailsClick");
             var departure = (Departure)((Button)sender).DataContext;
             DetailsPage.SetTarget(departure);
             NavigationService.Navigate(new Uri("/DetailsPage.xaml", UriKind.Relative));
@@ -390,6 +399,7 @@ namespace UKTrains
 
         private void OnPivotSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            LittleWatson.Log("OnPivotSelectionChanged " + pivot.SelectedIndex);
             if (pivot.SelectedIndex == 0)
             {
                 LoadDepartures();

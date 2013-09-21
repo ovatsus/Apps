@@ -194,6 +194,7 @@ namespace UKTrains
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnRefreshClick");
             if (nearestLazyBlock == null || nearestLazyBlock.CanRefresh)
             {
                 LoadNearestStations();
@@ -202,6 +203,7 @@ namespace UKTrains
 
         private void OnStationClick(object sender, RoutedEventArgs e)
         {
+            LittleWatson.Log("OnStationClick");
             var dataContext = ((Button)sender).DataContext;
             GoToStation(dataContext);
         }
@@ -228,12 +230,14 @@ namespace UKTrains
 
         private void OnClearRecentItemsClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnClearRecentItemsClick");
             RecentItems.Clear();
             RefreshRecentItemsList();
         }
 
         private void OnRecentItemRemoveClick(object sender, RoutedEventArgs e)
         {
+            LittleWatson.Log("OnRecentItemRemoveClick");
             var dataContext = (DeparturesTable)((MenuItem)sender).DataContext;
             RecentItems.Remove(dataContext);
             RefreshRecentItemsList();

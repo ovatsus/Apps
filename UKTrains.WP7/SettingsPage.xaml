@@ -24,9 +24,10 @@
                                           x:Name="enableLocationServices" />
                     <TextBlock TextWrapping="Wrap" Margin="12,0">
                         Your privacy is important to us. This application uses 
-                        your current location to improve your experience. No 
+                        your current location to show you the nearest stations. No 
                         information is stored or shared. You may disable 
-                        Location Services.
+                        Location Services, but if you do so the
+                        app will not refresh in the background.
                     </TextBlock>
                     <toolkit:ToggleSwitch Content="Use imperial system"
                                           x:Name="useMilesInsteadOfKms" />

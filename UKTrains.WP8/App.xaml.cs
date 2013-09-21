@@ -12,6 +12,9 @@ namespace UKTrains
         public static PhoneApplicationFrame RootFrame { get; private set; }
         public static bool RunningInBackground { get; private set; }
 
+        public static readonly string Name = "UK Trains";
+        public static readonly string Email = "uktrains@codebeside.org";
+
         public App()
         {
             UnhandledException += Application_UnhandledException;
@@ -31,23 +34,28 @@ namespace UKTrains
 
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            LittleWatson.Log("Launching");
         }
 
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            LittleWatson.Log("Activated IsApplicationInstancePreserved=" + e.IsApplicationInstancePreserved);
             RunningInBackground = false;
         }
 
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            LittleWatson.Log("Deactivated Reason=" + e.Reason);
         }
 
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            LittleWatson.Log("Closing");
         }
 
         private void Application_RunningInBackground(object sender, RunningInBackgroundEventArgs args)
         {
+            LittleWatson.Log("RunningInBackground");
             RunningInBackground = true;
         }
 
@@ -77,7 +85,7 @@ namespace UKTrains
             RootFrame = new PhoneApplicationFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
-            RootFrame.Navigated += CheckForResetNavigation;
+            RootFrame.Navigated += RootFrame_Navigated;
             phoneApplicationInitialized = true;
         }
 
@@ -89,8 +97,9 @@ namespace UKTrains
             RootFrame.Navigated -= CompleteInitializePhoneApplication;
         }
 
-        private void CheckForResetNavigation(object sender, NavigationEventArgs e)
+        private void RootFrame_Navigated(object sender, NavigationEventArgs e)
         {
+            LittleWatson.Log("Navigated " + e.NavigationMode + " " + e.Uri);
             if (e.NavigationMode == NavigationMode.Reset)
                 RootFrame.Navigated += ClearBackStackAfterReset;
         }
@@ -98,6 +107,7 @@ namespace UKTrains
         private void ClearBackStackAfterReset(object sender, NavigationEventArgs e)
         {
             RootFrame.Navigated -= ClearBackStackAfterReset;
+
             if (e.NavigationMode != NavigationMode.New && e.NavigationMode != NavigationMode.Refresh)
                 return;
 

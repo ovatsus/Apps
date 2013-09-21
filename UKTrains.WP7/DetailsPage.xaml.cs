@@ -30,7 +30,15 @@ namespace UKTrains
 
             if (departure == null)
             {
-                NavigationService.GoBack();
+                LittleWatson.Log("Departure is null");
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+                else
+                {
+                    LittleWatson.Log("Can not go back");
+                }
                 return;
             }
 
@@ -72,6 +80,7 @@ namespace UKTrains
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnRefreshClick");
             if (journeyElementsLazyBlock != null)
             {
                 journeyElementsLazyBlock.Refresh();

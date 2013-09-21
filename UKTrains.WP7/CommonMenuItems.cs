@@ -11,7 +11,7 @@ namespace UKTrains
         private static void AddMenuItem(PhoneApplicationPage page, string text, Action action) 
         {
             var menuItem = new ApplicationBarMenuItem(text);
-            menuItem.Click += delegate { action(); };
+            menuItem.Click += delegate { LittleWatson.Log("On" + text.Replace(" ", null) + "Click"); action(); };
             page.ApplicationBar.MenuItems.Add(menuItem);
         }
 
@@ -19,7 +19,7 @@ namespace UKTrains
         {
             AddMenuItem(page, "Settings", () => page.NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative)));
 
-            AddMenuItem(page, "Rate and Review", () =>
+            AddMenuItem(page, "Rate And Review", () =>
             {
                 new MarketplaceReviewTask().Show();
                 Settings.Set(Setting.RatingDone, true);
@@ -29,8 +29,8 @@ namespace UKTrains
             {
                 new EmailComposeTask
                 {
-                    To = "uktrains@codebeside.org",
-                    Subject = "Feedback for UK Trains " + LittleWatson.AppVersion,
+                    To = App.Email,
+                    Subject = "Feedback for " + App.Name + " " + LittleWatson.AppVersion,
                     Body = LittleWatson.GetMailBody("")
                 }.Show();
             });
@@ -44,9 +44,10 @@ namespace UKTrains
             {
                 if ((DateTime.UtcNow - installationDate.Value).TotalDays >= 1)
                 {
-                    var result = MessageBox.Show("Would you mind reviewing the UK Trains app?", "Rate and Review", MessageBoxButton.OKCancel);
+                    var result = MessageBox.Show("Would you mind reviewing the " + App.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
                     if (result == MessageBoxResult.OK)
                     {
+                        LittleWatson.Log("MarketplaceReviewTaskShow from Prompt");
                         new MarketplaceReviewTask().Show();
                     }
                     Settings.Set(Setting.RatingDone, true);

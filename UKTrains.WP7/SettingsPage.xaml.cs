@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Phone.Controls;
+using System.Windows.Navigation;
 
 namespace UKTrains
 {
@@ -14,6 +15,7 @@ namespace UKTrains
 
         private void OnSaveClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnSaveClick");
             Settings.Set(Setting.LocationServicesEnabled, enableLocationServices.IsChecked == true);
             Settings.Set(Setting.UseMilesInsteadOfKMs, useMilesInsteadOfKms.IsChecked == true);
             LocationService.Setup();
