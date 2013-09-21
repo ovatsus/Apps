@@ -26,13 +26,22 @@ namespace LearnOnTheGo
             if (App.Crawler == null)
             {
                 // app was tombstoned or settings changed
-                NavigationService.GoBack();
+                LittleWatson.Log("App.Crawler is null");
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+                else
+                {
+                    LittleWatson.Log("Can not go back");
+                }
                 return;
             }
 
             courseId = int.Parse(NavigationContext.QueryString["courseId"]);
             var course = App.Crawler.GetCourse(courseId);
             pivot.Title = course.Topic.Name;
+            LittleWatson.Log(courseId + " = " + course.Topic.Name + " [" + course.Name + "]");
 
             Load(false);
         }
@@ -89,6 +98,8 @@ namespace LearnOnTheGo
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnRefreshClick");
+
             if (lecturesLazyBlock == null || lecturesLazyBlock.CanRefresh)
             {
                 Load(true);
@@ -97,8 +108,11 @@ namespace LearnOnTheGo
 
         private void OnLectureVideoClick(object sender, RoutedEventArgs e)
         {
+            LittleWatson.Log("OnLectureVideoClick");
+
             if (videoLazyBlock != null)
             {
+                LittleWatson.Log("videoLazyBlock is not null");
                 return;
             }
 
@@ -135,10 +149,7 @@ namespace LearnOnTheGo
 
         private void OnLectureNotesClick(object sender, RoutedEventArgs e)
         {
-            if (videoLazyBlock != null)
-            {
-                return;
-            }
+            LittleWatson.Log("OnLectureNotesClick");
 
             var lecture = (Coursera.Lecture)((Button)sender).DataContext;
 

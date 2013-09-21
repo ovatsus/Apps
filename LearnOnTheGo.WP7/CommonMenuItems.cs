@@ -8,11 +8,11 @@ namespace LearnOnTheGo
 {
     public static class CommonMenuItems
     {
-        private static void AddButton(PhoneApplicationPage page, string text, string iconUri, Action action) 
+        private static void AddMenuItem(PhoneApplicationPage page, string text, Action action) 
         {
-            var button = new ApplicationBarIconButton(new Uri("/Icons/dark/" + iconUri, UriKind.Relative)) { Text = text };
-            button.Click += delegate { action(); };
-            page.ApplicationBar.MenuItems.Add(button);
+            var menuItem = new ApplicationBarMenuItem(text);
+            menuItem.Click += delegate { LittleWatson.Log("On" + text.Replace(" ", null) + "Click"); action(); };
+            page.ApplicationBar.MenuItems.Add(menuItem);
         }
 
         public static void NavigateToSettings(this PhoneApplicationPage page)
@@ -22,20 +22,20 @@ namespace LearnOnTheGo
 
         public static void Init(PhoneApplicationPage page)
         {
-            AddButton(page, "Settings", "appbar.settings.png", () => page.NavigateToSettings());
+            AddMenuItem(page, "Settings", () => page.NavigateToSettings());
 
-            AddButton(page, "Rate and Review", "appbar.star.png", () =>
+            AddMenuItem(page, "Rate And Review", () =>
             {
                 new MarketplaceReviewTask().Show();
                 Settings.Set(Setting.RatingDone, true);
             });
 
-            AddButton(page, "Give Feedback", "appbar.reply.email.png", () =>
+            AddMenuItem(page, "Give Feedback", () =>
             {
                 new EmailComposeTask
                 {
-                    To = "learnonthego@codebeside.org",
-                    Subject = "Feedback for Learn On The Go " + LittleWatson.AppVersion,
+                    To = App.Email,
+                    Subject = "Feedback for " + App.Name + " " + LittleWatson.AppVersion,
                     Body = LittleWatson.GetMailBody("")
                 }.Show();
             });
@@ -49,9 +49,10 @@ namespace LearnOnTheGo
             {
                 if ((DateTime.UtcNow - installationDate.Value).TotalDays >= 1)
                 {
-                    var result = MessageBox.Show("Would you mind reviewing the Learn On The Go app?", "Rate and Review", MessageBoxButton.OKCancel);
+                    var result = MessageBox.Show("Would you mind reviewing the " + App.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
                     if (result == MessageBoxResult.OK)
                     {
+                        LittleWatson.Log("MarketplaceReviewTaskShow from Prompt");
                         new MarketplaceReviewTask().Show();
                     }
                     Settings.Set(Setting.RatingDone, true);

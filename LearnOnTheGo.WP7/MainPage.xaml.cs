@@ -38,6 +38,7 @@ namespace LearnOnTheGo
 
             if (App.Crawler != null)
             {
+                LittleWatson.Log("App.Crawler is not null");
                 return;
             }
 
@@ -133,8 +134,11 @@ namespace LearnOnTheGo
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnRefreshClick");
+
             if (coursesLazyBlock != null && !coursesLazyBlock.CanRefresh)
             {
+                LittleWatson.Log("coursesLazyBlock can not refresh");
                 return;
             }
 
@@ -153,6 +157,7 @@ namespace LearnOnTheGo
 
         private void OnCourseClick(object sender, RoutedEventArgs e)
         {
+            LittleWatson.Log("OnCourseClick");
             var course = (Coursera.Course)((Button)sender).DataContext;
             NavigationService.Navigate(new Uri("/CoursePage.xaml?courseId=" + course.Id, UriKind.Relative));
         }

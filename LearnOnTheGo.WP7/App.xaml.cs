@@ -13,6 +13,9 @@ namespace LearnOnTheGo
 
         public static Coursera.Crawler Crawler { get; set; }
 
+        public static readonly string Name = "Learn On The Go";
+        public static readonly string Email = "learnonthego@codebeside.org";
+
         public App()
         {
             UnhandledException += Application_UnhandledException;
@@ -32,18 +35,22 @@ namespace LearnOnTheGo
 
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            LittleWatson.Log("Launching");
         }
 
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            LittleWatson.Log("Activated IsApplicationInstancePreserved=" + e.IsApplicationInstancePreserved);
         }
 
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            LittleWatson.Log("Deactivated");
         }
 
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            LittleWatson.Log("Closing");
         }
 
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
@@ -71,8 +78,8 @@ namespace LearnOnTheGo
 
             RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
-
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
+            RootFrame.Navigated += RootFrame_Navigated;
 
             phoneApplicationInitialized = true;
         }
@@ -83,6 +90,11 @@ namespace LearnOnTheGo
                 RootVisual = RootFrame;
 
             RootFrame.Navigated -= CompleteInitializePhoneApplication;
+        }
+
+        private void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            LittleWatson.Log("Navigated " + e.NavigationMode + " " + e.Uri);
         }
     }
 }

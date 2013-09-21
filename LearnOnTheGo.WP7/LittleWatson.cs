@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.IsolatedStorage;
@@ -16,6 +17,11 @@ namespace LearnOnTheGo
     {
         private const string filename = "LittleWatson.txt";
 
+        private static string ToString(DateTime d)
+        {
+            return d.TimeOfDay.ToString("hh\\:mm\\:ss", CultureInfo.InvariantCulture);
+        }
+
         public static void ReportException(Exception ex, string header)
         {
             try
@@ -24,7 +30,7 @@ namespace LearnOnTheGo
                 {
                     using (var output = new StreamWriter(store.OpenFile(filename, FileMode.Append, FileAccess.Write)))
                     {
-                        output.WriteLine(header);
+                        output.WriteLine("[" + ToString(DateTime.UtcNow) + "]" + " " + header);
                         if (ex != null)
                         {
                             output.WriteLine(ex.ToString());
@@ -36,6 +42,13 @@ namespace LearnOnTheGo
             catch
             {
             }
+        }
+
+        private static List<Tuple<DateTime, string>> log = new List<Tuple<DateTime, string>>();
+
+        public static void Log(string message)
+        {
+            log.Add(Tuple.Create(DateTime.UtcNow, message));
         }
 
         public static void CheckForPreviousException(bool startingUp)
@@ -60,12 +73,8 @@ namespace LearnOnTheGo
                     if (MessageBox.Show(title, "Problem Report", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                     {
                         var email = new EmailComposeTask();
-                        email.To = "learnonthego@codebeside.org";
-                        email.Subject = "Learn On The Go " + LittleWatson.AppVersion + " auto-generated problem report";
-                        if (contents.Length > 32000)
-                        {
-                            contents = contents.Substring(0, 32000) + " ...";
-                        }
+                        email.To = App.Email;
+                        email.Subject = App.Name + " " + AppVersion + " auto-generated problem report";
                         email.Body = GetMailBody(contents);
                         email.Show();
                     }
@@ -83,6 +92,21 @@ namespace LearnOnTheGo
 
         public static string GetMailBody(string contents)
         {
+            if (log.Count > 0)
+            {
+                if (contents.Length > 0)
+                {
+                    contents += "\n\n";
+                }
+                foreach (var item in log)
+                {
+                    contents += "[" + ToString(item.Item1) + "]" + " " + item.Item2 + "\n";
+                }
+            }
+            if (contents.Length > 32000)
+            {
+                contents = contents.Substring(0, 32000) + " ...";
+            }
             return "\n\n" + contents + "\n\n" +
                    "App Version: " + AppVersion + "\n" +
                    "OS Version: " + Environment.OSVersion.Version + "\n" +
@@ -170,6 +194,7 @@ namespace LearnOnTheGo
                                         {
                                             if (MessageBox.Show("Do you want to install the new version now?", "Update Available", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                                             {
+                                                LittleWatson.Log("MarketplaceDetailTaskShow from Prompt");
                                                 new MarketplaceDetailTask().Show();
                                             }
                                         });

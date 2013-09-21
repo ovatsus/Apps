@@ -149,15 +149,6 @@
     <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.refresh.png">
       <Link>Icons\dark\appbar.refresh.png</Link>
     </Content>
-    <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.reply.email.png">
-      <Link>Icons\dark\appbar.reply.email.png</Link>
-    </Content>
-    <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.settings.png">
-      <Link>Icons\dark\appbar.settings.png</Link>
-    </Content>
-    <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.star.png">
-      <Link>Icons\dark\appbar.star.png</Link>
-    </Content>
     <Content Include="..\LearnOnTheGo.WP7\SplashScreenImage.jpg">
       <Link>SplashScreenImage.jpg</Link>
     </Content>

@@ -14,6 +14,7 @@ namespace LearnOnTheGo
 
         private void OnSaveClick(object sender, EventArgs e)
         {
+            LittleWatson.Log("OnSaveClick");
             if (email.Text != Settings.GetString(Setting.Email))
             {
                 Cache.DeleteAllFiles();
