@@ -230,7 +230,7 @@ namespace UKTrains
 
             if (createButton)
             {
-                var mapButton = new ApplicationBarIconButton(new Uri("/Icons/dark/appbar.map.png", UriKind.Relative))
+                var mapButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.map.png", UriKind.Relative))
                 {
                     Text = "Directions",
                 };
@@ -302,7 +302,7 @@ namespace UKTrains
         private void CreatePinToStartItem()
         {
             var uri = GetUri(departuresTable, false);
-            var pinButton = new ApplicationBarIconButton(new Uri("/Icons/dark/appbar.pin.png", UriKind.Relative))
+            var pinButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.pin.png", UriKind.Relative))
             {
                 IsEnabled = !ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri),
                 Text = "Pin to Start",

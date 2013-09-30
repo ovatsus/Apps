@@ -90,41 +90,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\UKTrains.WP7\CommonMenuItems.cs">
-      <Link>CommonMenuItems.cs</Link>
-    </Compile>
-    <Compile Include="..\UKTrains.WP7\Converters.cs">
-      <Link>Converters.cs</Link>
-    </Compile>
-    <Compile Include="..\UKTrains.WP7\LazyBlockUI.cs">
-      <Link>LazyBlockUI.cs</Link>
-    </Compile>
-    <Compile Include="..\UKTrains.WP7\LittleWatson.cs">
-      <Link>LittleWatson.cs</Link>
-    </Compile>
-    <Compile Include="..\UKTrains.WP7\LocationService.cs">
-      <Link>LocationService.cs</Link>
-    </Compile>
-    <Compile Include="..\UKTrains.WP7\RecentItems.cs">
-      <Link>RecentItems.cs</Link>
-    </Compile>
-    <Compile Include="..\UKTrains.WP7\Settings.cs">
-      <Link>Settings.cs</Link>
-    </Compile>
-    <Compile Include="..\UKTrains.WP7\MainAndFilterPage.xaml.cs">
-      <Link>MainAndFilterPage.xaml.cs</Link>
+    <Compile Include="CommonMenuItems.cs" />
+    <Compile Include="Converters.cs" />
+    <Compile Include="LazyBlockUI.cs" />
+    <Compile Include="LittleWatson.cs" />
+    <Compile Include="LocationService.cs" />
+    <Compile Include="RecentItems.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="MainAndFilterPage.xaml.cs">
       <DependentUpon>MainAndFilterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="..\UKTrains.WP7\SettingsPage.xaml.cs">
-      <Link>SettingsPage.xaml.cs</Link>
+    <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="..\UKTrains.WP7\StationPage.xaml.cs">
-      <Link>StationPage.xaml.cs</Link>
+    <Compile Include="StationPage.xaml.cs">
       <DependentUpon>StationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="..\UKTrains.WP7\DetailsPage.xaml.cs">
-      <Link>DetailsPage.xaml.cs</Link>
+    <Compile Include="DetailsPage.xaml.cs">
       <DependentUpon>DetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -147,37 +129,28 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\UKTrains.WP7\Icons\dark\appbar.check.png">
-      <Link>Icons\dark\appbar.check.png</Link>
+    <Content Include="Assets\Icons\appbar.check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\UKTrains.WP7\Icons\dark\appbar.filter.png">
-      <Link>Icons\dark\appbar.filter.png</Link>
+    <Content Include="Assets\Icons\appbar.filter.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\UKTrains.WP7\Icons\dark\appbar.map.png">
-      <Link>Icons\dark\appbar.map.png</Link>
+    <Content Include="Assets\Icons\appbar.map.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\UKTrains.WP7\Icons\dark\appbar.pin.png">
-      <Link>Icons\dark\appbar.pin.png</Link>
+    <Content Include="Assets\Icons\appbar.pin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\UKTrains.WP7\Icons\dark\appbar.refresh.png">
-      <Link>Icons\dark\appbar.refresh.png</Link>
+    <Content Include="Assets\Icons\appbar.refresh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\UKTrains.WP7\Icons\dark\appbar.settings.png">
-      <Link>Icons\dark\appbar.settings.png</Link>
+    <Content Include="Assets\Icons\appbar.settings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\UKTrains.WP7\Icons\dark\appbar.star.png">
-      <Link>Icons\dark\appbar.star.png</Link>
+    <Content Include="Assets\Icons\appbar.star.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\UKTrains.WP7\SplashScreenImage.jpg">
-      <Link>SplashScreenImage.jpg</Link>
-    </Content>
+    <Content Include="SplashScreenImage.jpg" />
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -199,31 +172,27 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="..\UKTrains.WP7\MainAndFilterPage.xaml">
-      <Link>MainAndFilterPage.xaml</Link>
+    <Page Include="MainAndFilterPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="..\UKTrains.WP7\SettingsPage.xaml">
-      <Link>SettingsPage.xaml</Link>
+    <Page Include="SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="..\UKTrains.WP7\StationPage.xaml">
-      <Link>StationPage.xaml</Link>
+    <Page Include="StationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="..\UKTrains.WP7\DetailsPage.xaml">
-      <Link>DetailsPage.xaml</Link>
+    <Page Include="DetailsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NationalRail.Portable\NationalRail.Portable.fsproj">
+    <ProjectReference Include="..\NationalRail\NationalRail.fsproj">
       <Project>{5552F566-E77E-433B-8459-A41F865AF52C}</Project>
-      <Name>NationalRail.Portable</Name>
+      <Name>NationalRail</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -238,8 +207,7 @@
       <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\3.0\Runtime\.NETPortable\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpGIS.GZipWebClient">

@@ -11,7 +11,7 @@
     <AssemblyName>NationalRail</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile47</TargetFrameworkProfile>
-    <Name>NationalRail.Portable</Name>
+    <Name>NationalRail</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +21,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\NationalRail.Portable.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\NationalRail.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +30,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Release\NationalRail.Portable.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\NationalRail.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
@@ -38,33 +38,15 @@
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.Portable.FSharp.Targets" />
   <ItemGroup>
     <None Include="packages.config" />
-    <Compile Include="..\NationalRail.WP7\HtmlAgilityPack.FSharp.fs">
-      <Link>HtmlAgilityPack.FSharp.fs</Link>
-    </Compile>
-    <Compile Include="..\NationalRail.WP7\LazyAsync.fsi">
-      <Link>LazyAsync.fsi</Link>
-    </Compile>
-    <Compile Include="..\NationalRail.WP7\LazyAsync.fs">
-      <Link>LazyAsync.fs</Link>
-    </Compile>
-    <Compile Include="..\NationalRail.WP7\LazyBlock.fs">
-      <Link>LazyBlock.fs</Link>
-    </Compile>
-    <EmbeddedResource Include="..\NationalRail.WP7\RailReferences.csv">
-      <Link>RailReferences.csv</Link>
-    </EmbeddedResource>
-    <Compile Include="..\NationalRail.WP7\GeoUtils.fs">
-      <Link>GeoUtils.fs</Link>
-    </Compile>
-    <Compile Include="..\NationalRail.WP7\Stations.fs">
-      <Link>Stations.fs</Link>
-    </Compile>
-    <Compile Include="..\NationalRail.WP7\LiveDepartures.fs">
-      <Link>LiveDepartures.fs</Link>
-    </Compile>
-    <Compile Include="..\NationalRail.WP7\Schedules.fs">
-      <Link>Schedules.fs</Link>
-    </Compile>
+    <Compile Include="HtmlAgilityPack.FSharp.fs" />
+    <Compile Include="LazyAsync.fsi" />
+    <Compile Include="LazyAsync.fs" />
+    <Compile Include="LazyBlock.fs" />
+    <EmbeddedResource Include="RailReferences.csv" />
+    <Compile Include="GeoUtils.fs" />
+    <Compile Include="Stations.fs" />
+    <Compile Include="LiveDepartures.fs" />
+    <Compile Include="Schedules.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

@@ -156,8 +156,8 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
-            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
-            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.filter.png" Text="Filter" Click="OnFilterClick" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.filter.png" Text="Filter" Click="OnFilterClick" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
