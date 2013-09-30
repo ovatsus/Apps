@@ -1,5 +1,5 @@
 ﻿#if INTERACTIVE
-#r "../packages/FSharp.Data.1.1.10/lib/portable-net40+sl5+wp8+win8/FSharp.Data.dll"
+#r "../lib/portable/FSharp.Data.dll"
 #else
 namespace NationalRail
 #endif
@@ -104,4 +104,4 @@ module Schedules =
                           (schedule.ToUrlPart1()) 
                           (schedule.ToUrlPart2())    
         let auth = "Basic " + (username + ":" + password |> Encoding.UTF8.GetBytes |> Convert.ToBase64String)
-        Http.Request(url, headers=["Authorization", auth])
+        Http.RequestString(url, headers=["Authorization", auth])

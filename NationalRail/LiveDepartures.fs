@@ -197,7 +197,7 @@ type DeparturesTable with
 
         let getJourneyDetails url = async {
         
-            let! html = Http.AsyncRequest url
+            let! html = Http.AsyncRequestString url
         
             let getJourneyDetails() = 
                 try 
@@ -245,7 +245,7 @@ type DeparturesTable with
             | Some callingAt -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/%s/%s/%s/To" (departureType.ToString()) journey.Station.Code callingAt.Code 
 
         async {
-            let! html = Http.AsyncRequest url
+            let! html = Http.AsyncRequestString url
 
             let getDepartures() = 
                 try 
