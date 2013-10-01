@@ -65,13 +65,11 @@ namespace UKTrains
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
-#if WP8
             if (e.NavigationMode == NavigationMode.New && e.Uri.OriginalString == "app://external/")
             {
                 //running in background
                 return;
             }
-#endif
             if (journeyElementsLazyBlock != null)
             {
                 journeyElementsLazyBlock.Cancel();

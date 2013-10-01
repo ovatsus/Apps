@@ -158,6 +158,9 @@
         <shell:ApplicationBar>
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.filter.png" Text="Filter" Click="OnFilterClick" />
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Show departures on lock screen" Click="OnShowPlatformOnLockScreenClick" />
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

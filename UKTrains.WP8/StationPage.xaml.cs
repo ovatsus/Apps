@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Device.Location;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Microsoft.Phone.Tasks;
-using NationalRail;
-#if WP8
 using Microsoft.Phone.Maps;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Toolkit;
-using System.Windows;
+using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
+using NationalRail;
 using Windows.System;
-#endif
 
 namespace UKTrains
 {
@@ -24,9 +22,6 @@ namespace UKTrains
         public StationPage()
         {
             InitializeComponent();
-#if WP8
-            AddLockScreenItem();
-#endif
             CommonMenuItems.Init(this);
         }
 
@@ -122,13 +117,11 @@ namespace UKTrains
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
-#if WP8
             if (e.NavigationMode == NavigationMode.New && e.Uri.OriginalString == "app://external/")
             {
                 //running in background
                 return;
             }
-#endif
             if (departuresLazyBlock != null)
             {
                 departuresLazyBlock.Cancel();
@@ -178,7 +171,6 @@ namespace UKTrains
                               firstDeparture.Due + " " + firstDeparture.Status;
             }
 
-#if WP8
             return new FlipTileData
             {
                 Title = forPrimaryTile ? App.Name : departuresTable.ToString(),
@@ -189,21 +181,10 @@ namespace UKTrains
                 BackgroundImage = new Uri("Assets/Tiles/FlipCycleTileMedium.png", UriKind.Relative),
                 WideBackgroundImage = new Uri("Assets/Tiles/FlipCycleTileLarge.png", UriKind.Relative),
             };
-#else
-            return new StandardTileData
-            {
-                Title = forPrimaryTile ? App.Name : departuresTable.ToString(),
-                BackTitle = App.Name,
-                BackContent = content,
-                BackgroundImage = new Uri("Tile.png", UriKind.Relative),
-            };
-#endif
         }
 
         private void CreateDirectionsItem()
         {
-            bool createButton;
-#if WP8
             var currentPosition = LocationService.CurrentPosition;
             if (currentPosition != null && !currentPosition.IsUnknown && Settings.GetBool(Setting.LocationServicesEnabled))
             {
@@ -218,17 +199,8 @@ namespace UKTrains
 
                 routeQuery.QueryCompleted += OnRouteQueryCompleted;
                 routeQuery.QueryAsync();
-                createButton = false;
             }
             else
-            {
-                createButton = true;
-            }
-#else
-            createButton = true;
-#endif
-
-            if (createButton)
             {
                 var mapButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.map.png", UriKind.Relative))
                 {
@@ -239,7 +211,6 @@ namespace UKTrains
             }
         }
 
-#if WP8
         private void OnRouteQueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
         {
             if (e.Error == null)
@@ -289,7 +260,6 @@ namespace UKTrains
                 });
             }
         }
-#endif
 
         private void OnDirectionsClick(object sender, EventArgs e)
         {
@@ -312,20 +282,11 @@ namespace UKTrains
                 LittleWatson.Log("OnPinToStartClick");
                 if (!ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri))
                 {
-                    CreateTile(GetUri(departuresTable, false), GetTileData(forPrimaryTile: false));
+                    ShellTile.Create(GetUri(departuresTable, false), GetTileData(forPrimaryTile: false), true);
                 }
                 pinButton.IsEnabled = false;
             };
             ApplicationBar.Buttons.Add(pinButton);
-        }
-
-        private void CreateTile(Uri uri, ShellTileData tileData)
-        {
-#if WP8
-            ShellTile.Create(uri, tileData, true);
-#else
-            ShellTile.Create(uri, tileData);
-#endif
         }
 
         public static Uri GetUri(DeparturesTable departuresTable, bool removeBackEntry)
@@ -338,20 +299,11 @@ namespace UKTrains
                 UriKind.Relative);
         }
 
-#if WP8
-        private void AddLockScreenItem() 
-        {
-            var menuItem = new ApplicationBarMenuItem("Show departures on lock screen");
-            menuItem.Click += OnShowPlatformOnLockScreenClick;
-            ApplicationBar.MenuItems.Add(menuItem);
-        }
-
         private async void OnShowPlatformOnLockScreenClick(object sender, EventArgs e) 
         {
             LittleWatson.Log("OnShowPlatformOnLockScreenClick");
             await Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
-#endif
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
