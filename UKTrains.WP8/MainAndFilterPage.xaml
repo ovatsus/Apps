@@ -38,7 +38,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Item1}"
-                                   Foreground="CornflowerBlue" 
+                                   Foreground="{StaticResource PhoneAccentBrush}"
                                    Margin="0,6,0,0"
                                    FontSize="22"
                                    VerticalAlignment="Top"
@@ -54,7 +54,7 @@
                                    FontSize="22"
                                    Grid.Column="2"                                   
                                    VerticalAlignment="Top"
-                                   Foreground="Gray" />
+                                   Foreground="{StaticResource PhoneDisabledBrush}" />
                     </Grid>
                 </Button>
             </DataTemplate>
@@ -76,7 +76,7 @@
                                    Grid.Column="1"
                                    Margin="12,0,0,0"
                                    VerticalAlignment="Bottom"
-                                   Foreground="Gray" />
+                                   Foreground="{StaticResource PhoneDisabledBrush}" />
                     </Grid>
                 </Button>
             </DataTemplate>
@@ -103,7 +103,7 @@
                                    TextWrapping="Wrap"
                                    TextAlignment="Center"
                                    HorizontalAlignment="Center"
-                                   Foreground="Gray" />
+                                   Foreground="{StaticResource PhoneDisabledBrush}" />
                     </StackPanel>
                 </Button>
             </DataTemplate>

@@ -46,7 +46,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock Text="{Binding Departs}" 
-                               Foreground="CornflowerBlue" 
+                               Foreground="{StaticResource PhoneAccentBrush}" 
                                FontSize="28"
                                TextAlignment="Center"
                                HorizontalAlignment="Center" />
@@ -60,8 +60,8 @@
                     <TextBlock Text="{Binding Platform.Value}" 
                                Grid.Column="2"
                                Grid.RowSpan="2"
-                               Foreground="CornflowerBlue" 
-                               Margin="0,-4,4,0"
+                               Foreground="{StaticResource PhoneAccentBrush}"
+                               Margin="0,-4,0,0"
                                FontSize="32"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Top" />

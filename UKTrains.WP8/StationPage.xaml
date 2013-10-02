@@ -46,7 +46,7 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="{Binding Due}" 
-                                           Foreground="CornflowerBlue" 
+                                           Foreground="{StaticResource PhoneAccentBrush}"
                                            FontSize="28"
                                            TextAlignment="Center"
                                            HorizontalAlignment="Center" />
@@ -61,15 +61,15 @@
                                            Margin="4,0"
                                            Grid.Column="1" 
                                            Grid.Row="1" 
-                                           Foreground="Gray"
+                                           Foreground="{StaticResource PhoneDisabledBrush}"
                                            FontSize="16"
                                            TextWrapping="Wrap"
                                            HorizontalAlignment="Left" />
                                 <TextBlock Text="{Binding Platform.Value}" 
                                            Grid.Column="2"
                                            Grid.RowSpan="3"
-                                           Foreground="CornflowerBlue" 
-                                           Margin="0,-4,4,0"
+                                           Foreground="{StaticResource PhoneAccentBrush}" 
+                                           Margin="0,-4,0,0"
                                            FontSize="32"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top" />
@@ -98,9 +98,8 @@
 
         <controls:Pivot x:Name="pivot" SelectionChanged="OnPivotSelectionChanged">
             <controls:PivotItem Header="Departures">
-                <Grid>
+                <Grid d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}">
                     <ItemsControl x:Name="departures"
-                                  d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}"
                                   ItemsSource="{Binding Departures}"
                                   ItemTemplate="{StaticResource departureTemplate}">
                         <ItemsControl.ItemsPanel>
@@ -122,9 +121,10 @@
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
                     <TextBlock x:Name="departuresLastUpdatedTextBlock" 
+                               Text="{Binding LastUpdated}"
                                VerticalAlignment="Top"
                                Margin="12,-26,0,0"
-                               Foreground="Gray"
+                               Foreground="{StaticResource PhoneDisabledBrush}"
                                FontSize="18" />
                 </Grid>
             </controls:PivotItem>
@@ -155,7 +155,7 @@
                     <TextBlock x:Name="arrivalsLastUpdatedTextBlock" 
                                VerticalAlignment="Top"
                                Margin="12,-26,0,0"
-                               Foreground="Gray"
+                               Foreground="{StaticResource PhoneDisabledBrush}"
                                FontSize="18" />
                 </Grid>
             </controls:PivotItem>
