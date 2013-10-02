@@ -162,7 +162,7 @@ namespace UKTrains
 
             nearestLazyBlock = new LazyBlock<Tuple<string, Station>>(
                 "nearest stations",
-                "You're outside of the UK",
+                "No nearby stations",
                 Stations.GetNearest(from, 150, Settings.GetBool(Setting.UseMilesInsteadOfKMs)),
                 lazyBlockUI,
                 false,

@@ -52,10 +52,10 @@ namespace UKTrains
             else
             {
                 journeyElementsLazyBlock = new LazyBlock<JourneyElement>(
-                        "live progress",
-                        "No information available",
-                        departure.Details,
-                        new LazyBlockUI(this, journeyElements, journeyElementsMessageTextBlock, journeyElementsLastUpdatedTextBlock),
+                    "live progress",
+                    "No information available",
+                    departure.Details,
+                    new LazyBlockUI(this, journeyElements, journeyElementsMessageTextBlock, journeyElementsLastUpdatedTextBlock),
                         true,
                         null,
                         null);

@@ -32,7 +32,7 @@ module Stations =
                         |> Seq.sortBy (fun station -> -station.RevisionNumber) 
                         |> Seq.head
                     { Code = code
-                      Name = station.StationName.Replace(" Rail Station", null)
+                      Name = station.StationName.Replace(" Rail Station", null).Replace(" Railway Station", null)
                       Location = LatLong.Create station.Latitude station.Longitude })
                 |> Seq.toList
 
@@ -56,7 +56,7 @@ module Stations =
             let nearestStations =
                 allStations
                 |> Seq.map (fun station -> station.Location - currentPosition, station)
-                |> Seq.filter (fun (dist, _) -> dist < 1000.0)
+                |> Seq.filter (fun (dist, _) -> dist < 9.5)
                 |> Seq.sortBy (fun (dist, station) -> dist, station.Name)
                 |> Seq.truncate limit
                 |> Seq.map (fun (distance, station) -> 
