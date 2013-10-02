@@ -9,20 +9,24 @@ namespace UKTrains
 {
     public class StatusToColorConverter : IValueConverter
     {
+        public Brush Cancelled { get; set; }
+        public Brush Delayed { get; set; }
+        public Brush OnTime { get; set; }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var status = (Status)value;
             if (status.IsCancelled)
             {
-                return new SolidColorBrush(Colors.Red);
+                return Cancelled;
             }
             else if (status.IsDelayed)
             {
-                return new SolidColorBrush(Colors.Orange);
+                return Delayed;
             }
             else 
             {
-                return new SolidColorBrush(Colors.White);
+                return OnTime;
             }
         }
 
@@ -55,20 +59,29 @@ namespace UKTrains
 
     public class JourneyElementStatusToColorConverter : IValueConverter
     {
+        public Brush Cancelled { get; set; }
+        public Brush Delayed { get; set; }
+        public Brush NoReport { get; set; }
+        public Brush OnTime { get; set; }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var status = (JourneyElementStatus)value;
             if (status.IsCancelled)
             {
-                return new SolidColorBrush(Colors.Red);
+                return Cancelled;
             }
-            else if (status.IsDelayed || status.IsNoReport)
+            else if (status.IsDelayed)
             {
-                return new SolidColorBrush(Colors.Orange);
+                return Delayed;
+            }
+            else if (status.IsNoReport)
+            {
+                return NoReport;
             }
             else
             {
-                return new SolidColorBrush(Colors.White);
+                return OnTime;
             }
         }
 
@@ -80,16 +93,19 @@ namespace UKTrains
 
     public class HasDepartedToColorConverter : IValueConverter
     {
+        public Brush Departed { get; set; }
+        public Brush NotDeparted { get; set; }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var status = (JourneyElementStatus)value;
             if (status.HasDeparted)
             {
-                return new SolidColorBrush(Colors.Gray);
+                return Departed;
             }
             else
             {
-                return new SolidColorBrush(Colors.White);
+                return NotDeparted;
             }
         }
 

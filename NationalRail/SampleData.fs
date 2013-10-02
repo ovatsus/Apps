@@ -1,5 +1,6 @@
 ﻿namespace NationalRail
 
+open System
 open FSharp.Control
 open FSharp.GeoUtils
 
@@ -101,3 +102,5 @@ type SampleData() =
                                  Status = Delayed (false, 5)
                                  Platform = Some "21"
                                  IsAlternateRoute = true } ]
+
+    member __.LastUpdated = "last updated at " + DateTime.Now.ToString("HH:mm:ss")

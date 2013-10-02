@@ -24,9 +24,15 @@
         <Grid.Resources>
 
             <coding4funConverters:StringToVisibilityConverter x:Key="stringToVisibilityConverter" />
-            <src:JourneyElementStatusToColorConverter x:Key="statusToColorConverter" />
+            <src:JourneyElementStatusToColorConverter x:Key="statusToColorConverter" 
+                                                      Cancelled="Red"
+                                                      Delayed="Orange"
+                                                      NoReport="Orange"
+                                                      OnTime="{StaticResource PhoneForegroundBrush}" />
             <src:JourneyElementStatusToVisibilityConverter x:Key="statusToVisibilityConverter" />
-            <src:HasDepartedToColorConverter x:Key="hasDepartedToColorConverter" />            
+            <src:HasDepartedToColorConverter x:Key="hasDepartedToColorConverter" 
+                                             Departed="{StaticResource PhoneDisabledBrush}"
+                                             NotDeparted="{StaticResource PhoneForegroundBrush}" />
             
             <DataTemplate x:Key="journeyElementTemplate">
                 <Grid Margin="12,0,0,4">
@@ -80,9 +86,8 @@
 
         <controls:Pivot x:Name="pivot">
             <controls:PivotItem Header="Live Progress">
-                <Grid>
+                <Grid d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}">
                     <ItemsControl x:Name="journeyElements" 
-                                  d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}"
                                   ItemsSource="{Binding LiveProgress}"
                                   ItemTemplate="{StaticResource journeyElementTemplate}">
                         <ItemsControl.ItemsPanel>
@@ -104,9 +109,10 @@
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
                     <TextBlock x:Name="journeyElementsLastUpdatedTextBlock" 
+                               Text="{Binding LastUpdated}"
                                VerticalAlignment="Top"
                                Margin="12,-26,0,0"
-                               Foreground="Gray"
+                               Foreground="{StaticResource PhoneDisabledBrush}"
                                FontSize="18" />
                 </Grid>
             </controls:PivotItem>

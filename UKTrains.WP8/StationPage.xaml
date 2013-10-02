@@ -24,7 +24,10 @@
         <Grid.Resources>
 
             <coding4funConverters:StringToVisibilityConverter x:Key="stringToVisibilityConverter" />
-            <src:StatusToColorConverter x:Key="statusToColorConverter" />
+            <src:StatusToColorConverter x:Key="statusToColorConverter" 
+                                        Cancelled="Red"
+                                        Delayed="Orange"
+                                        OnTime="{StaticResource PhoneForegroundBrush}" />
             <src:StatusToVisibilityConverter x:Key="statusToVisibilityConverter" />
             
             <DataTemplate x:Key="departureTemplate">
