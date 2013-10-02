@@ -10,6 +10,7 @@
     xmlns:watermark="clr-namespace:CS.Windows.Controls;assembly=CS.Windows.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:nationalRail="clr-namespace:NationalRail;assembly=NationalRail"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -112,6 +113,8 @@
             <controls:PivotItem x:Name="nearest" Header="Near Me">
                 <Grid>
                     <ItemsControl x:Name="nearestStations" 
+                                  d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}"
+                                  ItemsSource="{Binding NearestStations}"
                                   ItemTemplate="{StaticResource stationTemplateWithDistance}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -135,7 +138,9 @@
             </controls:PivotItem>
             <controls:PivotItem Header="Recent">
                 <ItemsControl x:Name="recentStations" 
-                                ItemTemplate="{StaticResource recentItemTemplate}">
+                              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}"
+                              ItemsSource="{Binding RecentStations}"
+                              ItemTemplate="{StaticResource recentItemTemplate}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel />
@@ -160,6 +165,8 @@
                                                 WatermarkText="Station name or code" />
                     <ItemsControl x:Name="allStations" 
                                   Grid.Row="1"
+                                  d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}"
+                                  ItemsSource="{Binding AllStations}"
                                   ItemTemplate="{StaticResource stationTemplate}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>

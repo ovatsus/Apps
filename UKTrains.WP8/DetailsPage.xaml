@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:src="clr-namespace:UKTrains"
+    xmlns:nationalRail="clr-namespace:NationalRail;assembly=NationalRail"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -81,6 +82,8 @@
             <controls:PivotItem Header="Live Progress">
                 <Grid>
                     <ItemsControl x:Name="journeyElements" 
+                                  d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}"
+                                  ItemsSource="{Binding LiveProgress}"
                                   ItemTemplate="{StaticResource journeyElementTemplate}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>

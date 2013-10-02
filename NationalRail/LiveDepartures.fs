@@ -28,7 +28,6 @@ type DeparturesTable =
 
 type Departure = {
     Due : Time
-    Expected : Time option
     Destination : string
     DestinationDetail : string
     Status : Status
@@ -42,6 +41,8 @@ and Time =
     member x.Minutes = x.TotalMinutes % 1440 % 60
     override x.ToString() = sprintf "%02d:%02d" x.Hours x.Minutes
     static member FromHoursAndMinutes(hours, minutes) = 
+        assert (hours >= 0 && hours <= 23)
+        assert (minutes >= 0 && minutes <= 59)
         { TotalMinutes = (minutes + hours * 60) % 1440 }
     static member FromMinutes(minutes) = 
         Time.FromHoursAndMinutes(0, minutes)
@@ -60,7 +61,6 @@ and Status =
 
 and JourneyElement = {
     Departs : Time
-    Expected : Time option
     Station : string
     Status : JourneyElementStatus
     Platform : string option
@@ -138,31 +138,31 @@ type DeparturesTable with
 
         let getStatus due (statusCell:HtmlNode) = 
             if statusCell.InnerText.Trim() = "Cancelled" then
-                Status.Cancelled, None
+                Status.Cancelled
             else
                 let statusSpan = statusCell.Element("span")
                 if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
                     match statusSpan.InnerText.Replace(" mins late", "") |> parseInt with
-                    | Some delayMins -> Status.Delayed delayMins, due + Time.FromMinutes(delayMins) |> Some
+                    | Some delayMins -> Status.Delayed delayMins
                     | _ -> raise <| ParseError(sprintf "Invalid status:\n%s" statusCell.OuterHtml, null)
                 else
-                    Status.OnTime, None
+                    Status.OnTime
 
         let getJourneyElementStatus due (statusCell:HtmlNode) = 
             if statusCell.InnerText.Trim() = "Cancelled" then
-                Cancelled, None
+                Cancelled
             elif statusCell.InnerText.Trim() = "No report" then
-                NoReport, None
+                NoReport
             else
                 let statusSpan = statusCell.Element("span")
                 let hasDeparted = statusSpan <> null && (statusSpan.InnerText = "Departed" || statusSpan.InnerText = "Arrived")
                 let statusSpan = statusCell.Elements("span").Last()
                 if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
                     match statusSpan.InnerText.Replace(" mins late", "") |> parseInt with
-                    | Some delayMins -> Delayed (hasDeparted, delayMins), due + Time.FromMinutes(delayMins) |> Some
+                    | Some delayMins -> Delayed (hasDeparted, delayMins)
                     | _ -> raise <| ParseError(sprintf "Invalid status:\n%s" statusCell.OuterHtml, null)
                 else
-                    OnTime hasDeparted, None
+                    OnTime hasDeparted
 
         let parseTime (cell:HtmlNode) = 
             let time = cell.InnerText
@@ -183,13 +183,12 @@ type DeparturesTable with
         let rowToJourneyElement (tr:HtmlNode) = 
             let cells = tr.Elements "td" |> Seq.toArray
             let departs = cells.[0] |> parseTime
-            let status, expected = cells.[2] |> getJourneyElementStatus departs
+            let status = cells.[2] |> getJourneyElementStatus departs
             let station = cells.[1].InnerText
             let pos = station.IndexOf "Train divides here"
             let station = if pos >= 0 then station.Substring(0, pos) else station
             let isAlternateRoute = tr.Ancestors("tbody") |> Seq.length > 1
             { Departs = departs
-              Expected = expected
               Station = (if isAlternateRoute then "* " else "") + station.Trim()
               Status = status
               Platform = cells.[3] |> parsePlatform 
@@ -228,9 +227,8 @@ type DeparturesTable with
                     then dest.Substring(0, pos), dest.Substring(pos + 1)
                     else dest, ""
             let due = cells.[0] |> parseTime
-            let status, expected = cells.[2] |> getStatus due
+            let status = cells.[2] |> getStatus due
             { Due = due
-              Expected = expected
               Destination = destination
               DestinationDetail = destinationDetail
               Status = status

@@ -60,6 +60,7 @@
     <Compile Include="Stations.fs" />
     <Compile Include="LiveDepartures.fs" />
     <Compile Include="Schedules.fs" />
+    <Compile Include="SampleData.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
