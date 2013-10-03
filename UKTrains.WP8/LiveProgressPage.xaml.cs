@@ -11,17 +11,19 @@ namespace UKTrains
         public LiveProgressPage()
         {
             InitializeComponent();
-            CommonMenuItems.Init(this);
+            CommonApplicationBarItems.Init(this);
         }
 
+        private static string title;
         private static Departure departure;
 
         private LazyBlock<JourneyElement> journeyElementsLazyBlock;
 
         //TODO: remove the static and pass in the page parameters
-        public static void SetTarget(Departure departure)
+        public static void SetTarget(string title, Departure departure)
         {
             LiveProgressPage.departure = departure;
+            LiveProgressPage.title = title;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -51,6 +53,7 @@ namespace UKTrains
             }
             else
             {
+                pivot.Title = title;
                 journeyElementsLazyBlock = new LazyBlock<JourneyElement>(
                     "live progress",
                     "No information available",

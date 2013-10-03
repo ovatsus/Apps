@@ -33,21 +33,26 @@ type Departure = {
     Status : Status
     Platform : string option
     Details : LazyAsync<JourneyElement[]>
-} with member x.PlatformIsKnown = x.Platform.IsSome
+} with 
+    member x.PlatformIsKnown = x.Platform.IsSome
+    member x.Expected = 
+        match x.Status with
+        | Status.Delayed mins -> x.Due + Time.Create(mins)
+        | _ -> x.Due
 
 and Time = 
     private { TotalMinutes : int }
     member x.Hours = x.TotalMinutes / 60
     member x.Minutes = x.TotalMinutes % 1440 % 60
     override x.ToString() = sprintf "%02d:%02d" x.Hours x.Minutes
-    static member FromHoursAndMinutes(hours, minutes) = 
+    static member Create(hours, minutes) = 
         assert (hours >= 0 && hours <= 23)
         assert (minutes >= 0 && minutes <= 59)
         { TotalMinutes = (minutes + hours * 60) % 1440 }
-    static member FromMinutes(minutes) = 
-        Time.FromHoursAndMinutes(0, minutes)
+    static member Create(minutes) = 
+        { TotalMinutes = minutes % 1440 }
     static member (+) (t1, t2) = 
-        Time.FromMinutes(t1.TotalMinutes + t2.TotalMinutes)
+        { TotalMinutes = t1.TotalMinutes + t2.TotalMinutes }
         
 and Status =
     | OnTime
@@ -65,7 +70,12 @@ and JourneyElement = {
     Status : JourneyElementStatus
     Platform : string option
     IsAlternateRoute : bool
-}
+} with
+    member x.PlatformIsKnown = x.Platform.IsSome
+    member x.Expected = 
+        match x.Status with
+        | Delayed (_, mins) -> x.Departs + Time.Create(mins)
+        | _ -> x.Departs
 
 and JourneyElementStatus =
     | OnTime of (*departed*)bool
@@ -171,7 +181,7 @@ type DeparturesTable with
                 let hours = time.Substring(0, pos) |> parseInt
                 let minutes = time.Substring(pos+1) |> parseInt
                 match hours, minutes with
-                | Some hours, Some minutes -> Time.FromHoursAndMinutes(hours, minutes)
+                | Some hours, Some minutes -> Time.Create(hours, minutes)
                 | _ -> raise <| ParseError(sprintf "Invalid time:\n%s" cell.OuterHtml, null)
             else raise <| ParseError(sprintf "Invalid time:\n%s" cell.OuterHtml, null)
 

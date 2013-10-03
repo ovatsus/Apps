@@ -11,7 +11,6 @@ using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Phone.Shell;
-using Microsoft.Phone.Tasks;
 using NationalRail;
 using Windows.System;
 
@@ -22,7 +21,7 @@ namespace UKTrains
         public StationPage()
         {
             InitializeComponent();
-            CommonMenuItems.Init(this);
+            CommonApplicationBarItems.Init(this);
         }
 
         private DeparturesTable departuresTable;
@@ -72,8 +71,9 @@ namespace UKTrains
                 ApplicationBar.MenuItems.Insert(1, reverseJourneyItem);
             }
 
-            CreateDirectionsItem();
-            CreatePinToStartItem();
+            GetPinToStartButton().IsEnabled = !IsStationPinnedToStart();
+
+            CreateDirectionsPivotItem();
         }
 
         private void LoadDepartures()
@@ -183,7 +183,7 @@ namespace UKTrains
             };
         }
 
-        private void CreateDirectionsItem()
+        private void CreateDirectionsPivotItem()
         {
             var currentPosition = LocationService.CurrentPosition;
             if (currentPosition != null && !currentPosition.IsUnknown && Settings.GetBool(Setting.LocationServicesEnabled))
@@ -199,15 +199,6 @@ namespace UKTrains
 
                 routeQuery.QueryCompleted += OnRouteQueryCompleted;
                 routeQuery.QueryAsync();
-            }
-            else
-            {
-                var mapButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.map.png", UriKind.Relative))
-                {
-                    Text = "Directions",
-                };
-                mapButton.Click += OnDirectionsClick;
-                ApplicationBar.Buttons.Add(mapButton);
             }
         }
 
@@ -261,32 +252,26 @@ namespace UKTrains
             }
         }
 
-        private void OnDirectionsClick(object sender, EventArgs e)
+        private ApplicationBarIconButton GetPinToStartButton()
         {
-            LittleWatson.Log("OnDirectionsClick");
-            var task = new BingMapsDirectionsTask();
-            task.End = new LabeledMapLocation(departuresTable.Station.Name + " Station", new GeoCoordinate(departuresTable.Station.Location.Lat, departuresTable.Station.Location.Long));
-            task.Show();
+            return ApplicationBar.Buttons.Cast<ApplicationBarIconButton>().Single(button => button.Text == "Pin to Start");
         }
 
-        private void CreatePinToStartItem()
+        private bool IsStationPinnedToStart()
         {
             var uri = GetUri(departuresTable, removeBackEntry: false);
-            var pinButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.pin.png", UriKind.Relative))
+            return ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri);
+        }
+
+        private void OnPinToStartClick(object sender, EventArgs e)
+        {
+            LittleWatson.Log("OnPinToStartClick");
+            var uri = GetUri(departuresTable, removeBackEntry: false);
+            if (!IsStationPinnedToStart())
             {
-                IsEnabled = !ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri),
-                Text = "Pin to Start",
-            };
-            pinButton.Click += delegate
-            {
-                LittleWatson.Log("OnPinToStartClick");
-                if (!ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri))
-                {
-                    ShellTile.Create(GetUri(departuresTable, removeBackEntry: false), GetTileData(forPrimaryTile: false), true);
-                }
-                pinButton.IsEnabled = false;
-            };
-            ApplicationBar.Buttons.Add(pinButton);
+                ShellTile.Create(GetUri(departuresTable, removeBackEntry: false), GetTileData(forPrimaryTile: false), true);
+            }
+            GetPinToStartButton().IsEnabled = false;
         }
 
         private Uri GetUri(DeparturesTable departuresTable, bool removeBackEntry)
@@ -299,12 +284,6 @@ namespace UKTrains
             return page.GetUri<StationPage>().WithParameters("station", departuresTable.Station.Code)
                                              .WithParametersIf(departuresTable.HasDestinationFilter, () => "callingAt", () => departuresTable.CallingAt.Value.Code)
                                              .WithParametersIf(removeBackEntry, "removeBackEntry");
-        }
-
-        private async void OnShowPlatformOnLockScreenClick(object sender, EventArgs e) 
-        {
-            LittleWatson.Log("OnShowPlatformOnLockScreenClick");
-            await Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
 
         private void OnRefreshClick(object sender, EventArgs e)
@@ -339,11 +318,12 @@ namespace UKTrains
             NavigationService.Navigate(GetUri(departuresTable.Reversed, false));
         }
 
-        private void OnDetailsClick(object sender, EventArgs e)
+        private void OnLiveProgressClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnDetailsClick");
+            LittleWatson.Log("OnLiveProgressClick");
             var departure = (Departure)((Button)sender).DataContext;
-            LiveProgressPage.SetTarget(departure);
+            var title = departuresTable.Station.Name + " to " + departuresTable.Match(_ => departure.Destination, (_, destination) => destination.Name);
+            LiveProgressPage.SetTarget(title, departure);
             NavigationService.Navigate(this.GetUri<LiveProgressPage>());
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
-using Microsoft.Phone.Controls;
 using System.Windows.Navigation;
+using Microsoft.Phone.Controls;
+using Windows.System;
 
 namespace UKTrains
 {
@@ -11,6 +12,12 @@ namespace UKTrains
             InitializeComponent();
             enableLocationServices.IsChecked = Settings.GetBool(Setting.LocationServicesEnabled);
             useMilesInsteadOfKms.IsChecked = Settings.GetBool(Setting.UseMilesInsteadOfKMs);
+        }
+
+        private async void OnShowPlatformOnLockScreenClick(object sender, EventArgs e)
+        {
+            LittleWatson.Log("OnShowPlatformOnLockScreenClick");
+            await Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
 
         private void OnSaveClick(object sender, EventArgs e)

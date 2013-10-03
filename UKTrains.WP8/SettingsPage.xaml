@@ -17,8 +17,8 @@
     toolkit:TiltEffect.IsTiltEnabled="True">
     
     <Grid Background="Transparent">
-        <controls:Pivot Title="Settings">
-            <controls:PivotItem Header="Location">
+        <controls:Pivot Title="UK Trains">
+            <controls:PivotItem Header="Settings">
                 <StackPanel>
                     <toolkit:ToggleSwitch Content="Enable Location"
                                           x:Name="enableLocationServices" />
@@ -29,6 +29,9 @@
                         Location Services, but if you do so the
                         app will not refresh in the background.
                     </TextBlock>
+                    <Button Content="Show departures on lock screen" 
+                            Margin="0,36,0,12"
+                            Tap="OnShowPlatformOnLockScreenClick" />
                     <toolkit:ToggleSwitch Content="Use imperial system"
                                           x:Name="useMilesInsteadOfKms" />
                     <TextBlock TextWrapping="Wrap" Margin="12,0">

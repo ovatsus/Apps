@@ -92,7 +92,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
-    <Compile Include="CommonMenuItems.cs" />
+    <Compile Include="CommonApplicationBarItems.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="LazyBlockUI.cs" />
     <Compile Include="LittleWatson.cs" />
@@ -101,6 +101,9 @@
     <Compile Include="Settings.cs" />
     <Compile Include="MainAndFilterPage.xaml.cs">
       <DependentUpon>MainAndFilterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -134,12 +137,12 @@
     <Content Include="Assets\Icons\appbar.check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Icons\appbar.email.hardedge.png" />
     <Content Include="Assets\Icons\appbar.filter.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Icons\appbar.map.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets\Icons\appbar.information.png" />
+    <Content Include="Assets\Icons\appbar.message.png" />
     <Content Include="Assets\Icons\appbar.pin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -149,9 +152,7 @@
     <Content Include="Assets\Icons\appbar.settings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Icons\appbar.star.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets\Icons\appbar.social.sharethis.png" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationIcon.png">
@@ -175,6 +176,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainAndFilterPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AboutPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

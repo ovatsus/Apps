@@ -126,6 +126,11 @@ namespace UKTrains
             }
         }
 
+        public static Guid AppId
+        {
+            get { return Guid.Parse(GetManifestAttributeValue("ProductID")); }
+        }
+
         private static string GetManifestAttributeValue(string attributeName)
         {
             var xmlReaderSettings = new XmlReaderSettings

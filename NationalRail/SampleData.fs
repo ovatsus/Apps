@@ -13,24 +13,26 @@ type SampleData() =
     let s3 = stations.[stations.Length - 1]
     let s4 = stations.[2 * stations.Length / 3]
 
-    let t1 = Time.FromHoursAndMinutes(1,1)
-    let t2 = Time.FromHoursAndMinutes(23,59)
-    let t3 = Time.FromHoursAndMinutes(16,47)
-    let t4 = Time.FromHoursAndMinutes(20,8)
+    let t1 = Time.Create( 0,  9)
+    let t2 = Time.Create(23, 59)
+    let t3 = Time.Create(16, 47)
+    let t4 = Time.Create(20,  8)
 
     let details = LazyAsync.fromValue [| |]
 
-    member __.NearestStations = [ "1.2 km", s1 
+    member __.NearestStations = [ "1.1 km", s1 
                                   "3.4 km", s2 
                                   "5.6 km", s3 
                                   "7.8 km", s4
-                                  "9.0 km", s1 ]
+                                  "9.2 km", s1 ]
 
     member __.RecentStations = [ DeparturesTable.Create(s1)
                                  DeparturesTable.Create(s2, s3)
                                  DeparturesTable.Create(s4)
                                  DeparturesTable.Create(s3, s1) ]
     
+    member x.StationTitle = x.RecentStations.[2]
+
     member __.AllStations = [ s1; s2; s3; s4 ]
     
     member __.Departures = [ { Due = t1

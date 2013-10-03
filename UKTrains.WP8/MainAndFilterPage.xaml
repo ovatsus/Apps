@@ -17,7 +17,8 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    toolkit:TiltEffect.IsTiltEnabled="True">
+    toolkit:TiltEffect.IsTiltEnabled="True"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}">
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
 
@@ -26,94 +27,86 @@
             <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
             
             <DataTemplate x:Key="stationTemplateWithDistance">
-                <Button Tap="OnStationClick"
-                        Padding="0"
-                        Margin="0"
-                        HorizontalAlignment="Left"
-                        BorderThickness="0">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Item1}"
-                                   Foreground="{StaticResource PhoneAccentBrush}"
-                                   Margin="0,6,0,0"
-                                   FontSize="22"
-                                   VerticalAlignment="Top"
-                                   HorizontalAlignment="Right" />
-                        <TextBlock Text="{Binding Item2.Name}"
-                                   Grid.Column="1"
-                                   TextWrapping="Wrap"
-                                   VerticalAlignment="Top"
-                                   Margin="10,0"
-                                   FontSize="28" />
-                        <TextBlock Text="{Binding Item2.Code}" 
-                                   Margin="0,6,0,0"
-                                   FontSize="22"
-                                   Grid.Column="2"                                   
-                                   VerticalAlignment="Top"
-                                   Foreground="{StaticResource PhoneDisabledBrush}" />
-                    </Grid>
-                </Button>
-            </DataTemplate>
-            <DataTemplate x:Key="stationTemplate">
-                <Button Tap="OnStationClick"
-                        Padding="0"
-                        Margin="0"
-                        BorderThickness="0">
-                    <Grid Grid.Column="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}"
-                                   TextWrapping="Wrap"
-                                   TextAlignment="Center"
-                                   FontSize="30" />
-                        <TextBlock Text="{Binding Code}" 
-                                   Grid.Column="1"
-                                   Margin="12,0,0,0"
-                                   VerticalAlignment="Bottom"
-                                   Foreground="{StaticResource PhoneDisabledBrush}" />
-                    </Grid>
+                <Button Tap="OnStationClick">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Margin="12,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Item1}"                                           
+                                           Margin="0,12,0,0"
+                                           Foreground="{StaticResource PhoneAccentBrush}" />
+                                <TextBlock Text="{Binding Item2.Name}"
+                                           Grid.Column="1"
+                                           Margin="12,0"
+                                           FontSize="{StaticResource PhoneFontSizeLarge}"
+                                           TextWrapping="Wrap" />
+                                <TextBlock Text="{Binding Item2.Code}" 
+                                           Grid.Column="2"
+                                           Margin="0,12,0,0"
+                                           Foreground="{StaticResource PhoneDisabledBrush}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
             </DataTemplate>
             <DataTemplate x:Key="recentItemTemplate">
-                <Button Tap="OnStationClick"
-                        Padding="0"
-                        Margin="0"
-                        BorderThickness="0">
+                <Button Tap="OnStationClick">
                     <toolkit:ContextMenuService.ContextMenu>
                         <toolkit:ContextMenu>
                             <toolkit:MenuItem Header="Remove" Click="OnRecentItemRemoveClick" />
                         </toolkit:ContextMenu>
                     </toolkit:ContextMenuService.ContextMenu>
-                    <StackPanel Margin="0,0,0,4"
-                                Orientation="Vertical"
-                                Grid.Column="1">
-                        <TextBlock Text="{Binding Station.Name}"
-                                   TextWrapping="Wrap"
-                                   TextAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   FontSize="32" />
-                        <TextBlock Text="{Binding CallingAt.Value.Name, StringFormat='calling at {0}'}" 
-                                   Visibility="{Binding HasDestinationFilter, Converter={StaticResource booleanToVisibilityConverter}}"
-                                   TextWrapping="Wrap"
-                                   TextAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Foreground="{StaticResource PhoneDisabledBrush}" />
-                    </StackPanel>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Margin="12,0,0,24">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding Station.Name}"
+                                           TextWrapping="Wrap"
+                                           FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                <TextBlock Text="{Binding CallingAt.Value.Name, StringFormat='calling at {0}'}" 
+                                           Visibility="{Binding HasDestinationFilter, Converter={StaticResource booleanToVisibilityConverter}}"
+                                           Grid.Row="1"
+                                           TextWrapping="Wrap"
+                                           Foreground="{StaticResource PhoneDisabledBrush}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </DataTemplate>
+            <DataTemplate x:Key="stationTemplate">
+                <Button Tap="OnStationClick">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Margin="12,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Name}"                                           
+                                           TextWrapping="Wrap"
+                                           FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                <TextBlock Text="{Binding Code}" 
+                                           Grid.Column="1"
+                                           Margin="12,12,0,0"
+                                           Foreground="{StaticResource PhoneDisabledBrush}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:Pivot x:Name="pivot">
+        <controls:Pivot x:Name="pivot" Title="Rail Stations">
             <controls:PivotItem x:Name="nearest" Header="Near Me">
                 <Grid>
                     <ItemsControl x:Name="nearestStations" 
-                                  d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}"
                                   ItemsSource="{Binding NearestStations}"
                                   ItemTemplate="{StaticResource stationTemplateWithDistance}">
                         <ItemsControl.ItemsPanel>
@@ -138,7 +131,6 @@
             </controls:PivotItem>
             <controls:PivotItem Header="Recent">
                 <ItemsControl x:Name="recentStations" 
-                              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}"
                               ItemsSource="{Binding RecentStations}"
                               ItemTemplate="{StaticResource recentItemTemplate}">
                     <ItemsControl.ItemsPanel>
@@ -162,10 +154,10 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <watermark:WatermarkTextBox x:Name="filter"
+                                                Margin="0,0,-12,0"
                                                 WatermarkText="Station name or code" />
                     <ItemsControl x:Name="allStations" 
                                   Grid.Row="1"
-                                  d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}"
                                   ItemsSource="{Binding AllStations}"
                                   ItemTemplate="{StaticResource stationTemplate}">
                         <ItemsControl.ItemsPanel>

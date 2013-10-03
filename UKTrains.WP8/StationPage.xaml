@@ -17,13 +17,16 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    toolkit:TiltEffect.IsTiltEnabled="True">
+    toolkit:TiltEffect.IsTiltEnabled="True"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}">
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
 
         <Grid.Resources>
 
+            <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
             <coding4funConverters:StringToVisibilityConverter x:Key="stringToVisibilityConverter" />
+            
             <src:StatusToColorConverter x:Key="statusToColorConverter" 
                                         Cancelled="Red"
                                         Delayed="Orange"
@@ -31,63 +34,62 @@
             <src:StatusToVisibilityConverter x:Key="statusToVisibilityConverter" />
             
             <DataTemplate x:Key="departureTemplate">
-                <Button Tap="OnDetailsClick">
+                <Button Tap="OnLiveProgressClick">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
-                            <Grid Margin="12,0,0,4">
+                            <Grid Margin="12,0,0,12">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="56" />
+                                    <ColumnDefinition Width="12" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Due}" 
+                                <TextBlock Text="{Binding Due}"
                                            Foreground="{StaticResource PhoneAccentBrush}"
-                                           FontSize="28"
-                                           TextAlignment="Center"
-                                           HorizontalAlignment="Center" />
+                                           HorizontalAlignment="Right"
+                                           Margin="0,12,0,0" />
                                 <TextBlock Text="{Binding Destination}" 
-                                           Grid.Column="1"
-                                           Margin="4,0"
-                                           FontSize="28"
-                                           TextWrapping="Wrap"
-                                           HorizontalAlignment="Left" />
+                                           Grid.Column="2"
+                                           FontSize="{StaticResource PhoneFontSizeLarge}"
+                                           TextWrapping="Wrap" />
+                                <Border Background="{StaticResource PhoneAccentBrush}"
+                                        Visibility="{Binding PlatformIsKnown, Converter={StaticResource booleanToVisibilityConverter}}"
+                                        Grid.Column="4" 
+                                        Grid.RowSpan="3"
+                                        Margin="0,4,0,0"
+                                        VerticalAlignment="Top"
+                                        Width="42"
+                                        Height="42">
+                                    <TextBlock Text="{Binding Platform.Value}" 
+                                               FontFamily="{StaticResource PhoneFontFamilyBold}"                                               
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                </Border>                                
                                 <TextBlock Text="{Binding DestinationDetail}" 
                                            Visibility="{Binding DestinationDetail, Converter={StaticResource stringToVisibilityConverter}}"
-                                           Margin="4,0"
-                                           Grid.Column="1" 
+                                           Grid.Column="2"
                                            Grid.Row="1" 
                                            Foreground="{StaticResource PhoneDisabledBrush}"
-                                           FontSize="16"
-                                           TextWrapping="Wrap"
-                                           HorizontalAlignment="Left" />
-                                <TextBlock Text="{Binding Platform.Value}" 
-                                           Grid.Column="2"
-                                           Grid.RowSpan="3"
-                                           Foreground="{StaticResource PhoneAccentBrush}" 
-                                           Margin="0,-4,0,0"
-                                           FontSize="32"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top" />
-                                <TextBlock Text="{Binding Expected.Value}" 
+                                           FontSize="{StaticResource PhoneFontSizeSmall}"
+                                           TextWrapping="Wrap" />
+                                <TextBlock Text="{Binding Expected}" 
                                            Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
                                            Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
-                                           FontSize="16"
-                                           Grid.Row="2"
-                                           TextAlignment="Center"
-                                           HorizontalAlignment="Center" />
+                                           FontSize="{StaticResource PhoneFontSizeSmall}"
+                                           HorizontalAlignment="Right"
+                                           Grid.Row="2" />
                                 <TextBlock Text="{Binding Status}" 
-                                           Margin="4,0"
-                                           Grid.Column="1" 
+                                           Grid.Column="2" 
                                            Grid.Row="2" 
-                                           FontSize="16"
+                                           FontSize="{StaticResource PhoneFontSizeSmall}"
                                            Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
-                                           Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
-                                           HorizontalAlignment="Left" />
+                                           Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}" />
                             </Grid>
                         </ControlTemplate>
                     </Button.Template>
@@ -96,9 +98,9 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:Pivot x:Name="pivot" SelectionChanged="OnPivotSelectionChanged">
+        <controls:Pivot x:Name="pivot" SelectionChanged="OnPivotSelectionChanged" Title="{Binding StationTitle}">
             <controls:PivotItem Header="Departures">
-                <Grid d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}">
+                <Grid>
                     <ItemsControl x:Name="departures"
                                   ItemsSource="{Binding Departures}"
                                   ItemTemplate="{StaticResource departureTemplate}">
@@ -122,16 +124,15 @@
                                HorizontalAlignment="Center" />
                     <TextBlock x:Name="departuresLastUpdatedTextBlock" 
                                Text="{Binding LastUpdated}"
+                               Margin="12,-28,0,0"
                                VerticalAlignment="Top"
-                               Margin="12,-26,0,0"
                                Foreground="{StaticResource PhoneDisabledBrush}"
-                               FontSize="18" />
+                               FontSize="{StaticResource PhoneFontSizeSmall}" />
                 </Grid>
             </controls:PivotItem>
             <controls:PivotItem Header="Arrivals">
                 <Grid>
                     <ItemsControl x:Name="arrivals" 
-                                  d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=nationalRail:SampleData}"
                                   ItemsSource="{Binding Arrivals}"
                                   ItemTemplate="{StaticResource departureTemplate}">
                         <ItemsControl.ItemsPanel>
@@ -153,10 +154,11 @@
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
                     <TextBlock x:Name="arrivalsLastUpdatedTextBlock" 
+                               Text="{Binding LastUpdated}"
+                               Margin="12,-28,0,0"
                                VerticalAlignment="Top"
-                               Margin="12,-26,0,0"
                                Foreground="{StaticResource PhoneDisabledBrush}"
-                               FontSize="18" />
+                               FontSize="{StaticResource PhoneFontSizeSmall}" />
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>
@@ -166,9 +168,7 @@
         <shell:ApplicationBar>
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.filter.png" Text="Filter" Click="OnFilterClick" />
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Show departures on lock screen" Click="OnShowPlatformOnLockScreenClick" />
-            </shell:ApplicationBar.MenuItems>
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.pin.png" Text="Pin to Start" Click="OnPinToStartClick" x:Name="pinToStart" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
