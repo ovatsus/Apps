@@ -6,9 +6,9 @@ using NationalRail;
 
 namespace UKTrains
 {
-    public partial class DetailsPage : PhoneApplicationPage
+    public partial class LiveProgressPage : PhoneApplicationPage
     {
-        public DetailsPage()
+        public LiveProgressPage()
         {
             InitializeComponent();
             CommonMenuItems.Init(this);
@@ -21,7 +21,7 @@ namespace UKTrains
         //TODO: remove the static and pass in the page parameters
         public static void SetTarget(Departure departure)
         {
-            DetailsPage.departure = departure;
+            LiveProgressPage.departure = departure;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

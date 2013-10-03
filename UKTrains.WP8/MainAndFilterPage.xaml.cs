@@ -225,7 +225,7 @@ namespace UKTrains
                 target = fromStation == null ? DeparturesTable.Create(station) :
                          DeparturesTable.Create(fromStation, station);
             }
-            NavigationService.Navigate(StationPage.GetUri(target, removeBackEntry: fromStation != null));
+            NavigationService.Navigate(StationPage.GetUri(this, target, removeBackEntry: fromStation != null));
         }
 
         private void OnClearRecentItemsClick(object sender, EventArgs e)

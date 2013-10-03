@@ -17,7 +17,7 @@ namespace UKTrains
 
         public static void Init(PhoneApplicationPage page)
         {
-            AddMenuItem(page, "Settings", () => page.NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative)));
+            AddMenuItem(page, "Settings", () => page.NavigationService.Navigate(page.GetUri<SettingsPage>()));
 
             AddMenuItem(page, "Rate And Review", () =>
             {

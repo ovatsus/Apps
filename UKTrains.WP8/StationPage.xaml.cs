@@ -137,7 +137,7 @@ namespace UKTrains
             var primaryTile = ShellTile.ActiveTiles.First();
             primaryTile.Update(GetTileData(forPrimaryTile: true));
 
-            var secondaryTileUri = GetUri(departuresTable, false);
+            var secondaryTileUri = GetUri(departuresTable, removeBackEntry: false);
             var secondaryTile = ShellTile.ActiveTiles.FirstOrDefault(tile => tile.NavigationUri == secondaryTileUri);
             if (secondaryTile != null)
             {
@@ -271,7 +271,7 @@ namespace UKTrains
 
         private void CreatePinToStartItem()
         {
-            var uri = GetUri(departuresTable, false);
+            var uri = GetUri(departuresTable, removeBackEntry: false);
             var pinButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.pin.png", UriKind.Relative))
             {
                 IsEnabled = !ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri),
@@ -282,21 +282,23 @@ namespace UKTrains
                 LittleWatson.Log("OnPinToStartClick");
                 if (!ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri))
                 {
-                    ShellTile.Create(GetUri(departuresTable, false), GetTileData(forPrimaryTile: false), true);
+                    ShellTile.Create(GetUri(departuresTable, removeBackEntry: false), GetTileData(forPrimaryTile: false), true);
                 }
                 pinButton.IsEnabled = false;
             };
             ApplicationBar.Buttons.Add(pinButton);
         }
 
-        public static Uri GetUri(DeparturesTable departuresTable, bool removeBackEntry)
+        private Uri GetUri(DeparturesTable departuresTable, bool removeBackEntry)
         {
-            return new Uri(
-                departuresTable.Match(
-                    station => "/StationPage.xaml?station=" + station.Code,
-                    (station, callingAt) => "/StationPage.xaml?station=" + station.Code + "&callingAt=" + callingAt.Code)
-                + (removeBackEntry ? "&removeBackEntry" : ""),
-                UriKind.Relative);
+            return GetUri(this, departuresTable, removeBackEntry);
+        }
+
+        public static Uri GetUri(PhoneApplicationPage page, DeparturesTable departuresTable, bool removeBackEntry)
+        {
+            return page.GetUri<StationPage>().WithParameters("station", departuresTable.Station.Code)
+                                             .WithParametersIf(departuresTable.HasDestinationFilter, () => "callingAt", () => departuresTable.CallingAt.Value.Code)
+                                             .WithParametersIf(removeBackEntry, "removeBackEntry");
         }
 
         private async void OnShowPlatformOnLockScreenClick(object sender, EventArgs e) 
@@ -321,12 +323,8 @@ namespace UKTrains
         private void OnFilterClick(object sender, EventArgs e)
         {
             LittleWatson.Log("OnFilterClick");
-            var uri = "/MainAndFilterPage.xaml?fromStation=" + departuresTable.Station.Code;
-            if (departuresTable.HasDestinationFilter)
-            {
-                uri += "&excludeStation=" + departuresTable.CallingAt.Value.Code;
-            }
-            NavigationService.Navigate(new Uri(uri, UriKind.Relative));
+            NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresTable.Station.Code)
+                                                                       .WithParametersIf(departuresTable.HasDestinationFilter, () => "excludeStation", () => departuresTable.CallingAt.Value.Code));
         }
 
         private void OnClearFilterClick(object sender, EventArgs e)
@@ -345,8 +343,8 @@ namespace UKTrains
         {
             LittleWatson.Log("OnDetailsClick");
             var departure = (Departure)((Button)sender).DataContext;
-            DetailsPage.SetTarget(departure);
-            NavigationService.Navigate(new Uri("/DetailsPage.xaml", UriKind.Relative));
+            LiveProgressPage.SetTarget(departure);
+            NavigationService.Navigate(this.GetUri<LiveProgressPage>());
         }
 
         private void OnPivotSelectionChanged(object sender, SelectionChangedEventArgs e)
