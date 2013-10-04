@@ -100,7 +100,7 @@
                                            Foreground="{StaticResource PhoneDisabledBrush}"
                                            FontSize="{StaticResource PhoneFontSizeSmall}"
                                            TextWrapping="Wrap" />
-                                <TextBlock Text="{Binding Expected}" 
+                                <TextBlock Text="{Binding Expected.Value}" 
                                            Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
                                            Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
                                            FontSize="{StaticResource PhoneFontSizeSmall}"

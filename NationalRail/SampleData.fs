@@ -38,7 +38,7 @@ type SampleData() =
     member __.Departures = [ { Due = t1
                                Destination = s1.Name
                                DestinationDetail = "via " + s2.Name
-                               Status = Status.OnTime 
+                               Status = Status.Cancelled
                                Platform = Some "22C"
                                Details = details }
                              { Due = t2
@@ -68,7 +68,7 @@ type SampleData() =
                              { Due = t2
                                Destination = s2.Name
                                DestinationDetail = ""
-                               Status = Status.Cancelled
+                               Status = Status.OnTime
                                Platform = None
                                Details = details } ]
 

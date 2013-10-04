@@ -37,8 +37,8 @@ type Departure = {
     member x.PlatformIsKnown = x.Platform.IsSome
     member x.Expected = 
         match x.Status with
-        | Status.Delayed mins -> x.Due + Time.Create(mins)
-        | _ -> x.Due
+        | Status.Delayed mins -> Some (x.Due + Time.Create(mins))
+        | _ -> None
 
 and Time = 
     private { TotalMinutes : int }
@@ -74,8 +74,8 @@ and JourneyElement = {
     member x.PlatformIsKnown = x.Platform.IsSome
     member x.Expected = 
         match x.Status with
-        | Delayed (_, mins) -> x.Departs + Time.Create(mins)
-        | _ -> x.Departs
+        | Delayed (_, mins) -> Some (x.Departs + Time.Create(mins))
+        | _ -> None
 
 and JourneyElementStatus =
     | OnTime of (*departed*)bool

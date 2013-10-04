@@ -97,7 +97,7 @@
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center" />
                                 </Border>
-                                <TextBlock Text="{Binding Expected}" 
+                                <TextBlock Text="{Binding Expected.Value}" 
                                            Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
                                            Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}"
                                            FontSize="{StaticResource PhoneFontSizeSmall}"
