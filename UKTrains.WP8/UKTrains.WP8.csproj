@@ -213,6 +213,9 @@
     <Reference Include="FSharp.Core">
       <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\3.0\Runtime\.NETPortable\FSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="HereLauncher">
+      <HintPath>..\packages\HereLaunchers.1.2\lib\wp8\HereLauncher.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>

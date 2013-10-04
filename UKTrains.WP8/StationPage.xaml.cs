@@ -12,7 +12,7 @@ using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Phone.Shell;
 using NationalRail;
-using Windows.System;
+using Nokia.Phone.HereLaunchers;
 
 namespace UKTrains
 {
@@ -212,9 +212,11 @@ namespace UKTrains
                 var center = new GeoCoordinate((start.Latitude + end.Latitude) / 2, (start.Longitude + end.Longitude) / 2);
                 var map = new Map
                 {
+                    IsEnabled = false,
                     Center = center,
-                    ZoomLevel = 15,
+                    ZoomLevel = 16,
                     PedestrianFeaturesEnabled = true,
+                    LandmarksEnabled = true,
                 };
                 map.Loaded += delegate
                 {
@@ -244,11 +246,22 @@ namespace UKTrains
 
                 map.AddRoute(new MapRoute(e.Result));
 
-                pivot.Items.Add(new PivotItem
+                var pivotItem = new PivotItem
                 {
                     Header = "Directions",
                     Content = map
-                });
+                };
+                pivotItem.Tap += delegate
+                {
+                    LittleWatson.Log("OnMapClick");
+                    new DirectionsRouteDestinationTask
+                    {
+                        Origin = start,
+                        Destination = end,
+                        Mode = RouteMode.Pedestrian,
+                    }.Show();
+                };
+                pivot.Items.Add(pivotItem);
             }
         }
 
