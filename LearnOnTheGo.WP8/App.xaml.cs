@@ -76,7 +76,7 @@ namespace LearnOnTheGo
             if (phoneApplicationInitialized)
                 return;
 
-            RootFrame = new PhoneApplicationFrame();
+            RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
             RootFrame.Navigated += RootFrame_Navigated;
