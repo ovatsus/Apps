@@ -17,6 +17,7 @@ Note that background refresh requires Location Services to be enabled
 
 New in 1.10:
 * Improved design
+* Allow to go to the home page when starting from a station live tile
 * Open the HERE Maps app by taping on the directions map in the station page
 * Fixed the live progress page on the light theme
 

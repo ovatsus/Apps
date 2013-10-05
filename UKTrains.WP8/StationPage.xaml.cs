@@ -66,13 +66,20 @@ namespace UKTrains
                 filterOrClearFilterItem.Text = "Clear Filter";
                 filterOrClearFilterItem.IconUri = new Uri("/Assets/Icons/appbar.filter.clear.png", UriKind.RelativeOrAbsolute);
 
-                var filterByAnotherDestination = new ApplicationBarMenuItem("Filter by another destination");
-                filterByAnotherDestination.Click += OnFilterByAnotherDestinationClick;
-                ApplicationBar.MenuItems.Insert(0, filterByAnotherDestination);
+                var filterByAnotherDestinationItem = new ApplicationBarMenuItem("Filter by another destination");
+                filterByAnotherDestinationItem.Click += OnFilterByAnotherDestinationClick;
+                ApplicationBar.MenuItems.Insert(0, filterByAnotherDestinationItem);
 
                 var reverseJourneyItem = new ApplicationBarMenuItem("Reverse journey");
                 reverseJourneyItem.Click += OnReverseJourneyClick;
                 ApplicationBar.MenuItems.Insert(1, reverseJourneyItem);
+            }
+
+            if (!NavigationService.CanGoBack)
+            {
+                var anotherRailStationItem = new ApplicationBarMenuItem("Another rail station");
+                anotherRailStationItem.Click += OnAnotherRailStationClick;
+                ApplicationBar.MenuItems.Insert(0, anotherRailStationItem);
             }
 
             GetPinToStartButton().IsEnabled = !IsStationPinnedToStart();
@@ -339,6 +346,12 @@ namespace UKTrains
         {
             LittleWatson.Log("OnReverseJourneyClick");
             NavigationService.Navigate(GetUri(departuresTable.Reversed, false));
+        }
+
+        private void OnAnotherRailStationClick(object sender, EventArgs e)
+        {
+            LittleWatson.Log("OnRailStationsClick");
+            NavigationService.Navigate(this.GetUri<MainAndFilterPage>());
         }
 
         private void OnLiveProgressClick(object sender, EventArgs e)
