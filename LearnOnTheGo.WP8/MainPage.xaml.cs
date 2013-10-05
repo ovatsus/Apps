@@ -76,11 +76,11 @@ namespace LearnOnTheGo
                     {
                         var active = new List<Coursera.Course>();
                         var upcoming = new List<Coursera.Course>();
-                        var completed = new List<Coursera.Course>();
+                        var finished = new List<Coursera.Course>();
                         foreach (var course in courses)
                         {
                             if (course.HasFinished)
-                                completed.Add(course);
+                                finished.Add(course);
                             else if (course.Active)
                                 active.Add(course);
                             else
@@ -88,10 +88,10 @@ namespace LearnOnTheGo
                         }
                         activeCourses.ItemsSource = active;
                         upcomingCourses.ItemsSource = upcoming;
-                        completedCourses.ItemsSource = completed;
+                        finishedCourses.ItemsSource = finished;
                         activeCoursesEmptyMessage.Visibility = active.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                         upcomingCoursesEmptyMessage.Visibility = upcoming.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-                        completedCoursesEmptyMessage.Visibility = completed.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                        finishedCoursesEmptyMessage.Visibility = finished.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                         if (active.Count == 0)
                         {
                             if (upcoming.Count == 0)
@@ -111,7 +111,7 @@ namespace LearnOnTheGo
                 {
                     activeCoursesEmptyMessage.Visibility = Visibility.Collapsed;
                     upcomingCoursesEmptyMessage.Visibility = Visibility.Collapsed;
-                    completedCoursesEmptyMessage.Visibility = Visibility.Collapsed;
+                    finishedCoursesEmptyMessage.Visibility = Visibility.Collapsed;
                 },
                 success =>
                 {
