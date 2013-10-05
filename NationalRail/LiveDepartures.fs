@@ -204,10 +204,20 @@ type DeparturesTable with
               Platform = cells.[3] |> parsePlatform 
               IsAlternateRoute = isAlternateRoute }
 
+        // reduce size of bug reports
+        let cleanHtml (str:string) = 
+            let replace pattern (replacement:string) str = Regex.Replace(str, pattern, replacement)
+            str.Replace("\r", null).Replace("\n", null)
+            |> replace ">\s*<" "><"
+            |> replace "<head>.+?</head>" ""
+            |> replace "<script[^>]*>.+?</script>" ""
+            |> replace "<noscript>.+?</noscript>" ""
+
         let getJourneyDetails url = async {
         
             let! html = Http.AsyncRequestString url
-        
+            let html = cleanHtml html
+
             let getJourneyDetails() = 
                 try 
                     createDoc html
@@ -254,6 +264,7 @@ type DeparturesTable with
 
         async {
             let! html = Http.AsyncRequestString url
+            let html = cleanHtml html
 
             let getDepartures() = 
                 try 

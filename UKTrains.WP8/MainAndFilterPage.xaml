@@ -42,7 +42,7 @@
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
 
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid Background="Transparent">
 
         <Grid.Resources>
 
