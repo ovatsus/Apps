@@ -23,6 +23,6 @@ namespace LearnOnTheGo
             Settings.Set(Setting.Password, password.Password);
             App.Crawler = null;
             NavigationService.GoBack();
-        }        
+        }
     }
 }

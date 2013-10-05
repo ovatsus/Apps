@@ -5,16 +5,19 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:coursera="clr-namespace:Coursera;assembly=Coursera"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    toolkit:TiltEffect.IsTiltEnabled="True">
+    toolkit:TiltEffect.IsTiltEnabled="True"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=coursera:SampleData}">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -39,46 +42,50 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <Grid Background="Transparent">
-
+        
         <Grid.Resources>
+
+            <coding4funConverters:StringToVisibilityConverter x:Key="stringToVisibilityConverter" />
+
             <DataTemplate x:Key="courseTemplate">
-                <Button Tap="OnCourseClick" 
-                        BorderThickness="0" 
-                        Padding="0"
-                        Margin="-12,0,0,12"
-                        HorizontalContentAlignment="Stretch">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Image Source="{Binding Topic.SmallIconHover}"
-                               Width="103"
-                               Height="58"
-                               VerticalAlignment="Top" />
-                        <StackPanel Grid.Column="1" 
-                                    VerticalAlignment="Top"
-                                    Margin="12,0,0,0">
-                            <TextBlock Text="{Binding Topic.Name}" 
-                                       Margin="0,-12,0,0"
-                                       TextWrapping="Wrap"
-                                       FontSize="34" 
-                                       FontFamily="Segoe WP SemiLight" />
-                            <TextBlock Text="{Binding Topic.Instructor}" 
-                                       TextWrapping="Wrap"
-                                       FontSize="16" 
-                                       Foreground="Gray" />
-                        </StackPanel>
-                    </Grid>
+                <Button Tap="OnCourseClick">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Margin="12,0,0,36">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding Topic.SmallIconHover}"
+                                       Width="103"
+                                       Height="58"
+                                       VerticalAlignment="Top" />
+                                <StackPanel Grid.Column="1" 
+                                            Margin="12,0,0,0">
+                                    <TextBlock Text="{Binding Topic.Name}" 
+                                               Margin="0,-12,0,0"
+                                               TextWrapping="Wrap"
+                                               FontSize="{StaticResource PhoneFontSizeLarge}" 
+                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}" />
+                                    <TextBlock Text="{Binding Topic.Instructor}" 
+                                               Visibility="{Binding Topic.Instructor, Converter={StaticResource stringToVisibilityConverter}}"
+                                               TextWrapping="Wrap"
+                                               FontSize="{StaticResource PhoneFontSizeSmall}" 
+                                               Foreground="{StaticResource PhoneDisabledBrush}" />
+                                </StackPanel>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:Pivot Title="Courses" x:Name="pivot">
-            <controls:PivotItem Header="Active" Margin="24,28,0,0">
+        <controls:Pivot Title="Enrolled Courses" x:Name="pivot">
+            <controls:PivotItem Header="Active">
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="activeCourses"
+                                      ItemsSource="{Binding ActiveCourses}"
                                       ItemTemplate="{StaticResource courseTemplate}" />
                         <TextBlock x:Name="activeCoursesEmptyMessage" 
                                    Visibility="Collapsed"
@@ -89,11 +96,11 @@
                     </Grid>
                 </ScrollViewer>
             </controls:PivotItem>
-
-            <controls:PivotItem Header="Upcoming" Margin="24,28,0,0">
+            <controls:PivotItem Header="Upcoming">
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="upcomingCourses"
+                                      ItemsSource="{Binding UpcomingCourses}"
                                       ItemTemplate="{StaticResource courseTemplate}" />
                         <TextBlock x:Name="upcomingCoursesEmptyMessage" 
                                    Visibility="Collapsed"
@@ -104,11 +111,11 @@
                     </Grid>
                 </ScrollViewer>
             </controls:PivotItem>
-
-            <controls:PivotItem Header="Finished" Margin="24,28,0,0">
+            <controls:PivotItem Header="Finished">
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="finishedCourses"
+                                      ItemsSource="{Binding FinishedCourses}"
                                       ItemTemplate="{StaticResource courseTemplate}" />
                         <TextBlock x:Name="finishedCoursesEmptyMessage" 
                                    Visibility="Collapsed"

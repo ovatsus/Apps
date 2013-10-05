@@ -1,0 +1,1377 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8" />
+<title> | Mathematical Methods for Quantitative Finance</title>
+<link rel="stylesheet" href="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/css/spark.main.css" />
+<link rel="stylesheet" href="https://www.coursera.org/maestro/api/course/971199/course.css">
+<link rel="stylesheet" href="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/bundles/jquery-ui/css/smoothness/jquery-ui.css" />
+<link rel="icon" href="https://spark-public.s3.amazonaws.com/mathematicalmethods/static/images/favicon.ico" />
+</head>
+
+<body>
+    <a href="#course-page-content" class="hidden">Skip Navigation</a>
+    <div class="hidden">
+        This page features MathJax technology to render mathematical formulae.
+        If you are using a screen reader, please visit <a href="http://www.dessci.com/en/products/mathplayer/">MathPlayer</a> to download the plugin for your browser. Please note that this is an Internet Explorer-only plugin at this time.
+    </div>
+
+    <h1 class="hidden">Mathematical Methods for Quantitative Finance</h1>
+
+    <script>window.onerror = function(message, url, lineNum) {
+
+  // First check the URL and line number of the error
+  url = url || window.location.href;
+  // 99% of the time, errors without line numbers arent due to our code,
+  // they are due to third party plugins and browser extensions
+  if (lineNum === undefined || lineNum == null) return;
+  
+  // Now figure out the actual error message
+  // If it's an event, as triggered in several browsers
+  if (message.target && message.type) {
+    message = message.type;
+  }
+  if (!message.indexOf) {
+    message = 'Non-string, non-event error: ' + (typeof message);
+  }
+  
+  var errorDescrip = {
+    message: message,
+    script: url,
+    line: lineNum,
+    url: document.URL
+  }
+  
+  var err = {
+    key: 'page.error.javascript', 
+    value: errorDescrip
+  }
+  
+  window._204 = window._204 || [];
+  window._204.push(err);
+  
+  window._gaq = window._gaq || [];
+  window._gaq.push(err);
+}</script>
+
+<div data-readme="quiz-stats-v1" data-readme-show-count="1" data-readme-show-until-closed data-readme-show-expires="Sept 20, 2013">
+    <div>
+        We have added the ability to view aggregated quiz statistics by clicking on a quiz name under the Data ->
+        <a href="/mathematicalmethods-001/data/stats/activity" target="_blank">Activity Tracking</a> tab.
+    </div>
+    <div style="position:absolute;right:20px;top:10px;cursor:pointer;" data-readme-close>
+        <span class="icon-remove"></span>
+    </div>
+</div>
+
+<div data-readme="instructor-survey" data-readme-show-count="1" data-readme-show-until-closed data-readme-show-expires="October 20, 2013">
+    <div>
+        We are working on big changes to course exports and analytics tools.
+        Please take a minute to <a target="survey" href="https://docs.google.com/a/coursera.org/forms/d/10HuxwG8RY0zpk02QD4lSyL3Pb-Rp4nMqhVWKxJryEHM/viewform">share your thoughts in a short survey</a>.
+    </div>
+    <div style="position:absolute;right:20px;top:10px;cursor:pointer;" data-readme-close>
+        <span class="icon-remove"></span>
+    </div>
+</div>
+
+<div class="course-topbar container-fluid" role="navigation">
+
+    <div class="row-fluid" style="min-width:940px">
+        <span>
+            <a href="https://www.coursera.org/" class="course-topbar-logo" style="float:left;margin-right:10px;"></a>
+            <ul class="course-topbar-nav-list" style="float:left;" role="navigation">
+                <li class="course-topbar-nav-list-item" style="padding-left:0px;">|</li>
+                                <li class="course-topbar-nav-list-item"
+                    role="button" aria-haspopup="true" aria-expanded="false" aria-owns="course-topbar-data" data-popup-offset-y="3"
+                    data-popup="#course-topbar-data" data-popup-bind-open="mouseenter" data-popup-direction="s" data-popup-item="a.course-topbar-sublist-item" tabindex="5">
+                    <a>Data</a>
+                </li>
+          </ul>
+        </span>
+
+        <span class="course-topbar-nav-container" style="float:right;">
+            <ul class="course-topbar-nav-list">
+                <li class="course-topbar-nav-list-item"
+                    tabindex="0" role="button" aria-haspopup="true" aria-expanded="false" aria-owns="course-topbar-my" data-popup-offset-y="3"
+                    data-popup="#course-topbar-my" data-popup-bind-open="mouseenter" style="cursor:pointer;" data-popup-direction="se" data-popup-item="a.course-topbar-sublist-item">
+                                        <a data-user-id="5008">Gustavo Guerra</a>
+                </li>
+            </ul>
+        </span>
+    </div>
+
+        <div id="course-topbar-data" class="course-topbar-sublist">
+        <div class="course-topbar-sublist-arrow"></div>
+        <a class="course-topbar-sublist-item" data-popup-close href="/mathematicalmethods-001/data#analyze">Analyze</a>
+        <a class="course-topbar-sublist-item" data-popup-close href="/mathematicalmethods-001/data#export">Export</a>
+    </div>
+
+    <div id="course-topbar-my" class="course-topbar-sublist" style="width:170px;">
+        <div class="course-topbar-sublist-arrow right"></div>
+        <a class="course-topbar-sublist-item" data-popup-close href="https://www.coursera.org/admin/data/sessions/971199" target="_new">Session Admin</a>
+        <a class="course-topbar-sublist-item" data-popup-close href="https://www.coursera.org/" target="_new">Courses</a>
+        <a class="course-topbar-sublist-item" data-popup-close href="https://www.coursera.org/account/profile" target="_new">Profile</a>
+        <a class="course-topbar-sublist-item" data-popup-close href="https://www.coursera.org/account/records" target="_new">Course Records</a>
+        <a class="course-topbar-sublist-item" data-popup-close href="https://www.coursera.org/account/settings" target="_new">Settings</a>
+        <a class="course-topbar-sublist-item" data-popup-close href="https://class.coursera.org/mathematicalmethods-001/class/preferences">Course Preferences</a>
+        <a class="course-topbar-sublist-item" data-popup-close href="https://class.coursera.org/mathematicalmethods-001/auth/logout">Sign Out</a>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="course-topbanner-wrapper">
+  <div class="course-topbanner">
+    <div class="course-topbanner-university-logo">
+      <a href="https://www.coursera.org/uw" class="coursera-university-color" target="_blank" data-if-linkable="add-referrer" title="https://www.coursera.org/uw">
+        <img src="https://www.coursera.org/maestro/api/course/971199/university_logo" alt="uw">
+      </a>
+    </div>
+
+    
+    <h1 class="course-topbanner-header">
+      <a class="course-topbanner-name coursera-university-color" href="https://class.coursera.org/mathematicalmethods-001/class/index" data-if-linkable="modal-lock">
+        Mathematical Methods for Quantitative Finance      </a>
+      <br>
+      <span class="course-topbanner-instructor" style="">
+        by Dr. Kjell  Konis      </span>
+    </h1>
+
+  </div>
+</div>
+
+        <div class="container-fluid" style="position:relative;">
+        <div class="row-fluid">
+            <div id="course-page-sidebar" role="navigation">
+                <div class="course-navbar-container">
+	<a href="https://class.coursera.org/mathematicalmethods-001/class/index"
+      >
+	<img src="https://www.coursera.org//maestro/api/course/971199/logo" style="width: 205px;height: 116px;margin: -15px 0px 8px 1px; box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);" alt="Course Home Page">
+	</a>
+
+	<div data-coursera-course-search-nav-widget class="input-append course-search-nav-box">
+		<form class="form-inline minimized-search" method="get" action="https://class.coursera.org/mathematicalmethods-001/class/search" data-js-search-form>
+			<label for="course-search-nav-input" class="accessible-text-for-reader">Search this course</label>
+			<input id="course-search-nav-input" type="text" name="q" data-js-search-input>&nbsp;</input>
+			<button class="btn icon-search" type="submit">
+				<span class="accessible-text-for-reader">Search</span>
+			</button>
+		</form>
+	</div>
+
+<h2 class="hidden">Side Navigation Bar</h2>
+<ul class="course-navbar-list">
+		
+	<li class="course-navbar-item">
+					<h3>About the course</h3>
+			</li>
+	
+		
+	<li class="course-navbar-item">
+								<a href="https://class.coursera.org/mathematicalmethods-001/class/index"  data-if-linkable="modal-lock,gray,lock-icon" class="coursera-university-color">
+				
+				Home - Announcements							</a>
+						</li>
+	
+		
+	<li class="course-navbar-item">
+								<a href="https://class.coursera.org/mathematicalmethods-001/wiki/view?page=WelcometotheCourse"  data-if-linkable="modal-lock,gray,lock-icon" class="coursera-university-color">
+				
+				Welcome to the Course							</a>
+						</li>
+	
+		
+	<li class="course-navbar-item">
+								<a href="https://class.coursera.org/mathematicalmethods-001/wiki/view?page=Courseschedule"  data-if-linkable="modal-lock,gray,lock-icon" class="coursera-university-color">
+				
+				Course Schedule							</a>
+						</li>
+	
+		
+	<li class="course-navbar-item">
+								<a href="https://class.coursera.org/mathematicalmethods-001/wiki/view?page=FAQabouttheCourse"  data-if-linkable="modal-lock,gray,lock-icon" class="coursera-university-color">
+				
+				FAQ about the Course							</a>
+						</li>
+	
+		
+	<li class="course-navbar-item">
+					<h3>Course Interaction</h3>
+			</li>
+	
+		
+	<li class="course-navbar-item">
+								<a href="https://class.coursera.org/mathematicalmethods-001/lecture/index"  data-if-linkable="modal-lock,gray,lock-icon" class="coursera-university-color">
+				
+				Lecture Videos							</a>
+						</li>
+	
+		
+	<li class="course-navbar-item">
+								<a href="https://class.coursera.org/mathematicalmethods-001/forum/index"  data-if-linkable="modal-lock,gray,lock-icon" class="coursera-university-color">
+				
+				Discussion Forums							</a>
+						</li>
+	
+		
+	<li class="course-navbar-item">
+					<h3>Exercises</h3>
+			</li>
+	
+		
+	<li class="course-navbar-item">
+								<a href="https://class.coursera.org/mathematicalmethods-001/quiz/index"  data-if-linkable="modal-lock,gray,lock-icon" class="coursera-university-color">
+				
+				Quizzes							</a>
+						</li>
+	
+		
+	<li class="course-navbar-item">
+					<h3></h3>
+			</li>
+	
+	
+		<li class="course-navbar-item">
+		<a href="https://share.coursera.org/wiki/index.php/mathematicalmethods:Main" target="_blank" class="coursera-university-color" title="Open course wiki in new window">
+			Course Wiki
+			<span class="icon-share"></span>
+		</a>
+	</li>
+		
+		<li class="course-navbar-item">
+		<a href="http://www.meetup.com/Coursera/" target="_blank" class="coursera-university-color">
+			Join a Meetup
+			<span class="icon-share"></span>
+		</a>
+	</li>
+	
+    </ul>
+
+<ul style="list-style-type:none;margin-left: 10px;">
+  <li><a href="http://help.coursera.org" class="coursera-university-color" target="_blank" title="Open help articles in new window"><i class="icon-question-sign"></i> Help Articles</a></li>
+</ul>
+
+<ul style="list-style-type:none;margin-left: 10px;">
+		<li><a href="https://class.coursera.org/mathematicalmethods-001/forum/list?forum_id=10000" class="coursera-university-color"><i class="icon-comments"></i> Course Materials Errors</a></li>
+	<li><a href="https://class.coursera.org/mathematicalmethods-001/forum/list?forum_id=10001" class="coursera-university-color"><i class="icon-comments"></i> Technical Issues</a></li>
+
+</ul>
+
+</div>
+            </div>
+            <div id="course-page-content" role="main">
+                                
+<div class="course-lectures-list">
+  <h2 class="course-page-header">Video Lectures
+    <a class="coursera-reporter-link" title="Click here if you're experiencing technical problems or found errors in the course materials." target="_blank" href="https://class.coursera.org/mathematicalmethods-001/help/videos?url=https://class.coursera.org/mathematicalmethods-001/lecture/index">
+     Help
+    </a>
+
+  </h2>
+
+  <a data-coursera-admin-helpwidget-link rel="help" href="https://class.coursera.org/mooc/help/lecture/add" title="Creating a lecture"></a>
+  
+  <div><!-- Lecture List Preamble Here --></div>
+
+  
+  
+  <p style="margin-bottom:20px">
+    Having trouble viewing lectures?
+    Try changing players. Your current player format is html5. <a href="https://class.coursera.org/mathematicalmethods-001/lecture/index?lecture_player=flash">Change to flash</a>.
+  <p>
+
+  <div class="course-item-list">
+<div class="course-item-list-header contracted"><h3><span class="icon-chevron-right" style="width:18px;display:inline-block;"></span> &nbsp;Course Overview Video</h3> <span class="hidden">(collapsed, click to expand)</span></div><ul class="course-item-list-section-list"><li class="viewed"><span class="icon-ok"></span><span class="hidden">Completed</span><a data-lecture-id="27"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=27"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/27"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+Course Overview Promotion (2:02)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=27_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for Course Overview Promotion (2:02)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=27_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for Course Overview Promotion (2:02)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=27"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for Course Overview Promotion (2:02)</div>
+        </a>
+</div>
+</li></ul><div class="course-item-list-header contracted"><h3><span class="icon-chevron-right" style="width:18px;display:inline-block;"></span> &nbsp;Introduction to the Course</h3> <span class="hidden">(collapsed, click to expand)</span></div><ul class="course-item-list-section-list"><li class="viewed"><span class="icon-ok"></span><span class="hidden">Completed</span><a data-lecture-id="3"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=3"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/3"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+ Course Overview (7:44)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=3_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for  Course Overview (7:44)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=3_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for  Course Overview (7:44)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=3"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for  Course Overview (7:44)</div>
+        </a>
+</div>
+</li></ul><div class="course-item-list-header expanded"><h3><span class="icon-chevron-down" style="width:18px;display:inline-block;"></span> &nbsp;Week 1: Introduction, Limits and Derivatives</h3> <span class="hidden">(expanded, click to collapse)</span></div><ul class="course-item-list-section-list"><li class="viewed"><span class="icon-ok"></span><span class="hidden">Completed</span><a data-lecture-id="51"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=51"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/51"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W1.0 – Week 1 Overview (2:21)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://d396qusza40orc.cloudfront.net/mathematicalmethods/lecture_slides%2FWeek1-LimitsAndDerivatives.pdf"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Week1-LimitsAndDerivatives.pdf" >
+           <i class="icon-file resource" ></i>
+           <div class="hidden">Week1-LimitsAndDerivatives.pdf for W1.0 – Week 1 Overview (2:21)</div>
+        </a>
+        <a target="_new" href="https://d396qusza40orc.cloudfront.net/mathematicalmethods/PracticeProblems%2FPractice%20Problems%201.pdf"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Practice Problems 1.pdf" >
+           <i class="icon-file resource" ></i>
+           <div class="hidden">Practice Problems 1.pdf for W1.0 – Week 1 Overview (2:21)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=51_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W1.0 – Week 1 Overview (2:21)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=51_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W1.0 – Week 1 Overview (2:21)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=51"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W1.0 – Week 1 Overview (2:21)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="55"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=55"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/55"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W1.2 – Present Value (16:57)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=55_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W1.2 – Present Value (16:57)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=55_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W1.2 – Present Value (16:57)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=55"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W1.2 – Present Value (16:57)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="7"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=7"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/7"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W1.3 – Limits (22:56)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=7_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W1.3 – Limits (22:56)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=7_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W1.3 – Limits (22:56)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=7"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W1.3 – Limits (22:56)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="9"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=9"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/9"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W1.4 – Evaluating Limits (13:30)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=9_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W1.4 – Evaluating Limits (13:30)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=9_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W1.4 – Evaluating Limits (13:30)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=9"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W1.4 – Evaluating Limits (13:30)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="11"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=11"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/11"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W1.5 – Continuity-Asymptotes (13.13)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=11_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W1.5 – Continuity-Asymptotes (13.13)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=11_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W1.5 – Continuity-Asymptotes (13.13)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=11"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W1.5 – Continuity-Asymptotes (13.13)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="13"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=13"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/13"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W1.6 – Differentiation (16.13)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=13_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W1.6 – Differentiation (16.13)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=13_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W1.6 – Differentiation (16.13)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=13"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W1.6 – Differentiation (16.13)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="15"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=15"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/15"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W1.7 – ProductRule-ChainRule (21.51)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=15_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W1.7 – ProductRule-ChainRule (21.51)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=15_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W1.7 – ProductRule-ChainRule (21.51)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=15"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W1.7 – ProductRule-ChainRule (21.51)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="17"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=17"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/17"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W1.8 – HigherDerivatives (15:15)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=17_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W1.8 – HigherDerivatives (15:15)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=17_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W1.8 – HigherDerivatives (15:15)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=17"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W1.8 – HigherDerivatives (15:15)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="19"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=19"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/19"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W1.9 – BondDuration (16:16)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=19_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W1.9 – BondDuration (16:16)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=19_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W1.9 – BondDuration (16:16)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=19"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W1.9 – BondDuration (16:16)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="25"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=25"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/25"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W1.10 – l'Hopital'sRule (7:46)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=25_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W1.10 – l'Hopital'sRule (7:46)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=25_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W1.10 – l'Hopital'sRule (7:46)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=25"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W1.10 – l'Hopital'sRule (7:46)</div>
+        </a>
+</div>
+</li></ul><div class="course-item-list-header expanded"><h3><span class="icon-chevron-down" style="width:18px;display:inline-block;"></span> &nbsp;Week 2: Integrals</h3> <span class="hidden">(expanded, click to collapse)</span></div><ul class="course-item-list-section-list"><li class="unviewed"><a data-lecture-id="29"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=29"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/29"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.0 – Week 2 Overview (2:32)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://d396qusza40orc.cloudfront.net/mathematicalmethods/lecture_slides%2FWeek2-Integrals.pdf"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Week2-Integrals.pdf" >
+           <i class="icon-file resource" ></i>
+           <div class="hidden">Week2-Integrals.pdf for W2.0 – Week 2 Overview (2:32)</div>
+        </a>
+        <a target="_new" href="https://d396qusza40orc.cloudfront.net/mathematicalmethods/PracticeProblems%2FPractice%20Problems%202.pdf"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Practice Problems 2.pdf" >
+           <i class="icon-file resource" ></i>
+           <div class="hidden">Practice Problems 2.pdf for W2.0 – Week 2 Overview (2:32)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=29_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.0 – Week 2 Overview (2:32)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=29_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.0 – Week 2 Overview (2:32)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=29"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.0 – Week 2 Overview (2:32)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="31"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=31"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/31"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.1 – Integration (11:48)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=31_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.1 – Integration (11:48)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=31_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.1 – Integration (11:48)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=31"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.1 – Integration (11:48)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="33"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=33"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/33"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.2 – Fundamental Theorem of Calculus (15:37)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=33_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.2 – Fundamental Theorem of Calculus (15:37)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=33_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.2 – Fundamental Theorem of Calculus (15:37)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=33"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.2 – Fundamental Theorem of Calculus (15:37)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="35"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=35"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/35"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.3 – Applications (15:20)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=35_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.3 – Applications (15:20)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=35_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.3 – Applications (15:20)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=35"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.3 – Applications (15:20)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="37"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=37"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/37"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.4 – Integration by Parts (15:06)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=37_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.4 – Integration by Parts (15:06)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=37_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.4 – Integration by Parts (15:06)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=37"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.4 – Integration by Parts (15:06)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="39"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=39"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/39"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.5 – Integration by Substitution (16:05)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=39_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.5 – Integration by Substitution (16:05)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=39_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.5 – Integration by Substitution (16:05)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=39"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.5 – Integration by Substitution (16:05)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="41"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=41"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/41"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.6 – Completing the Square (15:14)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=41_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.6 – Completing the Square (15:14)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=41_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.6 – Completing the Square (15:14)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=41"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.6 – Completing the Square (15:14)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="43"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=43"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/43"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.7 – Differentiating Definite Integrals (7:04)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=43_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.7 – Differentiating Definite Integrals (7:04)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=43_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.7 – Differentiating Definite Integrals (7:04)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=43"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.7 – Differentiating Definite Integrals (7:04)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="45"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=45"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/45"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.8 – Improper Integrals (19:45)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=45_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.8 – Improper Integrals (19:45)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=45_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.8 – Improper Integrals (19:45)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=45"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.8 – Improper Integrals (19:45)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="47"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=47"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/47"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.9 – Improper Integrals II (11:06)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=47_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.9 – Improper Integrals II (11:06)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=47_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.9 – Improper Integrals II (11:06)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=47"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.9 – Improper Integrals II (11:06)</div>
+        </a>
+</div>
+</li><li class="unviewed"><a data-lecture-id="49"
+   data-modal-iframe="https://class.coursera.org/mathematicalmethods-001/lecture/view?lecture_id=49"
+   href="https://class.coursera.org/mathematicalmethods-001/lecture/49"
+   data-modal=".course-modal-frame"
+   rel="lecture-link"
+   class="lecture-link">
+W2.10 – Differentiating Improper Integrals (21:27)</a>
+<div class="course-lecture-item-resource">
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=49_en&format=txt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (text)" >
+           <i class="icon-align-justify resource" ></i>
+           <div class="hidden">Subtitles (text) for W2.10 – Differentiating Improper Integrals (21:27)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/subtitles?q=49_en&format=srt"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Subtitles (srt)" >
+           <i class="icon-list resource" ></i>
+           <div class="hidden">Subtitles (srt) for W2.10 – Differentiating Improper Integrals (21:27)</div>
+        </a>
+        <a target="_new" href="https://class.coursera.org/mathematicalmethods-001/lecture/download.mp4?lecture_id=49"
+           data-if-linkable="modal-lock"
+           data-placement="top" rel="tooltip" 
+           title="Video (MP4)" >
+           <i class="icon-download-alt resource" ></i>
+           <div class="hidden">Video (MP4) for W2.10 – Differentiating Improper Integrals (21:27)</div>
+        </a>
+</div>
+</li></ul></div>
+</div>
+
+
+
+
+<div class="course-modal-frame " data-modal-overlay-class="course-modal-overlay-dark" data-modal-position="absolute" data-modal-position-top="50px" data-modal-overlay-close="false">
+<div style="position:absolute;top:-50px;height:50px;width:100%;background:#000;font-size:18px;padding-top:20px;padding-bottom:10px;border-bottom:1px solid #999999;">
+    <div style="left:5px;color:white;float:left;padding-left:10px;height:24px;width:700px;overflow:hidden" class="course-modal-frame-title"></div>
+
+    <div style="float:right;">
+      
+      <a class="coursera-reporter-link course-modal-frame-title-reporter-link" title="Click here if you're experiencing technical problems or found errors in the course materials." style="color:white;float:none; margin-right:10px;" target="_blank" href="https://class.coursera.org/mathematicalmethods-001/help/videos"> Help
+      </a>
+      <span class="icon-remove" style="color:white;cursor:pointer;padding-right:10px" data-modal-close></span>
+    </div>
+    <div style="clear:both"></div>
+</div>
+</div>
+            </div>
+        </div>
+    </div>
+        
+    
+    <script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/spark.js"></script>
+
+<script>window.onerror = function(message, url, lineNum) {
+
+  // First check the URL and line number of the error
+  url = url || window.location.href;
+  // 99% of the time, errors without line numbers arent due to our code,
+  // they are due to third party plugins and browser extensions
+  if (lineNum === undefined || lineNum == null) return;
+  
+  // Now figure out the actual error message
+  // If it's an event, as triggered in several browsers
+  if (message.target && message.type) {
+    message = message.type;
+  }
+  if (!message.indexOf) {
+    message = 'Non-string, non-event error: ' + (typeof message);
+  }
+  
+  var errorDescrip = {
+    message: message,
+    script: url,
+    line: lineNum,
+    url: document.URL
+  }
+  
+  var err = {
+    key: 'page.error.javascript', 
+    value: errorDescrip
+  }
+  
+  window._204 = window._204 || [];
+  window._204.push(err);
+  
+  window._gaq = window._gaq || [];
+  window._gaq.push(err);
+}</script>
+<script type="text/javascript">
+    // SET UP THE MULTITRACKER
+        window.logger = window.Log({level:"error"});
+        var parts = location.host.split(".");
+    while(parts.length > 2) { parts.shift(); }
+
+    window.multitracker = window.MultiTracker({logger:window.logger});
+    window.multitracker.register('204', window._204 = window._204 || []);
+    window.multitracker.register('ga', window._gaq = window._gaq || [], 'google');
+
+    // SET UP GA and 204
+    window._gaq.push(['_setAccount', 'UA-28377374-1']);
+    window._gaq.push(['_setDomainName', 'coursera.org']);
+    window._gaq.push(['_setAllowLinker', true]);  
+    window._gaq.push(['_trackPageview']);
+    
+    // configure 204 with the following settings
+    window._204.push(["client", "spark"]);
+    window._204.push(["user", 5008]);
+    window._204.push(["domain", "." + parts.join(".")]);
+
+    // set off the first event
+    window._204.push({key:"pageview", val:{}});
+
+    // override our multitracker queues with the ga queue when it is ready
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    
+      ga.onload = ga.onreadystatechange = function() {
+          ga.onreadystatechange = ga.onload = null;
+          window.multitracker.get('ga').queue = window._gaq;
+      };
+    })();
+
+    // override our multitracker queues with the 204 queue when it is ready
+    (function() {
+      var a = document.createElement('script'); a.type = 'text/javascript'; a.async = true;
+      a.src = 'https://eventing.coursera.org/204.min.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(a, s);
+      a.onload = a.onreadystatechange = function() {
+          a.onreadystatechange = a.onload = null;
+          window.multitracker.get('204').queue = window._204;
+      };
+    })();
+</script>
+
+<script>
+  // Set up shared AB testing object
+  (function() {
+    window.ab = {};
+
+    // we want to share the 204 session cookie with the AB session cookie...
+    var sessionId = AB.makeSession("__204u", {expires:356, domain:"." + location.host});
+        var debug = false;
+    
+    window.ab.user = window.AB(5008, "user", {debug:debug, tracker:window.multitracker, logger:window.logger});
+    window.ab.session = window.AB(sessionId, "session", {debug:debug, tracker:window.multitracker, logger:window.logger});
+
+    if(window.CourseraABExperiments.user) {
+        window.ab.user.addExperiments(window.CourseraABExperiments.user);
+        window.ab.user.runExperimentsOn("body");
+    }
+
+    if(window.CourseraABExperiments.session) {
+        window.ab.session.addExperiments(window.CourseraABExperiments.session);
+        window.ab.session.runExperimentsOn("body");
+    }
+  })();
+</script>
+
+
+    <script>
+      // Set up help widget
+      (function() {
+        $("[data-helpwidget]").each(function() {
+            window.HelpWidget(this, {tracker: window.multitracker});
+        });
+       })();
+
+        $("[data-readme]").each(function() {
+            window.ReadMe(this);
+        });
+    </script>
+
+    <script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/core/js/modal_focus.js" type="text/javascript"></script>
+    <script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/core/js/get_query_parameters.js" type="text/javascript"></script>
+    <script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/core/js/signature_track.js" type="text/javascript"></script>
+    <script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/app/generic/js/item_list.js" type="text/javascript"></script>
+    <script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/app/generic/js/navbar.js" type="text/javascript"></script>
+
+    
+    <script>
+     // Set up help widget
+      (function() {
+        $("[data-helpwidget]").each(function() {
+            window.HelpWidget(this, {tracker: window.multitracker});
+        });
+       })();
+    </script>
+
+        <script>
+    (function() {
+        $("<style type='text/css'> .coursera-reporter-link { display:inline-block;} </style>").appendTo("head");
+    })();
+    </script>
+    
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  config: ["MMLorHTML.js"],
+  
+  styleSheets: [],
+  styles: {},
+
+  jax: ["input/TeX"],
+  
+  extensions: ["tex2jax.js"],
+
+  preJax: null,
+  postJax: null,
+
+  preRemoveClass: "MathJax_Preview",
+
+  showProcessingMessages: true,
+
+  messageStyle: "none",
+  
+  displayAlign: "center",
+  displayIndent: "0em",
+  
+  delayStartupUntil: "none",
+
+  skipStartupTypeset: false,
+  
+  elements: [],
+  
+  tex2jax: {
+	    inlineMath: [
+	                 ['$$','$$'],      // uncomment this for standard TeX math delimiters
+	                 ['\\(','\\)']
+	                 ],
+
+	                 displayMath: [
+	                 ['\\[','\\]']
+	                 ],
+
+    skipTags: ["script","noscript","style","textarea","pre","code"],
+    ignoreClass: "tex2jax_ignore",
+    processClass: "tex2jax_process",
+    processEscapes: false,
+    processEnvironments: true,
+    preview: "TeX"
+    
+  },
+  
+  mml2jax: {
+    preview: "alttext"
+    
+  },
+  
+  jsMath2jax: {
+    preview: "TeX"
+    
+  },
+
+  TeX: {
+    TagSide: "right",
+    TagIndent: ".8em",
+    MultLineWidth: "85%",
+    Macros: {},
+
+    extensions: ["AMSmath.js", "AMSsymbols.js"]
+    
+  },
+
+  //============================================================================
+  //
+  //  These parameters control the MathML inupt jax.
+  //
+  MathML: {
+    //
+    //  This specifies whether to use TeX spacing or MathML spacing when the
+    //  HTML-CSS output jax is used.
+    //
+    useMathMLspacing: false
+  },
+  
+  //============================================================================
+  //
+  //  These parameters control the HTML-CSS output jax.
+  //
+  "HTML-CSS": {
+    
+    scale: 100,
+    
+    availableFonts: ["STIX","TeX"],
+    
+    preferredFont: "TeX",
+    
+    webFont: "TeX",
+    
+    imageFont: "TeX",
+    
+    undefinedFamily: "STIXGeneral,'Arial Unicode MS',serif",
+      
+    showMathMenu: true,
+
+    styles: {},
+    
+    tooltip: {
+      delayPost: 600,          // milliseconds delay before tooltip is posted after mouseover
+      delayClear: 600,         // milliseconds delay before tooltip is cleared after mouseout
+      offsetX: 10, offsetY: 5  // pixels to offset tooltip from mouse position
+    }
+  },
+  
+  //============================================================================
+  //
+  //  These parameters control the NativeMML output jax.
+  //
+  NativeMML: {
+
+    scale: 100,
+
+    showMathMenu: true,
+    showMathMenuMSIE: true,
+
+    styles: {}
+  },
+  
+  MathMenu: {
+    delay: 400,
+    
+    helpURL: "http://www.mathjax.org/help/user/",
+
+    showRenderer: true,
+    showFontMenu: false,
+    showContext:  false,
+
+    windowSettings: {
+      status: "no", toolbar: "no", locationbar: "no", menubar: "no",
+      directories: "no", personalbar: "no", resizable: "yes", scrollbars: "yes",
+      width: 100, height: 50
+    },
+    
+    styles: {}
+    
+  },
+
+  MMLorHTML: {
+    prefer: {
+      MSIE:    "MML",
+      Firefox: "MML",
+      Opera:   "HTML",
+      other:   "HTML"
+    }
+  }
+});
+</script>
+<script type="text/javascript">
+(function () {
+
+  function loadMathJax() {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://duqnjvq4jwr55.cloudfront.net/2.1/MathJax.js";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  }
+
+  window.loadOrRefreshMathJax = function(domId) {
+    if (window.MathJax) {
+      if (domId) {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, domId]);
+      } else {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+      }
+    } else {
+      loadMathJax();
+    }
+  }
+})();
+</script>
+    <script type="text/javascript">
+        var site_base_url = "https:\/\/www.coursera.org\/";
+        var site_static_asset_url = "https:\/\/dt5zaw6a98blc.cloudfront.net\/site-static\/";
+        var spark_class_short_name = "mathematicalmethods";
+        var spark_class_id = 971199;
+        var spark_class_url = "\/mathematicalmethods-001";
+        var spark_signature_url = "https:\/\/class.coursera.org\/mathematicalmethods-001\/signature\/";
+
+        var course_strings_name = "Mathematical Methods for Quantitative Finance";
+        var student_full_name = "Gustavo Guerra";
+    </script>
+
+    
+<script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/core/js/jquery_ui.js"></script>
+<script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/core/js/jquery.history.js"></script>
+<script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/js/lib/bootstrap.tooltip.js"></script>
+<script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/core/js/get_query_parameters.js"></script>
+<script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/app/lecture/js/lecture_list_functions.js?view_url=https://class.coursera.org/mathematicalmethods-001/lecture/view"></script>
+<script src="https://dt5zaw6a98blc.cloudfront.net/site-static/ec15dcba97fd077cab6176a448103bb9b1c320bc/spark/app/generic/js/video_modal.js"></script>
+
+</body>
+
+</html>

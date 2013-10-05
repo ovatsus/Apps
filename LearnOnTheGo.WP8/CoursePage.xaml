@@ -6,16 +6,20 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:coding4fun="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls"
+    xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:src="clr-namespace:LearnOnTheGo"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:coursera="clr-namespace:Coursera;assembly=Coursera"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    toolkit:TiltEffect.IsTiltEnabled="True">
+    toolkit:TiltEffect.IsTiltEnabled="True"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=coursera:SampleData}">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -42,25 +46,37 @@
     <Grid Background="Transparent">
 
         <Grid.Resources>
+
+            <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+            
+            <src:BooleanToColorConverter x:Key="booleanToColorConverter" 
+                                         True="{StaticResource PhoneDisabledBrush}"
+                                         False="{StaticResource PhoneForegroundBrush}" />
+
             <DataTemplate x:Key="lectureTemplate">
-                <Grid Margin="12,4">
+                <Grid Margin="12,12,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock TextWrapping="Wrap"                               
+                    <TextBlock TextWrapping="Wrap"
+                               Foreground="{Binding Viewed, Converter={StaticResource booleanToColorConverter}}"
                                VerticalAlignment="Center"
                                Text="{Binding Title}" />
                     <StackPanel Grid.Column="1"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center">
-                        <coding4fun:RoundButton Tap="OnLectureVideoClick"
-                                                Margin="4,0,0,0"
-                                                ImageSource="/Assets/Icons/appbar.control.play.png" />
                         <coding4fun:RoundButton Tap="OnLectureNotesClick"
-                                                Margin="4,0,0,0"
+                                                Foreground="{Binding Viewed, Converter={StaticResource booleanToColorConverter}}"
+                                                BorderBrush="{Binding Viewed, Converter={StaticResource booleanToColorConverter}}"
+                                                Margin="-4,4,-4,-4"
                                                 ImageSource="/Assets/Icons/appbar.page.png" 
-                                                IsEnabled="{Binding HasLectureNotes}"/>
+                                                Visibility="{Binding HasLectureNotes, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                        <coding4fun:RoundButton Tap="OnLectureVideoClick"
+                                                Foreground="{Binding Viewed, Converter={StaticResource booleanToColorConverter}}"
+                                                BorderBrush="{Binding Viewed, Converter={StaticResource booleanToColorConverter}}"
+                                                Margin="-4,4,-4,-4"
+                                                ImageSource="/Assets/Icons/appbar.control.play.png" />
                     </StackPanel>
                 </Grid>
             </DataTemplate>
@@ -71,18 +87,22 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock Text="{Binding Title}"
-                                FontSize="32"
-                                Margin="12,0,12,12"
-                                TextWrapping="Wrap" />
+                               Foreground="{Binding Completed, Converter={StaticResource booleanToColorConverter}}" 
+                               FontSize="{StaticResource PhoneFontSizeLarge}"
+                               Margin="12,0,12,12"
+                               TextWrapping="Wrap" />
                     <ScrollViewer Grid.Row="1">
                         <ItemsControl ItemsSource="{Binding Lectures}"
-                                        ItemTemplate="{StaticResource lectureTemplate}" />
+                                      ItemTemplate="{StaticResource lectureTemplate}" />
                     </ScrollViewer>
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:Pivot x:Name="pivot" ItemTemplate="{StaticResource sectionTemplate}">
+        <controls:Pivot x:Name="pivot" 
+                        Title="{Binding CourseTitle}"
+                        ItemsSource="{Binding LectureSections}"
+                        ItemTemplate="{StaticResource sectionTemplate}">
             <controls:Pivot.HeaderTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" />

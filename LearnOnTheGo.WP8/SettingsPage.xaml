@@ -40,8 +40,8 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <Grid Background="Transparent">
-        <controls:Pivot Title="Settings">
-            <controls:PivotItem Header="Login Info">
+        <controls:Pivot Title="Learn On The Go">
+            <controls:PivotItem Header="Settings">
                 <StackPanel>
                     <TextBlock Margin="12,12,12,0" Text="Please enter your Coursera login information" />
                     <watermark:WatermarkTextBox x:Name="email" InputScope="EmailUserName" WatermarkText="Email Address" />

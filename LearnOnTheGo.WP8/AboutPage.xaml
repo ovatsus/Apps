@@ -1,0 +1,110 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="LearnOnTheGo.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    toolkit:TiltEffect.IsTiltEnabled="True">
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+    
+    <Grid Background="Transparent">
+        <controls:Pivot Title="About">
+            <controls:PivotItem>
+                <controls:PivotItem.Header>
+                    <Grid Width="446">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Learn On The Go" 
+                                   FontSize="50" />
+                        <Image Source="/Assets/Tiles/IconicTileSmall.png"                               
+                               Margin="0,-16"
+                               Grid.Column="1" />
+                    </Grid>
+                </controls:PivotItem.Header>
+                <StackPanel>
+                    <TextBlock x:Name="version" 
+                               Text="Version 1.x.0.0"
+                               Margin="12,-28,0,0"                               
+                               Foreground="{StaticResource PhoneDisabledBrush}"
+                               FontSize="{StaticResource PhoneFontSizeSmall}" />
+                    <TextBlock TextWrapping="Wrap" 
+                               Margin="12"
+                               Text="Please take the time to rate and review this app. Any feedback, good or bad, is appreciated." />
+                    <Button Content="Rate and Review" Tap="OnRateAndReviewClick" />
+                    <TextBlock TextWrapping="Wrap" 
+                               Margin="12"
+                               Text="If you would like to suggest changes or report bugs, please get in touch." />
+                    <Button Content="Send Feedback" Tap="OnSendFeedbackClick" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Tell your friends about Learn On The Go"
+                                   TextAlignment="Right"
+                                   TextWrapping="Wrap"
+                                   Margin="12"/>
+                        <Button Click="OnShareBySMSClick"
+                                Padding="0"
+                                Grid.Column="1">
+                            <Image Source="/Assets/Icons/appbar.message.png" 
+                                   Width="48" Height="48" />
+                        </Button>
+                        <Button Click="OnShareByEmailClick" 
+                                Padding="0"
+                                Grid.Column="2">
+                            <Image Source="/Assets/Icons/appbar.email.hardedge.png"
+                                   Width="48" Height="48" />
+                        </Button>
+                        <Button Click="OnShareBySocialNetworksClick" 
+                                Padding="0"
+                                Grid.Column="3">
+                            <Image Source="/Assets/Icons/appbar.social.sharethis.png"
+                                   Width="48" Height="48" />
+                        </Button>
+                    </Grid>
+                    <TextBlock TextWrapping="Wrap" 
+                               Margin="12"
+                               Text="This app is free and done entirely on my own personal time. If you'd like to support this work, please give a small donation." />
+                    <Button Content="Donate" Tap="OnDonateClick" />
+                </StackPanel>
+            </controls:PivotItem>
+        </controls:Pivot>       
+    </Grid>
+
+</phone:PhoneApplicationPage>

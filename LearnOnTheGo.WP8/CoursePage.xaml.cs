@@ -3,6 +3,7 @@ using FSharp.Control;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -14,7 +15,7 @@ namespace LearnOnTheGo
         public CoursePage()
         {
             InitializeComponent();
-            CommonMenuItems.Init(this);
+            CommonApplicationBarItems.Init(this);
         }
 
         private int courseId;
@@ -73,7 +74,11 @@ namespace LearnOnTheGo
                     a => a.Length == 0,
                     new LazyBlockUI<LectureSection[]>(
                         this,
-                        lectureSections => pivot.ItemsSource = lectureSections,
+                        lectureSections =>
+                        {
+                            pivot.ItemsSource = lectureSections;
+                            pivot.SelectedIndex = lectureSections.Count(x => x.Completed) % lectureSections.Length;
+                        },
                         () => pivot.ItemsSource != null,
                         messageTextBlock),
                     false,

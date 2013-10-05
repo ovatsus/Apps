@@ -57,9 +57,11 @@
     <Compile Include="LazyAsync.fs" />
     <Compile Include="LazyBlock.fs" />
     <Compile Include="DataModel.fs" />
+    <EmbeddedResource Include="topics.json" />
+    <EmbeddedResource Include="lectures.html" />
     <Compile Include="Parser.fs" />
     <Compile Include="Crawler.fs" />
-    <None Include="topics.json" />
+    <Compile Include="SampleData.fs" />
     <None Include="Tests.fsx" />
   </ItemGroup>
   <ItemGroup>

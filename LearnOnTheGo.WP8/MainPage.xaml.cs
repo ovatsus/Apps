@@ -21,7 +21,7 @@ namespace LearnOnTheGo
                 Settings.Set(Setting.Password, "abc123");
             }
 #endif
-            CommonMenuItems.Init(this);
+            CommonApplicationBarItems.Init(this);
         }
 
         private LazyBlock<Course[]> coursesLazyBlock;

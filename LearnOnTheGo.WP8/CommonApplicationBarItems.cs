@@ -6,39 +6,33 @@ using Microsoft.Phone.Tasks;
 
 namespace LearnOnTheGo
 {
-    public static class CommonMenuItems
+    public static class CommonApplicationBarItems
     {
-        private static void AddMenuItem(PhoneApplicationPage page, string text, Action action) 
-        {
-            var menuItem = new ApplicationBarMenuItem(text);
-            menuItem.Click += delegate { LittleWatson.Log("On" + text.Replace(" ", null) + "Click"); action(); };
-            page.ApplicationBar.MenuItems.Add(menuItem);
-        }
-
         public static void NavigateToSettings(this PhoneApplicationPage page)
         {
-            page.NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+            page.NavigationService.Navigate(page.GetUri<SettingsPage>());
         }
 
         public static void Init(PhoneApplicationPage page)
         {
-            AddMenuItem(page, "Settings", () => page.NavigateToSettings());
-
-            AddMenuItem(page, "Rate And Review", () =>
+            if (!(page is SettingsPage))
             {
-                new MarketplaceReviewTask().Show();
-                Settings.Set(Setting.RatingDone, true);
-            });
-
-            AddMenuItem(page, "Give Feedback", () =>
-            {
-                new EmailComposeTask
+                var settingsMenuItem = new ApplicationBarMenuItem("Settings");
+                settingsMenuItem.Click += delegate
                 {
-                    To = App.Email,
-                    Subject = "Feedback for " + App.Name + " " + LittleWatson.AppVersion,
-                    Body = LittleWatson.GetMailBody("")
-                }.Show();
-            });
+                    LittleWatson.Log("OnSettingsClick");
+                    page.NavigateToSettings();
+                };
+                page.ApplicationBar.MenuItems.Add(settingsMenuItem);
+            }
+
+            var button = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.information.png", UriKind.RelativeOrAbsolute)) { Text = "About" };
+            button.Click += delegate
+            {
+                LittleWatson.Log("OnAboutClick");
+                page.NavigationService.Navigate(page.GetUri<AboutPage>());
+            };
+            page.ApplicationBar.Buttons.Insert(0, button);
 
             var installationDate = Settings.GetDateTime(Setting.InstallationDate);
             if (!installationDate.HasValue)
