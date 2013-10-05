@@ -154,7 +154,7 @@ namespace UKTrains
             var firstDeparture = departures.ItemsSource == null ? null : departures.ItemsSource.Cast<Departure>().FirstOrDefault();
 
             var departuresTableHeader =
-                departuresTable.ToString() +
+                departuresTable.ToSmallString() +
                 (departuresTable.HasDestinationFilter || firstDeparture == null ? "" : " to " + firstDeparture.Destination);
 
             string content;
@@ -167,7 +167,7 @@ namespace UKTrains
             }
             else
             {
-                content = (forPrimaryTile ? departuresTableHeader + "\n" : "") +
+                content = (forPrimaryTile ? departuresTableHeader + "\n" : (departuresTable.HasDestinationFilter ? "" : firstDeparture.Destination + "\n")) +
                           (firstDeparture.PlatformIsKnown ? "Platform " + firstDeparture.Platform.Value : "Platform not available") +
                           (forPrimaryTile ? "" : "\n" + firstDeparture.Due + " " + firstDeparture.Status);
                 wideContent = departuresTableHeader + "\n" +
@@ -177,7 +177,7 @@ namespace UKTrains
 
             return new FlipTileData
             {
-                Title = forPrimaryTile ? App.Name : departuresTable.ToString(),
+                Title = forPrimaryTile ? App.Name : departuresTable.ToSmallString(),
                 BackTitle = App.Name,
                 BackContent = content,
                 WideBackContent = wideContent,

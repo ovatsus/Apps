@@ -16,6 +16,10 @@ type DeparturesTable =
         match x.CallingAt with
         | None -> x.Station.Name
         | Some callingAt -> sprintf "%s calling at %s" x.Station.Name callingAt.Name
+    member x.ToSmallString() =
+        match x.CallingAt with
+        | None -> x.Station.Code
+        | Some callingAt -> sprintf "%s calling at %s" x.Station.Code callingAt.Code
     member x.HasDestinationFilter = x.CallingAt.IsSome
     member x.WithoutFilter = 
         if not x.HasDestinationFilter then failwith "%A doesn't have a destination filter" x
