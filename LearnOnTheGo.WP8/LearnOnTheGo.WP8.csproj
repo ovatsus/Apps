@@ -145,6 +145,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Icons\appbar.coursera.png" />
     <Content Include="Assets\Icons\appbar.check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

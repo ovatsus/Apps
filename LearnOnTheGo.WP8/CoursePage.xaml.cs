@@ -213,5 +213,16 @@ namespace LearnOnTheGo
             task.Uri = new Uri(lecture.LectureNotesUrl, UriKind.Absolute);
             task.Show();
         }
+
+        private void OnOpenInBrowserClick(object sender, EventArgs e)
+        {
+            LittleWatson.Log("OnOpenInBrowserClick");
+
+            var course = App.Crawler.GetCourse(courseId);
+
+            var task = new WebBrowserTask();
+            task.Uri = new Uri(course.HomeLink, UriKind.Absolute);
+            task.Show();
+        }
     }
 }
