@@ -129,6 +129,7 @@
         </controls:Pivot>
 
         <TextBlock x:Name="messageTextBlock" 
+                   Margin="24,0,12,0"
                    TextWrapping="Wrap"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center" />

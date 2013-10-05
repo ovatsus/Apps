@@ -4,6 +4,7 @@ open System
 open System.Collections.Generic
 open System.Net
 open System.Text
+open System.Text.RegularExpressions
 open FSharp.Control
 open FSharp.Net
 open FSharp.Data.Json
@@ -47,6 +48,14 @@ module private Implementation =
             cacheSet url json
             return json }
 
+    // reduce size of bug reports
+    let cleanHtml (str:string) = 
+        let replace pattern (replacement:string) str = Regex.Replace(str, pattern, replacement)
+        str.Replace("\r", null).Replace("\n", null)
+        |> replace ">\s*<" "><"
+        |> replace "<head>.+?</head>" ""
+        |> replace "<script[^>]*>.+?</script>" ""
+
     let getCrawler email password courseBaseUrl cacheGet cacheSet = 
         let cookieContainer = ref None
         fun url -> 
@@ -58,6 +67,7 @@ module private Implementation =
                     let! _ = Http.AsyncRequestString(getLoginUrl courseBaseUrl, cookieContainer = cc)
                     cookieContainer := Some cc
                 let! html = Http.AsyncRequestString(url, cookieContainer = (!cookieContainer).Value)
+                let html = cleanHtml html
                 cacheSet url html
                 return html }
 
