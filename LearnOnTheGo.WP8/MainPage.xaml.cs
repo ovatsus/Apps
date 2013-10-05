@@ -36,12 +36,6 @@ namespace LearnOnTheGo
                 LittleWatson.CheckForNewVersion(this);
             }
 
-            if (coursesLazyBlock != null)
-            {
-                LittleWatson.Log("coursesLazyBlock is not null");
-                return;
-            }
-
             var email = Settings.GetString(Setting.Email);
             var password = Settings.GetString(Setting.Password);
 

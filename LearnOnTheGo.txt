@@ -9,7 +9,6 @@ New in 1.7:
 * Open course in browser button
 * Go to first uncompleted lecture section when opening a course
 * Distinguish viewed lectures from non-viewed lectures
-* Prevent going back to courses page if app is tombstoned when coming back from video player
 
 New in 1.6:
 * UI improvements
