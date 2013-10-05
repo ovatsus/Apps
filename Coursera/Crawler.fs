@@ -10,6 +10,9 @@ open FSharp.Net
 open FSharp.Data.Json
 open FSharp.Data.Json.Extensions
 
+module URLs =
+    let Login = "https://accounts.coursera.org/api/v1/login"
+
 [<AutoOpen>]
 module private Implementation = 
 
@@ -28,7 +31,7 @@ module private Implementation =
     let login email password = async {
         let csrfToken = getCsrfToken()
         let cookieContainer = new CookieContainer()
-        let! _ = Http.AsyncRequestString("https://accounts.coursera.org/api/v1/login",
+        let! _ = Http.AsyncRequestString(URLs.Login,
                                          headers = ["Origin", "https://accounts.coursera.org"
                                                     "X-CSRFToken", csrfToken
                                                     "Referer", "https://accounts.coursera.org/signin"], 

@@ -36,6 +36,15 @@ namespace LearnOnTheGo
                 LittleWatson.CheckForNewVersion(this);
             }
 
+            // app was tombstoned or settings changed
+            if (App.Crawler == null)
+            {
+                LittleWatson.Log("App.Crawler is null");
+                activeCourses.ItemsSource = null;
+                upcomingCourses.ItemsSource = null;
+                finishedCourses.ItemsSource = null;
+            }
+
             var email = Settings.GetString(Setting.Email);
             var password = Settings.GetString(Setting.Password);
 
@@ -109,7 +118,11 @@ namespace LearnOnTheGo
                 },
                 success =>
                 {
-                    if (success && !refresh)
+                    if (!success)
+                    {
+                        LittleWatson.Log("Failed to get courses");
+                    }
+                    else if (!refresh)
                     {
                         LoadCourses(email, password, true);
                     }

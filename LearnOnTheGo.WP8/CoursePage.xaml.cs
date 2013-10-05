@@ -59,7 +59,22 @@ namespace LearnOnTheGo
                         null),
                     false,
                     null,
-                    null,
+                    success =>
+                    {
+                        if (!success)
+                        {
+                            LittleWatson.Log("Failed to get courses");
+                            App.Crawler = null;
+                            if (NavigationService.CanGoBack)
+                            {
+                                NavigationService.GoBack();
+                            }
+                            else
+                            {
+                                LittleWatson.Log("Can not go back");
+                            }
+                        }
+                    },
                     null);
             }
             else

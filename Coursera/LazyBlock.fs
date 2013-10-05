@@ -77,7 +77,12 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<
             let isWebException = exn :? WebException
             if not refreshing then
                 ui.SetLocalProgressMessage
-                    (if isWebException then "Unable to establish an internet connection. Please check your internet status and try again."
+                    (if isWebException then 
+                        let webException = exn :?> WebException
+                        if webException.Response <> null && webException.Response.ResponseUri.IsAbsoluteUri && webException.Response.ResponseUri.AbsoluteUri = Coursera.URLs.Login then
+                            "Login did not work, please check your email and password in the Settings page and try again."
+                        else
+                            "Unable to establish an internet connection. Please check your internet status and try again."
                      elif exn.Message.Length > 500 then exn.Message.Substring(0, 500) + " ..."
                      else exn.Message)
             cts := None
