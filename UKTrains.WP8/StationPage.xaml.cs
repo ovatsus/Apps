@@ -62,9 +62,13 @@ namespace UKTrains
 
             if (departuresTable.HasDestinationFilter)
             {
-                var clearFilterItem = new ApplicationBarMenuItem("Clear filter");
-                clearFilterItem.Click += OnClearFilterClick;
-                ApplicationBar.MenuItems.Insert(0, clearFilterItem);
+                var filterOrClearFilterItem = ApplicationBar.Buttons.Cast<ApplicationBarIconButton>().Single(button => button.Text == "Filter");
+                filterOrClearFilterItem.Text = "Clear Filter";
+                filterOrClearFilterItem.IconUri = new Uri("/Assets/Icons/appbar.filter.clear.png", UriKind.RelativeOrAbsolute);
+
+                var filterByAnotherDestination = new ApplicationBarMenuItem("Filter by another destination");
+                filterByAnotherDestination.Click += OnFilterByAnotherDestinationClick;
+                ApplicationBar.MenuItems.Insert(0, filterByAnotherDestination);
 
                 var reverseJourneyItem = new ApplicationBarMenuItem("Reverse journey");
                 reverseJourneyItem.Click += OnReverseJourneyClick;
@@ -312,17 +316,23 @@ namespace UKTrains
             }
         }
 
-        private void OnFilterClick(object sender, EventArgs e)
+        private void OnFilterOrClearFilterClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnFilterClick");
-            NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresTable.Station.Code)
-                                                                       .WithParametersIf(departuresTable.HasDestinationFilter, () => "excludeStation", () => departuresTable.CallingAt.Value.Code));
+            LittleWatson.Log("OnFilterOrClearFilterClick");
+            if (departuresTable.HasDestinationFilter)
+            {
+                NavigationService.Navigate(GetUri(departuresTable.WithoutFilter, false));
+            }
+            else
+            {
+                NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresTable.Station.Code));
+            }
         }
 
-        private void OnClearFilterClick(object sender, EventArgs e)
+        private void OnFilterByAnotherDestinationClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnClearFilterClick");
-            NavigationService.Navigate(GetUri(departuresTable.WithoutFilter, false));
+            LittleWatson.Log("OnFilterByAnotherDestinationClick");
+            NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresTable.Station.Code, "excludeStation", departuresTable.CallingAt.Value.Code));
         }
 
         private void OnReverseJourneyClick(object sender, EventArgs e)
