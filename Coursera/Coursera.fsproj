@@ -7,11 +7,12 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>17cd56de-3304-43db-81e2-731624af41f2</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Coursera.Portable</RootNamespace>
-    <AssemblyName>Coursera.Portable</AssemblyName>
+    <RootNamespace>Coursera</RootNamespace>
+    <AssemblyName>Coursera</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile47</TargetFrameworkProfile>
-    <Name>Coursera.Portable</Name>
+    <Name>Coursera</Name>
+    <TargetFSharpCoreVersion>2.3.5.0</TargetFSharpCoreVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +22,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\Coursera.Portable.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Coursera.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,46 +31,44 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Release\Coursera.Portable.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Coursera.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
   </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.Portable.FSharp.Targets" />
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '11.0'">
+      <PropertyGroup>
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.Portable.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.Portable.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
   <ItemGroup>
     <None Include="packages.config" />
-    <Compile Include="..\Coursera.WP7\HtmlAgilityPack.FSharp.fs">
-      <Link>HtmlAgilityPack.FSharp.fs</Link>
-    </Compile>
-    <Compile Include="..\Coursera.WP7\LazyAsync.fsi">
-      <Link>LazyAsync.fsi</Link>
-    </Compile>
-    <Compile Include="..\Coursera.WP7\LazyAsync.fs">
-      <Link>LazyAsync.fs</Link>
-    </Compile>
-    <Compile Include="..\Coursera.WP7\LazyBlock.fs">
-      <Link>LazyBlock.fs</Link>
-    </Compile>
-    <Compile Include="..\Coursera.WP7\DataModel.fs">
-      <Link>DataModel.fs</Link>
-    </Compile>
-    <Compile Include="..\Coursera.WP7\Parser.fs">
-      <Link>Parser.fs</Link>
-    </Compile>
-    <Compile Include="..\Coursera.WP7\Crawler.fs">
-      <Link>Crawler.fs</Link>
-    </Compile>
+    <None Include="packages.config" />
+    <Compile Include="HtmlAgilityPack.FSharp.fs" />
+    <Compile Include="LazyAsync.fsi" />
+    <Compile Include="LazyAsync.fs" />
+    <Compile Include="LazyBlock.fs" />
+    <Compile Include="DataModel.fs" />
+    <Compile Include="Parser.fs" />
+    <Compile Include="Crawler.fs" />
     <None Include="topics.json" />
     <None Include="Tests.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
-      <Name>FSharp.Core</Name>
-      <AssemblyName>FSharp.Core.dll</AssemblyName>
-      <HintPath>$(MSBuildExtensionsPath32)\..\Reference Assemblies\Microsoft\FSharp\3.0\Runtime\.NETPortable\FSharp.Core.dll</HintPath>
+      <HintPath>$(MSBuildExtensionsPath32)\..\Reference Assemblies\Microsoft\FSharp\.NETPortable\$(TargetFSharpCoreVersion)\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Data">
-      <HintPath>..\lib\wp8\FSharp.Data.dll</HintPath>
+      <HintPath>..\lib\portable\FSharp.Data.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack-PCL">
       <HintPath>..\packages\HtmlAgilityPack-PCL.1.4.6\lib\HtmlAgilityPack-PCL.dll</HintPath>

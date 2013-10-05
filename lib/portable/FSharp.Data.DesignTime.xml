@@ -398,6 +398,9 @@
 <member name="">
 
 </member>
+<member name="">
+
+</member>
 <member name="M:FSharp.Data.RuntimeImplementation.CsvFile`1.Cache">
 <summary>
  Returns a new csv with the same rows as the original but which guarantees
@@ -607,6 +610,30 @@
 </member>
 <member name="">
 
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.Data.RuntimeImplementation.ReentrantEnumerable`1">
+<summary>
+ An enumerable that will return elements from the &apos;firstSeq&apos; first time it
+ is accessed and then will call &apos;nextSeq&apos; each time for all future GetEnumerator calls
+</summary>
 </member>
 <member name="">
 
@@ -2659,7 +2686,10 @@
 <member name="">
 
 </member>
-<member name="M:FSharp.Net.Http.RequestDetailed``5(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{``3},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``4})">
+<member name="">
+
+</member>
+<member name="M:FSharp.Net.Http.RequestString``4(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``3})">
 <summary>
  Download an HTTP web resource from the specified URL synchronously
  (allows specifying query string parameters and HTTP headers including
@@ -2668,7 +2698,7 @@
  that will be encoded, and the method will automatically be set if not specified
 </summary>
 </member>
-<member name="M:FSharp.Net.Http.Request``5(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{``3},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``4})">
+<member name="M:FSharp.Net.Http.Request``4(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``3})">
 <summary>
  Download an HTTP web resource from the specified URL synchronously
  (allows specifying query string parameters and HTTP headers including
@@ -2680,7 +2710,7 @@
 <member name="">
 
 </member>
-<member name="M:FSharp.Net.Http.AsyncRequestDetailed``5(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{``3},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``4})">
+<member name="M:FSharp.Net.Http.AsyncRequestString``4(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``3})">
 <summary>
  Download an HTTP web resource from the specified URL asynchronously
  (allows specifying query string parameters and HTTP headers including
@@ -2689,7 +2719,7 @@
  that will be encoded, and the method will automatically be set if not specified
 </summary>
 </member>
-<member name="M:FSharp.Net.Http.AsyncRequest``5(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{``3},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``4})">
+<member name="M:FSharp.Net.Http.AsyncRequest``4(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``3})">
 <summary>
  Download an HTTP web resource from the specified URL asynchronously
  (allows specifying query string parameters and HTTP headers including
@@ -2709,6 +2739,21 @@
  Utilities for working with network via HTTP. Includes methods for downloading 
  resources with specified headers, query parameters and HTTP body
 </summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
 </member>
 <member name="">
 
@@ -3319,6 +3364,12 @@
 <member name="">
 
 </member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
 <member name="T:ProviderImplementation.AssemblyResolver">
 
 </member>
@@ -3327,6 +3378,12 @@
  Creates a function that takes Expr&lt;string option&gt; and converts it to 
  an expression of other type - the type is specified by `field`
 </summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
 </member>
 <member name="T:ProviderImplementation.Conversions">
 

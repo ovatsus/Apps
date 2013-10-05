@@ -107,7 +107,7 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
-            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

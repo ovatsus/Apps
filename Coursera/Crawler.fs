@@ -27,14 +27,14 @@ module private Implementation =
     let login email password = async {
         let csrfToken = getCsrfToken()
         let cookieContainer = new CookieContainer()
-        let! _ = Http.AsyncRequest("https://accounts.coursera.org/api/v1/login",
-                                   headers = ["Origin", "https://accounts.coursera.org"
-                                              "X-CSRFToken", csrfToken
-                                              "Referer", "https://accounts.coursera.org/signin"], 
-                                   bodyValues = ["email", email
-                                                 "password", password],
-                                   cookies = ["csrftoken", csrfToken],
-                                   cookieContainer = cookieContainer)
+        let! _ = Http.AsyncRequestString("https://accounts.coursera.org/api/v1/login",
+                                         headers = ["Origin", "https://accounts.coursera.org"
+                                                    "X-CSRFToken", csrfToken
+                                                    "Referer", "https://accounts.coursera.org/signin"], 
+                                         body = RequestBody.FormValues ["email", email
+                                                                        "password", password],
+                                         cookies = ["csrftoken", csrfToken],
+                                         cookieContainer = cookieContainer)
         return cookieContainer }
 
     let getTopicsJson email password cacheGet cacheSet =
@@ -43,7 +43,7 @@ module private Implementation =
         | Some html -> async.Return html
         | None -> async {
             let! cookieContainer = login email password
-            let! json = Http.AsyncRequest(url, cookieContainer = cookieContainer) 
+            let! json = Http.AsyncRequestString(url, cookieContainer = cookieContainer) 
             cacheSet url json
             return json }
 
@@ -55,9 +55,9 @@ module private Implementation =
             | None -> async {
                 if (!cookieContainer).IsNone then
                     let! cc = login email password
-                    let! _ = Http.AsyncRequest(getLoginUrl courseBaseUrl, cookieContainer = cc)
+                    let! _ = Http.AsyncRequestString(getLoginUrl courseBaseUrl, cookieContainer = cc)
                     cookieContainer := Some cc
-                let! html = Http.AsyncRequest(url, cookieContainer = (!cookieContainer).Value)
+                let! html = Http.AsyncRequestString(url, cookieContainer = (!cookieContainer).Value)
                 cacheSet url html
                 return html }
 

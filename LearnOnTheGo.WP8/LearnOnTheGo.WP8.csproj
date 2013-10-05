@@ -31,7 +31,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;WP8</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -41,7 +41,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE;WP8</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -90,35 +90,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\LearnOnTheGo.WP7\Cache.cs">
-      <Link>Cache.cs</Link>
-    </Compile>
-    <Compile Include="..\LearnOnTheGo.WP7\CoursePage.xaml.cs">
-      <DependentUpon>CoursePage.xaml</DependentUpon>
-      <Link>CoursePage.xaml.cs</Link>
-    </Compile>
-    <Compile Include="..\LearnOnTheGo.WP7\CommonMenuItems.cs">
-      <Link>CommonMenuItems.cs</Link>
-    </Compile>
-    <Compile Include="..\LearnOnTheGo.WP7\LazyBlockUI.cs">
-      <Link>LazyBlockUI.cs</Link>
-    </Compile>
-    <Compile Include="..\LearnOnTheGo.WP7\LittleWatson.cs">
-      <Link>LittleWatson.cs</Link>
-    </Compile>
-    <Compile Include="..\LearnOnTheGo.WP7\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-      <Link>MainPage.xaml.cs</Link>
-    </Compile>
-    <Compile Include="..\LearnOnTheGo.WP7\Settings.cs">
-      <Link>Settings.cs</Link>
-    </Compile>
-    <Compile Include="..\LearnOnTheGo.WP7\SettingsPage.xaml.cs">
-      <DependentUpon>SettingsPage.xaml</DependentUpon>
-      <Link>SettingsPage.xaml.cs</Link>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Cache.cs" />
+    <Compile Include="CommonMenuItems.cs" />
+    <Compile Include="LazyBlockUI.cs" />
+    <Compile Include="LittleWatson.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CoursePage.xaml.cs">
+      <DependentUpon>CoursePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -127,6 +114,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CoursePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -137,21 +136,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.check.png">
-      <Link>Icons\dark\appbar.check.png</Link>
+    <Content Include="Assets\Icons\appbar.check.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.control.play.png">
-      <Link>Icons\dark\appbar.control.play.png</Link>
+    <Content Include="Assets\Icons\appbar.control.play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.page.png">
-      <Link>Icons\dark\appbar.page.pdf.png</Link>
+    <Content Include="Assets\Icons\appbar.page.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\LearnOnTheGo.WP7\Icons\dark\appbar.refresh.png">
-      <Link>Icons\dark\appbar.refresh.png</Link>
+    <Content Include="Assets\Icons\appbar.refresh.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\LearnOnTheGo.WP7\SplashScreenImage.jpg">
-      <Link>SplashScreenImage.jpg</Link>
-    </Content>
+    <Content Include="SplashScreenImage.jpg" />
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -173,29 +170,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="..\LearnOnTheGo.WP7\CoursePage.xaml">
-      <Link>CoursePage.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="..\LearnOnTheGo.WP7\MainPage.xaml">
-      <Link>MainPage.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="..\LearnOnTheGo.WP7\SettingsPage.xaml">
-      <Link>SettingsPage.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Coursera.Portable\Coursera.Portable.fsproj">
-      <Project>{17CD56DE-3304-43DB-81E2-731624AF41F2}</Project>
-      <Name>Coursera.Portable</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="Coding4Fun.Toolkit.Controls, Version=2.0.7.0, Culture=neutral, PublicKeyToken=c5fd7b72b1a17ce4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Coding4Fun.Toolkit.Controls.2.0.7\lib\windowsphone8\Coding4Fun.Toolkit.Controls.dll</HintPath>
@@ -214,6 +188,12 @@
     <Reference Include="SharpGIS.GZipWebClient">
       <HintPath>..\packages\SharpGIS.GZipWebClient.1.4.0.0\lib\wp71\SharpGIS.GZipWebClient.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Coursera\Coursera.fsproj">
+      <Project>{17CD56DE-3304-43DB-81E2-731624AF41F2}</Project>
+      <Name>Coursera</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

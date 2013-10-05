@@ -34,10 +34,10 @@
                                 VerticalAlignment="Center">
                         <coding4fun:RoundButton Tap="OnLectureVideoClick"
                                                 Margin="4,0,0,0"
-                                                ImageSource="/Icons/dark/appbar.control.play.png" />
+                                                ImageSource="/Assets/Icons/appbar.control.play.png" />
                         <coding4fun:RoundButton Tap="OnLectureNotesClick"
                                                 Margin="4,0,0,0"
-                                                ImageSource="/Icons/dark/appbar.page.png" 
+                                                ImageSource="/Assets/Icons/appbar.page.png" 
                                                 IsEnabled="{Binding HasLectureNotes}"/>
                     </StackPanel>
                 </Grid>
@@ -76,7 +76,7 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
-            <shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
