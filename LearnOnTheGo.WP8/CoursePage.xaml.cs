@@ -24,10 +24,56 @@ namespace LearnOnTheGo
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            courseId = int.Parse(NavigationContext.QueryString["courseId"]);
+
+            // app was tombstoned or settings changed
             if (App.Crawler == null)
             {
-                // app was tombstoned or settings changed
                 LittleWatson.Log("App.Crawler is null");
+
+                var email = Settings.GetString(Setting.Email);
+                var password = Settings.GetString(Setting.Password);
+                if ((string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)))
+                {
+                    if (NavigationService.CanGoBack)
+                    {
+                        NavigationService.GoBack();
+                    }
+                    else
+                    {
+                        LittleWatson.Log("Can not go back");
+                    }
+                    return;
+                }
+
+                App.Crawler = new Crawler(email, password, Cache.GetFiles(), Cache.SaveFile);
+                new LazyBlock<Course[]>(
+                    null,
+                    null,
+                    App.Crawler.Courses,
+                    _ => false,
+                    new LazyBlockUI<Course[]>(
+                        this,
+                        _ => Setup(),
+                        () => false,
+                        null),
+                    false,
+                    null,
+                    null,
+                    null);
+            }
+            else
+            {
+                Setup();
+            }
+        }
+
+        private void Setup()
+        {
+            if (!App.Crawler.HasCourse(courseId))
+            {
+                LittleWatson.Log("App.Crawler.HasCourse is false");
+
                 if (NavigationService.CanGoBack)
                 {
                     NavigationService.GoBack();
@@ -39,7 +85,6 @@ namespace LearnOnTheGo
                 return;
             }
 
-            courseId = int.Parse(NavigationContext.QueryString["courseId"]);
             var course = App.Crawler.GetCourse(courseId);
             pivot.Title = course.Topic.Name;
             LittleWatson.Log(courseId + " = " + course.Topic.Name + " [" + course.Name + "]");
@@ -83,7 +128,13 @@ namespace LearnOnTheGo
                         messageTextBlock),
                     false,
                     null,
-                    null,
+                    success =>
+                    {
+                        if (success && !refresh)
+                        {
+                            Load(true);
+                        }
+                    },
                     null);
             }
         }

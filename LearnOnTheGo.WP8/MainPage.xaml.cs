@@ -36,9 +36,9 @@ namespace LearnOnTheGo
                 LittleWatson.CheckForNewVersion(this);
             }
 
-            if (App.Crawler != null)
+            if (coursesLazyBlock != null)
             {
-                LittleWatson.Log("App.Crawler is not null");
+                LittleWatson.Log("coursesLazyBlock is not null");
                 return;
             }
 

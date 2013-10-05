@@ -124,6 +124,11 @@ type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>) =
     member __.RefreshCourses() =
         courses := getCourses true
 
+    member __.HasCourse(courseId) =
+        match !coursesById with
+        | Some coursesById -> coursesById.ContainsKey(courseId)
+        | None -> false
+
     member __.GetCourse(courseId) = 
         match !coursesById with
         | Some coursesById -> coursesById.[courseId]
