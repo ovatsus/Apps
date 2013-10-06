@@ -1,9 +1,11 @@
 ﻿namespace NationalRail
 
 open System
+open System.ComponentModel
 open System.Globalization
 open System.Linq
 open System.Text.RegularExpressions
+open System.Threading
 open FSharp.Control
 open FSharp.Net
 open HtmlAgilityPack
@@ -37,12 +39,28 @@ type Departure = {
     Status : Status
     Platform : string option
     Details : LazyAsync<JourneyElement[]>
+    Arrival : ArrivalInformation option ref
+    PropertyChangedEvent : IEvent<PropertyChangedEventHandler, PropertyChangedEventArgs>
 } with 
     member x.PlatformIsKnown = x.Platform.IsSome
+    member x.ArrivalIsKnown = x.Arrival.Value.IsSome
     member x.Expected = 
         match x.Status with
         | Status.Delayed mins -> Some (x.Due + Time.Create(mins))
         | _ -> None
+    interface INotifyPropertyChanged with
+        [<CLIEvent>]
+        member x.PropertyChanged = x.PropertyChangedEvent
+
+and ArrivalInformation = {
+    Due : Time
+    Destination : string
+    Status : JourneyElementStatus
+} with 
+    member x.Expected = 
+        match x.Status with
+        | Delayed (_, mins) -> x.Due + Time.Create(mins)
+        | _ -> x.Due
 
 and Time = 
     private { TotalMinutes : int }
@@ -237,7 +255,7 @@ type DeparturesTable with
             return getJourneyDetails()
         }
 
-        let rowToDeparture (tr:HtmlNode) =
+        let rowToDeparture arrivalInformation propertyChangedEvent (tr:HtmlNode) =
             let cells = tr.Elements "td" |> Seq.toArray        
             let destination, destinationDetail = 
                 let dest = cells.[1].InnerText.Trim()
@@ -252,19 +270,57 @@ type DeparturesTable with
                     else dest, ""
             let due = cells.[0] |> parseTime
             let status = cells.[2] |> getStatus due
+            let details = 
+                let detailsUrl = cells.[4] |> element "a" |> attr "href"
+                LazyAsync.fromAsync (getJourneyDetails ("http://ojp.nationalrail.co.uk" + detailsUrl))
             { Due = due
               Destination = destination
               DestinationDetail = destinationDetail
               Status = status
               Platform = cells.[3] |> parsePlatform
-              Details = 
-                let details = cells.[4] |> element "a" |> attr "href"
-                LazyAsync.fromAsync (getJourneyDetails ("http://ojp.nationalrail.co.uk" + details)) }
+              Details = details
+              Arrival = arrivalInformation
+              PropertyChangedEvent = propertyChangedEvent }
 
         let url = 
             match journey.CallingAt with
             | None -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/%s/%s" (departureType.ToString()) journey.Station.Code
             | Some callingAt -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/%s/%s/%s/To" (departureType.ToString()) journey.Station.Code callingAt.Code 
+
+        let synchronizationContext = SynchronizationContext.Current
+
+        let rowToDeparture = 
+            match journey.CallingAt, departureType with
+            | _, DepartureType.Arrival
+            | None, _ -> rowToDeparture (ref None) (Event<_,_>().Publish)
+            | Some callingAt, _ -> fun row ->
+                
+                let arrivalInformation = ref None
+                let propertyChangedEvent = Event<_,_>()
+                
+                let departure = row |> rowToDeparture arrivalInformation propertyChangedEvent.Publish
+                
+                let triggerProperyChanged() = 
+                    propertyChangedEvent.Trigger(departure, PropertyChangedEventArgs "Arrival")
+                    propertyChangedEvent.Trigger(departure, PropertyChangedEventArgs "ArrivalIsKnown")
+
+                let onJourneyElementsObtained (journeyElements:JourneyElement[]) =
+                    let journeyElement = journeyElements |> Seq.tryFind (fun journeyElement -> journeyElement.Station = callingAt.Name)
+                    let journeyElement = 
+                        match journeyElement with
+                        | Some journeyElement -> journeyElement
+                        | None -> journeyElements |> Seq.find (fun journeyElement -> // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
+                                                                                     callingAt.Name.StartsWith journeyElement.Station || 
+                                                                                     journeyElement.Station.StartsWith callingAt.Name)
+                    arrivalInformation := 
+                        Some { Due = journeyElement.Departs
+                               Destination = callingAt.Name
+                               Status = journeyElement.Status }
+
+                    synchronizationContext.Post ((fun _ -> triggerProperyChanged()), null)
+
+                departure.Details.GetValueAsync onJourneyElementsObtained ignore (fun () -> ()) |> ignore
+                departure
 
         async {
             let! html = Http.AsyncRequestString url

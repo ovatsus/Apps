@@ -25,8 +25,8 @@ namespace UKTrains
         }
 
         private DeparturesTable departuresTable;
-        private LazyBlock<Departure> departuresLazyBlock;
-        private LazyBlock<Departure> arrivalsLazyBlock;
+        private LazyBlock<Departure[]> departuresLazyBlock;
+        private LazyBlock<Departure[]> arrivalsLazyBlock;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -91,13 +91,20 @@ namespace UKTrains
         {
             if (departuresLazyBlock == null)
             {
-                departuresLazyBlock = new LazyBlock<Departure>(
+                departuresLazyBlock = new LazyBlock<Departure[]>(
                     "departures",
                     "No more trains today",
                     departuresTable.GetDepartures(DepartureType.Departure),
-                    new LazyBlockUI(this, departures, departuresMessageTextBlock, departuresLastUpdatedTextBlock),
+                    items => items.Length == 0,
+                    new LazyBlockUI<Departure>(this, departures, departuresMessageTextBlock, departuresLastUpdatedTextBlock),
                     true,
-                    () => UpdateTiles(),
+                    null,
+                    success => {
+                        if (success)
+                        {
+                            UpdateTiles();
+                        }
+                    },
                     null);
             }
             else if (departures.ItemsSource == null)
@@ -110,12 +117,14 @@ namespace UKTrains
         {
             if (arrivalsLazyBlock == null)
             {
-                arrivalsLazyBlock = new LazyBlock<Departure>(
+                arrivalsLazyBlock = new LazyBlock<Departure[]>(
                     "arrivals",
                     "No more trains today",
                     departuresTable.GetDepartures(DepartureType.Arrival),
-                    new LazyBlockUI(this, arrivals, arrivalsMessageTextBlock, arrivalsLastUpdatedTextBlock),
+                    items => items.Length == 0,
+                    new LazyBlockUI<Departure>(this, arrivals, arrivalsMessageTextBlock, arrivalsLastUpdatedTextBlock),
                     true,
+                    null,
                     null,
                     null);
             }

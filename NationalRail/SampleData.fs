@@ -20,11 +20,11 @@ type SampleData() =
 
     let details = LazyAsync.fromValue [| |]
 
-    member __.NearestStations = [ "1.1 km", s1 
-                                  "3.4 km", s2 
-                                  "5.6 km", s3 
-                                  "7.8 km", s4
-                                  "9.2 km", s1 ]
+    member __.NearestStations = [ 1.1, s1 
+                                  3.4, s2 
+                                  5.6, s3 
+                                  7.8, s4
+                                  9.2, s1 ]
 
     member __.RecentStations = [ DeparturesTable.Create(s1)
                                  DeparturesTable.Create(s2, s3)
@@ -40,37 +40,53 @@ type SampleData() =
                                DestinationDetail = "via " + s2.Name
                                Status = Status.Cancelled
                                Platform = Some "22C"
-                               Details = details }
+                               Details = details
+                               Arrival = ref None
+                               PropertyChangedEvent = Event<_,_>().Publish }
                              { Due = t2
                                Destination = s2.Name
                                DestinationDetail = ""
                                Status = Status.OnTime
                                Platform = None
-                               Details = details }
+                               Details = details
+                               Arrival = ref <| Some { Due = t3
+                                                       Destination = s3.Name
+                                                       Status = Delayed (false, 4) }
+                               PropertyChangedEvent = Event<_,_>().Publish }
                              { Due = t3
                                Destination = s3.Name
                                DestinationDetail = "via " + s1.Name + " & " + s2.Name + " via " + s4.Name
                                Status = Status.Delayed 1
                                Platform = Some "4"
-                               Details = details }
+                               Details = details
+                               Arrival = ref None
+                               PropertyChangedEvent = Event<_,_>().Publish }
                              { Due = t4
                                Destination = s4.Name
                                DestinationDetail = ""
                                Status = Status.Delayed 130
                                Platform = None
-                               Details = details }
+                               Details = details
+                               Arrival = ref <| Some { Due = t1
+                                                       Destination = s1.Name
+                                                       Status = OnTime false }
+                               PropertyChangedEvent = Event<_,_>().Publish }
                              { Due = t1
                                Destination = s1.Name
                                DestinationDetail = "via " + s3.Name
                                Status = Status.Cancelled
                                Platform = Some "12"
-                               Details = details }
+                               Details = details
+                               Arrival = ref None
+                               PropertyChangedEvent = Event<_,_>().Publish }
                              { Due = t2
                                Destination = s2.Name
                                DestinationDetail = ""
                                Status = Status.OnTime
                                Platform = None
-                               Details = details } ]
+                               Details = details
+                               Arrival = ref None
+                               PropertyChangedEvent = Event<_,_>().Publish } ]
 
     member x.Arrivals = x.Departures
     

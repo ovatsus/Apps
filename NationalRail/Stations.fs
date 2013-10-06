@@ -47,7 +47,7 @@ module Stations =
         | Some stationInfo -> stationInfo
 
     [<CompiledName("GetNearest")>]
-    let getNearest currentPosition limit useMilesInsteadOfKMs = 
+    let getNearest currentPosition limit = 
     
         async {
 
@@ -59,12 +59,6 @@ module Stations =
                 |> Seq.filter (fun (dist, _) -> dist < 9.5)
                 |> Seq.sortBy (fun (dist, station) -> dist, station.Name)
                 |> Seq.truncate limit
-                |> Seq.map (fun (distance, station) -> 
-                    if useMilesInsteadOfKMs then
-                        let distance = distance * 0.621371192
-                        sprintf "%.1f mi" distance, station
-                    else
-                        sprintf "%.1f km" distance, station)
                 |> Seq.toArray
 
             return nearestStations

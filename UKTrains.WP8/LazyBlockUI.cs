@@ -8,7 +8,7 @@ using Microsoft.Phone.Shell;
 
 namespace UKTrains
 {
-    public class LazyBlockUI : ILazyBlockUI
+    public class LazyBlockUI<T> : ILazyBlockUI<T[]>
     {
         private Page page;
         private ItemsControl itemsControl;
@@ -63,7 +63,7 @@ namespace UKTrains
             get { return itemsControl.ItemsSource != null; }
         }
 
-        public void SetItems<T>(T[] items)
+        public void SetItems(T[] items)
         {
             itemsControl.ItemsSource = items;
         }

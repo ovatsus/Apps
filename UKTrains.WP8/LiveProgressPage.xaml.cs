@@ -17,7 +17,7 @@ namespace UKTrains
         private static string title;
         private static Departure departure;
 
-        private LazyBlock<JourneyElement> journeyElementsLazyBlock;
+        private LazyBlock<JourneyElement[]> journeyElementsLazyBlock;
 
         //TODO: remove the static and pass in the page parameters
         public static void SetTarget(string title, Departure departure)
@@ -54,14 +54,16 @@ namespace UKTrains
             else
             {
                 pivot.Title = title;
-                journeyElementsLazyBlock = new LazyBlock<JourneyElement>(
+                journeyElementsLazyBlock = new LazyBlock<JourneyElement[]>(
                     "live progress",
                     "No information available",
                     departure.Details,
-                    new LazyBlockUI(this, journeyElements, journeyElementsMessageTextBlock, journeyElementsLastUpdatedTextBlock),
-                        true,
-                        null,
-                        null);
+                    items => items.Length == 0,
+                    new LazyBlockUI<JourneyElement>(this, journeyElements, journeyElementsMessageTextBlock, journeyElementsLastUpdatedTextBlock),
+                    true,
+                    null,
+                    null,
+                    null);
             }
         }
 

@@ -40,7 +40,7 @@ namespace UKTrains
             CommonApplicationBarItems.Init(this);
         }
 
-        private LazyBlock<Tuple<string, Station>> nearestLazyBlock;
+        private LazyBlock<Tuple<double, Station>[]> nearestLazyBlock;
         private Station fromStation;
         private string excludeStation;
         private bool hasRecentItemsToDisplay;
@@ -125,7 +125,7 @@ namespace UKTrains
 
         private void LoadNearestStations()
         {
-            var lazyBlockUI = new LazyBlockUI(this, nearestStations, nearestStationsMessageTextBlock, null);
+            var lazyBlockUI = new LazyBlockUI<Tuple<double, Station>>(this, nearestStations, nearestStationsMessageTextBlock, null);
 
             LatLong from;
             if (fromStation == null)
@@ -133,7 +133,7 @@ namespace UKTrains
                 var currentPosition = LocationService.CurrentPosition;
                 if (!Settings.GetBool(Setting.LocationServicesEnabled))
                 {
-                    lazyBlockUI.SetItems<object>(null);
+                    lazyBlockUI.SetItems(null);
                     lazyBlockUI.SetLocalProgressMessage("Locations Services are disabled");
                     return;
                 }
@@ -158,12 +158,14 @@ namespace UKTrains
                 nearestLazyBlock.Cancel();
             }
 
-            nearestLazyBlock = new LazyBlock<Tuple<string, Station>>(
+            nearestLazyBlock = new LazyBlock<Tuple<double, Station>[]>(
                 "nearest stations",
                 "No nearby stations",
-                Stations.GetNearest(from, 150, Settings.GetBool(Setting.UseMilesInsteadOfKMs)),
+                Stations.GetNearest(from, 150),
+                items => items.Length == 0,
                 lazyBlockUI,
                 false,
+                null,
                 null,
                 nearestUnfiltered => 
                 {

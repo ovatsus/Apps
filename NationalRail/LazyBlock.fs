@@ -9,7 +9,7 @@ type LazyBlockUIState =
     static member Create s refreshing = 
         s |> if refreshing then Refreshing else Loading
 
-type ILazyBlockUI = 
+type ILazyBlockUI<'a> = 
 
     abstract GlobalState : LazyBlockUIState list with get, set
 
@@ -17,7 +17,7 @@ type ILazyBlockUI =
     abstract SetLocalProgressMessage : string -> unit
 
     abstract HasItems : bool
-    abstract SetItems : 'a[] -> unit
+    abstract SetItems : 'a -> unit
 
     abstract SetLastUpdated : string -> unit
 
@@ -26,7 +26,7 @@ type ILazyBlockUI =
 
     abstract OnException : string * exn -> unit
 
-type LazyBlock<'a>(subject, emptyMessage, lazyAsync : LazyAsync<'a[]>, ui : ILazyBlockUI, useRefreshTimer, afterRefresh:Action, filter:Func<_,_>) as this=
+type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<_,_>, ui : ILazyBlockUI<'a>, useRefreshTimer, beforeLoad:Action<bool>, afterLoad:Action<bool>, filter:Func<_,_>) as this =
 
     let cts = ref None
 
@@ -39,7 +39,10 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync : LazyAsync<'a[]>, ui : ILaz
         | Loading x::xs -> sprintf "Loading %s & %s" x ((getMessage xs).ToLower())
         | Refreshing x::xs -> sprintf "Refreshing %s & %s"  x ((getMessage xs).ToLower())        
 
-    let load() = 
+    let load isRefresh = 
+
+        if beforeLoad <> null then 
+            beforeLoad.Invoke isRefresh
 
         if useRefreshTimer then 
             ui.StopTimer()
@@ -59,13 +62,13 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync : LazyAsync<'a[]>, ui : ILaz
             ui.SetGlobalProgressMessage (getMessage ui.GlobalState)        
 
         let onSucess values =             
-            ui.SetLocalProgressMessage (if Array.length values = 0 then emptyMessage else "")
+            ui.SetLocalProgressMessage (if isEmpty.Invoke values then emptyMessage else "")
             removeGlobalProgressIndicator()
             ui.SetItems (if filter = null then values else filter.Invoke values)
             ui.SetLastUpdated ("last updated at " + DateTime.Now.ToString("HH:mm:ss"))
             cts := None
-            if afterRefresh <> null then 
-                afterRefresh.Invoke()
+            if afterLoad <> null then 
+                afterLoad.Invoke true
             if useRefreshTimer then
                 ui.StartTimer (fun () -> this.Refresh())
 
@@ -78,6 +81,8 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync : LazyAsync<'a[]>, ui : ILaz
                      elif exn.Message.Length > 500 then exn.Message.Substring(0, 500) + " ..."
                      else exn.Message)
             cts := None
+            if afterLoad <> null then 
+                afterLoad.Invoke false
             if isWebException then
                 if useRefreshTimer then
                     ui.StartTimer (fun () -> this.Refresh())
@@ -88,18 +93,20 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync : LazyAsync<'a[]>, ui : ILaz
             removeGlobalProgressIndicator()
             ui.SetLocalProgressMessage ""
             cts := None
+            if afterLoad <> null then 
+                afterLoad.Invoke false
             
         cts := lazyAsync.GetValueAsync onSucess onFailure onCancel |> Some
 
     do lazyAsync.ResetIfFailed()
-    do load()
+    do load false
 
     member x.CanRefresh = (!cts).IsNone
 
     member x.Refresh() =
         if x.CanRefresh then
             lazyAsync.Reset()
-            load()
+            load true
 
     member x.Cancel() = 
         if useRefreshTimer then

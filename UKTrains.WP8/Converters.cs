@@ -7,6 +7,27 @@ using NationalRail;
 
 namespace UKTrains
 {
+    public class DistanceToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var distance = (double)value;
+            if (Settings.GetBool(Setting.UseMilesInsteadOfKMs))
+            {
+                return string.Format("{0,1:F1} mi", distance * 0.621371192);
+            }
+            else
+            {
+                return string.Format("{0,1:F1} km", distance);
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class StatusToColorConverter : IValueConverter
     {
         public Brush Cancelled { get; set; }
@@ -41,14 +62,7 @@ namespace UKTrains
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var status = (Status)value;
-            if (status.IsOnTime)
-            {
-                return Visibility.Collapsed;
-            }
-            else
-            {
-                return Visibility.Visible;
-            }
+            return status.IsOnTime ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -99,14 +113,7 @@ namespace UKTrains
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var status = (JourneyElementStatus)value;
-            if (status.HasDeparted)
-            {
-                return Departed;
-            }
-            else
-            {
-                return NotDeparted;
-            }
+            return status.HasDeparted ? Departed : NotDeparted;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -120,14 +127,21 @@ namespace UKTrains
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var status = (JourneyElementStatus)value;
-            if (status.IsOnTime)
-            {
-                return Visibility.Collapsed;
-            }
-            else
-            {
-                return Visibility.Visible;
-            }
+            return status.IsOnTime ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ArrivalInformationToMessageConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var arrivalInformation = (ArrivalInformation)value;
+            return "Arrival at " + arrivalInformation.Destination + " " + arrivalInformation.Status.ToString().ToLower();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
