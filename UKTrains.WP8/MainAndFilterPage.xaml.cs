@@ -221,7 +221,7 @@ namespace UKTrains
             }
             else
             {
-                var station = dataContext as Station ?? ((Tuple<string, Station>)dataContext).Item2;
+                var station = dataContext as Station ?? ((Tuple<double, Station>)dataContext).Item2;
                 target = fromStation == null ? DeparturesTable.Create(station) :
                          DeparturesTable.Create(fromStation, station);
             }
