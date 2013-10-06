@@ -66,7 +66,6 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<
             removeGlobalProgressIndicator()
             ui.SetItems (if filter = null then values else filter.Invoke values)
             ui.SetLastUpdated ("last updated at " + DateTime.Now.ToString("HH:mm:ss"))
-            cts := None
             if afterLoad <> null then 
                 afterLoad.Invoke true
             if useRefreshTimer then
@@ -80,7 +79,6 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<
                     (if isWebException then "Unable to establish an internet connection. Please check your internet status and try again."
                      elif exn.Message.Length > 500 then exn.Message.Substring(0, 500) + " ..."
                      else exn.Message)
-            cts := None
             if afterLoad <> null then 
                 afterLoad.Invoke false
             if isWebException then
@@ -92,24 +90,22 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<
         let onCancel() = 
             removeGlobalProgressIndicator()
             ui.SetLocalProgressMessage ""
-            cts := None
             if afterLoad <> null then 
                 afterLoad.Invoke false
             
-        cts := lazyAsync.GetValueAsync onSucess onFailure onCancel |> Some
+        cts := lazyAsync.GetValueAsync None onSucess onFailure onCancel |> Some
 
     do lazyAsync.ResetIfFailed()
     do load false
 
-    member x.CanRefresh = (!cts).IsNone
-
     member x.Refresh() =
-        if x.CanRefresh then
-            lazyAsync.Reset()
-            load true
+        x.Cancel()
+        lazyAsync.Reset()
+        load true
 
     member x.Cancel() = 
         if useRefreshTimer then
             ui.StopTimer()
         !cts |> Option.iter (fun cts -> cts.Cancel())
+        cts := None
         

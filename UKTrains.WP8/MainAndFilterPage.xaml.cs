@@ -195,7 +195,7 @@ namespace UKTrains
         private void OnRefreshClick(object sender, EventArgs e)
         {
             LittleWatson.Log("OnRefreshClick");
-            if (nearestLazyBlock == null || nearestLazyBlock.CanRefresh)
+            if (nearestLazyBlock == null)
             {
                 LoadNearestStations();
             }

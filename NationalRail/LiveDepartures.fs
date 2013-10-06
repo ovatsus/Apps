@@ -42,6 +42,7 @@ type Departure = {
     Arrival : ArrivalInformation option ref
     PropertyChangedEvent : IEvent<PropertyChangedEventHandler, PropertyChangedEventArgs>
 } with 
+    override x.ToString() = sprintf "%A" x
     member x.PlatformIsKnown = x.Platform.IsSome
     member x.ArrivalIsKnown = x.Arrival.Value.IsSome
     member x.Expected = 
@@ -55,11 +56,12 @@ type Departure = {
 and ArrivalInformation = {
     Due : Time
     Destination : string
-    Status : JourneyElementStatus
+    Status : Status
 } with 
+    override x.ToString() = sprintf "%A" x
     member x.Expected = 
         match x.Status with
-        | Delayed (_, mins) -> x.Due + Time.Create(mins)
+        | Status.Delayed mins -> x.Due + Time.Create(mins)
         | _ -> x.Due
 
 and Time = 
@@ -93,6 +95,7 @@ and JourneyElement = {
     Platform : string option
     IsAlternateRoute : bool
 } with
+    override x.ToString() = sprintf "%A" x
     member x.PlatformIsKnown = x.Platform.IsSome
     member x.Expected = 
         match x.Status with
@@ -289,7 +292,7 @@ type DeparturesTable with
 
         let synchronizationContext = SynchronizationContext.Current
 
-        let rowToDeparture = 
+        let rowToDeparture token = 
             match journey.CallingAt, departureType with
             | _, DepartureType.Arrival
             | None, _ -> rowToDeparture (ref None) (Event<_,_>().Publish)
@@ -299,39 +302,60 @@ type DeparturesTable with
                 let propertyChangedEvent = Event<_,_>()
                 
                 let departure = row |> rowToDeparture arrivalInformation propertyChangedEvent.Publish
-                
-                let triggerProperyChanged() = 
-                    propertyChangedEvent.Trigger(departure, PropertyChangedEventArgs "Arrival")
-                    propertyChangedEvent.Trigger(departure, PropertyChangedEventArgs "ArrivalIsKnown")
 
-                let onJourneyElementsObtained (journeyElements:JourneyElement[]) =
-                    let journeyElement = journeyElements |> Seq.tryFind (fun journeyElement -> journeyElement.Station = callingAt.Name)
-                    let journeyElement = 
-                        match journeyElement with
-                        | Some journeyElement -> journeyElement
-                        | None -> journeyElements |> Seq.find (fun journeyElement -> // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
-                                                                                     callingAt.Name.StartsWith journeyElement.Station || 
-                                                                                     journeyElement.Station.StartsWith callingAt.Name)
+                let postArrivalInformation (journeyElements:JourneyElement[]) index = 
+                    
+                    let journeyElement = journeyElements.[index]
+
+                    let destination = 
+                        if index = journeyElements.Length - 1 then "" // don't display it as it would be repeated
+                        else journeyElement.Station // display the smaller (journeyElement.Station.Length <= calligAt.Name.Length)                            
+
+                    let status =
+                        match journeyElement.Status with
+                        | Delayed (_, mins) -> Status.Delayed mins
+                        | Cancelled -> failwith "Not possible"
+                        | _ -> Status.OnTime
+
                     arrivalInformation := 
                         Some { Due = journeyElement.Departs
-                               Destination = callingAt.Name
-                               Status = journeyElement.Status }
+                               Destination = destination
+                               Status = status }
+                    
+                    let triggerProperyChanged _ = 
+                        propertyChangedEvent.Trigger(departure, PropertyChangedEventArgs "Arrival")
+                        propertyChangedEvent.Trigger(departure, PropertyChangedEventArgs "ArrivalIsKnown")
+                    
+                    synchronizationContext.Post(SendOrPostCallback(triggerProperyChanged), null)
+                
+                let onJourneyElementsObtained (journeyElements:JourneyElement[]) =
+                    let index = journeyElements 
+                                |> Array.tryFindIndex (fun journeyElement -> journeyElement.Station = callingAt.Name)
+                    let index = 
+                        match index with
+                        | Some _ -> index
+                        | None -> journeyElements 
+                                  |> Array.tryFindIndex (fun journeyElement -> // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
+                                                                               callingAt.Name.StartsWith journeyElement.Station)
+                    index |> Option.iter (postArrivalInformation journeyElements)
 
-                    synchronizationContext.Post ((fun _ -> triggerProperyChanged()), null)
+                if departure.Status <> Status.Cancelled then
+                    departure.Details.GetValueAsync (Some token) onJourneyElementsObtained ignore ignore |> ignore
 
-                departure.Details.GetValueAsync onJourneyElementsObtained ignore (fun () -> ()) |> ignore
                 departure
 
         async {
             let! html = Http.AsyncRequestString url
             let html = cleanHtml html
 
+            let! token = Async.CancellationToken
+
             let getDepartures() = 
                 try 
                     createDoc html
                     |> descendants "tbody"
                     |> Seq.collect (fun body -> body |> elements "tr")
-                    |> Seq.map rowToDeparture
+                    |> Seq.map (rowToDeparture token)
                     |> Seq.toArray
                 with 
                 | :? ParseError -> reraise()

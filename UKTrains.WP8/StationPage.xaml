@@ -49,24 +49,15 @@
             <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
             <coding4funConverters:StringToVisibilityConverter x:Key="stringToVisibilityConverter" />
             
-            <src:StatusToColorConverter x:Key="statusToColorConverter" 
+            <src:StatusToColorConverter x:Key="statusToColorConverter"
                                         Cancelled="Red"
                                         Delayed="Orange"
-                                        OnTime="{StaticResource PhoneForegroundBrush}" />
+                                        OnTime="{StaticResource PhoneDisabledBrush}" />
+            <src:StatusToColorConverter x:Key="statusToColorConverterUsingAccent" 
+                                        Cancelled="Red"
+                                        Delayed="Orange"
+                                        OnTime="{StaticResource PhoneAccentBrush}" />
             <src:StatusToVisibilityConverter x:Key="statusToVisibilityConverter" />
-
-            <src:JourneyElementStatusToColorConverter x:Key="journeyStatusToColorConverterMessage" 
-                                                      Cancelled="Red"
-                                                      Delayed="Orange"
-                                                      NoReport="Orange"
-                                                      OnTime="{StaticResource PhoneForegroundBrush}" />
-
-            <src:JourneyElementStatusToColorConverter x:Key="journeyStatusToColorConverterTime" 
-                                                      Cancelled="Red"
-                                                      Delayed="Orange"
-                                                      NoReport="Orange"
-                                                      OnTime="{StaticResource PhoneAccentBrush}" />
-
             <src:ArrivalInformationToMessageConverter x:Key="arrivalInformationToMessageConverter" />
             
             
@@ -130,13 +121,13 @@
                                            Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}" />
                                 <TextBlock Text="{Binding Arrival.Value.Value.Expected}" 
                                            Visibility="{Binding ArrivalIsKnown, Converter={StaticResource booleanToVisibilityConverter}}"
-                                           Foreground="{Binding Arrival.Value.Value.Status, Converter={StaticResource journeyStatusToColorConverterTime}}"
+                                           Foreground="{Binding Arrival.Value.Value.Status, Converter={StaticResource statusToColorConverterUsingAccent}}"
                                            Grid.Row="3" 
                                            HorizontalAlignment="Right"
                                            FontSize="{StaticResource PhoneFontSizeSmall}" />
                                 <TextBlock Text="{Binding Arrival.Value.Value, Converter={StaticResource arrivalInformationToMessageConverter}}"
                                            Visibility="{Binding ArrivalIsKnown, Converter={StaticResource booleanToVisibilityConverter}}"
-                                           Foreground="{Binding Arrival.Value.Value.Status, Converter={StaticResource journeyStatusToColorConverterMessage}}"
+                                           Foreground="{Binding Arrival.Value.Value.Status, Converter={StaticResource statusToColorConverter}}"
                                            TextWrapping="Wrap"
                                            Grid.Column="2"
                                            Grid.Row="3"                                            

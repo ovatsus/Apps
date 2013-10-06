@@ -51,7 +51,7 @@ type SampleData() =
                                Details = details
                                Arrival = ref <| Some { Due = t3
                                                        Destination = s3.Name
-                                                       Status = Delayed (false, 4) }
+                                                       Status = Status.Delayed 4 }
                                PropertyChangedEvent = Event<_,_>().Publish }
                              { Due = t3
                                Destination = s3.Name
@@ -69,7 +69,7 @@ type SampleData() =
                                Details = details
                                Arrival = ref <| Some { Due = t1
                                                        Destination = s1.Name
-                                                       Status = OnTime false }
+                                                       Status = Status.OnTime }
                                PropertyChangedEvent = Event<_,_>().Publish }
                              { Due = t1
                                Destination = s1.Name

@@ -141,7 +141,14 @@ namespace UKTrains
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var arrivalInformation = (ArrivalInformation)value;
-            return "Arrival at " + arrivalInformation.Destination + ": " + arrivalInformation.Status.ToString();
+            if (arrivalInformation.Destination == "")
+            {
+                return "Arrival " + arrivalInformation.Status.ToString().ToLower();
+            }
+            else
+            {
+                return "Arrival at " + arrivalInformation.Destination + " " + arrivalInformation.Status.ToString().ToLower();
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
