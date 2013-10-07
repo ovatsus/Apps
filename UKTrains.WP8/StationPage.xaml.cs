@@ -234,7 +234,7 @@ namespace UKTrains
                 {
                     IsEnabled = false,
                     Center = center,
-                    ZoomLevel = 16,
+                    ZoomLevel = 20,
                     PedestrianFeaturesEnabled = true,
                     LandmarksEnabled = true,
                 };
@@ -282,6 +282,15 @@ namespace UKTrains
                     }.Show();
                 };
                 pivot.Items.Add(pivotItem);
+                bool mapCentered = false;
+                pivot.SelectionChanged += delegate
+                {
+                    if (!mapCentered && pivot.SelectedIndex == 2)
+                    {
+                        map.SetView(e.Result.BoundingBox);
+                        mapCentered = true;
+                    }
+                };
             }
         }
 
