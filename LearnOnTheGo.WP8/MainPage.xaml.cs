@@ -68,6 +68,10 @@ namespace LearnOnTheGo
             {
                 App.Crawler.RefreshCourses();
             }
+            if (coursesLazyBlock != null)
+            {
+                coursesLazyBlock.Cancel();
+            }
             coursesLazyBlock = new LazyBlock<Course[]>(
                 "courses",
                 "No courses",
@@ -142,12 +146,6 @@ namespace LearnOnTheGo
         private void OnRefreshClick(object sender, EventArgs e)
         {
             LittleWatson.Log("OnRefreshClick");
-
-            if (coursesLazyBlock != null && !coursesLazyBlock.CanRefresh)
-            {
-                LittleWatson.Log("coursesLazyBlock can not refresh");
-                return;
-            }
 
             var email = Settings.GetString(Setting.Email);
             var password = Settings.GetString(Setting.Password);

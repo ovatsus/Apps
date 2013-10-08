@@ -38,16 +38,18 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
     let mutable completed = Event<_>()
     let mutable icompleted = completed.Publish
 
-    member __.DoWhenCompleted startIfNotRunning cancelF f =
+    member __.DoWhenCompleted (parentCancellationToken:CancellationToken option) startIfNotRunning cancelF f =
         let cancelationTokenSource = new CancellationTokenSource()
         let startWithCancellationToken computation =
-            let onCancel (_:obj) = 
+            let onCancel() = 
                 lock state <| fun () -> 
                     match !state with
                     | Started(asyncValue) -> state := NotStarted(asyncValue)
                     | _ -> ()
                 cancelF()
-            cancelationTokenSource.Token.Register(Action<obj>(onCancel), ()) |> ignore
+            cancelationTokenSource.Token.Register(Action(onCancel)) |> ignore
+            parentCancellationToken |> Option.iter (fun parentCancellationToken ->
+                parentCancellationToken.Register(Action(fun () -> cancelationTokenSource.Cancel())) |> ignore)
             Async.Start(computation, cancelationTokenSource.Token)
         lock state <| fun () -> 
             match !state with
@@ -71,7 +73,7 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
         |> Option.iter (fun continuation -> continuation())
         cancelationTokenSource
 
-    member x.GetValueAsync onSuccess onFailure onCancel = 
+    member x.GetValueAsync parentCancellationToken onSuccess onFailure onCancel = 
 
         let synchronizationContext = SynchronizationContext.Current
 
@@ -83,7 +85,7 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
 
         ComputationResult.combine onSuccess onFailure
         |> doInOriginalThread
-        |> x.DoWhenCompleted true (doInOriginalThread (fun _ -> onCancel()))
+        |> x.DoWhenCompleted parentCancellationToken true (doInOriginalThread (fun _ -> onCancel()))
 
     member __.Reset() =
         lock state <| fun () -> 
@@ -121,13 +123,13 @@ module LazyAsync =
 
     let map f (x:LazyAsync<'a>) =
         let asyncValue = async { 
-            let! value = Async.FromContinuations <| fun (cont, _, _) -> cont |> x.DoWhenCompleted true ignore |> ignore
+            let! value = Async.FromContinuations <| fun (cont, _, _) -> cont |> x.DoWhenCompleted None true ignore |> ignore
             return value |> ComputationResult.map f
         }
         LazyAsync(NotStarted asyncValue)
 
     let subscribe onSuccess onFailure (x:LazyAsync<'a>) =
         ComputationResult.combine onSuccess onFailure
-        |> x.DoWhenCompleted false ignore
+        |> x.DoWhenCompleted None false ignore
         |> ignore
         x

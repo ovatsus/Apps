@@ -10,7 +10,7 @@ type LazyAsync<'a> =
 
     /// Will start calculation if not started.
     /// The callbacks will be executed on the same thread that called GetValueAsync
-    member GetValueAsync : onSuccess:('a -> unit) -> onFailure:(exn -> unit) -> onCancel:(unit -> unit) -> CancellationTokenSource
+    member GetValueAsync : parentCancellationToken:(CancellationToken option) -> onSuccess:('a -> unit) -> onFailure:(exn -> unit) -> onCancel:(unit -> unit) -> CancellationTokenSource
 
     member Reset : unit -> unit
 

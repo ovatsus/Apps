@@ -109,6 +109,10 @@ namespace LearnOnTheGo
 
         private void Load(bool refresh)
         {
+            if (lecturesLazyBlock != null)
+            {
+                lecturesLazyBlock.Cancel();
+            }
             var course = App.Crawler.GetCourse(courseId);
             if (!course.Active)
             {
@@ -170,11 +174,7 @@ namespace LearnOnTheGo
         private void OnRefreshClick(object sender, EventArgs e)
         {
             LittleWatson.Log("OnRefreshClick");
-
-            if (lecturesLazyBlock == null || lecturesLazyBlock.CanRefresh)
-            {
-                Load(true);
-            }
+            Load(true);
         }
 
         private void OnLectureVideoClick(object sender, RoutedEventArgs e)
