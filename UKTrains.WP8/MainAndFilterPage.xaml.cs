@@ -125,6 +125,11 @@ namespace UKTrains
 
         private void LoadNearestStations()
         {
+            if (nearestLazyBlock != null)
+            {
+                nearestLazyBlock.Cancel();
+            }
+
             var lazyBlockUI = new LazyBlockUI<Tuple<double, Station>>(this, nearestStations, nearestStationsMessageTextBlock, null);
 
             LatLong from;
@@ -135,12 +140,14 @@ namespace UKTrains
                 {
                     lazyBlockUI.SetItems(null);
                     lazyBlockUI.SetLocalProgressMessage("Locations Services are disabled");
+                    nearestLazyBlock = null;
                     return;
                 }
                 else if (currentPosition == null || currentPosition.IsUnknown)
                 {
                     lazyBlockUI.SetLocalProgressMessage("Acquiring position...");
                     lazyBlockUI.SetGlobalProgressMessage("Acquiring position...");
+                    nearestLazyBlock = null;
                     return;
                 }
                 from = LatLong.Create(currentPosition.Latitude, currentPosition.Longitude);
@@ -152,11 +159,6 @@ namespace UKTrains
 
             lazyBlockUI.SetLocalProgressMessage("");
             lazyBlockUI.SetGlobalProgressMessage("");
-
-            if (nearestLazyBlock != null)
-            {
-                nearestLazyBlock.Cancel();
-            }
 
             nearestLazyBlock = new LazyBlock<Tuple<double, Station>[]>(
                 "nearest stations",
@@ -195,10 +197,7 @@ namespace UKTrains
         private void OnRefreshClick(object sender, EventArgs e)
         {
             LittleWatson.Log("OnRefreshClick");
-            if (nearestLazyBlock == null)
-            {
-                LoadNearestStations();
-            }
+            LoadNearestStations();
         }
 
         private void OnStationClick(object sender, RoutedEventArgs e)
