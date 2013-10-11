@@ -12,14 +12,18 @@ namespace UKTrains
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var distance = (double)value;
-            if (Settings.GetBool(Setting.UseMilesInsteadOfKMs))
+            try
             {
-                return string.Format("{0,1:F1} mi", distance * 0.621371192);
+                if (Settings.GetBool(Setting.UseMilesInsteadOfKMs))
+                {
+                    return string.Format("{0,1:F1} mi", distance * 0.621371192);
+                }
             }
-            else
+            catch
             {
-                return string.Format("{0,1:F1} km", distance);
+                // crashes in the VS preview when trying to get the setting
             }
+            return string.Format("{0,1:F1} km", distance);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -12,6 +12,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:nationalRail="clr-namespace:NationalRail;assembly=NationalRail"
+    xmlns:adduplex="clr-namespace:AdDuplex;assembly=AdDuplex.WindowsPhone"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -44,6 +45,11 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <Grid Background="Transparent">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
         <Grid.Resources>
 
@@ -200,6 +206,19 @@
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>
+
+        <Grid Grid.Row="1" Margin="0,0,0,-1">
+            <adduplex:AdControl AppId="57899">
+                <adduplex:AdControl.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.005" />
+                        <TranslateTransform X="-1" />
+                    </TransformGroup>
+                </adduplex:AdControl.RenderTransform>
+            </adduplex:AdControl>
+            <Border BorderThickness="0,1,0,0"
+                    BorderBrush="{StaticResource PhoneBackgroundBrush}" />
+        </Grid>
 
     </Grid>
 
