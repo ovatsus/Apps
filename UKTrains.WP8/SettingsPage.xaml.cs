@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Windows.System;
@@ -14,9 +15,10 @@ namespace UKTrains
             useMilesInsteadOfKms.IsChecked = Settings.GetBool(Setting.UseMilesInsteadOfKMs);
         }
 
-        private async void OnShowPlatformOnLockScreenClick(object sender, EventArgs e)
+        private async void OnShowDeparturesOnLockScreenClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnShowPlatformOnLockScreenClick");
+            LittleWatson.Log("OnShowDeparturesOnLockScreenClick");
+            MessageBox.Show("Please select " + App.Name + " as the detailed status app in the notifications section", "Show departures on lock screen", MessageBoxButton.OK);
             await Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
 

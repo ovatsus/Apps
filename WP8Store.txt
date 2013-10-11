@@ -1,5 +1,11 @@
 Store URL: http://www.windowsphone.com/s?appid=ef62d461-861c-4a9f-9198-8768532cc6aa
 
+AdDuplex:
+Learn On The Go
+Keep up with your Coursera classes
+Learn On The Go
+Watch the videos on the train or the bus
+
 Description:
 UK Trains provides real-time information for UK national rail stations (excluding Northern Ireland).
 * List of nearest stations to current location
@@ -7,7 +13,7 @@ UK Trains provides real-time information for UK national rail stations (excludin
 * Station departure and arrivals boards, including platform information
 * Show train live progress during the journey
 * Auto-refresh every 60 seconds, even under lock screen or when app is in the background
-* Show expected arrival time to enable to quickly distinguish the fast trains from the slow trains
+* Show expected arrival time to discover when later trains arrive first than earlier trains
 * Allow to pin individual stations to the start screen
 * Show next departure information in live tile and lock screen
 * No need to manage favourite stations, recent items are remembered
@@ -15,6 +21,9 @@ UK Trains provides real-time information for UK national rail stations (excludin
 * No ads
 
 Note that background refresh requires Location Services to be enabled
+
+New in 2.1:
+* Improved the text of the live tile
 
 New in 2.0:
 * New design
