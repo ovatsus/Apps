@@ -18,7 +18,6 @@ UK Trains provides real-time information for UK national rail stations (excludin
 * Show next departure information in live tile and lock screen
 * No need to manage favourite stations, recent items are remembered
 * Fast and responsive
-* No ads
 
 Note that background refresh requires Location Services to be enabled
 
@@ -63,7 +62,6 @@ New in 1.4:
 * Fix stations with long names not displaying correctly
 * Fix platforms with long names not displaying correctly
 * Fixed some reported crashes
-* Removed ads
 
 New in 1.3:
 * Fixed some reported crashes
