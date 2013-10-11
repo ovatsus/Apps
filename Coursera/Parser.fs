@@ -99,6 +99,12 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
                     |> Seq.map (fun a ->
                         let id = a |> attr "data-lecture-id" |> int
                         let title = innerText a |> trimAndUnescape
+                        let quizAttemptedSpan = a |> elements "span" |> Seq.tryFind (hasClass "label label-success")
+                        let title, quizAttempted =
+                            match quizAttemptedSpan with
+                            | Some span ->
+                                title.Replace(trimAndUnescape span.InnerText, "").Trim(), true
+                            | None -> title, false
                         let videoUrl = a |> attr "data-modal-iframe" 
                                          |> getVideoUrlAsync 
                                          |> LazyAsync.fromAsync
@@ -122,7 +128,8 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
                           Title = title
                           VideoUrl = videoUrl
                           LectureNotesUrl = lectureNotesUrl
-                          Viewed = viewed })
+                          Viewed = viewed 
+                          QuizAttempted = quizAttempted })
                     |> Seq.toArray
                 { Title = title
                   Completed = completed
