@@ -89,7 +89,7 @@
                     <TextBlock Text="{Binding Title}"
                                Foreground="{Binding Completed, Converter={StaticResource booleanToColorConverter}}" 
                                FontSize="{StaticResource PhoneFontSizeLarge}"
-                               Margin="12,0,12,12"
+                               Margin="12,-24,12,12"
                                TextWrapping="Wrap" />
                     <ScrollViewer Grid.Row="1" ManipulationStarted="OnScrollViewerManipulationStarted">
                         <ItemsControl ItemsSource="{Binding Lectures}"
