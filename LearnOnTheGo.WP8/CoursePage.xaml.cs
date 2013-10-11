@@ -141,7 +141,11 @@ namespace LearnOnTheGo
                         lectureSections =>
                         {
                             pivot.ItemsSource = lectureSections;
-                            pivot.SelectedIndex = lectureSections.Count(x => x.Completed) % lectureSections.Length;
+                            var lastCompleted = lectureSections.Zip(Enumerable.Range(0, lectureSections.Length), (section, index) => Tuple.Create(index, section))
+                                                               .LastOrDefault(tuple => tuple.Item2.Completed);
+                            if (lastCompleted != null && lastCompleted.Item1 < lectureSections.Length - 1) {
+                                pivot.SelectedIndex = lastCompleted.Item1 + 1;
+                            }
                         },
                         () => pivot.ItemsSource != null,
                         messageTextBlock),
