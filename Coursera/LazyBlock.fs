@@ -111,6 +111,6 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<
     member x.Cancel() = 
         if useRefreshTimer then
             ui.StopTimer()
-        !cts |> Option.iter (fun cts -> cts.Cancel())
+        !cts |> Option.iter (fun cts -> cts.Cancel(); cts.Dispose())
         cts := None
         
