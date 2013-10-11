@@ -192,6 +192,7 @@ namespace LearnOnTheGo
             }
 
             var lecture = (Coursera.Lecture)((Button)sender).DataContext;
+            LittleWatson.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
             videoLazyBlock = new LazyBlock<string>(
                 "video",
@@ -227,6 +228,7 @@ namespace LearnOnTheGo
             LittleWatson.Log("OnLectureNotesClick");
 
             var lecture = (Coursera.Lecture)((Button)sender).DataContext;
+            LittleWatson.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
             var task = new WebBrowserTask();
             task.Uri = new Uri(lecture.LectureNotesUrl, UriKind.Absolute);
