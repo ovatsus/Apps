@@ -21,6 +21,7 @@ namespace LearnOnTheGo
         private int courseId;
         private LazyBlock<LectureSection[]> lecturesLazyBlock;
         private LazyBlock<string> videoLazyBlock;
+        private bool userInteracted;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -131,6 +132,7 @@ namespace LearnOnTheGo
                 {
                     course = App.Crawler.RefreshCourse(course.Id);
                 }
+                userInteracted = false;
                 lecturesLazyBlock = new LazyBlock<LectureSection[]>(
                     "lectures",
                     "No lectures available. Make sure you have accepted the honor code.",
@@ -143,7 +145,7 @@ namespace LearnOnTheGo
                             pivot.ItemsSource = lectureSections;
                             var lastCompleted = lectureSections.Zip(Enumerable.Range(0, lectureSections.Length), (section, index) => Tuple.Create(index, section))
                                                                .LastOrDefault(tuple => tuple.Item2.Completed);
-                            if (lastCompleted != null && lastCompleted.Item1 < lectureSections.Length - 1) {
+                            if (!userInteracted && lastCompleted != null && lastCompleted.Item1 < lectureSections.Length - 1) {
                                 pivot.SelectedIndex = lastCompleted.Item1 + 1;
                             }
                         },
@@ -244,6 +246,16 @@ namespace LearnOnTheGo
             var task = new WebBrowserTask();
             task.Uri = new Uri(course.HomeLink, UriKind.Absolute);
             task.Show();
+        }
+
+        private void OnPivotSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            userInteracted = true;
+        }
+
+        private void OnScrollViewerManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
+        {
+            userInteracted = true;
         }
     }
 }
