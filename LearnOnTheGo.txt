@@ -1,10 +1,10 @@
 Source code for http://www.windowsphone.com/s?appid=aca60941-2945-49e7-afd2-adbe5625df12
 
 AdDuplex:
-UK Trains
-Live departure/arrival boards with platform information
-Find nearest stations and get walking directions
-Discover when a later train arrives sooner
+Learn On The Go
+Keep up with your Coursera classes
+Learn On The Go
+Watch the videos on the train or the bus
 
 Description:
 Learn On The Go enables you to watch the lecture videos and read the lecture notes of the Coursera courses you're enrolled in.
