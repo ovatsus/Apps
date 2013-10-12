@@ -126,10 +126,6 @@ namespace LearnOnTheGo
                     {
                         LittleWatson.Log("Failed to get courses");
                     }
-                    else if (!refresh)
-                    {
-                        LoadCourses(email, password, true);
-                    }
                 },
                 null);
         }

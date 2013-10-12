@@ -5,10 +5,10 @@ using System.Windows.Media;
 
 namespace LearnOnTheGo
 {
-    public class BooleanToColorConverter : IValueConverter
+    public class BooleanToImageSourceConverter : IValueConverter
     {
-        public Brush True { get; set; }
-        public Brush False { get; set; }
+        public ImageSource True { get; set; }
+        public ImageSource False { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

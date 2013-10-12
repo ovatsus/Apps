@@ -1,12 +1,12 @@
-﻿using Coursera;
-using FSharp.Control;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Tasks;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Coursera;
+using FSharp.Control;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
 
 namespace LearnOnTheGo
 {
@@ -16,6 +16,11 @@ namespace LearnOnTheGo
         {
             InitializeComponent();
             CommonApplicationBarItems.Init(this);
+        }
+
+        static CoursePage()
+        {
+            Parser.SetExtraInfoFactory(() => new LectureExtraInfo());
         }
 
         private int courseId;
@@ -142,10 +147,18 @@ namespace LearnOnTheGo
                         this,
                         lectureSections =>
                         {
+                            foreach (var lectureSection in lectureSections)
+                            {
+                                foreach (var lecture in lectureSection.Lectures)
+                                {
+                                    LectureExtraInfo.Init(lecture, courseId);
+                                }
+                            }
                             pivot.ItemsSource = lectureSections;
                             var lastCompleted = lectureSections.Zip(Enumerable.Range(0, lectureSections.Length), (section, index) => Tuple.Create(index, section))
                                                                .LastOrDefault(tuple => tuple.Item2.Completed);
-                            if (!userInteracted && lastCompleted != null && lastCompleted.Item1 < lectureSections.Length - 1) {
+                            if (!userInteracted && lastCompleted != null && lastCompleted.Item1 < lectureSections.Length - 1)
+                            {
                                 pivot.SelectedIndex = lastCompleted.Item1 + 1;
                             }
                         },
@@ -155,9 +168,9 @@ namespace LearnOnTheGo
                     null,
                     success =>
                     {
-                        if (success && !refresh)
+                        if (!success)
                         {
-                            Load(true);
+                            LittleWatson.Log("Failed to get lectures");
                         }
                     },
                     null);
@@ -193,11 +206,18 @@ namespace LearnOnTheGo
                 return;
             }
 
-            var lecture = (Coursera.Lecture)((Button)sender).DataContext;
+            var lecture = (Lecture)((Button)sender).DataContext;
             LittleWatson.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
+            var extraInfo = LectureExtraInfo.Get(lecture);
+            if (extraInfo.Downloading)
+            {
+                LittleWatson.Log("Already downloading");
+                return;
+            }
+
             videoLazyBlock = new LazyBlock<string>(
-                "video",
+                "video location",
                 null,
                 lecture.VideoUrl,
                 _ => false,
@@ -205,16 +225,15 @@ namespace LearnOnTheGo
                     this,
                     videoUrl =>
                     {
-                        try
+                        if (extraInfo.Downloaded)
                         {
-                            var launcher = new MediaPlayerLauncher();
-                            launcher.Media = new Uri(videoUrl, UriKind.Absolute);
-                            launcher.Show();
+                            LittleWatson.Log("Launching video");
+                            LaunchVideo(extraInfo.DownloadLocation);
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            LittleWatson.ReportException(ex, string.Format("Opening video for lecture '{0}' of course '{1}' ({2})", lecture.Title, pivot.Title, videoUrl));
-                            LittleWatson.CheckForPreviousException(false);
+                            LittleWatson.Log("Queued download");
+                            extraInfo.QueueDowload(videoUrl);
                         }
                     },
                     () => false,
@@ -223,6 +242,22 @@ namespace LearnOnTheGo
                 null,
                 _ => videoLazyBlock = null,
                 null);
+        }
+
+        private void LaunchVideo(Uri videoUrl)
+        {
+            try
+            {
+                var launcher = new MediaPlayerLauncher();
+                launcher.Location = MediaLocationType.Data;
+                launcher.Media = videoUrl;
+                launcher.Show();
+            }
+            catch (Exception ex)
+            {
+                LittleWatson.ReportException(ex, string.Format("Launching media player for " + videoUrl.OriginalString));
+                LittleWatson.CheckForPreviousException(false);
+            }
         }
 
         private void OnLectureNotesClick(object sender, RoutedEventArgs e)

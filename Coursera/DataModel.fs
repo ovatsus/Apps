@@ -46,7 +46,8 @@ and Lecture =
       VideoUrl : LazyAsync<string>
       LectureNotesUrl : string
       Viewed : bool 
-      QuizAttempted : bool }
+      QuizAttempted : bool
+      ExtraInfo : obj }
 
     member x.HasLectureNotes = x.LectureNotesUrl <> ""
     override x.ToString() = sprintf "%A" x

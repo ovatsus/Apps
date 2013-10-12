@@ -1,9 +1,10 @@
-﻿using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net;
 using System.Windows;
 using System.Windows.Navigation;
+using Coursera;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace LearnOnTheGo
 {
@@ -11,7 +12,7 @@ namespace LearnOnTheGo
     {
         public static PhoneApplicationFrame RootFrame { get; private set; }
 
-        public static Coursera.Crawler Crawler { get; set; }
+        public static Crawler Crawler { get; set; }
 
         public static readonly string Name = "Learn On The Go";
         public static readonly string Email = "learnonthego@codebeside.org";

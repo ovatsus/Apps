@@ -57,6 +57,9 @@ let parseTopicsJson getLectureSections topicsJsonStr =
 
     courses
 
+let mutable private createExtraInfo : unit->obj = fun () -> null
+let SetExtraInfoFactory (factory:Func<_>) = createExtraInfo <- fun () -> factory.Invoke()
+
 let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
 
     let trimAndUnescape (text:string) = text.Replace("&nbsp;", "").Trim().Replace("&amp;", "&").Replace("&quot;", "\"").Replace("apos;", "'").Replace("&lt;", "<").Replace("&gt;", ">")
@@ -129,7 +132,8 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
                           VideoUrl = videoUrl
                           LectureNotesUrl = lectureNotesUrl
                           Viewed = viewed 
-                          QuizAttempted = quizAttempted })
+                          QuizAttempted = quizAttempted
+                          ExtraInfo = createExtraInfo() })
                     |> Seq.toArray
                 { Title = title
                   Completed = completed

@@ -101,6 +101,7 @@
     <Compile Include="Converters.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="LazyBlockUI.cs" />
+    <Compile Include="LectureExtraInfo.cs" />
     <Compile Include="LittleWatson.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsPage.xaml.cs">
@@ -152,6 +153,7 @@
     <Content Include="Assets\Icons\appbar.control.play.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Icons\appbar.download.png" />
     <Content Include="Assets\Icons\appbar.email.hardedge.png" />
     <Content Include="Assets\Icons\appbar.information.png" />
     <Content Include="Assets\Icons\appbar.message.png" />

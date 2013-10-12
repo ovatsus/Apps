@@ -48,36 +48,52 @@
         <Grid.Resources>
 
             <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
-            
-            <src:BooleanToColorConverter x:Key="booleanToColorConverter" 
-                                         True="{StaticResource PhoneDisabledBrush}"
-                                         False="{StaticResource PhoneForegroundBrush}" />
+
+            <src:BooleanToImageSourceConverter x:Key="downloadedToImageSourceConverter" 
+                                               True="/Assets/Icons/appbar.control.play.png"
+                                               False="/Assets/Icons/appbar.download.png" />
 
             <DataTemplate x:Key="lectureTemplate">
                 <Grid Margin="12,12,0,0">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Source="/Assets/Icons/appbar.check.png" 
+                           Width="48"
+                           Height="48"
+                           Margin="-10,6,0,0"
+                           VerticalAlignment="Top"
+                           Visibility="{Binding Viewed, Converter={StaticResource booleanToVisibilityConverter}}" />
                     <TextBlock TextWrapping="Wrap"
-                               Foreground="{Binding Viewed, Converter={StaticResource booleanToColorConverter}}"
+                               Grid.Column="1"
                                VerticalAlignment="Center"
                                Text="{Binding Title}" />
-                    <StackPanel Grid.Column="1"
+                    <StackPanel Grid.Column="2"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center">
                         <coding4fun:RoundButton Tap="OnLectureNotesClick"
-                                                Foreground="{Binding Viewed, Converter={StaticResource booleanToColorConverter}}"
-                                                BorderBrush="{Binding Viewed, Converter={StaticResource booleanToColorConverter}}"
                                                 Margin="-4,4,-4,-4"
                                                 ImageSource="/Assets/Icons/appbar.page.png" 
                                                 Visibility="{Binding HasLectureNotes, Converter={StaticResource booleanToVisibilityConverter}}"/>
                         <coding4fun:RoundButton Tap="OnLectureVideoClick"
-                                                Foreground="{Binding Viewed, Converter={StaticResource booleanToColorConverter}}"
-                                                BorderBrush="{Binding Viewed, Converter={StaticResource booleanToColorConverter}}"
                                                 Margin="-4,4,-4,-4"
-                                                ImageSource="/Assets/Icons/appbar.control.play.png" />
+                                                ImageSource="{Binding ExtraInfo.Downloaded, Converter={StaticResource downloadedToImageSourceConverter}}" />
                     </StackPanel>
+                    <toolkit:TransferControl Monitor="{Binding ExtraInfo.Monitor}"
+                                             Visibility="{Binding ExtraInfo.Downloading, Converter={StaticResource booleanToVisibilityConverter}}"
+                                             Height="28"
+                                             Grid.Row="1"
+                                             Grid.ColumnSpan="3">
+                        <toolkit:TransferControl.HeaderTemplate>
+                            <DataTemplate />
+                        </toolkit:TransferControl.HeaderTemplate>
+                    </toolkit:TransferControl>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="sectionTemplate">
@@ -86,11 +102,22 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding Title}"
-                               Foreground="{Binding Completed, Converter={StaticResource booleanToColorConverter}}" 
-                               FontSize="{StaticResource PhoneFontSizeLarge}"
-                               Margin="12,-24,12,12"
-                               TextWrapping="Wrap" />
+                    <Grid Margin="12,-24,12,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Assets/Icons/appbar.check.png" 
+                               Width="48"
+                               Height="48"
+                               Margin="-10,0,0,0"
+                               VerticalAlignment="Top"
+                               Visibility="{Binding Completed, Converter={StaticResource booleanToVisibilityConverter}}" />
+                        <TextBlock Text="{Binding Title}"
+                                   Grid.Column="1"
+                                   FontSize="{StaticResource PhoneFontSizeLarge}"
+                                   TextWrapping="Wrap" />
+                    </Grid>
                     <ScrollViewer Grid.Row="1" ManipulationStarted="OnScrollViewerManipulationStarted">
                         <ItemsControl ItemsSource="{Binding Lectures}"
                                       ItemTemplate="{StaticResource lectureTemplate}" />
