@@ -1,5 +1,7 @@
 ﻿namespace Coursera
 
+open System
+open System.ComponentModel
 open FSharp.Control
 
 type Course =
@@ -47,7 +49,20 @@ and Lecture =
       LectureNotesUrl : string
       Viewed : bool 
       QuizAttempted : bool
-      ExtraInfo : obj }
+      DownloadInfo : IDownloadInfo }
 
     member x.HasLectureNotes = x.LectureNotesUrl <> ""
     override x.ToString() = sprintf "%A" x
+
+and IDownloadInfo = 
+    inherit INotifyPropertyChanged
+    abstract CourseId : int
+    abstract CourseTopicName : string
+    abstract LectureId : int
+    abstract LectureTitle : string
+    abstract Downloading : bool
+    abstract Downloaded : bool
+    abstract VideoLocation : Uri
+    abstract RefreshStatus : unit -> unit
+    abstract QueueDowload : videoUrl:string -> unit
+    abstract DeleteVideo : unit -> unit

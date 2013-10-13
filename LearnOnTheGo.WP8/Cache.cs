@@ -1,25 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
-using System.Threading;
 
 namespace LearnOnTheGo
 {
     public static class Cache
     {
-        private static readonly IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication();
-
         public static void SaveFile(string filename, string contents)
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            lock (typeof(Cache))
             {
-                lock (isolatedStorage)
+                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     if (!isolatedStorage.DirectoryExists("Cache"))
                     {
                         isolatedStorage.CreateDirectory("Cache");
                     }
-                    using (var stream = isolatedStorage.CreateFile(Path.Combine("Cache", filename)))
+                    using (var stream = isolatedStorage.CreateFile("Cache/" + filename))
                     {
                         using (var streamWriter = new StreamWriter(stream))
                         {
@@ -27,41 +24,47 @@ namespace LearnOnTheGo
                         }
                     }
                 }
-            });
+            }
         }
 
         public static IDictionary<string, string> GetFiles()
         {
-            lock (isolatedStorage)
+            lock (typeof(Cache))
             {
-                var files = new Dictionary<string, string>();
-                if (isolatedStorage.DirectoryExists("Cache"))
+                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    foreach (var filename in isolatedStorage.GetFileNames("Cache\\*"))
+                    var files = new Dictionary<string, string>();
+                    if (isolatedStorage.DirectoryExists("Cache"))
                     {
-                        using (var stream = isolatedStorage.OpenFile(Path.Combine("Cache", filename), FileMode.Open))
+                        foreach (var filename in isolatedStorage.GetFileNames("Cache/*"))
                         {
-                            using (var streamReader = new StreamReader(stream))
+                            using (var stream = isolatedStorage.OpenFile("Cache/" + filename, FileMode.Open))
                             {
-                                var content = streamReader.ReadToEnd();
-                                files.Add(filename, content);
+                                using (var streamReader = new StreamReader(stream))
+                                {
+                                    var content = streamReader.ReadToEnd();
+                                    files.Add(filename, content);
+                                }
                             }
                         }
                     }
+                    return files;
                 }
-                return files;
             }
         }
 
         public static void DeleteAllFiles()
         {
-            lock (isolatedStorage)
+            lock (typeof(Cache))
             {
-                if (isolatedStorage.DirectoryExists("Cache"))
+                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    foreach (var filename in isolatedStorage.GetFileNames("Cache\\*"))
+                    if (isolatedStorage.DirectoryExists("Cache"))
                     {
-                        isolatedStorage.DeleteFile(Path.Combine("Cache", filename));
+                        foreach (var filename in isolatedStorage.GetFileNames("Cache/*"))
+                        {
+                            isolatedStorage.DeleteFile("Cache/" + filename);
+                        }
                     }
                 }
             }

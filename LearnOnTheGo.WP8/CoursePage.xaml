@@ -83,11 +83,11 @@
                                                 Visibility="{Binding HasLectureNotes, Converter={StaticResource booleanToVisibilityConverter}}"/>
                         <coding4fun:RoundButton Tap="OnLectureVideoClick"
                                                 Margin="-4,4,-4,-4"
-                                                ImageSource="{Binding ExtraInfo.Downloaded, Converter={StaticResource downloadedToImageSourceConverter}}" />
+                                                ImageSource="{Binding DownloadInfo.Downloaded, Converter={StaticResource downloadedToImageSourceConverter}}" />
                     </StackPanel>
-                    <toolkit:TransferControl Monitor="{Binding ExtraInfo.Monitor}"
-                                             Visibility="{Binding ExtraInfo.Downloading, Converter={StaticResource booleanToVisibilityConverter}}"
-                                             Height="28"
+                    <toolkit:TransferControl Monitor="{Binding DownloadInfo.Monitor}"
+                                             Visibility="{Binding DownloadInfo.Downloading, Converter={StaticResource booleanToVisibilityConverter}}"
+                                             IsContextMenuEnabled="True"
                                              Grid.Row="1"
                                              Grid.ColumnSpan="3">
                         <toolkit:TransferControl.HeaderTemplate>

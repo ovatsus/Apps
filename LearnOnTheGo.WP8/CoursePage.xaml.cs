@@ -18,19 +18,25 @@ namespace LearnOnTheGo
             CommonApplicationBarItems.Init(this);
         }
 
-        static CoursePage()
-        {
-            Parser.SetExtraInfoFactory(() => new LectureExtraInfo());
-        }
-
         private int courseId;
         private LazyBlock<LectureSection[]> lecturesLazyBlock;
         private LazyBlock<string> videoLazyBlock;
         private bool userInteracted;
+        private string lastEmail;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             courseId = int.Parse(NavigationContext.QueryString["courseId"]);
+
+            // settings changed
+            // settings changed
+            if (lastEmail != null && lastEmail != Settings.GetString(Setting.Email))
+            {
+                LittleWatson.Log("Settings changed");
+                pivot.ItemsSource = null;
+            }
+
+            lastEmail = Settings.GetString(Setting.Email);
 
             // app was tombstoned or settings changed
             if (App.Crawler == null)
@@ -41,28 +47,21 @@ namespace LearnOnTheGo
                 var password = Settings.GetString(Setting.Password);
                 if ((string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)))
                 {
-                    if (NavigationService.CanGoBack)
-                    {
-                        NavigationService.GoBack();
-                    }
-                    else
-                    {
-                        LittleWatson.Log("Can not go back");
-                    }
+                    SafeGoBack();
                     return;
                 }
 
-                App.Crawler = new Crawler(email, password, Cache.GetFiles(), Cache.SaveFile);
+                App.Crawler = new Crawler(email, password, Cache.GetFiles(), Cache.SaveFile, DownloadInfo.Create);
                 new LazyBlock<Course[]>(
-                    null,
-                    null,
+                    "courses",
+                    "No courses",
                     App.Crawler.Courses,
-                    _ => false,
+                    a => a.Length == 0,
                     new LazyBlockUI<Course[]>(
                         this,
                         _ => Setup(),
                         () => false,
-                        null),
+                        messageTextBlock),
                     false,
                     null,
                     success =>
@@ -71,14 +70,7 @@ namespace LearnOnTheGo
                         {
                             LittleWatson.Log("Failed to get courses");
                             App.Crawler = null;
-                            if (NavigationService.CanGoBack)
-                            {
-                                NavigationService.GoBack();
-                            }
-                            else
-                            {
-                                LittleWatson.Log("Can not go back");
-                            }
+                            SafeGoBack();
                         }
                     },
                     null);
@@ -94,15 +86,7 @@ namespace LearnOnTheGo
             if (!App.Crawler.HasCourse(courseId))
             {
                 LittleWatson.Log("App.Crawler.HasCourse is false");
-
-                if (NavigationService.CanGoBack)
-                {
-                    NavigationService.GoBack();
-                }
-                else
-                {
-                    LittleWatson.Log("Can not go back");
-                }
+                SafeGoBack();
                 return;
             }
 
@@ -110,7 +94,32 @@ namespace LearnOnTheGo
             pivot.Title = course.Topic.Name;
             LittleWatson.Log(courseId + " = " + course.Topic.Name + " [" + course.Name + "]");
 
-            Load(false);
+            if (pivot.ItemsSource == null)
+            {
+                Load(false);
+            }
+            else
+            {
+                foreach (var lectureSection in pivot.ItemsSource.Cast<LectureSection>())
+                {
+                    foreach (var lecture in lectureSection.Lectures)
+                    {
+                        lecture.DownloadInfo.RefreshStatus();
+                    }
+                }
+            }
+        }
+
+        private void SafeGoBack()
+        {
+            if (NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
+            else
+            {
+                LittleWatson.Log("Can not go back");
+            }
         }
 
         private void Load(bool refresh)
@@ -147,13 +156,6 @@ namespace LearnOnTheGo
                         this,
                         lectureSections =>
                         {
-                            foreach (var lectureSection in lectureSections)
-                            {
-                                foreach (var lecture in lectureSection.Lectures)
-                                {
-                                    LectureExtraInfo.Init(lecture, courseId);
-                                }
-                            }
                             pivot.ItemsSource = lectureSections;
                             var lastCompleted = lectureSections.Zip(Enumerable.Range(0, lectureSections.Length), (section, index) => Tuple.Create(index, section))
                                                                .LastOrDefault(tuple => tuple.Item2.Completed);
@@ -209,8 +211,7 @@ namespace LearnOnTheGo
             var lecture = (Lecture)((Button)sender).DataContext;
             LittleWatson.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
-            var extraInfo = LectureExtraInfo.Get(lecture);
-            if (extraInfo.Downloading)
+            if (lecture.DownloadInfo.Downloading)
             {
                 LittleWatson.Log("Already downloading");
                 return;
@@ -225,15 +226,15 @@ namespace LearnOnTheGo
                     this,
                     videoUrl =>
                     {
-                        if (extraInfo.Downloaded)
+                        if (lecture.DownloadInfo.Downloaded)
                         {
                             LittleWatson.Log("Launching video");
-                            LaunchVideo(extraInfo.DownloadLocation);
+                            LaunchVideo(lecture.DownloadInfo.VideoLocation);
                         }
                         else
                         {
                             LittleWatson.Log("Queued download");
-                            extraInfo.QueueDowload(videoUrl);
+                            lecture.DownloadInfo.QueueDowload(videoUrl);
                         }
                     },
                     () => false,
@@ -244,7 +245,7 @@ namespace LearnOnTheGo
                 null);
         }
 
-        private void LaunchVideo(Uri videoUrl)
+        public static void LaunchVideo(Uri videoUrl)
         {
             try
             {

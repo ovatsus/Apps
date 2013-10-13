@@ -74,7 +74,7 @@ module private Implementation =
                 cacheSet url html
                 return html }
 
-type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>) =
+type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>, createDownloadInfo:Func<_,_,_,_,_>) =
 
     let urlToFilename (url:string) = 
         url.Replace("https://www.coursera.org/", null)
@@ -95,7 +95,7 @@ type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>) =
 
     let coursesById = ref None
 
-    let getLectureSections forceRefresh courseBaseUrl =
+    let getLectureSections forceRefresh courseId courseTopicName courseBaseUrl =
         let lecturesUrl = getLecturesUrl courseBaseUrl
         let cacheGet = 
             if forceRefresh then
@@ -106,7 +106,7 @@ type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>) =
         let sections = 
             (crawler (getLecturesUrl courseBaseUrl))
             |> LazyAsync.fromAsync
-            |> LazyAsync.map (Parser.parseLecturesHtml crawler)
+            |> LazyAsync.map (Parser.parseLecturesHtml crawler (fun lectureId lectureTitle -> createDownloadInfo.Invoke(courseId, courseTopicName, lectureId, lectureTitle)))
         sections
 
     let parseTopicsJson topicsJson = 
@@ -151,7 +151,7 @@ type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>) =
         match !coursesById with
         | Some coursesById -> 
             let course = x.GetCourse(courseId)
-            let lecturesSection = getLectureSections true course.HomeLink
+            let lecturesSection = getLectureSections true courseId course.Topic.Name course.HomeLink
             let refreshedCourse = { course with LectureSections = lecturesSection }
             coursesById.[courseId] <- refreshedCourse
             refreshedCourse

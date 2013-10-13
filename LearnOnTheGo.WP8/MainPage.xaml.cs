@@ -1,11 +1,11 @@
-﻿using Coursera;
-using FSharp.Control;
-using Microsoft.Phone.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Coursera;
+using FSharp.Control;
+using Microsoft.Phone.Controls;
 
 namespace LearnOnTheGo
 {
@@ -25,6 +25,7 @@ namespace LearnOnTheGo
         }
 
         private LazyBlock<Course[]> coursesLazyBlock;
+        private string lastEmail;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -36,10 +37,10 @@ namespace LearnOnTheGo
                 LittleWatson.CheckForNewVersion(this);
             }
 
-            // app was tombstoned or settings changed
-            if (App.Crawler == null)
+            // settings changed
+            if (lastEmail != null && lastEmail != Settings.GetString(Setting.Email))
             {
-                LittleWatson.Log("App.Crawler is null");
+                LittleWatson.Log("Settings changed");
                 activeCourses.ItemsSource = null;
                 upcomingCourses.ItemsSource = null;
                 finishedCourses.ItemsSource = null;
@@ -48,11 +49,16 @@ namespace LearnOnTheGo
             var email = Settings.GetString(Setting.Email);
             var password = Settings.GetString(Setting.Password);
 
-            if (e.NavigationMode != NavigationMode.Back && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)))
+            lastEmail = email;
+
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                this.NavigateToSettings();
+                if (e.NavigationMode != NavigationMode.Back)
+                {
+                    this.NavigateToSettings();
+                }
             }
-            else
+            else if (activeCourses.ItemsSource == null)
             {
                 LoadCourses(email, password, false);
             }
@@ -62,7 +68,7 @@ namespace LearnOnTheGo
         {
             if (App.Crawler == null)
             {
-                App.Crawler = new Crawler(email, password, Cache.GetFiles(), Cache.SaveFile);
+                App.Crawler = new Crawler(email, password, Cache.GetFiles(), Cache.SaveFile, DownloadInfo.Create);
             }
             if (refresh)
             {
@@ -81,9 +87,9 @@ namespace LearnOnTheGo
                     this,
                     courses =>
                     {
-                        var active = new List<Coursera.Course>();
-                        var upcoming = new List<Coursera.Course>();
-                        var finished = new List<Coursera.Course>();
+                        var active = new List<Course>();
+                        var upcoming = new List<Course>();
+                        var finished = new List<Course>();
                         foreach (var course in courses)
                         {
                             if (course.HasFinished)

@@ -99,9 +99,12 @@
     <Compile Include="Cache.cs" />
     <Compile Include="CommonApplicationBarItems.cs" />
     <Compile Include="Converters.cs" />
+    <Compile Include="DownloadsPage.xaml.cs">
+      <DependentUpon>DownloadsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="LazyBlockUI.cs" />
-    <Compile Include="LectureExtraInfo.cs" />
+    <Compile Include="DownloadInfo.cs" />
     <Compile Include="LittleWatson.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsPage.xaml.cs">
@@ -121,6 +124,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="AboutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DownloadsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -146,6 +153,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Icons\appbar.cancel.png" />
     <Content Include="Assets\Icons\appbar.coursera.png" />
     <Content Include="Assets\Icons\appbar.check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -153,6 +161,7 @@
     <Content Include="Assets\Icons\appbar.control.play.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Icons\appbar.delete.png" />
     <Content Include="Assets\Icons\appbar.download.png" />
     <Content Include="Assets\Icons\appbar.email.hardedge.png" />
     <Content Include="Assets\Icons\appbar.information.png" />

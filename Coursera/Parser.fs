@@ -31,8 +31,9 @@ let parseTopicsJson getLectureSections topicsJsonStr =
           Visible = json.Visibility.Number.IsSome }
 
     let parseCourse topic (json:JsonT.DomainTypes.Course) =
+        let id = json.Id
         let homeLink = json.HomeLink
-        { Id = json.Id
+        { Id = id
           Name = json.Name.String.Value
           StartDate = 
             match json.StartYear.Number, json.StartMonth.Number, json.StartDay.Number with
@@ -43,7 +44,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
           Active = json.Active
           HasFinished = json.CertificatesReady || not json.Status
           Topic = topic 
-          LectureSections = getLectureSections homeLink }
+          LectureSections = getLectureSections id topic.Name homeLink }
 
     let courses = 
         try 
@@ -57,10 +58,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
 
     courses
 
-let mutable private createExtraInfo : unit->obj = fun () -> null
-let SetExtraInfoFactory (factory:Func<_>) = createExtraInfo <- fun () -> factory.Invoke()
-
-let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
+let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
 
     let trimAndUnescape (text:string) = text.Replace("&nbsp;", "").Trim().Replace("&amp;", "&").Replace("&quot;", "\"").Replace("apos;", "'").Replace("&lt;", "<").Replace("&gt;", ">")
     let endsWith suffix (text:string) = text.EndsWith suffix
@@ -133,7 +131,7 @@ let parseLecturesHtml getHtmlAsync lecturesHtmlStr =
                           LectureNotesUrl = lectureNotesUrl
                           Viewed = viewed 
                           QuizAttempted = quizAttempted
-                          ExtraInfo = createExtraInfo() })
+                          DownloadInfo = createDownloadInfo id title })
                     |> Seq.toArray
                 { Title = title
                   Completed = completed

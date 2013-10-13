@@ -26,13 +26,24 @@ namespace LearnOnTheGo
                 page.ApplicationBar.MenuItems.Add(settingsMenuItem);
             }
 
-            var button = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.information.png", UriKind.RelativeOrAbsolute)) { Text = "About" };
-            button.Click += delegate
+            var aboutButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.information.png", UriKind.RelativeOrAbsolute)) { Text = "About" };
+            aboutButton.Click += delegate
             {
                 LittleWatson.Log("OnAboutClick");
                 page.NavigationService.Navigate(page.GetUri<AboutPage>());
             };
-            page.ApplicationBar.Buttons.Insert(0, button);
+            page.ApplicationBar.Buttons.Insert(0, aboutButton);
+
+            if (!(page is DownloadsPage))
+            {
+                var downloadsButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.download.png", UriKind.RelativeOrAbsolute)) { Text = "Video Downloads" };
+                downloadsButton.Click += delegate
+                {
+                    LittleWatson.Log("OnVideoDownloadsClick");
+                    page.NavigationService.Navigate(page.GetUri<DownloadsPage>());
+                };
+                page.ApplicationBar.Buttons.Add(downloadsButton);
+            }
 
             var installationDate = Settings.GetDateTime(Setting.InstallationDate);
             if (!installationDate.HasValue)
