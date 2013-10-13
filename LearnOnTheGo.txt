@@ -3,11 +3,12 @@ Source code for http://www.windowsphone.com/s?appid=aca60941-2945-49e7-afd2-adbe
 AdDuplex:
 Learn On The Go
 Keep up with your Coursera classes
-Learn On The Go
-Watch the videos on the train or the bus
+Pre-download the videos while on good connection
+Watch the lectures later on the train or the bus
 
 Description:
-Learn On The Go enables you to watch the lecture videos and read the lecture notes of the Coursera courses you're enrolled in.
+Learn On The Go enables you to watch the videos and read the lecture notes of your enrolled Coursera courses.
+Pre-download the videos while on good connection and then watch them later on the train or the bus.
 This is not an official Coursera app.
 
 New in 2.0:
