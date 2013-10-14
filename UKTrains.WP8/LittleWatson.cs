@@ -26,9 +26,9 @@ namespace UKTrains
         {
             try
             {
-                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    using (var output = new StreamWriter(store.OpenFile(filename, FileMode.Append, FileAccess.Write)))
+                    using (var output = new StreamWriter(isolatedStorage.OpenFile(filename, FileMode.Append, FileAccess.Write)))
                     {
                         output.WriteLine("[" + ToString(DateTime.UtcNow) + "]" + " " + header);
                         if (ex != null)
@@ -39,9 +39,7 @@ namespace UKTrains
                     }
                 }
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         private static List<Tuple<DateTime, string>> log = new List<Tuple<DateTime, string>>();
@@ -53,35 +51,33 @@ namespace UKTrains
 
         public static void CheckForPreviousException(bool startingUp)
         {
+            string contents = null;
             try
             {
-                string contents = null;
-                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    if (store.FileExists(filename))
+                    if (isolatedStorage.FileExists(filename))
                     {
-                        using (var reader = new StreamReader(store.OpenFile(filename, FileMode.Open, FileAccess.Read, FileShare.None)))
+                        using (var reader = new StreamReader(isolatedStorage.OpenFile(filename, FileMode.Open, FileAccess.Read, FileShare.None)))
                         {
                             contents = reader.ReadToEnd();
                         }
-                        SafeDeleteFile(store);
-                    }
-                }
-                if (contents != null)
-                {
-                    var title = "A problem occurred" + (startingUp ? " the last time you ran this application" : "") + ". Would you like to send an email to report it?";
-                    if (MessageBox.Show(title, "Problem Report", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-                    {
-                        var email = new EmailComposeTask();
-                        email.To = App.Email;
-                        email.Subject = App.Name + " " + AppVersion + " auto-generated problem report";
-                        email.Body = GetMailBody(contents);
-                        email.Show();
+                        isolatedStorage.DeleteFile(filename);
                     }
                 }
             }
-            catch
+            catch { }
+            if (contents != null)
             {
+                var title = "A problem occurred" + (startingUp ? " the last time you ran this application" : "") + ". Would you like to send an email to report it?";
+                if (MessageBox.Show(title, "Problem Report", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                {
+                    var email = new EmailComposeTask();
+                    email.To = App.Email;
+                    email.Subject = App.Name + " " + AppVersion + " auto-generated problem report";
+                    email.Body = GetMailBody(contents);
+                    email.Show();
+                }
             }
         }
 
@@ -113,17 +109,6 @@ namespace UKTrains
                    "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName + "\n" +
                    "Culture: " + CultureInfo.CurrentCulture + "/" + CultureInfo.CurrentUICulture + "\n" +
                    "Location Services Enabled: " + Settings.GetBool(Setting.LocationServicesEnabled);
-        }
-
-        private static void SafeDeleteFile(IsolatedStorageFile store)
-        {
-            try
-            {
-                store.DeleteFile(filename);
-            }
-            catch
-            {
-            }
         }
 
         public static Guid AppId

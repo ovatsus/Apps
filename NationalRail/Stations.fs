@@ -22,8 +22,8 @@ module Stations =
             let allStations = 
                 //from http://www.data.gov.uk/dataset/naptan
                 //osgb36 to latitude/longitude converted with http://gridreferencefinder.com/batchConvert/batchConvert.htm
-                use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RailReferences.csv")
-                let csvFile = CsvProvider<"RailReferences.csv", Schema="Latitude=float,Longitude=float">.Load stream
+                use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UKStations.csv")
+                let csvFile = CsvProvider<"UKStations.csv", Schema="Latitude=float,Longitude=float">.Load stream
                 csvFile.Data
                 |> Seq.groupBy (fun station -> station.CrsCode)
                 |> Seq.map (fun (code, stations) -> 
