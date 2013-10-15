@@ -113,22 +113,14 @@ let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
                             let urls = a |> followingSibling "div" 
                                          |> elements "a" 
                                          |> Seq.map (attr "href") 
-                            match Seq.tryFind (endsWith ".ppsx") urls with
-                            | Some url -> url
-                            | _ -> match Seq.tryFind (endsWith ".pps") urls with
-                                   | Some url -> url
-                                   | _ -> match Seq.tryFind (endsWith ".pptx") urls with
-                                          | Some url -> url
-                                          | _ -> match Seq.tryFind (endsWith ".ppt") urls with
-                                                 | Some url -> url
-                                                 | _ -> match Seq.tryFind (endsWith ".pdf") urls with
-                                                        | Some url -> url
-                                                        | _ -> ""
+                                         |> Seq.toList
+                            [".ppsx"; ".pps"; ".pptx"; ".ppt"; ".pdf"] 
+                            |> List.tryPick (fun ext -> List.tryFind (endsWith ext) urls)
                         let viewed = a |> parent |> hasClass "viewed"
                         { Id = id
                           Title = title
                           VideoUrl = videoUrl
-                          LectureNotesUrl = lectureNotesUrl
+                          LectureNotesUrl = defaultArg lectureNotesUrl ""
                           Viewed = viewed 
                           QuizAttempted = quizAttempted
                           DownloadInfo = createDownloadInfo id title })
