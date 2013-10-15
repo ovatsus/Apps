@@ -5,8 +5,13 @@ VisualStudioVersion = 12.0.20827.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{467B15DE-972E-45F6-914A-3AF8C6A91442}"
 	ProjectSection(SolutionItems) = preProject
-		WP8Store.txt = WP8Store.txt
+		UKTrains.txt = UKTrains.txt
+		LearnOnTheGo.txt = LearnOnTheGo.txt
 	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Coursera", "Coursera\Coursera.fsproj", "{17CD56DE-3304-43DB-81E2-731624AF41F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnOnTheGo.WP8", "LearnOnTheGo.WP8\LearnOnTheGo.WP8.csproj", "{DC399FE7-6708-44CC-9C92-E05AC217DFB9}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NationalRail", "NationalRail\NationalRail.fsproj", "{5552F566-E77E-433B-8459-A41F865AF52C}"
 EndProject
@@ -48,6 +53,32 @@ Global
 		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|x86.ActiveCfg = Release|x86
 		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|x86.Build.0 = Release|x86
 		{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}.Release|x86.Deploy.0 = Release|x86
+		{17CD56DE-3304-43DB-81E2-731624AF41F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17CD56DE-3304-43DB-81E2-731624AF41F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17CD56DE-3304-43DB-81E2-731624AF41F2}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{17CD56DE-3304-43DB-81E2-731624AF41F2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{17CD56DE-3304-43DB-81E2-731624AF41F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17CD56DE-3304-43DB-81E2-731624AF41F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17CD56DE-3304-43DB-81E2-731624AF41F2}.Release|ARM.ActiveCfg = Release|Any CPU
+		{17CD56DE-3304-43DB-81E2-731624AF41F2}.Release|x86.ActiveCfg = Release|Any CPU
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Debug|ARM.ActiveCfg = Debug|ARM
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Debug|ARM.Build.0 = Debug|ARM
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Debug|ARM.Deploy.0 = Debug|ARM
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Debug|x86.ActiveCfg = Debug|x86
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Debug|x86.Build.0 = Debug|x86
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Debug|x86.Deploy.0 = Debug|x86
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Release|ARM.ActiveCfg = Release|ARM
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Release|ARM.Build.0 = Release|ARM
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Release|ARM.Deploy.0 = Release|ARM
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Release|x86.ActiveCfg = Release|x86
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Release|x86.Build.0 = Release|x86
+		{DC399FE7-6708-44CC-9C92-E05AC217DFB9}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
