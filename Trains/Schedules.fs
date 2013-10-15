@@ -1,7 +1,7 @@
 ﻿#if INTERACTIVE
 #r "../lib/portable/FSharp.Data.dll"
 #else
-namespace NationalRail
+namespace Trains
 #endif
 
 open System

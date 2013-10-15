@@ -12,7 +12,7 @@ using FSharp.GeoUtils;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Reactive;
 using Microsoft.Phone.Shell;
-using NationalRail;
+using Trains;
 
 namespace UKTrains
 {

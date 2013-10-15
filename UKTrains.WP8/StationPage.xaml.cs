@@ -11,7 +11,7 @@ using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Phone.Shell;
-using NationalRail;
+using Trains;
 using Nokia.Phone.HereLaunchers;
 
 namespace UKTrains

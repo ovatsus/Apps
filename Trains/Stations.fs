@@ -1,4 +1,4 @@
-﻿namespace NationalRail
+﻿namespace Trains
 
 open System.Reflection
 open FSharp.Control

@@ -197,9 +197,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NationalRail\NationalRail.fsproj">
+    <ProjectReference Include="..\Trains\Trains.fsproj">
       <Project>{5552F566-E77E-433B-8459-A41F865AF52C}</Project>
-      <Name>NationalRail</Name>
+      <Name>Trains</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

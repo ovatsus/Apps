@@ -2,7 +2,7 @@
 using System.Windows.Navigation;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
-using NationalRail;
+using Trains;
 
 namespace UKTrains
 {
