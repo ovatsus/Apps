@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Trains;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public static class RecentItems
     {

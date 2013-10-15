@@ -1,14 +1,13 @@
 ﻿<phone:PhoneApplicationPage 
-    x:Class="UKTrains.MainAndFilterPage"
+    x:Class="Trains.WP8.MainAndFilterPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"    
     xmlns:watermark="clr-namespace:CS.Windows.Controls;assembly=CS.Windows.Controls"
-    xmlns:src="clr-namespace:UKTrains"
+    xmlns:src="clr-namespace:Trains.WP8"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Trains="clr-namespace:Trains;assembly=Trains"
@@ -133,8 +132,8 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:Pivot x:Name="pivot" Title="Rail Stations">
-            <controls:PivotItem x:Name="nearest" Header="Near Me">
+        <phone:Pivot x:Name="pivot" Title="Rail Stations">
+            <phone:PivotItem x:Name="nearest" Header="Near Me">
                 <Grid>
                     <ItemsControl x:Name="nearestStations" 
                                   ItemsSource="{Binding NearestStations}"
@@ -158,8 +157,8 @@
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
                 </Grid>
-            </controls:PivotItem>
-            <controls:PivotItem Header="Recent">
+            </phone:PivotItem>
+            <phone:PivotItem Header="Recent">
                 <ItemsControl x:Name="recentStations" 
                               ItemsSource="{Binding RecentStations}"
                               ItemTemplate="{StaticResource recentItemTemplate}">
@@ -176,8 +175,8 @@
                         </ControlTemplate>
                     </ItemsControl.Template>
                 </ItemsControl>
-            </controls:PivotItem>
-            <controls:PivotItem Header="All">
+            </phone:PivotItem>
+            <phone:PivotItem Header="All">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -204,8 +203,8 @@
                         </ItemsControl.Template>
                     </ItemsControl>
                 </Grid>
-            </controls:PivotItem>
-        </controls:Pivot>
+            </phone:PivotItem>
+        </phone:Pivot>
 
         <Grid Grid.Row="1" Margin="0,0,0,-1">
             <adduplex:AdControl AppId="57899">

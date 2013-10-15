@@ -2,7 +2,7 @@
 using System;
 using System.Device.Location;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public static class LocationService
     {
@@ -58,7 +58,7 @@ namespace UKTrains
                     CurrentPosition = newPosition;
                     Settings.Set(Setting.CurrentLat, CurrentPosition.Latitude);
                     Settings.Set(Setting.CurrentLong, CurrentPosition.Longitude);
-                    if (PositionChanged != null && !App.RunningInBackground)
+                    if (PositionChanged != null && !AppMetadata.Current.RunningInBackground)
                     {
                         PositionChanged();
                     }

@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.Phone.Controls;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public static class Extensions
     {
@@ -16,7 +16,7 @@ namespace UKTrains
             }
             else
             {
-                return new Uri("/" + targetPageType.Name + ".xaml", UriKind.Relative);
+                return new Uri("/Trains.WP8;component/" + targetPageType.Name + ".xaml", UriKind.Relative);
             }
         }
 

@@ -1,10 +1,9 @@
 ﻿<phone:PhoneApplicationPage 
-    x:Class="UKTrains.SettingsPage"
+    x:Class="Trains.WP8.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
@@ -39,8 +38,8 @@
     </toolkit:TransitionService.NavigationOutTransition>
     
     <Grid Background="Transparent">
-        <controls:Pivot Title="UK Trains">
-            <controls:PivotItem Header="Settings">
+        <phone:Pivot Title="UK Trains">
+            <phone:PivotItem Header="Settings">
                 <StackPanel>
                     <toolkit:ToggleSwitch Content="Enable Location"
                                           x:Name="enableLocationServices" />
@@ -60,8 +59,8 @@
                         Otherwise metric system will be used.
                     </TextBlock>
                 </StackPanel>
-            </controls:PivotItem>
-        </controls:Pivot>       
+            </phone:PivotItem>
+        </phone:Pivot>       
     </Grid>
  
     <phone:PhoneApplicationPage.ApplicationBar>

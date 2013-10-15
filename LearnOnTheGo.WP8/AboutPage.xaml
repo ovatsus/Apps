@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
@@ -39,9 +38,9 @@
     </toolkit:TransitionService.NavigationOutTransition>
     
     <Grid Background="Transparent">
-        <controls:Pivot Title="About">
-            <controls:PivotItem>
-                <controls:PivotItem.Header>
+        <phone:Pivot Title="About">
+            <phone:PivotItem>
+                <phone:PivotItem.Header>
                     <Grid Width="446">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -53,7 +52,7 @@
                                Margin="0,-16"
                                Grid.Column="1" />
                     </Grid>
-                </controls:PivotItem.Header>
+                </phone:PivotItem.Header>
                 <StackPanel>
                     <TextBlock x:Name="version" 
                                Text="Version 1.x.0.0"
@@ -103,8 +102,8 @@
                                Text="This app is free and done entirely on my own personal time. If you'd like to support this work, please give a small donation." />
                     <Button Content="Donate" Tap="OnDonateClick" />
                 </StackPanel>
-            </controls:PivotItem>
-        </controls:Pivot>       
+            </phone:PivotItem>
+        </phone:Pivot>       
     </Grid>
 
 </phone:PhoneApplicationPage>

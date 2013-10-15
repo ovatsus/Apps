@@ -14,7 +14,7 @@ using Microsoft.Phone.Reactive;
 using Microsoft.Phone.Shell;
 using Trains;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public partial class MainAndFilterPage : PhoneApplicationPage
     {

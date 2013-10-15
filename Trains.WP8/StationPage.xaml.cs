@@ -14,7 +14,7 @@ using Microsoft.Phone.Shell;
 using Trains;
 using Nokia.Phone.HereLaunchers;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public partial class StationPage : PhoneApplicationPage
     {
@@ -64,7 +64,7 @@ namespace UKTrains
             {
                 var filterOrClearFilterItem = ApplicationBar.Buttons.Cast<ApplicationBarIconButton>().Single(button => button.Text == "Filter");
                 filterOrClearFilterItem.Text = "Clear Filter";
-                filterOrClearFilterItem.IconUri = new Uri("/Assets/Icons/appbar.filter.clear.png", UriKind.RelativeOrAbsolute);
+                filterOrClearFilterItem.IconUri = new Uri("/Assets/Icons/appbar.filter.clear.png", UriKind.Relative);
 
                 var filterByAnotherDestinationItem = new ApplicationBarMenuItem("Filter by another destination");
                 filterByAnotherDestinationItem.Click += OnFilterByAnotherDestinationClick;
@@ -193,8 +193,8 @@ namespace UKTrains
 
             return new FlipTileData
             {
-                Title = forPrimaryTile ? App.Name : departuresTable.ToSmallString(),
-                BackTitle = App.Name,
+                Title = forPrimaryTile ? AppMetadata.Current.Name : departuresTable.ToSmallString(),
+                BackTitle = AppMetadata.Current.Name,
                 BackContent = content,
                 WideBackContent = wideContent,
                 SmallBackgroundImage = new Uri("Assets/Tiles/FlipCycleTileSmall.png", UriKind.Relative),

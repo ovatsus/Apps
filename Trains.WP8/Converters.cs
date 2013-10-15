@@ -5,7 +5,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using Trains;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public class DistanceToStringConverter : IValueConverter
     {

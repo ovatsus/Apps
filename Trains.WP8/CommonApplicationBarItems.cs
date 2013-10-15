@@ -4,7 +4,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public static class CommonApplicationBarItems
     {
@@ -21,7 +21,7 @@ namespace UKTrains
                 page.ApplicationBar.MenuItems.Add(settingsMenuItem);
             }
 
-            var button = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.information.png", UriKind.RelativeOrAbsolute)) { Text = "About" };
+            var button = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.information.png", UriKind.Relative)) { Text = "About" };
             button.Click += delegate
             {
                 LittleWatson.Log("OnAboutClick");
@@ -38,7 +38,7 @@ namespace UKTrains
             {
                 if ((DateTime.UtcNow - installationDate.Value).TotalDays >= 1)
                 {
-                    var result = MessageBox.Show("Would you mind reviewing the " + App.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
+                    var result = MessageBox.Show("Would you mind reviewing the " + AppMetadata.Current.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
                     if (result == MessageBoxResult.OK)
                     {
                         LittleWatson.Log("MarketplaceReviewTaskShow from Prompt");

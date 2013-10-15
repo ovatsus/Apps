@@ -6,7 +6,7 @@ using FSharp.Control;
 using Microsoft.FSharp.Collections;
 using Microsoft.Phone.Shell;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public class LazyBlockUI<T> : ILazyBlockUI<T[]>
     {

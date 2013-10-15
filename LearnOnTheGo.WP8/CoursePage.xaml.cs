@@ -269,7 +269,7 @@ namespace LearnOnTheGo
             LittleWatson.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
             var task = new WebBrowserTask();
-            task.Uri = new Uri(lecture.LectureNotesUrl, UriKind.Absolute);
+            task.Uri = new Uri(lecture.LectureNotesUrl);
             task.Show();
         }
 
@@ -280,7 +280,7 @@ namespace LearnOnTheGo
             var course = App.Crawler.GetCourse(courseId);
 
             var task = new WebBrowserTask();
-            task.Uri = new Uri(course.HomeLink, UriKind.Absolute);
+            task.Uri = new Uri(course.HomeLink);
             task.Show();
         }
 

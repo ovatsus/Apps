@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:coding4fun="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls"
     xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -95,8 +94,8 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:Pivot x:Name="pivot" Title="Video Downloads">
-            <controls:PivotItem Header="In Progress">
+        <phone:Pivot x:Name="pivot" Title="Video Downloads">
+            <phone:PivotItem Header="In Progress">
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="inProgressDownloads"
@@ -110,8 +109,8 @@
                                    HorizontalAlignment="Center" />
                     </Grid>
                 </ScrollViewer>
-            </controls:PivotItem>
-            <controls:PivotItem Header="Completed">
+            </phone:PivotItem>
+            <phone:PivotItem Header="Completed">
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="completedDownloads"
@@ -125,8 +124,8 @@
                                    HorizontalAlignment="Center" />
                     </Grid>
                 </ScrollViewer>
-            </controls:PivotItem>
-        </controls:Pivot>
+            </phone:PivotItem>
+        </phone:Pivot>
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>

@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
@@ -40,15 +39,15 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <Grid Background="Transparent">
-        <controls:Pivot Title="Learn On The Go">
-            <controls:PivotItem Header="Settings">
+        <phone:Pivot Title="Learn On The Go">
+            <phone:PivotItem Header="Settings">
                 <StackPanel>
                     <TextBlock Margin="12,12,12,0" Text="Please enter your Coursera login information" />
                     <watermark:WatermarkTextBox x:Name="email" InputScope="EmailUserName" WatermarkText="Email Address" />
                     <watermark:WatermarkPasswordBox x:Name="password" WatermarkText="Password" />
                 </StackPanel>
-            </controls:PivotItem>
-        </controls:Pivot>       
+            </phone:PivotItem>
+        </phone:Pivot>       
     </Grid>
  
     <phone:PhoneApplicationPage.ApplicationBar>

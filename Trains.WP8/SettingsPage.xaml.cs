@@ -4,7 +4,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Windows.System;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public partial class SettingsPage : PhoneApplicationPage
     {
@@ -18,7 +18,7 @@ namespace UKTrains
         private async void OnShowDeparturesOnLockScreenClick(object sender, EventArgs e)
         {
             LittleWatson.Log("OnShowDeparturesOnLockScreenClick");
-            MessageBox.Show("Please select " + App.Name + " as the detailed status app in the notifications section", "Show departures on lock screen", MessageBoxButton.OK);
+            MessageBox.Show("Please select " + AppMetadata.Current.Name + " as the detailed status app in the notifications section", "Show departures on lock screen", MessageBoxButton.OK);
             await Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
 

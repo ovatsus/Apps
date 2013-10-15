@@ -275,7 +275,7 @@ type DeparturesTable with
             let status = cells.[2] |> getStatus due
             let details = 
                 let detailsUrl = cells.[4] |> element "a" |> attr "href"
-                LazyAsync.fromAsync (getJourneyDetails ("http://ojp.Trains.co.uk" + detailsUrl))
+                LazyAsync.fromAsync (getJourneyDetails ("http://ojp.nationalrail.co.uk" + detailsUrl))
             { Due = due
               Destination = destination
               DestinationDetail = destinationDetail
@@ -287,8 +287,8 @@ type DeparturesTable with
 
         let url = 
             match journey.CallingAt with
-            | None -> sprintf "http://ojp.Trains.co.uk/service/ldbboard/%s/%s" (departureType.ToString()) journey.Station.Code
-            | Some callingAt -> sprintf "http://ojp.Trains.co.uk/service/ldbboard/%s/%s/%s/To" (departureType.ToString()) journey.Station.Code callingAt.Code 
+            | None -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/%s/%s" (departureType.ToString()) journey.Station.Code
+            | Some callingAt -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/%s/%s/%s/To" (departureType.ToString()) journey.Station.Code callingAt.Code 
 
         let synchronizationContext = SynchronizationContext.Current
 

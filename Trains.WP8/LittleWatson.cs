@@ -11,7 +11,7 @@ using System.Xml;
 using Microsoft.Phone.Info;
 using Microsoft.Phone.Tasks;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public static class LittleWatson
     {
@@ -73,8 +73,8 @@ namespace UKTrains
                 if (MessageBox.Show(title, "Problem Report", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
                     var email = new EmailComposeTask();
-                    email.To = App.Email;
-                    email.Subject = App.Name + " " + AppVersion + " auto-generated problem report";
+                    email.To = AppMetadata.Current.Email;
+                    email.Subject = AppMetadata.Current.Name + " " + AppVersion + " auto-generated problem report";
                     email.Body = GetMailBody(contents);
                     email.Show();
                 }

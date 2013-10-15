@@ -3,7 +3,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using Windows.ApplicationModel.Store;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public partial class AboutPage : PhoneApplicationPage
     {
@@ -25,8 +25,8 @@ namespace UKTrains
             LittleWatson.Log("OnSendFeedbackClick");
             new EmailComposeTask
             {
-                To = App.Email,
-                Subject = "Feedback for " + App.Name + " " + LittleWatson.AppVersion,
+                To = AppMetadata.Current.Email,
+                Subject = "Feedback for " + AppMetadata.Current.Name + " " + LittleWatson.AppVersion,
                 Body = LittleWatson.GetMailBody("")
             }.Show();
         }
@@ -46,7 +46,7 @@ namespace UKTrains
         }
 
         private static readonly string _appLink = "http://windowsphone.com/s?appid=" + LittleWatson.AppId.ToString("D");
-        private static readonly string _title = "Check out \"" + App.Name + "\" for Windows Phone";
+        private static readonly string _title = "Check out \"" + AppMetadata.Current.Name + "\" for Windows Phone";
         private static readonly string _fullMessage = _title + " " + _appLink;
 
 

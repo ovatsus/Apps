@@ -4,7 +4,7 @@ using FSharp.Control;
 using Microsoft.Phone.Controls;
 using Trains;
 
-namespace UKTrains
+namespace Trains.WP8
 {
     public partial class LiveProgressPage : PhoneApplicationPage
     {

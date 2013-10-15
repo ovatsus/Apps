@@ -1,0 +1,29 @@
+Store URL: http://www.windowsphone.com/s?appid=
+
+AdDuplex:
+Irish Trains
+Live departure/arrival boards
+Find nearest stations and get walking directions
+Discover when a later train arrives sooner
+
+Description:
+Irish Trains provides real-time information for Irish Rail train stations.
+* List of nearest stations to current location
+* Map with directions to chosen station
+* Station departure and arrivals boards
+* Show train live progress during the journey
+* Auto-refresh every 60 seconds, even under lock screen or when app is in the background
+* Show expected arrival time to discover when later trains arrive first than earlier trains
+* Allow to pin individual stations to the start screen
+* Show next departure information in live tile and lock screen
+* No need to manage favourite stations, recent items are remembered
+* Fast and responsive
+
+Note that background refresh requires Location Services to be enabled
+
+Keywords:
+Train
+Rail
+Schedule
+Departures
+Arrivals

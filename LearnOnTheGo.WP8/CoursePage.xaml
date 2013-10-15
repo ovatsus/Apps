@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:coding4fun="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls"
     xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -126,17 +125,17 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:Pivot x:Name="pivot" 
+        <phone:Pivot x:Name="pivot" 
                         SelectionChanged="OnPivotSelectionChanged"
                         Title="{Binding CourseTitle}"
                         ItemsSource="{Binding LectureSections}"
                         ItemTemplate="{StaticResource sectionTemplate}">
-            <controls:Pivot.HeaderTemplate>
+            <phone:Pivot.HeaderTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" />
                 </DataTemplate>
-            </controls:Pivot.HeaderTemplate>
-        </controls:Pivot>
+            </phone:Pivot.HeaderTemplate>
+        </phone:Pivot>
 
         <TextBlock x:Name="messageTextBlock" 
                    Margin="24,0,12,0"

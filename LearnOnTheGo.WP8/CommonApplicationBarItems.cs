@@ -26,7 +26,7 @@ namespace LearnOnTheGo
                 page.ApplicationBar.MenuItems.Add(settingsMenuItem);
             }
 
-            var aboutButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.information.png", UriKind.RelativeOrAbsolute)) { Text = "About" };
+            var aboutButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.information.png", UriKind.Relative)) { Text = "About" };
             aboutButton.Click += delegate
             {
                 LittleWatson.Log("OnAboutClick");
@@ -36,7 +36,7 @@ namespace LearnOnTheGo
 
             if (!(page is DownloadsPage))
             {
-                var downloadsButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.download.png", UriKind.RelativeOrAbsolute)) { Text = "Video Downloads" };
+                var downloadsButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.download.png", UriKind.Relative)) { Text = "Video Downloads" };
                 downloadsButton.Click += delegate
                 {
                     LittleWatson.Log("OnVideoDownloadsClick");

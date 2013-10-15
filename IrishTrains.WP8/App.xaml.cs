@@ -2,7 +2,7 @@
 using Trains;
 using Trains.WP8;
 
-namespace UKTrains.WP8
+namespace IrishTrains.WP8
 {
     public partial class App : Application
     {
@@ -10,8 +10,8 @@ namespace UKTrains.WP8
         {
             InitializeComponent();
 
-            new AppMetadata(this, "UK Trains", "uktrains@codebeside.org");
-            Stations.Country = Country.UK;
+            new AppMetadata(this, "Irish Trains", "eiretrains@codebeside.org");
+            Stations.Country = Country.Ireland;
         }
     }
 }
