@@ -1,0 +1,155 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="LearnOnTheGo.CoursePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:coding4fun="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls"
+    xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:src="clr-namespace:LearnOnTheGo"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:coursera="clr-namespace:Coursera;assembly=Coursera"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    toolkit:TiltEffect.IsTiltEnabled="True"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=coursera:SampleData}">
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+    <Grid Background="Transparent">
+
+        <Grid.Resources>
+
+            <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+
+            <src:BooleanToImageSourceConverter x:Key="downloadedToImageSourceConverter" 
+                                               True="/Assets/Icons/appbar.control.play.png"
+                                               False="/Assets/Icons/appbar.download.png" />
+
+            <DataTemplate x:Key="lectureTemplate">
+                <Grid Margin="12,12,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Source="/Assets/Icons/appbar.check.png" 
+                           Width="48"
+                           Height="48"
+                           Margin="-10,6,0,0"
+                           VerticalAlignment="Top"
+                           Visibility="{Binding Viewed, Converter={StaticResource booleanToVisibilityConverter}}" />
+                    <TextBlock TextWrapping="Wrap"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"
+                               Text="{Binding Title}" />
+                    <StackPanel Grid.Column="2"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <coding4fun:RoundButton Tap="OnLectureNotesClick"
+                                                Margin="-4,4,-4,-4"
+                                                ImageSource="/Assets/Icons/appbar.page.png" 
+                                                Visibility="{Binding HasLectureNotes, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                        <coding4fun:RoundButton Tap="OnLectureVideoClick"
+                                                Margin="-4,4,-4,-4"
+                                                ImageSource="{Binding DownloadInfo.Downloaded, Converter={StaticResource downloadedToImageSourceConverter}}" />
+                    </StackPanel>
+                    <toolkit:TransferControl Monitor="{Binding DownloadInfo.Monitor}"
+                                             Visibility="{Binding DownloadInfo.Downloading, Converter={StaticResource booleanToVisibilityConverter}}"
+                                             IsContextMenuEnabled="True"
+                                             Grid.Row="1"
+                                             Grid.ColumnSpan="3">
+                        <toolkit:TransferControl.HeaderTemplate>
+                            <DataTemplate />
+                        </toolkit:TransferControl.HeaderTemplate>
+                    </toolkit:TransferControl>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="sectionTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Margin="12,-24,12,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Assets/Icons/appbar.check.png" 
+                               Width="48"
+                               Height="48"
+                               Margin="-10,0,0,0"
+                               VerticalAlignment="Top"
+                               Visibility="{Binding Completed, Converter={StaticResource booleanToVisibilityConverter}}" />
+                        <TextBlock Text="{Binding Title}"
+                                   Grid.Column="1"
+                                   FontSize="{StaticResource PhoneFontSizeLarge}"
+                                   TextWrapping="Wrap" />
+                    </Grid>
+                    <ScrollViewer Grid.Row="1" ManipulationStarted="OnScrollViewerManipulationStarted">
+                        <ItemsControl ItemsSource="{Binding Lectures}"
+                                      ItemTemplate="{StaticResource lectureTemplate}" />
+                    </ScrollViewer>
+                </Grid>
+            </DataTemplate>
+        </Grid.Resources>
+
+        <controls:Pivot x:Name="pivot" 
+                        SelectionChanged="OnPivotSelectionChanged"
+                        Title="{Binding CourseTitle}"
+                        ItemsSource="{Binding LectureSections}"
+                        ItemTemplate="{StaticResource sectionTemplate}">
+            <controls:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}" />
+                </DataTemplate>
+            </controls:Pivot.HeaderTemplate>
+        </controls:Pivot>
+
+        <TextBlock x:Name="messageTextBlock" 
+                   Margin="24,0,12,0"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center" />
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar>
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.coursera.png" Text="Coursera Website" Click="OnOpenInBrowserClick" />
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

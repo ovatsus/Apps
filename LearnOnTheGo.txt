@@ -1,0 +1,58 @@
+Source code for http://www.windowsphone.com/s?appid=aca60941-2945-49e7-afd2-adbe5625df12
+
+AdDuplex:
+Learn On The Go
+Keep up with your Coursera classes
+Pre-download the videos while on good connection
+Watch the lectures later on the train or the bus
+
+Description:
+Learn On The Go enables you to watch the videos and read the lecture notes of your enrolled Coursera courses.
+Pre-download the videos while on good connection and then watch them later on the train or the bus.
+This is not an official Coursera app.
+
+New in 2.0:
+* Allow to download the lecture videos for later
+* Fix problem with courses where the honor code hasn't been accepted yet
+
+New in 1.7:
+* Improved design
+* Open course in browser button
+* Go to first uncompleted lecture section when opening a course
+* Distinguish viewed lectures from non-viewed lectures
+
+New in 1.6:
+* UI improvements
+* Fix lectures not refreshing in some situations
+* Support for more formats of lecture notes
+
+New in 1.5:
+* Update to the new Coursera login API
+* Improve error reporting
+
+New in 1.4:
+* Fix crashes on some courses
+
+New in 1.3:
+* Improve behaviour in case of intermittent network availability
+
+New in 1.2:
+* Compress HTTP requests
+* Fix crashes on some courses
+
+New in 1.1:
+* Cache courses and lectures lists
+
+Certification Notes:
+You need a Coursera account to test this app. Either register for a free one at http://www.coursera.org or use the following credentials:
+email: ovatsus@outlook.com
+password: abc123
+Note that the videos from some courses are in a format not supported by Windows Phone 7. On those cases you might get a "Sorry, we can't play this
+file on your phone." message, but that's expected.
+
+Keywords:
+Learn
+Coursera
+Videos
+MOOC
+Classes

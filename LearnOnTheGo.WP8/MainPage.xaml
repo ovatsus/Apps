@@ -1,0 +1,164 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="LearnOnTheGo.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:coursera="clr-namespace:Coursera;assembly=Coursera"
+    xmlns:adduplex="clr-namespace:AdDuplex;assembly=AdDuplex.WindowsPhone"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    toolkit:TiltEffect.IsTiltEnabled="True"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=coursera:SampleData}">
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+    <Grid Background="Transparent">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.Resources>
+
+            <coding4funConverters:StringToVisibilityConverter x:Key="stringToVisibilityConverter" />
+
+            <DataTemplate x:Key="courseTemplate">
+                <Button Tap="OnCourseClick">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Margin="12,0,0,36">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding Topic.SmallIconHover}"
+                                       Width="103"
+                                       Height="58"
+                                       VerticalAlignment="Top" />
+                                <StackPanel Grid.Column="1" 
+                                            Margin="12,0,0,0">
+                                    <TextBlock Text="{Binding Topic.Name}" 
+                                               Margin="0,-12,0,0"
+                                               TextWrapping="Wrap"
+                                               FontSize="{StaticResource PhoneFontSizeLarge}" 
+                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}" />
+                                    <TextBlock Text="{Binding Topic.Instructor}" 
+                                               Visibility="{Binding Topic.Instructor, Converter={StaticResource stringToVisibilityConverter}}"
+                                               TextWrapping="Wrap"
+                                               FontSize="{StaticResource PhoneFontSizeSmall}" 
+                                               Foreground="{StaticResource PhoneDisabledBrush}" />
+                                </StackPanel>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </DataTemplate>
+        </Grid.Resources>
+
+        <controls:Pivot Title="Enrolled Courses" x:Name="pivot">
+            <controls:PivotItem Header="Active">
+                <ScrollViewer>
+                    <Grid>
+                        <ItemsControl x:Name="activeCourses"
+                                      ItemsSource="{Binding ActiveCourses}"
+                                      ItemTemplate="{StaticResource courseTemplate}" />
+                        <TextBlock x:Name="activeCoursesEmptyMessage" 
+                                   Visibility="Collapsed"
+                                   Text="No active courses"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Grid>
+                </ScrollViewer>
+            </controls:PivotItem>
+            <controls:PivotItem Header="Upcoming">
+                <ScrollViewer>
+                    <Grid>
+                        <ItemsControl x:Name="upcomingCourses"
+                                      ItemsSource="{Binding UpcomingCourses}"
+                                      ItemTemplate="{StaticResource courseTemplate}" />
+                        <TextBlock x:Name="upcomingCoursesEmptyMessage" 
+                                   Visibility="Collapsed"
+                                   Text="No upcoming courses"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Grid>
+                </ScrollViewer>
+            </controls:PivotItem>
+            <controls:PivotItem Header="Finished">
+                <ScrollViewer>
+                    <Grid>
+                        <ItemsControl x:Name="finishedCourses"
+                                      ItemsSource="{Binding FinishedCourses}"
+                                      ItemTemplate="{StaticResource courseTemplate}" />
+                        <TextBlock x:Name="finishedCoursesEmptyMessage" 
+                                   Visibility="Collapsed"
+                                   Text="No finished courses"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Grid>
+                </ScrollViewer>
+            </controls:PivotItem>
+        </controls:Pivot>
+
+        <TextBlock x:Name="messageTextBlock" 
+                   Margin="24,0,12,0"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center" />
+
+        <Grid Grid.Row="1" Margin="0,0,0,-1">
+            <adduplex:AdControl AppId="57903">
+                <adduplex:AdControl.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.005" />
+                        <TranslateTransform X="-1" />
+                    </TransformGroup>
+                </adduplex:AdControl.RenderTransform>
+            </adduplex:AdControl>
+            <Border BorderThickness="0,1,0,0"
+                    BorderBrush="{StaticResource PhoneBackgroundBrush}" />
+        </Grid>
+
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar>
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
