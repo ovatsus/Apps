@@ -31,8 +31,24 @@ let getStationPage station =
     |> Http.AsyncRequestString
 
 // get the latitude and longitude of a station from the google maps link in the station page
-let getCoordinates stationPage = 
-    let googleMapsLink = 
+let getCodeAndCoordinates stationPage = 
+    let split (c:char) (s:string) = s.Split c
+    let getUrlParam key (url:string) = 
+        url.Substring (url.IndexOf '?' + 1)
+        |> split '&'
+        |> Seq.map (split '=')
+        |> Seq.filter (Seq.head >> (=) key)
+        |> Seq.head
+        |> Seq.skip 1
+        |> Seq.head
+    let code = 
+        stationPage
+        |> createDoc
+        |> descendants "iframe"
+        |> Seq.last
+        |> attr "src"        
+        |> getUrlParam "ref"
+    let [| lat; long |] = 
         stationPage
         |> createDoc
         |> descendants "div"
@@ -42,15 +58,10 @@ let getCoordinates stationPage =
         |> descendants "a"
         |> Seq.head
         |> attr "href"
-    let split (c:char) (s:string) = s.Split c
-    let [| "ll" ; coords |] =        
-        Uri(googleMapsLink).Query
-        |> split '&'
-        |> Seq.map (split '=')
-        |> Seq.filter (Seq.head >> (=) "ll")
-        |> Seq.head
-    let [| lat; long |] = coords |> split ',' |> Array.map float
-    lat, long
+        |> getUrlParam "ll"
+        |> split ',' 
+        |> Array.map float
+    code, lat, long
 
 let stationsAndCoords =
     let stations = 
@@ -59,22 +70,21 @@ let stationsAndCoords =
         |> Async.Parallel
         |> Async.RunSynchronously
         |> Array.collect getStations
-    let lat, long = 
+    let codeAndCoordinates = 
         stations
         |> Seq.map getStationPage
         |> Async.Parallel
         |> Async.RunSynchronously
-        |> Array.map getCoordinates
-        |> Array.unzip
+        |> Array.map getCodeAndCoordinates
     let stations = 
         stations
         |> Array.map Uri.UnescapeDataString
-    Array.zip3 stations lat long
+    Array.map2 (fun station (code, lat, long) -> station, code, lat, long) stations codeAndCoordinates
 
 open System.IO
 
 File.WriteAllLines(
     __SOURCE_DIRECTORY__ + "/IrelandStations.csv", 
     stationsAndCoords 
-    |> Seq.map (fun (station, lat, long) -> station + "," + (string lat) + "," + (string long))
-    |> Seq.append ["Station,Latitude,Longitude"])
+    |> Seq.map (fun (name, code, lat, long) -> name + "," + code + "," + (string lat) + "," + (string long))
+    |> Seq.append ["Name, Code, Latitude (float), Longitude (float)"])

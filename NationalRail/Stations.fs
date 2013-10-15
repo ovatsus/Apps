@@ -5,12 +5,18 @@ open FSharp.Control
 open FSharp.Data
 open FSharp.GeoUtils
 
+type Country = 
+    | UK
+    | Ireland
+
 type Station =
     { Code : string
       Name : string
       Location : LatLong }
 
 module Stations = 
+
+    let mutable Country = UK
 
     let private stationInfo = ref None
 
@@ -19,22 +25,38 @@ module Stations =
         match !stationInfo with
         | None ->
 
-            let allStations = 
-                //from http://www.data.gov.uk/dataset/naptan
-                //osgb36 to latitude/longitude converted with http://gridreferencefinder.com/batchConvert/batchConvert.htm
-                use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UKStations.csv")
-                let csvFile = CsvProvider<"UKStations.csv", Schema="Latitude=float,Longitude=float">.Load stream
-                csvFile.Data
-                |> Seq.groupBy (fun station -> station.CrsCode)
-                |> Seq.map (fun (code, stations) -> 
-                    let station = 
-                        stations 
-                        |> Seq.sortBy (fun station -> -station.RevisionNumber) 
-                        |> Seq.head
-                    { Code = code
-                      Name = station.StationName.Replace(" Rail Station", null).Replace(" Railway Station", null)
-                      Location = LatLong.Create station.Latitude station.Longitude })
-                |> Seq.toList
+            let allStations =
+
+                match Country with
+                | UK ->
+
+                    //from http://www.data.gov.uk/dataset/naptan
+                    //osgb36 to latitude/longitude converted with http://gridreferencefinder.com/batchConvert/batchConvert.htm
+                    use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UKStations.csv")
+                    let csvFile = CsvProvider<"UKStations.csv", Schema="Latitude=float,Longitude=float">.Load stream
+                    csvFile.Data
+                    |> Seq.groupBy (fun station -> station.CrsCode)
+                    |> Seq.map (fun (code, stations) -> 
+                        let station = 
+                            stations 
+                            |> Seq.sortBy (fun station -> -station.RevisionNumber) 
+                            |> Seq.head
+                        { Code = code
+                          Name = station.StationName.Replace(" Rail Station", null).Replace(" Railway Station", null)
+                          Location = LatLong.Create station.Latitude station.Longitude })
+                    |> Seq.toList
+
+
+                | Ireland ->
+
+                    use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("IrelandStations.csv")
+                    let csvFile = CsvProvider<"IrelandStations.csv">.Load stream
+                    csvFile.Data 
+                    |> Seq.map (fun station -> 
+                        { Code = station.Code
+                          Name = station.Name
+                          Location = LatLong.Create station.Latitude station.Longitude })
+                    |> Seq.toList
 
             let stationsByCode =
                 allStations 
