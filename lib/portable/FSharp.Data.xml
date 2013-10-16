@@ -197,6 +197,16 @@
  Loads JSON from the specified stream
 </summary>
 </member>
+<member name="M:FSharp.Data.Json.JsonValue.AsyncLoad(System.String,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
+<summary>
+ Loads JSON from the specified uri
+</summary>
+</member>
+<member name="M:FSharp.Data.Json.JsonValue.AsyncLoad(System.IO.Stream,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
+<summary>
+ Loads JSON from the specified stream
+</summary>
+</member>
 <member name="T:FSharp.Data.Json.JsonValue">
 <summary>
  Represents a JSON value. Large numbers that do not fit in the 
@@ -348,7 +358,7 @@
  Returns a csv that when enumerated returns at most N rows.
 </summary>
 </member>
-<member name="M:FSharp.Data.RuntimeImplementation.CsvFile`1.TakeWhile(Microsoft.FSharp.Core.FSharpFunc{`0,System.Boolean})">
+<member name="M:FSharp.Data.RuntimeImplementation.CsvFile`1.TakeWhile(System.Func{`0,System.Boolean})">
 <summary>
  Returns a csv that, when iterated, yields rowswhile the given predicate
  returns &lt;c&gt;true&lt;/c&gt;, and then returns no further rows.
@@ -359,7 +369,7 @@
  Returns a new csv with only the first N rows of the underlying csv.
 </summary>
 </member>
-<member name="M:FSharp.Data.RuntimeImplementation.CsvFile`1.SkipWhile(Microsoft.FSharp.Core.FSharpFunc{`0,System.Boolean})">
+<member name="M:FSharp.Data.RuntimeImplementation.CsvFile`1.SkipWhile(System.Func{`0,System.Boolean})">
 <summary>
  Returns a csv that, when iterated, skips rows while the given predicate returns
  &lt;c&gt;true&lt;/c&gt;, and then yields the remaining rows.
@@ -385,7 +395,7 @@
  Saves CSV to the specified writer
 </summary>
 </member>
-<member name="M:FSharp.Data.RuntimeImplementation.CsvFile`1.Filter(Microsoft.FSharp.Core.FSharpFunc{`0,System.Boolean})">
+<member name="M:FSharp.Data.RuntimeImplementation.CsvFile`1.Filter(System.Func{`0,System.Boolean})">
 <summary>
  Returns a new csv containing only the rows for which the given predicate returns &quot;true&quot;.
 </summary>
@@ -401,6 +411,12 @@
  Returns a new csv with the same rows as the original but which guarantees
  that each row will be only be read and parsed from the input at most once.
 </summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
 </member>
 <member name="">
 
@@ -633,9 +649,15 @@
 <member name="">
 
 </member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
 <member name="M:FSharp.Data.RuntimeImplementation.XmlElement.Create(System.Xml.Linq.XElement)">
 <summary>
- Creates a JsonDocument representing the specified value
+ Creates a XmlDocument representing the specified value
 </summary>
 </member>
 <member name="T:FSharp.Data.RuntimeImplementation.XmlElement">
@@ -1885,11 +1907,38 @@
 <member name="">
 
 </member>
-<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.readTextAtRunTime(System.Boolean,System.String,System.String,System.String)">
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.getStreamReaderAtRuntime(System.Boolean,System.String,System.String,System.String)">
 <summary>
  Resolve a location of a file (or a web location) and open it for shared
  read at runtime (do not monitor file changes and use runtime resolution rules)
 </summary>
+</member>
+<member name="">
+
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.asyncReadTextInProvider(System.Boolean,System.Boolean,System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.Unit,Microsoft.FSharp.Core.Unit}},System.String,System.Uri)">
+<summary>
+ Given a type provider configuration and a name passed by user, open 
+ the uri and return it as text
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
 </member>
 <member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.asyncOpenStreamInProvider(System.Boolean,System.Boolean,System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.Unit,Microsoft.FSharp.Core.Unit}},System.String,System.Uri)">
 <summary>
@@ -2617,13 +2666,7 @@
 <member name="T:FSharp.Data.RuntimeImplementation.WorldBank.Implementation">
 
 </member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="M:FSharp.Net.Http.RequestString``4(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``3})">
+<member name="M:FSharp.Net.Http.RequestString``3(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer})">
 <summary>
  Download an HTTP web resource from the specified URL synchronously
  (allows specifying query string parameters and HTTP headers including
@@ -2632,7 +2675,7 @@
  that will be encoded, and the method will automatically be set if not specified
 </summary>
 </member>
-<member name="M:FSharp.Net.Http.Request``4(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``3})">
+<member name="M:FSharp.Net.Http.Request``3(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer})">
 <summary>
  Download an HTTP web resource from the specified URL synchronously
  (allows specifying query string parameters and HTTP headers including
@@ -2644,7 +2687,7 @@
 <member name="">
 
 </member>
-<member name="M:FSharp.Net.Http.AsyncRequestString``4(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``3})">
+<member name="M:FSharp.Net.Http.AsyncRequestString``3(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer})">
 <summary>
  Download an HTTP web resource from the specified URL asynchronously
  (allows specifying query string parameters and HTTP headers including
@@ -2653,7 +2696,7 @@
  that will be encoded, and the method will automatically be set if not specified
 </summary>
 </member>
-<member name="M:FSharp.Net.Http.AsyncRequest``4(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{``3})">
+<member name="M:FSharp.Net.Http.AsyncRequest``3(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Net.RequestBody},Microsoft.FSharp.Core.FSharpOption{``2},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer})">
 <summary>
  Download an HTTP web resource from the specified URL asynchronously
  (allows specifying query string parameters and HTTP headers including
@@ -2717,6 +2760,12 @@
 
 </member>
 <member name="T:ProviderImplementation.HttpUtility">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
 
 </member>
 </members>

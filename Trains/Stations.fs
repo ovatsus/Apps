@@ -8,6 +8,10 @@ open FSharp.GeoUtils
 type Country = 
     | UK
     | Ireland
+    member x.SupportsArrivals =
+        match x with
+        | UK -> true
+        | Ireland -> false
 
 type Station =
     { Code : string
@@ -31,9 +35,13 @@ module Stations =
                 | UK ->
 
                     //from http://www.data.gov.uk/dataset/naptan
-                    //osgb36 to latitude/longitude converted with http://gridreferencefinder.com/batchConvert/batchConvert.htm
+                    //osgb36 to latitude/longitude converted with http://gridreferencefinder.com/batchConvert/batchConvert.htm                    
+#if INTERACTIVE
+                    let csvFile = new CsvProvider<"UKStations.csv", Schema="Latitude=float,Longitude=float">()
+#else
                     use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UKStations.csv")
                     let csvFile = CsvProvider<"UKStations.csv", Schema="Latitude=float,Longitude=float">.Load stream
+#endif
                     csvFile.Data
                     |> Seq.groupBy (fun station -> station.CrsCode)
                     |> Seq.map (fun (code, stations) -> 
@@ -49,14 +57,34 @@ module Stations =
 
                 | Ireland ->
 
+#if INTERACTIVE
+                    let csvFile = new CsvProvider<"IrelandStations.csv">()
+#else
                     use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("IrelandStations.csv")
                     let csvFile = CsvProvider<"IrelandStations.csv">.Load stream
+#endif
                     csvFile.Data 
                     |> Seq.map (fun station -> 
                         { Code = station.Code
                           Name = station.Name
                           Location = LatLong.Create station.Latitude station.Longitude })
                     |> Seq.toList
+
+#if false
+                    //from "http://api.irishrail.ie/realtime/realtime.asmx/getAllStationsXML
+#if INTERACTIVE
+                    let xml = XmlProvider<"IrelandStations.xml">.GetSample()
+#else
+                    use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("IrelandStations.xml")
+                    let xml = XmlProvider<"IrelandStations.xml">.Load stream
+#endif
+                    xml.GetObjStations()
+                    |> Seq.map (fun station -> 
+                        { Code = station.StationCode
+                          Name = station.StationDesc
+                          Location = LatLong.Create (float station.StationLatitude) (float station.StationLongitude) })
+                    |> Seq.toList
+#endif
 
             let stationsByCode =
                 allStations 

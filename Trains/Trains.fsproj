@@ -55,14 +55,17 @@
     <Compile Include="LazyAsync.fsi" />
     <Compile Include="LazyAsync.fs" />
     <Compile Include="LazyBlock.fs" />
-    <EmbeddedResource Include="UKStations.csv" />
-    <EmbeddedResource Include="IrelandStations.csv" />
     <Compile Include="GeoUtils.fs" />
+    <EmbeddedResource Include="UKStations.csv" />
+    <None Include="IrelandStations.fsx" />
+    <EmbeddedResource Include="IrelandStations.csv" />
+    <Content Include="IrelandStations.xml" />
     <Compile Include="Stations.fs" />
     <Compile Include="LiveDepartures.fs" />
-    <Compile Include="Schedules.fs" />
+    <Compile Include="LiveDepartures.IE.fs" />
+    <Compile Include="LiveDepartures.UK.fs" />
+    <Compile Include="LiveDeparturesExtensions.fs" />
     <Compile Include="SampleData.fs" />
-    <None Include="IrelandRailStations.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
