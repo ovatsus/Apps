@@ -10,7 +10,7 @@
       <DefaultTask Name="_default" NavigationPage="MainPage.xaml" ActivationPolicy="Resume" />
     </Tasks>
     <Tokens>
-      <PrimaryToken TokenID="LearnOnTheGo.WP8Token" TaskName="_default">
+      <PrimaryToken TokenID="LearnOnTheGo.WP8.Token" TaskName="_default">
         <TemplateFlip>
           <SmallImageURI IsRelative="true" IsResource="false">Assets/Tiles/FlipCycleTileSmall.png</SmallImageURI>
           <Count>0</Count>

@@ -4,7 +4,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public static class CommonApplicationBarItems
     {

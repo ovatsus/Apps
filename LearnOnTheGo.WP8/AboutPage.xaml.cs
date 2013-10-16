@@ -3,7 +3,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using Windows.ApplicationModel.Store;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public partial class AboutPage : PhoneApplicationPage
     {

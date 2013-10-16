@@ -1,4 +1,4 @@
-﻿namespace Coursera
+﻿namespace LearnOnTheGo
 
 open System
 open System.Collections.Generic

@@ -5,11 +5,10 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Coursera;
 using Microsoft.Phone.BackgroundTransfer;
 using Microsoft.Phone.Controls;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public class DownloadInfo : INotifyPropertyChanged, IDownloadInfo
     {

@@ -10,7 +10,7 @@
     xmlns:src="clr-namespace:Trains.WP8"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Trains="clr-namespace:Trains;assembly=Trains"
+    xmlns:trains="clr-namespace:Trains;assembly=Trains"
     xmlns:adduplex="clr-namespace:AdDuplex;assembly=AdDuplex.WindowsPhone"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -19,7 +19,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     toolkit:TiltEffect.IsTiltEnabled="True"
-    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=Trains:SampleData}">
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=trains:SampleData}">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>

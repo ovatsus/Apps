@@ -13,6 +13,7 @@ namespace Trains.WP8
             InitializeComponent();
             enableLocationServices.IsChecked = Settings.GetBool(Setting.LocationServicesEnabled);
             useMilesInsteadOfKms.IsChecked = Settings.GetBool(Setting.UseMilesInsteadOfKMs);
+            pivot.Title = AppMetadata.Current.Name;
         }
 
         private async void OnShowDeparturesOnLockScreenClick(object sender, EventArgs e)

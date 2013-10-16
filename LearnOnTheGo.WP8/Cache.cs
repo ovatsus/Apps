@@ -2,7 +2,7 @@
 using System.IO;
 using System.IO.IsolatedStorage;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public static class Cache
     {

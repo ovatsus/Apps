@@ -11,6 +11,8 @@ namespace Trains.WP8
         {
             InitializeComponent();
             version.Text = "Version " + LittleWatson.AppVersion;
+            pivotItem.Header = AppMetadata.Current.Name;
+            run.Text = AppMetadata.Current.Name;
         }
 
         private void OnRateAndReviewClick(object sender, EventArgs e)

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Coursera;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public partial class MainPage : PhoneApplicationPage
     {
@@ -165,7 +164,7 @@ namespace LearnOnTheGo
         private void OnCourseClick(object sender, RoutedEventArgs e)
         {
             LittleWatson.Log("OnCourseClick");
-            var course = (Coursera.Course)((Button)sender).DataContext;
+            var course = (Course)((Button)sender).DataContext;
             NavigationService.Navigate(new Uri("/CoursePage.xaml?courseId=" + course.Id, UriKind.Relative));
         }
     }

@@ -6,7 +6,7 @@ using FSharp.Control;
 using Microsoft.FSharp.Collections;
 using Microsoft.Phone.Shell;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public class LazyBlockUI<T> : ILazyBlockUI<T>
     {

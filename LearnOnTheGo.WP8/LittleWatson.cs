@@ -11,7 +11,7 @@ using System.Xml;
 using Microsoft.Phone.Info;
 using Microsoft.Phone.Tasks;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public static class LittleWatson
     {

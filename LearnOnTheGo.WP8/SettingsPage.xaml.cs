@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Phone.Controls;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public partial class SettingsPage : PhoneApplicationPage
     {

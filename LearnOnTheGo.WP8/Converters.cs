@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public class BooleanToImageSourceConverter : IValueConverter
     {

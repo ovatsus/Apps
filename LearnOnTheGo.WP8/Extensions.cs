@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.Phone.Controls;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public static class Extensions
     {

@@ -2,11 +2,10 @@
 using System.Net;
 using System.Windows;
 using System.Windows.Navigation;
-using Coursera;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public partial class App : Application
     {

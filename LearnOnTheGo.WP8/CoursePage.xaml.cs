@@ -3,12 +3,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Coursera;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public partial class CoursePage : PhoneApplicationPage
     {
@@ -265,7 +264,7 @@ namespace LearnOnTheGo
         {
             LittleWatson.Log("OnLectureNotesClick");
 
-            var lecture = (Coursera.Lecture)((Button)sender).DataContext;
+            var lecture = (Lecture)((Button)sender).DataContext;
             LittleWatson.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
             var task = new WebBrowserTask();

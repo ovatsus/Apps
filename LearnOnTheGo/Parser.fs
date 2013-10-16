@@ -1,4 +1,4 @@
-﻿module Coursera.Parser
+﻿module LearnOnTheGo.Parser
 
 open System
 open HtmlAgilityPack.FSharp

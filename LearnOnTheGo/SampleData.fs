@@ -1,4 +1,4 @@
-﻿namespace Coursera
+﻿namespace LearnOnTheGo
 
 open System.ComponentModel
 open System.IO

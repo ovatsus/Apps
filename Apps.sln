@@ -9,17 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		UKTrains.txt = UKTrains.txt
 	EndProjectSection
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Coursera", "Coursera\Coursera.fsproj", "{17CD56DE-3304-43DB-81E2-731624AF41F2}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LearnOnTheGo", "LearnOnTheGo\LearnOnTheGo.fsproj", "{17CD56DE-3304-43DB-81E2-731624AF41F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnOnTheGo.WP8", "LearnOnTheGo.WP8\LearnOnTheGo.WP8.csproj", "{DC399FE7-6708-44CC-9C92-E05AC217DFB9}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Trains", "Trains\Trains.fsproj", "{5552F566-E77E-433B-8459-A41F865AF52C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKTrains.WP8", "UKTrains.WP8\UKTrains.WP8.csproj", "{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains.WP8.UK", "Trains.WP8.UK\Trains.WP8.UK.csproj", "{427AEEA6-D5FC-426D-B8C3-58C26B1C3C06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains.WP8", "Trains.WP8\Trains.WP8.csproj", "{39849162-6B6F-43FA-BEBD-C4451D37A32A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrishTrains.WP8", "IrishTrains.WP8\IrishTrains.WP8.csproj", "{3F2FDA3B-0194-4AFE-904D-ED9C6367FFEB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains.WP8.IE", "Trains.WP8.IE\Trains.WP8.IE.csproj", "{3F2FDA3B-0194-4AFE-904D-ED9C6367FFEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

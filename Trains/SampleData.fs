@@ -122,3 +122,5 @@ type SampleData() =
                                  IsAlternateRoute = true } ]
 
     member __.LastUpdated = "last updated at " + DateTime.Now.ToString("HH:mm:ss")
+
+    member __.AppTitle = "UK Trains"

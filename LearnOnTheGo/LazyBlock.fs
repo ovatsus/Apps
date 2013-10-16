@@ -78,7 +78,7 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<
                 ui.SetLocalProgressMessage
                     (if isWebException then 
                         let webException = exn :?> WebException
-                        if webException.Response <> null && webException.Response.ResponseUri.IsAbsoluteUri && webException.Response.ResponseUri.AbsoluteUri = Coursera.URLs.Login then
+                        if webException.Response <> null && webException.Response.ResponseUri.IsAbsoluteUri && webException.Response.ResponseUri.AbsoluteUri = LearnOnTheGo.URLs.Login then
                             "Login did not work, please check your email and password in the Settings page and try again."
                         else
                             "Unable to establish an internet connection. Please check your internet status and try again."

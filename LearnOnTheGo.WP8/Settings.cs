@@ -4,7 +4,7 @@ using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace LearnOnTheGo
+namespace LearnOnTheGo.WP8
 {
     public enum Setting
     {
