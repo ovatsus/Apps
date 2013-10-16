@@ -2,6 +2,7 @@ namespace FSharp.Control
 
 open System
 open System.Net
+open System.Runtime.InteropServices
 
 type LazyBlockUIState =
     | Loading of string
@@ -16,6 +17,8 @@ type ILazyBlockUI<'a> =
     abstract SetGlobalProgressMessage : string -> unit
     abstract SetLocalProgressMessage : string -> unit
 
+    abstract GetWebExceptionMessage : WebException -> string
+
     abstract HasItems : bool
     abstract SetItems : 'a -> unit
 
@@ -26,7 +29,8 @@ type ILazyBlockUI<'a> =
 
     abstract OnException : string * exn -> unit
 
-type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<_,_>, ui : ILazyBlockUI<'a>, useRefreshTimer, beforeLoad:Action<bool>, afterLoad:Action<bool>, filter:Func<_,_>) as this =
+type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<_,_>, ui : ILazyBlockUI<'a>, useRefreshTimer,
+                   beforeLoad:Action<bool>, afterLoad:Action<bool>, filter:Func<_,_>) as this =
 
     let cts = ref None
 
@@ -76,7 +80,7 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<
             let isWebException = exn :? WebException
             if not refreshing then
                 ui.SetLocalProgressMessage
-                    (if isWebException then "Unable to establish an internet connection. Please check your internet status and try again."
+                    (if isWebException then ui.GetWebExceptionMessage(exn :?> WebException)
                      elif exn.Message.Length > 500 then exn.Message.Substring(0, 500) + " ..."
                      else exn.Message)
             if afterLoad <> null then 

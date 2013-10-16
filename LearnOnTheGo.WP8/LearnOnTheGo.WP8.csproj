@@ -203,8 +203,9 @@
     <Reference Include="CS.Windows.Controls">
       <HintPath>..\lib\wp8\CS.Windows.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\3.0\Runtime\.NETPortable\FSharp.Core.dll</HintPath>
+    <Reference Include="FSharp.Core, Version=2.3.5.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\.NETPortable\2.3.5.1\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -215,6 +216,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.fsproj">
+      <Project>{E3A1693B-9EEC-4D86-A54E-0321CA206748}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LearnOnTheGo\LearnOnTheGo.fsproj">
       <Project>{17CD56DE-3304-43DB-81E2-731624AF41F2}</Project>
       <Name>LearnOnTheGo</Name>

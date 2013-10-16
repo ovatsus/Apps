@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile47</TargetFrameworkProfile>
     <Name>LearnOnTheGo</Name>
-    <TargetFSharpCoreVersion>2.3.5.0</TargetFSharpCoreVersion>
+    <TargetFSharpCoreVersion>2.3.5.1</TargetFSharpCoreVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,15 +52,11 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="packages.config" />
-    <Compile Include="HtmlAgilityPack.FSharp.fs" />
-    <Compile Include="LazyAsync.fsi" />
-    <Compile Include="LazyAsync.fs" />
     <Compile Include="DataModel.fs" />
     <EmbeddedResource Include="topics.json" />
     <EmbeddedResource Include="lectures.html" />
     <Compile Include="Parser.fs" />
     <Compile Include="Crawler.fs" />
-    <Compile Include="LazyBlock.fs" />
     <Compile Include="SampleData.fs" />
     <None Include="Tests.fsx" />
   </ItemGroup>
@@ -76,6 +72,13 @@
       <HintPath>..\packages\HtmlAgilityPack-PCL.1.4.6\lib\HtmlAgilityPack-PCL.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.fsproj">
+      <Name>Common</Name>
+      <Project>{e3a1693b-9eec-4d86-a54e-0321ca206748}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -109,6 +109,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.fsproj">
+      <Project>{E3A1693B-9EEC-4D86-A54E-0321CA206748}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trains\Trains.fsproj">
       <Project>{5552F566-E77E-433B-8459-A41F865AF52C}</Project>
       <Name>Trains</Name>
@@ -124,9 +128,9 @@
     <Reference Include="CS.Windows.Controls">
       <HintPath>..\lib\wp8\CS.Windows.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Core, Version=2.3.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="FSharp.Core, Version=2.3.5.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\.NETPortable\2.3.5.0\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\.NETPortable\2.3.5.1\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="HereLauncher">
       <HintPath>..\packages\HereLaunchers.1.2\lib\wp8\HereLauncher.dll</HintPath>

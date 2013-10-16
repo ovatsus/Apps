@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -58,6 +59,18 @@ namespace LearnOnTheGo.WP8
             {
                 messageTextBlock.Text = value;
                 messageTextBlock.Visibility = value != "" ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public string GetWebExceptionMessage(WebException webException)
+        {
+            if (webException.Response != null && webException.Response.ResponseUri.IsAbsoluteUri && webException.Response.ResponseUri.AbsoluteUri == URLs.Login)
+            {
+                return "Login did not work, please check your email and password in the Settings page and try again.";
+            }
+            else
+            {
+                return "Unable to establish an internet connection. Please check your internet status and try again.";
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -56,6 +57,11 @@ namespace Trains.WP8
         {
             messageTextBlock.Text = value;
             messageTextBlock.Visibility = value != "" ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public string GetWebExceptionMessage(WebException webException)
+        {
+            return "Unable to establish an internet connection. Please check your internet status and try again.";
         }
 
         public bool HasItems
