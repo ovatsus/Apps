@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Common.WP8;
 using Microsoft.Phone.Controls;
 
 namespace LearnOnTheGo.WP8
@@ -51,20 +52,20 @@ namespace LearnOnTheGo.WP8
 
         private void OnPlayClick(object sender, RoutedEventArgs e)
         {
-            LittleWatson.Log("OnPlayClick");
+            ErrorReporting.Log("OnPlayClick");
             
             var downloadInfo = (DownloadInfo)((Button)sender).DataContext;
-            LittleWatson.Log("Course = " + downloadInfo.CourseTopicName + " [" + downloadInfo.CourseId + "] Lecture = " + downloadInfo.LectureTitle + " [" + downloadInfo.LectureId + "]");
+            ErrorReporting.Log("Course = " + downloadInfo.CourseTopicName + " [" + downloadInfo.CourseId + "] Lecture = " + downloadInfo.LectureTitle + " [" + downloadInfo.LectureId + "]");
             
             CoursePage.LaunchVideo(downloadInfo.VideoLocation);
         }
 
         private void OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            LittleWatson.Log("OnDeleteClick");
+            ErrorReporting.Log("OnDeleteClick");
             
             var downloadInfo = (DownloadInfo)((Button)sender).DataContext;
-            LittleWatson.Log("Course = " + downloadInfo.CourseTopicName + " [" + downloadInfo.CourseId + "] Lecture = " + downloadInfo.LectureTitle + " [" + downloadInfo.LectureId + "]");
+            ErrorReporting.Log("Course = " + downloadInfo.CourseTopicName + " [" + downloadInfo.CourseId + "] Lecture = " + downloadInfo.LectureTitle + " [" + downloadInfo.LectureId + "]");
 
             var monitor = downloadInfo.Monitor;
             if (monitor != null)

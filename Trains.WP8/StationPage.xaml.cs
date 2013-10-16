@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Common.WP8;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Maps;
@@ -11,7 +12,6 @@ using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Phone.Shell;
-using Trains;
 using Nokia.Phone.HereLaunchers;
 
 namespace Trains.WP8
@@ -34,7 +34,7 @@ namespace Trains.WP8
 
             if (departuresTable != null)
             {
-                LittleWatson.Log("departuresTable is not null");
+                ErrorReporting.Log("departuresTable is not null");
                 OnPivotSelectionChanged(null, null);
                 return;
             }
@@ -273,7 +273,7 @@ namespace Trains.WP8
                 };
                 pivotItem.Tap += delegate
                 {
-                    LittleWatson.Log("OnMapClick");
+                    ErrorReporting.Log("OnMapClick");
                     new DirectionsRouteDestinationTask
                     {
                         Origin = start,
@@ -307,7 +307,7 @@ namespace Trains.WP8
 
         private void OnPinToStartClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnPinToStartClick");
+            ErrorReporting.Log("OnPinToStartClick");
             var uri = GetUri(departuresTable, removeBackEntry: false);
             if (!IsStationPinnedToStart())
             {
@@ -330,7 +330,7 @@ namespace Trains.WP8
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnRefreshClick");
+            ErrorReporting.Log("OnRefreshClick");
             if (pivot.SelectedIndex != 1 && departuresLazyBlock != null)
             {
                 departuresLazyBlock.Refresh();
@@ -343,7 +343,7 @@ namespace Trains.WP8
 
         private void OnFilterOrClearFilterClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnFilterOrClearFilterClick");
+            ErrorReporting.Log("OnFilterOrClearFilterClick");
             if (departuresTable.HasDestinationFilter)
             {
                 NavigationService.Navigate(GetUri(departuresTable.WithoutFilter, false));
@@ -356,25 +356,25 @@ namespace Trains.WP8
 
         private void OnFilterByAnotherDestinationClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnFilterByAnotherDestinationClick");
+            ErrorReporting.Log("OnFilterByAnotherDestinationClick");
             NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresTable.Station.Code, "excludeStation", departuresTable.CallingAt.Value.Code));
         }
 
         private void OnReverseJourneyClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnReverseJourneyClick");
+            ErrorReporting.Log("OnReverseJourneyClick");
             NavigationService.Navigate(GetUri(departuresTable.Reversed, false));
         }
 
         private void OnAnotherRailStationClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnRailStationsClick");
+            ErrorReporting.Log("OnRailStationsClick");
             NavigationService.Navigate(this.GetUri<MainAndFilterPage>());
         }
 
         private void OnLiveProgressClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnLiveProgressClick");
+            ErrorReporting.Log("OnLiveProgressClick");
             var departure = (Departure)((Button)sender).DataContext;
             var title = departuresTable.Station.Name + " to " + departuresTable.Match(_ => departure.Destination, (_, destination) => destination.Name);
             LiveProgressPage.SetTarget(title, departure);
@@ -383,7 +383,7 @@ namespace Trains.WP8
 
         private void OnPivotSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LittleWatson.Log("OnPivotSelectionChanged " + pivot.SelectedIndex);
+            ErrorReporting.Log("OnPivotSelectionChanged " + pivot.SelectedIndex);
             if (pivot.SelectedIndex == 0)
             {
                 LoadDepartures();

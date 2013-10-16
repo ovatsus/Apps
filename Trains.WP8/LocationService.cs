@@ -1,6 +1,7 @@
-﻿using FSharp.GeoUtils;
-using System;
+﻿using System;
 using System.Device.Location;
+using Common.WP8;
+using FSharp.GeoUtils;
 
 namespace Trains.WP8
 {

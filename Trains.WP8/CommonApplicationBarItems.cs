@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Common.WP8;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
@@ -15,7 +16,7 @@ namespace Trains.WP8
                 var settingsMenuItem = new ApplicationBarMenuItem("Settings");
                 settingsMenuItem.Click += delegate
                 {
-                    LittleWatson.Log("OnSettingsClick");
+                    ErrorReporting.Log("OnSettingsClick");
                     page.NavigationService.Navigate(page.GetUri<SettingsPage>());
                 };
                 page.ApplicationBar.MenuItems.Add(settingsMenuItem);
@@ -24,7 +25,7 @@ namespace Trains.WP8
             var button = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.information.png", UriKind.Relative)) { Text = "About" };
             button.Click += delegate
             {
-                LittleWatson.Log("OnAboutClick");
+                ErrorReporting.Log("OnAboutClick");
                 page.NavigationService.Navigate(page.GetUri<AboutPage>());
             };
             page.ApplicationBar.Buttons.Insert(0, button);
@@ -41,7 +42,7 @@ namespace Trains.WP8
                     var result = MessageBox.Show("Would you mind reviewing the " + AppMetadata.Current.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
                     if (result == MessageBoxResult.OK)
                     {
-                        LittleWatson.Log("MarketplaceReviewTaskShow from Prompt");
+                        ErrorReporting.Log("MarketplaceReviewTaskShow from Prompt");
                         new MarketplaceReviewTask().Show();
                     }
                     Settings.Set(Setting.RatingDone, true);

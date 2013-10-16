@@ -3,6 +3,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Common.WP8;
 using FSharp.Control;
 using Microsoft.FSharp.Collections;
 using Microsoft.Phone.Shell;
@@ -110,8 +111,8 @@ namespace LearnOnTheGo.WP8
 
         public void OnException(string message, Exception e)
         {
-            LittleWatson.ReportException(e, message);
-            LittleWatson.CheckForPreviousException(false);
+            ErrorReporting.ReportException(e, message);
+            ErrorReporting.CheckForPreviousException(false);
         }
     }
 }

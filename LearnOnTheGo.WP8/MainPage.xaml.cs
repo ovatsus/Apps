@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Common.WP8;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
 
@@ -32,14 +33,14 @@ namespace LearnOnTheGo.WP8
 
             if (e.NavigationMode == NavigationMode.New)
             {
-                LittleWatson.CheckForPreviousException(true);
-                LittleWatson.CheckForNewVersion(this);
+                ErrorReporting.CheckForPreviousException(true);
+                AppMetadata.CheckForNewVersion(this);
             }
 
             // settings changed
             if (lastEmail != null && lastEmail != Settings.GetString(Setting.Email))
             {
-                LittleWatson.Log("Settings changed");
+                ErrorReporting.Log("Settings changed");
                 activeCourses.ItemsSource = null;
                 upcomingCourses.ItemsSource = null;
                 finishedCourses.ItemsSource = null;
@@ -129,7 +130,7 @@ namespace LearnOnTheGo.WP8
                 {
                     if (!success)
                     {
-                        LittleWatson.Log("Failed to get courses");
+                        ErrorReporting.Log("Failed to get courses");
                     }
                 },
                 null);
@@ -146,7 +147,7 @@ namespace LearnOnTheGo.WP8
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnRefreshClick");
+            ErrorReporting.Log("OnRefreshClick");
 
             var email = Settings.GetString(Setting.Email);
             var password = Settings.GetString(Setting.Password);
@@ -163,7 +164,7 @@ namespace LearnOnTheGo.WP8
 
         private void OnCourseClick(object sender, RoutedEventArgs e)
         {
-            LittleWatson.Log("OnCourseClick");
+            ErrorReporting.Log("OnCourseClick");
             var course = (Course)((Button)sender).DataContext;
             NavigationService.Navigate(new Uri("/CoursePage.xaml?courseId=" + course.Id, UriKind.Relative));
         }

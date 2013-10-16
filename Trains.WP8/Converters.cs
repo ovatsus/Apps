@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using Trains;
+using Common.WP8;
 
 namespace Trains.WP8
 {

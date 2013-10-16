@@ -5,6 +5,7 @@ open FSharp.Control
 open FSharp.GeoUtils
 
 type SampleData() =
+    inherit Common.SampleData()
 
     let stations = Stations.getAll() |> Array.sortBy (fun s -> s.Name.Length)
     
@@ -122,5 +123,3 @@ type SampleData() =
                                  IsAlternateRoute = true } ]
 
     member __.LastUpdated = "last updated at " + DateTime.Now.ToString("HH:mm:ss")
-
-    member __.AppTitle = "UK Trains"

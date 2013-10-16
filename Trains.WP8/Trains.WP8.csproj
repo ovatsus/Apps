@@ -83,12 +83,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AboutPage.xaml.cs">
-      <DependentUpon>AboutPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CommonApplicationBarItems.cs" />
     <Compile Include="Converters.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="LazyBlockUI.cs" />
     <Compile Include="LiveProgressPage.xaml.cs">
       <DependentUpon>LiveProgressPage.xaml</DependentUpon>
@@ -101,14 +97,15 @@
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppMetadata.cs" />
-    <Compile Include="LittleWatson.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="StationPage.xaml.cs">
       <DependentUpon>StationPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common.WP8\Common.WP8.csproj">
+      <Project>{B4173364-79DA-4078-B0F6-7E95F0935375}</Project>
+      <Name>Common.WP8</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.fsproj">
       <Project>{E3A1693B-9EEC-4D86-A54E-0321CA206748}</Project>
       <Name>Common</Name>
@@ -143,10 +140,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AboutPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="LiveProgressPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -166,27 +159,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\Icons\appbar.check.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Icons\appbar.email.hardedge.png" />
-    <Content Include="Assets\Icons\appbar.filter.clear.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Icons\appbar.filter.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Icons\appbar.information.png" />
-    <Content Include="Assets\Icons\appbar.message.png" />
-    <Content Include="Assets\Icons\appbar.pin.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Icons\appbar.refresh.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Icons\appbar.social.sharethis.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

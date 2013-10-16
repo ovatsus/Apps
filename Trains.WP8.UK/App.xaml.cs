@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Trains;
+using Common.WP8;
 
 namespace Trains.WP8.UK
 {
@@ -9,7 +9,7 @@ namespace Trains.WP8.UK
         {
             InitializeComponent();
 
-            new AppMetadata(this, "UK Trains", "uktrains@codebeside.org");
+            new AppMetadata(this, "UK Trains", "uktrains@codebeside.org", true);
             Stations.Country = Country.UK;
         }
     }

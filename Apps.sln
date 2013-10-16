@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.20827.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{467B15DE-972E-45F6-914A-3AF8C6A91442}"
 	ProjectSection(SolutionItems) = preProject
-		IETrains.txt = IETrains.txt
+		IrelandTrains.txt = IrelandTrains.txt
 		LearnOnTheGo.txt = LearnOnTheGo.txt
 		UKTrains.txt = UKTrains.txt
 	EndProjectSection
@@ -23,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains.WP8.IE", "Trains.WP8.IE\Trains.WP8.IE.csproj", "{3F2FDA3B-0194-4AFE-904D-ED9C6367FFEB}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Common", "Common\Common.fsproj", "{E3A1693B-9EEC-4D86-A54E-0321CA206748}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.WP8", "Common.WP8\Common.WP8.csproj", "{B4173364-79DA-4078-B0F6-7E95F0935375}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,6 +126,18 @@ Global
 		{E3A1693B-9EEC-4D86-A54E-0321CA206748}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E3A1693B-9EEC-4D86-A54E-0321CA206748}.Release|ARM.ActiveCfg = Release|Any CPU
 		{E3A1693B-9EEC-4D86-A54E-0321CA206748}.Release|x86.ActiveCfg = Release|Any CPU
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Debug|ARM.ActiveCfg = Debug|ARM
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Debug|ARM.Build.0 = Debug|ARM
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Debug|x86.ActiveCfg = Debug|x86
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Debug|x86.Build.0 = Debug|x86
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Release|ARM.ActiveCfg = Release|ARM
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Release|ARM.Build.0 = Release|ARM
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Release|x86.ActiveCfg = Release|x86
+		{B4173364-79DA-4078-B0F6-7E95F0935375}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -90,9 +90,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AboutPage.xaml.cs">
-      <DependentUpon>AboutPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -102,11 +99,8 @@
     <Compile Include="DownloadsPage.xaml.cs">
       <DependentUpon>DownloadsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Extensions.cs" />
     <Compile Include="LazyBlockUI.cs" />
     <Compile Include="DownloadInfo.cs" />
-    <Compile Include="LittleWatson.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -122,10 +116,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="AboutPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="DownloadsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -152,26 +142,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Icons\appbar.cancel.png" />
-    <Content Include="Assets\Icons\appbar.coursera.png" />
-    <Content Include="Assets\Icons\appbar.check.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Icons\appbar.control.play.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Icons\appbar.delete.png" />
-    <Content Include="Assets\Icons\appbar.download.png" />
-    <Content Include="Assets\Icons\appbar.email.hardedge.png" />
-    <Content Include="Assets\Icons\appbar.information.png" />
-    <Content Include="Assets\Icons\appbar.message.png" />
-    <Content Include="Assets\Icons\appbar.page.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Icons\appbar.refresh.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Icons\appbar.social.sharethis.png" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -211,11 +181,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="SharpGIS.GZipWebClient">
-      <HintPath>..\packages\SharpGIS.GZipWebClient.1.4.0.0\lib\wp71\SharpGIS.GZipWebClient.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common.WP8\Common.WP8.csproj">
+      <Project>{B4173364-79DA-4078-B0F6-7E95F0935375}</Project>
+      <Name>Common.WP8</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.fsproj">
       <Project>{E3A1693B-9EEC-4D86-A54E-0321CA206748}</Project>
       <Name>Common</Name>

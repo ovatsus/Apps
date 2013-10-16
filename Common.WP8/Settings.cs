@@ -4,19 +4,26 @@ using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Trains.WP8
+namespace Common.WP8
 {
     public enum Setting
     {
+        // Common
+        RatingDone,
+        InstallationDate,
+        LastNewVersionCheck,
+
+        // Learn On The Go
+        Email,
+        Password,
+
+        // Trains
         LocationServicesEnabled,
         LocationServicesPromptShown,
         CurrentLat,
         CurrentLong,
         RecentStations,
         UseMilesInsteadOfKMs,
-        RatingDone,
-        InstallationDate,
-        LastNewVersionCheck,
     }
 
     public static class Settings

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Navigation;
+using Common.WP8;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
-using Trains;
 
 namespace Trains.WP8
 {
@@ -32,14 +32,14 @@ namespace Trains.WP8
 
             if (departure == null)
             {
-                LittleWatson.Log("Departure is null");
+                ErrorReporting.Log("Departure is null");
                 if (NavigationService.CanGoBack)
                 {
                     NavigationService.GoBack();
                 }
                 else
                 {
-                    LittleWatson.Log("Can not go back");
+                    ErrorReporting.Log("Can not go back");
                 }
                 return;
             }
@@ -83,7 +83,7 @@ namespace Trains.WP8
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnRefreshClick");
+            ErrorReporting.Log("OnRefreshClick");
             if (journeyElementsLazyBlock != null)
             {
                 journeyElementsLazyBlock.Refresh();

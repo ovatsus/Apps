@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -7,12 +6,12 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using Common.WP8;
 using FSharp.Control;
 using FSharp.GeoUtils;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Reactive;
 using Microsoft.Phone.Shell;
-using Trains;
 
 namespace Trains.WP8
 {
@@ -56,7 +55,8 @@ namespace Trains.WP8
             {
                 if (e.NavigationMode == NavigationMode.New)
                 {
-                    LittleWatson.CheckForPreviousException(true);
+                    ErrorReporting.CheckForPreviousException(true);
+                    AppMetadata.CheckForNewVersion(this);
                     if (!Settings.GetBool(Setting.LocationServicesEnabled) && !Settings.GetBool(Setting.LocationServicesPromptShown))
                     {
                         Settings.Set(Setting.LocationServicesPromptShown, true);
@@ -67,8 +67,7 @@ namespace Trains.WP8
                         {
                             Settings.Set(Setting.LocationServicesEnabled, true);
                         }
-                    }
-                    LittleWatson.CheckForNewVersion(this);
+                    }                    
                 }
             }
             else
@@ -196,13 +195,13 @@ namespace Trains.WP8
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnRefreshClick");
+            ErrorReporting.Log("OnRefreshClick");
             LoadNearestStations();
         }
 
         private void OnStationClick(object sender, RoutedEventArgs e)
         {
-            LittleWatson.Log("OnStationClick");
+            ErrorReporting.Log("OnStationClick");
             var dataContext = ((Button)sender).DataContext;
             GoToStation(dataContext);
         }
@@ -229,14 +228,14 @@ namespace Trains.WP8
 
         private void OnClearRecentItemsClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnClearRecentItemsClick");
+            ErrorReporting.Log("OnClearRecentItemsClick");
             RecentItems.Clear();
             RefreshRecentItemsList();
         }
 
         private void OnRecentItemRemoveClick(object sender, RoutedEventArgs e)
         {
-            LittleWatson.Log("OnRecentItemRemoveClick");
+            ErrorReporting.Log("OnRecentItemRemoveClick");
             var dataContext = (DeparturesTable)((MenuItem)sender).DataContext;
             RecentItems.Remove(dataContext);
             RefreshRecentItemsList();

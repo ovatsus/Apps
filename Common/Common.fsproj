@@ -55,6 +55,7 @@
     <Compile Include="LazyAsync.fsi" />
     <Compile Include="LazyAsync.fs" />
     <Compile Include="LazyBlock.fs" />
+    <Compile Include="SampleData.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

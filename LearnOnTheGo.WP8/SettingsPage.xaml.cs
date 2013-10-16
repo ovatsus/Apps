@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.WP8;
 using Microsoft.Phone.Controls;
 
 namespace LearnOnTheGo.WP8
@@ -14,7 +15,7 @@ namespace LearnOnTheGo.WP8
 
         private void OnSaveClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnSaveClick");
+            ErrorReporting.Log("OnSaveClick");
             if (email.Text != Settings.GetString(Setting.Email))
             {
                 Cache.DeleteAllFiles();

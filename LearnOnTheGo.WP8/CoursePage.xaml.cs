@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Common.WP8;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
@@ -31,7 +32,7 @@ namespace LearnOnTheGo.WP8
             // settings changed
             if (lastEmail != null && lastEmail != Settings.GetString(Setting.Email))
             {
-                LittleWatson.Log("Settings changed");
+                ErrorReporting.Log("Settings changed");
                 pivot.ItemsSource = null;
             }
 
@@ -40,7 +41,7 @@ namespace LearnOnTheGo.WP8
             // app was tombstoned or settings changed
             if (App.Crawler == null)
             {
-                LittleWatson.Log("App.Crawler is null");
+                ErrorReporting.Log("App.Crawler is null");
 
                 var email = Settings.GetString(Setting.Email);
                 var password = Settings.GetString(Setting.Password);
@@ -67,7 +68,7 @@ namespace LearnOnTheGo.WP8
                     {
                         if (!success)
                         {
-                            LittleWatson.Log("Failed to get courses");
+                            ErrorReporting.Log("Failed to get courses");
                             App.Crawler = null;
                             SafeGoBack();
                         }
@@ -84,14 +85,14 @@ namespace LearnOnTheGo.WP8
         {
             if (!App.Crawler.HasCourse(courseId))
             {
-                LittleWatson.Log("App.Crawler.HasCourse is false");
+                ErrorReporting.Log("App.Crawler.HasCourse is false");
                 SafeGoBack();
                 return;
             }
 
             var course = App.Crawler.GetCourse(courseId);
             pivot.Title = course.Topic.Name;
-            LittleWatson.Log(courseId + " = " + course.Topic.Name + " [" + course.Name + "]");
+            ErrorReporting.Log(courseId + " = " + course.Topic.Name + " [" + course.Name + "]");
 
             if (pivot.ItemsSource == null)
             {
@@ -117,7 +118,7 @@ namespace LearnOnTheGo.WP8
             }
             else
             {
-                LittleWatson.Log("Can not go back");
+                ErrorReporting.Log("Can not go back");
             }
         }
 
@@ -171,7 +172,7 @@ namespace LearnOnTheGo.WP8
                     {
                         if (!success)
                         {
-                            LittleWatson.Log("Failed to get lectures");
+                            ErrorReporting.Log("Failed to get lectures");
                         }
                     },
                     null);
@@ -193,26 +194,26 @@ namespace LearnOnTheGo.WP8
 
         private void OnRefreshClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnRefreshClick");
+            ErrorReporting.Log("OnRefreshClick");
             Load(true);
         }
 
         private void OnLectureVideoClick(object sender, RoutedEventArgs e)
         {
-            LittleWatson.Log("OnLectureVideoClick");
+            ErrorReporting.Log("OnLectureVideoClick");
 
             if (videoLazyBlock != null)
             {
-                LittleWatson.Log("videoLazyBlock is not null");
+                ErrorReporting.Log("videoLazyBlock is not null");
                 return;
             }
 
             var lecture = (Lecture)((Button)sender).DataContext;
-            LittleWatson.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
+            ErrorReporting.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
             if (lecture.DownloadInfo.Downloading)
             {
-                LittleWatson.Log("Already downloading");
+                ErrorReporting.Log("Already downloading");
                 return;
             }
 
@@ -227,12 +228,12 @@ namespace LearnOnTheGo.WP8
                     {
                         if (lecture.DownloadInfo.Downloaded)
                         {
-                            LittleWatson.Log("Launching video");
+                            ErrorReporting.Log("Launching video");
                             LaunchVideo(lecture.DownloadInfo.VideoLocation);
                         }
                         else
                         {
-                            LittleWatson.Log("Queued download");
+                            ErrorReporting.Log("Queued download");
                             lecture.DownloadInfo.QueueDowload(videoUrl);
                         }
                     },
@@ -255,17 +256,17 @@ namespace LearnOnTheGo.WP8
             }
             catch (Exception ex)
             {
-                LittleWatson.ReportException(ex, string.Format("Launching media player for " + videoUrl.OriginalString));
-                LittleWatson.CheckForPreviousException(false);
+                ErrorReporting.ReportException(ex, string.Format("Launching media player for " + videoUrl.OriginalString));
+                ErrorReporting.CheckForPreviousException(false);
             }
         }
 
         private void OnLectureNotesClick(object sender, RoutedEventArgs e)
         {
-            LittleWatson.Log("OnLectureNotesClick");
+            ErrorReporting.Log("OnLectureNotesClick");
 
             var lecture = (Lecture)((Button)sender).DataContext;
-            LittleWatson.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
+            ErrorReporting.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
             var task = new WebBrowserTask();
             task.Uri = new Uri(lecture.LectureNotesUrl);
@@ -274,7 +275,7 @@ namespace LearnOnTheGo.WP8
 
         private void OnOpenInBrowserClick(object sender, EventArgs e)
         {
-            LittleWatson.Log("OnOpenInBrowserClick");
+            ErrorReporting.Log("OnOpenInBrowserClick");
 
             var course = App.Crawler.GetCourse(courseId);
 
