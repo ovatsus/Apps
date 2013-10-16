@@ -24,8 +24,12 @@ module ComputationResult =
         | Failure exn -> Failure exn
 
     let combine onSuccess onFailure = function
-        | Success result -> onSuccess result
-        | Failure exn -> onFailure exn
+    | Success result -> onSuccess result
+    | Failure exn -> onFailure exn
+
+    let unpack = function
+    | Success result -> result
+    | Failure exn -> raise exn
 
 type AsyncState<'a> =
     | NotStarted of Async<ComputationResult<'a>>
@@ -123,11 +127,20 @@ module LazyAsync =
     let fromValue value =
         LazyAsync(Completed(async { return Success value }, Success value))
 
-    let map f (x:LazyAsync<'a>) =
+    let innerToAsync (x:LazyAsync<'a>) = async { 
+        return! Async.FromContinuations <| fun (cont, _, _) -> 
+            let tokenSource = x.DoWhenCompleted None true ignore cont
+            ()
+    }
+
+    let toAsync x = async { 
+        let! value = innerToAsync x
+        return ComputationResult.unpack value
+    }
+
+    let map f x =
         let asyncValue = async { 
-            let! value = Async.FromContinuations <| fun (cont, _, _) -> 
-                let tokenSource = x.DoWhenCompleted None true ignore cont
-                ()
+            let! value = innerToAsync x
             return value |> ComputationResult.map f
         }
         LazyAsync(NotStarted asyncValue)

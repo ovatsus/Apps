@@ -23,6 +23,8 @@ module LazyAsync =
     
     val fromValue : 'a -> LazyAsync<'a>
     
+    val toAsync : LazyAsync<'a> -> Async<'a>
+
     /// Will not start calculation if not started
     val map : ('a -> 'b) -> LazyAsync<'a> -> LazyAsync<'b>
     
