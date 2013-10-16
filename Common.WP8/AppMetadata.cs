@@ -18,13 +18,14 @@ namespace Common.WP8
         public readonly string Name;
         public readonly string Email;
         public readonly bool UsesLocation;
+        public readonly string MapAuthenticationToken;
 
         public string Version
         {
             get { return GetManifestAttributeValue("Version"); }
         }
 
-        public Guid Id
+        public Guid AppId
         {
             get { return Guid.Parse(GetManifestAttributeValue("ProductID")); }
         }
@@ -33,11 +34,12 @@ namespace Common.WP8
 
         public static AppMetadata Current { get; private set; }
 
-        public AppMetadata(Application application, string name, string email, bool usesLocation)
+        public AppMetadata(Application application, string name, string email, bool usesLocation = false, string mapAuthenticationToken = null)
         {
             Name = name;
             Email = email;
             UsesLocation = usesLocation;
+            MapAuthenticationToken = mapAuthenticationToken;
 
             Current = this;
 
@@ -181,7 +183,7 @@ namespace Common.WP8
                 var cultureInfoName = CultureInfo.CurrentUICulture.Name;
 
                 var url = string.Format("http://marketplaceedgeservice.windowsphone.com/v8/catalog/apps/{0}?os={1}&cc={2}&oc=&lang={3}​",
-                    AppMetadata.Current.Id.ToString("D"),
+                    AppMetadata.Current.AppId.ToString("D"),
                     Environment.OSVersion.Version,
                     cultureInfoName.Substring(cultureInfoName.Length - 2).ToUpperInvariant(),
                     cultureInfoName);

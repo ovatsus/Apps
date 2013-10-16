@@ -29,7 +29,7 @@ let getDepartures (departureType:DepartureType) (departuresTable:DeparturesTable
 
         let url = "http://api.irishrail.ie/realtime/realtime.asmx/getStationDataByCodeXML?StationCode=" + departuresTable.Station.Code
         let! xml = Http.AsyncRequestString url
-        let xmlT = XmlT.Load xml
+        let xmlT = XmlT.Parse xml
 
         let getDepartures() = 
             try 

@@ -1,5 +1,6 @@
 ﻿namespace Trains
 
+open System
 open System.Reflection
 open FSharp.Control
 open FSharp.Data
@@ -64,6 +65,7 @@ module Stations =
                     let csvFile = CsvProvider<"IrelandStations.csv">.Load stream
 #endif
                     csvFile.Data 
+                    |> Seq.filter (fun station -> station.Code <> "")
                     |> Seq.map (fun station -> 
                         { Code = station.Code
                           Name = station.Name

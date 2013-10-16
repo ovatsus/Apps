@@ -60,7 +60,7 @@ namespace Common.WP8
             catch { }
         }
 
-        private static readonly string _appLink = "http://windowsphone.com/s?appid=" + AppMetadata.Current.Id.ToString("D");
+        private static readonly string _appLink = "http://windowsphone.com/s?appid=" + AppMetadata.Current.AppId.ToString("D");
         private static readonly string _title = "Check out \"" + AppMetadata.Current.Name + "\" for Windows Phone";
         private static readonly string _fullMessage = _title + " " + _appLink;
 

@@ -18,10 +18,20 @@ namespace Trains.WP8
 {
     public partial class StationPage : PhoneApplicationPage
     {
+        private readonly int mapIndex;
+
         public StationPage()
         {
             InitializeComponent();
             CommonApplicationBarItems.Init(this);
+            if (Stations.Country.SupportsArrivals)
+            {
+                mapIndex = 2;
+            }
+            else
+            {
+                pivot.Items.Remove(arrivalsPivotItem);
+            }
         }
 
         private DeparturesTable departuresTable;
@@ -85,6 +95,8 @@ namespace Trains.WP8
             GetPinToStartButton().IsEnabled = !IsStationPinnedToStart();
 
             CreateDirectionsPivotItem();
+
+            OnPivotSelectionChanged(null, null);
         }
 
         private void LoadDepartures()
@@ -240,8 +252,8 @@ namespace Trains.WP8
                 };
                 map.Loaded += delegate
                 {
-                    MapsSettings.ApplicationContext.ApplicationId = "ef62d461-861c-4a9f-9198-8768532cc6aa";
-                    MapsSettings.ApplicationContext.AuthenticationToken = "r4y7eZta5Pa32rpsho9CFA";
+                    MapsSettings.ApplicationContext.ApplicationId = AppMetadata.Current.AppId.ToString("D");
+                    MapsSettings.ApplicationContext.AuthenticationToken = AppMetadata.Current.MapAuthenticationToken;
                 };
                 var mapLayer = new MapLayer();
                 mapLayer.Add(new MapOverlay
@@ -285,7 +297,7 @@ namespace Trains.WP8
                 bool mapCentered = false;
                 pivot.SelectionChanged += delegate
                 {
-                    if (!mapCentered && pivot.SelectedIndex == 2)
+                    if (!mapCentered && pivot.SelectedIndex == mapIndex)
                     {
                         map.SetView(e.Result.BoundingBox);
                         mapCentered = true;
@@ -387,8 +399,8 @@ namespace Trains.WP8
             if (pivot.SelectedIndex == 0)
             {
                 LoadDepartures();
-            }
-            if (pivot.SelectedIndex == 1)
+            } 
+            else if (pivot.SelectedIndex != mapIndex)
             {
                 LoadArrivals();
             }
