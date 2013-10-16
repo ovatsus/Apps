@@ -75,7 +75,7 @@ and Time =
 
 and Status =
     | OnTime
-    | Delayed of int
+    | Delayed of mins:int
     | Cancelled
     override x.ToString() =
         match x with
@@ -94,26 +94,26 @@ and JourneyElement = {
     member x.PlatformIsKnown = x.Platform.IsSome
     member x.Expected = 
         match x.Status with
-        | Delayed (_, mins) -> Some (x.Departs + Time.Create(mins))
+        | Delayed (mins = mins) -> Some (x.Departs + Time.Create(mins))
         | _ -> None
 
 and JourneyElementStatus =
-    | OnTime of (*departed*)bool
+    | OnTime of departed:bool
     | NoReport
     | Cancelled
-    | Delayed of (*departed*)bool * int
+    | Delayed of departed:bool * mins:int
     override x.ToString() =
         match x with
         | OnTime _ -> "On time"
         | NoReport -> "No report"
         | Cancelled -> "Cancelled"
-        | Delayed (_, mins) -> sprintf "Delayed %d mins" mins
+        | Delayed (mins = mins) -> sprintf "Delayed %d mins" mins
     member x.HasDeparted =
         match x with
         | OnTime hasDeparted -> hasDeparted
         | NoReport -> true
         | Cancelled -> false
-        | Delayed (hasDeparted, _) -> hasDeparted
+        | Delayed (departed = departed) -> departed
 
 type DepartureType = 
     | Departure
