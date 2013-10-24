@@ -9,7 +9,7 @@ namespace Trains.WP8.IE
         {
             InitializeComponent();
 
-            new AppMetadata(this, "Ireland Trains", "irelandtrains@codebeside.org", true, "rAyhw_lHxiqJnHo7CLUAOA");
+            new AppMetadata(this, "Ireland Trains", "irelandtrains@codebeside.org", true, "rAyhw_lHxiqJnHo7CLUAOA", "61787");
             Stations.Country = Country.Ireland;
         }
     }

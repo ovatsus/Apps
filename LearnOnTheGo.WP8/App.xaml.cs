@@ -9,7 +9,7 @@ namespace LearnOnTheGo.WP8
         {
             InitializeComponent();
 
-            new AppMetadata(this, "Learn On The Go", "learnonthego@codebeside.org");
+            new AppMetadata(this, "Learn On The Go", "learnonthego@codebeside.org", adDuplexId: "57903");
         }
 
         public static Crawler Crawler { get; set; }

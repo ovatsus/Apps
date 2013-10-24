@@ -37,6 +37,7 @@ namespace Trains.WP8
                     }
                 }));
             CommonApplicationBarItems.Init(this);
+            adControl.AppId = AppMetadata.Current.AdDuplexId;
         }
 
         private LazyBlock<Tuple<double, Station>[]> nearestLazyBlock;

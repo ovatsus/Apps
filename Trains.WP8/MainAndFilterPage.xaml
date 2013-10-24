@@ -207,7 +207,7 @@
         </phone:Pivot>
 
         <Grid Grid.Row="1" Margin="0,0,0,-1">
-            <adduplex:AdControl AppId="57899">
+            <adduplex:AdControl x:Name="adControl">
                 <adduplex:AdControl.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="1.005" />
