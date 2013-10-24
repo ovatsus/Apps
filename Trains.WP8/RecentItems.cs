@@ -7,13 +7,13 @@ namespace Trains.WP8
 {
     public static class RecentItems
     {
-        private static readonly List<DeparturesTable> allRecentItems =
+        private static readonly List<DeparturesAndArrivalsTable> allRecentItems =
             Settings.GetString(Setting.RecentStations)
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(DeparturesTable.Parse)
+                .Select(DeparturesAndArrivalsTable.Parse)
                 .ToList();
 
-        public static List<DeparturesTable> GetItemsToDisplay(Station fromStation, string excludeStation) 
+        public static List<DeparturesAndArrivalsTable> GetItemsToDisplay(Station fromStation, string excludeStation) 
         {
             var recentItemsToDisplay = fromStation == null ? allRecentItems.ToList() :
                 (from item in allRecentItems
@@ -21,12 +21,12 @@ namespace Trains.WP8
                               item.Station.Code != excludeStation && item.Station.Code != fromStation.Code ? item.Station :
                               null
                  where target != null
-                 select DeparturesTable.Create(target)).Distinct().ToList();
+                 select DeparturesAndArrivalsTable.Create(target)).Distinct().ToList();
 
             return recentItemsToDisplay;
         }
 
-        public static void Add(DeparturesTable recentItem)
+        public static void Add(DeparturesAndArrivalsTable recentItem)
         {
             if (recentItem.HasDestinationFilter &&
                 allRecentItems.Count > 0 &&
@@ -40,7 +40,7 @@ namespace Trains.WP8
             Save();
         }
 
-        public static void Remove(DeparturesTable recentItem)
+        public static void Remove(DeparturesAndArrivalsTable recentItem)
         {
             allRecentItems.Remove(recentItem);
             Save();

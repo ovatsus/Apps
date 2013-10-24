@@ -7,7 +7,13 @@ open Trains.LiveDepartures
 type LiveDeparturesExtensions() =
 
     [<Extension>]
-    static member GetDepartures(departuresTable:DeparturesTable, departureType:DepartureType) = 
+    static member GetDepartures(departuresAndArrivalsTable:DeparturesAndArrivalsTable) = 
         match Stations.Country with
-        | UK -> UK.getDepartures departureType departuresTable
-        | Ireland -> IE.getDepartures departureType departuresTable
+        | UK -> UK.getDepartures departuresAndArrivalsTable
+        | Ireland -> IE.getDepartures departuresAndArrivalsTable
+
+    [<Extension>]
+    static member GetArrivals(departuresAndArrivalsTable:DeparturesAndArrivalsTable) = 
+        match Stations.Country with
+        | UK -> UK.getArrivals departuresAndArrivalsTable
+        | Ireland -> IE.getArrivals departuresAndArrivalsTable

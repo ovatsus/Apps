@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfObjStationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://api.irishrail.ie/realtime/">
+  <objStationData>
+    <Servertime>2013-10-24T20:22:03.79</Servertime>
+    <Traincode>D820 </Traincode>
+    <Stationfullname>Malahide</Stationfullname>
+    <Stationcode>MHIDE</Stationcode>
+    <Querytime>20:22:03</Querytime>
+    <Traindate>24 Oct 2013</Traindate>
+    <Origin>Dublin Pearse</Origin>
+    <Destination>Drogheda</Destination>
+    <Origintime>20:13</Origintime>
+    <Destinationtime>21:15</Destinationtime>
+    <Status>En Route</Status>
+    <Lastlocation>Departed Dublin Connolly</Lastlocation>
+    <Duein>17</Duein>
+    <Late>1</Late>
+    <Exparrival>20:39</Exparrival>
+    <Expdepart>20:39</Expdepart>
+    <Scharrival>20:38</Scharrival>
+    <Schdepart>20:38</Schdepart>
+    <Direction>Northbound</Direction>
+    <Traintype>Train</Traintype>
+    <Locationtype>S</Locationtype>
+  </objStationData>
+  <objStationData>
+    <Servertime>2013-10-24T20:22:03.79</Servertime>
+    <Traincode>E828 </Traincode>
+    <Stationfullname>Malahide</Stationfullname>
+    <Stationcode>MHIDE</Stationcode>
+    <Querytime>20:22:03</Querytime>
+    <Traindate>24 Oct 2013</Traindate>
+    <Origin>Greystones</Origin>
+    <Destination>Malahide</Destination>
+    <Origintime>19:30</Origintime>
+    <Destinationtime>20:50</Destinationtime>
+    <Status>En Route</Status>
+    <Lastlocation>Arrived Tara Street</Lastlocation>
+    <Duein>28</Duein>
+    <Late>0</Late>
+    <Exparrival>20:50</Exparrival>
+    <Expdepart>00:00</Expdepart>
+    <Scharrival>20:50</Scharrival>
+    <Schdepart>00:00</Schdepart>
+    <Direction>Northbound</Direction>
+    <Traintype>DART</Traintype>
+    <Locationtype>D</Locationtype>
+  </objStationData>
+  <objStationData>
+    <Servertime>2013-10-24T20:22:03.79</Servertime>
+    <Traincode>D825 </Traincode>
+    <Stationfullname>Malahide</Stationfullname>
+    <Stationcode>MHIDE</Stationcode>
+    <Querytime>20:22:03</Querytime>
+    <Traindate>24 Oct 2013</Traindate>
+    <Origin>Dublin Pearse</Origin>
+    <Destination>Drogheda</Destination>
+    <Origintime>20:44</Origintime>
+    <Destinationtime>21:48</Destinationtime>
+    <Status>No Information</Status>
+    <Lastlocation />
+    <Duein>48</Duein>
+    <Late>0</Late>
+    <Exparrival>21:10</Exparrival>
+    <Expdepart>21:10</Expdepart>
+    <Scharrival>21:10</Scharrival>
+    <Schdepart>21:10</Schdepart>
+    <Direction>Northbound</Direction>
+    <Traintype>Train</Traintype>
+    <Locationtype>S</Locationtype>
+  </objStationData>
+  <objStationData>
+    <Servertime>2013-10-24T20:22:03.79</Servertime>
+    <Traincode>E829 </Traincode>
+    <Stationfullname>Malahide</Stationfullname>
+    <Stationcode>MHIDE</Stationcode>
+    <Querytime>20:22:03</Querytime>
+    <Traindate>24 Oct 2013</Traindate>
+    <Origin>Greystones</Origin>
+    <Destination>Malahide</Destination>
+    <Origintime>20:00</Origintime>
+    <Destinationtime>21:20</Destinationtime>
+    <Status>En Route</Status>
+    <Lastlocation>Arrived Shankill</Lastlocation>
+    <Duein>66</Duein>
+    <Late>8</Late>
+    <Exparrival>21:28</Exparrival>
+    <Expdepart>00:00</Expdepart>
+    <Scharrival>21:20</Scharrival>
+    <Schdepart>00:00</Schdepart>
+    <Direction>Northbound</Direction>
+    <Traintype>DART</Traintype>
+    <Locationtype>D</Locationtype>
+  </objStationData>
+  <objStationData>
+    <Servertime>2013-10-24T20:22:03.79</Servertime>
+    <Traincode>E830 </Traincode>
+    <Stationfullname>Malahide</Stationfullname>
+    <Stationcode>MHIDE</Stationcode>
+    <Querytime>20:22:03</Querytime>
+    <Traindate>24 Oct 2013</Traindate>
+    <Origin>Greystones</Origin>
+    <Destination>Malahide</Destination>
+    <Origintime>20:30</Origintime>
+    <Destinationtime>21:50</Destinationtime>
+    <Status>No Information</Status>
+    <Lastlocation />
+    <Duein>88</Duein>
+    <Late>0</Late>
+    <Exparrival>21:50</Exparrival>
+    <Expdepart>00:00</Expdepart>
+    <Scharrival>21:50</Scharrival>
+    <Schdepart>00:00</Schdepart>
+    <Direction>Northbound</Direction>
+    <Traintype>DART</Traintype>
+    <Locationtype>D</Locationtype>
+  </objStationData>
+  <objStationData>
+    <Servertime>2013-10-24T20:22:03.79</Servertime>
+    <Traincode>P623 </Traincode>
+    <Stationfullname>Malahide</Stationfullname>
+    <Stationcode>MHIDE</Stationcode>
+    <Querytime>20:22:03</Querytime>
+    <Traindate>24 Oct 2013</Traindate>
+    <Origin>Drogheda</Origin>
+    <Destination>Dublin Pearse</Destination>
+    <Origintime>20:05</Origintime>
+    <Destinationtime>21:07</Destinationtime>
+    <Status>En Route</Status>
+    <Lastlocation>Arrived Balbriggan</Lastlocation>
+    <Duein>20</Duein>
+    <Late>0</Late>
+    <Exparrival>20:41</Exparrival>
+    <Expdepart>20:42</Expdepart>
+    <Scharrival>20:42</Scharrival>
+    <Schdepart>20:42</Schdepart>
+    <Direction>Southbound</Direction>
+    <Traintype>Train</Traintype>
+    <Locationtype>S</Locationtype>
+  </objStationData>
+  <objStationData>
+    <Servertime>2013-10-24T20:22:03.79</Servertime>
+    <Traincode>E130 </Traincode>
+    <Stationfullname>Malahide</Stationfullname>
+    <Stationcode>MHIDE</Stationcode>
+    <Querytime>20:22:03</Querytime>
+    <Traindate>24 Oct 2013</Traindate>
+    <Origin>Malahide</Origin>
+    <Destination>Greystones</Destination>
+    <Origintime>21:00</Origintime>
+    <Destinationtime>22:20</Destinationtime>
+    <Status>No Information</Status>
+    <Lastlocation />
+    <Duein>38</Duein>
+    <Late>0</Late>
+    <Exparrival>00:00</Exparrival>
+    <Expdepart>21:00</Expdepart>
+    <Scharrival>00:00</Scharrival>
+    <Schdepart>21:00</Schdepart>
+    <Direction>Southbound</Direction>
+    <Traintype>DART</Traintype>
+    <Locationtype>O</Locationtype>
+  </objStationData>
+  <objStationData>
+    <Servertime>2013-10-24T20:22:03.79</Servertime>
+    <Traincode>E131 </Traincode>
+    <Stationfullname>Malahide</Stationfullname>
+    <Stationcode>MHIDE</Stationcode>
+    <Querytime>20:22:03</Querytime>
+    <Traindate>24 Oct 2013</Traindate>
+    <Origin>Malahide</Origin>
+    <Destination>Greystones</Destination>
+    <Origintime>21:30</Origintime>
+    <Destinationtime>22:50</Destinationtime>
+    <Status>No Information</Status>
+    <Lastlocation />
+    <Duein>68</Duein>
+    <Late>0</Late>
+    <Exparrival>00:00</Exparrival>
+    <Expdepart>21:30</Expdepart>
+    <Scharrival>00:00</Scharrival>
+    <Schdepart>21:30</Schdepart>
+    <Direction>Southbound</Direction>
+    <Traintype>DART</Traintype>
+    <Locationtype>O</Locationtype>
+  </objStationData>
+</ArrayOfObjStationData>

@@ -32,20 +32,21 @@ namespace Trains.WP8
             {
                 pivot.Items.Remove(arrivalsPivotItem);
             }
+            pivot.SelectionChanged += OnPivotSelectionChanged;
         }
 
-        private DeparturesTable departuresTable;
+        private DeparturesAndArrivalsTable departuresAndArrivalsTable;
         private LazyBlock<Departure[]> departuresLazyBlock;
-        private LazyBlock<Departure[]> arrivalsLazyBlock;
+        private LazyBlock<Arrival[]> arrivalsLazyBlock;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            if (departuresTable != null)
+            if (departuresAndArrivalsTable != null)
             {
-                ErrorReporting.Log("departuresTable is not null");
-                OnPivotSelectionChanged(null, null);
+                ErrorReporting.Log("departuresAndArrivalsTable is not null");
+                Load();
                 return;
             }
 
@@ -57,12 +58,12 @@ namespace Trains.WP8
             var from = Stations.Get(stationStr);
             var to = NavigationContext.QueryString.ContainsKey("callingAt") ? Stations.Get(NavigationContext.QueryString["callingAt"]) : null;
             var removeBackEntry = NavigationContext.QueryString.ContainsKey("removeBackEntry");
-            departuresTable = DeparturesTable.Create(from, to);
-            pivot.Title = departuresTable.ToString();
+            departuresAndArrivalsTable = DeparturesAndArrivalsTable.Create(from, to);
+            pivot.Title = departuresAndArrivalsTable.ToString();
 
             if (e.NavigationMode == NavigationMode.New)
             {
-                RecentItems.Add(departuresTable);
+                RecentItems.Add(departuresAndArrivalsTable);
             }
 
             if (removeBackEntry)
@@ -70,7 +71,7 @@ namespace Trains.WP8
                 NavigationService.RemoveBackEntry();
             }
 
-            if (departuresTable.HasDestinationFilter)
+            if (departuresAndArrivalsTable.HasDestinationFilter)
             {
                 var filterOrClearFilterItem = ApplicationBar.Buttons.Cast<ApplicationBarIconButton>().Single(button => button.Text == "Filter");
                 filterOrClearFilterItem.Text = "Clear Filter";
@@ -96,7 +97,22 @@ namespace Trains.WP8
 
             CreateDirectionsPivotItem();
 
-            OnPivotSelectionChanged(null, null);
+            if (!Stations.Country.SupportsArrivals) { 
+                // when supportsArrivals is false PivotSelectionChanged won't be triggered
+                Load();
+            }
+        }
+
+        private void Load()
+        {
+            if (pivot.SelectedIndex == 0)
+            {
+                LoadDepartures();
+            }
+            else if (pivot.SelectedIndex != mapIndex)
+            {
+                LoadArrivals();
+            }
         }
 
         private void LoadDepartures()
@@ -106,7 +122,7 @@ namespace Trains.WP8
                 departuresLazyBlock = new LazyBlock<Departure[]>(
                     "departures",
                     "No more trains today",
-                    departuresTable.GetDepartures(DepartureType.Departure),
+                    departuresAndArrivalsTable.GetDepartures(),
                     items => items.Length == 0,
                     new LazyBlockUI<Departure>(this, departures, departuresMessageTextBlock, departuresLastUpdatedTextBlock),
                     true,
@@ -129,12 +145,12 @@ namespace Trains.WP8
         {
             if (arrivalsLazyBlock == null)
             {
-                arrivalsLazyBlock = new LazyBlock<Departure[]>(
+                arrivalsLazyBlock = new LazyBlock<Arrival[]>(
                     "arrivals",
                     "No more trains today",
-                    departuresTable.GetDepartures(DepartureType.Arrival),
+                    departuresAndArrivalsTable.GetArrivals(),
                     items => items.Length == 0,
-                    new LazyBlockUI<Departure>(this, arrivals, arrivalsMessageTextBlock, arrivalsLastUpdatedTextBlock),
+                    new LazyBlockUI<Arrival>(this, arrivals, arrivalsMessageTextBlock, arrivalsLastUpdatedTextBlock),
                     true,
                     null,
                     null,
@@ -169,7 +185,7 @@ namespace Trains.WP8
             var primaryTile = ShellTile.ActiveTiles.First();
             primaryTile.Update(GetTileData(forPrimaryTile: true));
 
-            var secondaryTileUri = GetUri(departuresTable, removeBackEntry: false);
+            var secondaryTileUri = GetUri(departuresAndArrivalsTable, removeBackEntry: false);
             var secondaryTile = ShellTile.ActiveTiles.FirstOrDefault(tile => tile.NavigationUri == secondaryTileUri);
             if (secondaryTile != null)
             {
@@ -182,8 +198,8 @@ namespace Trains.WP8
             var firstDeparture = departures.ItemsSource == null ? null : departures.ItemsSource.Cast<Departure>().FirstOrDefault();
 
             var departuresTableHeader =
-                departuresTable.ToSmallString() +
-                (departuresTable.HasDestinationFilter || firstDeparture == null ? "" : " to " + firstDeparture.Destination);
+                departuresAndArrivalsTable.ToSmallString() +
+                (departuresAndArrivalsTable.HasDestinationFilter || firstDeparture == null ? "" : " to " + firstDeparture.Destination);
 
             string content;
             string wideContent;
@@ -195,7 +211,7 @@ namespace Trains.WP8
             }
             else
             {
-                content = (forPrimaryTile ? departuresTableHeader + "\n" : (departuresTable.HasDestinationFilter ? "" : firstDeparture.Destination + "\n")) +
+                content = (forPrimaryTile ? departuresTableHeader + "\n" : (departuresAndArrivalsTable.HasDestinationFilter ? "" : firstDeparture.Destination + "\n")) +
                           (firstDeparture.PlatformIsKnown ? "Platform " + firstDeparture.Platform.Value : "Platform not available") +
                           (forPrimaryTile ? "" : "\n" + firstDeparture.Due + " " + firstDeparture.Status);
                 wideContent = departuresTableHeader + "\n" +
@@ -205,7 +221,7 @@ namespace Trains.WP8
 
             return new FlipTileData
             {
-                Title = forPrimaryTile ? AppMetadata.Current.Name : departuresTable.ToSmallString(),
+                Title = forPrimaryTile ? AppMetadata.Current.Name : departuresAndArrivalsTable.ToSmallString(),
                 BackTitle = AppMetadata.Current.Name,
                 BackContent = content,
                 WideBackContent = wideContent,
@@ -226,7 +242,7 @@ namespace Trains.WP8
                     TravelMode = TravelMode.Walking,
                     Waypoints = new[] { 
                     currentPosition, 
-                    new GeoCoordinate(departuresTable.Station.Location.Lat, departuresTable.Station.Location.Long) },
+                    new GeoCoordinate(departuresAndArrivalsTable.Station.Location.Lat, departuresAndArrivalsTable.Station.Location.Long) },
                 };
 
                 routeQuery.QueryCompleted += OnRouteQueryCompleted;
@@ -271,7 +287,7 @@ namespace Trains.WP8
                     PositionOrigin = new Point(0, 1),
                     Content = new Pushpin
                     {
-                        Content = departuresTable.Station.Name + " Station",
+                        Content = departuresAndArrivalsTable.Station.Name + " Station",
                     }
                 });
                 map.Layers.Add(mapLayer);
@@ -313,30 +329,30 @@ namespace Trains.WP8
 
         private bool IsStationPinnedToStart()
         {
-            var uri = GetUri(departuresTable, removeBackEntry: false);
+            var uri = GetUri(departuresAndArrivalsTable, removeBackEntry: false);
             return ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri);
         }
 
         private void OnPinToStartClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnPinToStartClick");
-            var uri = GetUri(departuresTable, removeBackEntry: false);
+            var uri = GetUri(departuresAndArrivalsTable, removeBackEntry: false);
             if (!IsStationPinnedToStart())
             {
-                ShellTile.Create(GetUri(departuresTable, removeBackEntry: false), GetTileData(forPrimaryTile: false), true);
+                ShellTile.Create(GetUri(departuresAndArrivalsTable, removeBackEntry: false), GetTileData(forPrimaryTile: false), true);
             }
             GetPinToStartButton().IsEnabled = false;
         }
 
-        private Uri GetUri(DeparturesTable departuresTable, bool removeBackEntry)
+        private Uri GetUri(DeparturesAndArrivalsTable departuresAndArrivalsTable, bool removeBackEntry)
         {
-            return GetUri(this, departuresTable, removeBackEntry);
+            return GetUri(this, departuresAndArrivalsTable, removeBackEntry);
         }
 
-        public static Uri GetUri(PhoneApplicationPage page, DeparturesTable departuresTable, bool removeBackEntry)
+        public static Uri GetUri(PhoneApplicationPage page, DeparturesAndArrivalsTable departuresAndArrivalsTable, bool removeBackEntry)
         {
-            return page.GetUri<StationPage>().WithParameters("station", departuresTable.Station.Code)
-                                             .WithParametersIf(departuresTable.HasDestinationFilter, () => "callingAt", () => departuresTable.CallingAt.Value.Code)
+            return page.GetUri<StationPage>().WithParameters("station", departuresAndArrivalsTable.Station.Code)
+                                             .WithParametersIf(departuresAndArrivalsTable.HasDestinationFilter, () => "callingAt", () => departuresAndArrivalsTable.CallingAt.Value.Code)
                                              .WithParametersIf(removeBackEntry, "removeBackEntry");
         }
 
@@ -356,26 +372,26 @@ namespace Trains.WP8
         private void OnFilterOrClearFilterClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnFilterOrClearFilterClick");
-            if (departuresTable.HasDestinationFilter)
+            if (departuresAndArrivalsTable.HasDestinationFilter)
             {
-                NavigationService.Navigate(GetUri(departuresTable.WithoutFilter, false));
+                NavigationService.Navigate(GetUri(departuresAndArrivalsTable.WithoutFilter, false));
             }
             else
             {
-                NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresTable.Station.Code));
+                NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresAndArrivalsTable.Station.Code));
             }
         }
 
         private void OnFilterByAnotherDestinationClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnFilterByAnotherDestinationClick");
-            NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresTable.Station.Code, "excludeStation", departuresTable.CallingAt.Value.Code));
+            NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresAndArrivalsTable.Station.Code, "excludeStation", departuresAndArrivalsTable.CallingAt.Value.Code));
         }
 
         private void OnReverseJourneyClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnReverseJourneyClick");
-            NavigationService.Navigate(GetUri(departuresTable.Reversed, false));
+            NavigationService.Navigate(GetUri(departuresAndArrivalsTable.Reversed, false));
         }
 
         private void OnAnotherRailStationClick(object sender, EventArgs e)
@@ -384,26 +400,28 @@ namespace Trains.WP8
             NavigationService.Navigate(this.GetUri<MainAndFilterPage>());
         }
 
-        private void OnLiveProgressClick(object sender, EventArgs e)
+        private void OnLiveProgressFromDeparturesClick(object sender, EventArgs e)
         {
-            ErrorReporting.Log("OnLiveProgressClick");
+            ErrorReporting.Log("OnLiveProgressFromDeparturesClick");
             var departure = (Departure)((Button)sender).DataContext;
-            var title = departuresTable.Station.Name + " to " + departuresTable.Match(_ => departure.Destination, (_, destination) => destination.Name);
-            LiveProgressPage.SetTarget(title, departure);
+            var title = departuresAndArrivalsTable.Station.Name + " to " + departuresAndArrivalsTable.Match(_ => departure.Destination, (_, destination) => destination.Name);
+            LiveProgressPage.SetDetails(title, departure.Details);
+            NavigationService.Navigate(this.GetUri<LiveProgressPage>());
+        }
+
+        private void OnLiveProgressFromArrivalsClick(object sender, EventArgs e)
+        {
+            ErrorReporting.Log("OnLiveProgressFromArrivalsClick");
+            var arrival = (Arrival)((Button)sender).DataContext;
+            var title = departuresAndArrivalsTable.Match(_ => arrival.Origin, (_, origin) => origin.Name) + " to " + departuresAndArrivalsTable.Station.Name;
+            LiveProgressPage.SetDetails(title, arrival.Details);
             NavigationService.Navigate(this.GetUri<LiveProgressPage>());
         }
 
         private void OnPivotSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ErrorReporting.Log("OnPivotSelectionChanged " + pivot.SelectedIndex);
-            if (pivot.SelectedIndex == 0)
-            {
-                LoadDepartures();
-            } 
-            else if (pivot.SelectedIndex != mapIndex)
-            {
-                LoadArrivals();
-            }
+            Load();
         }
     }
 }

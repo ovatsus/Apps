@@ -2,9 +2,11 @@
 
 open System
 open System.ComponentModel
+open System.Globalization
+open HtmlAgilityPack
 open FSharp.Control
 
-type DeparturesTable = 
+type DeparturesAndArrivalsTable = 
     { Station : Station
       CallingAt : Station option }
     override x.ToString() =
@@ -46,6 +48,20 @@ type Departure = {
         [<CLIEvent>]
         member x.PropertyChanged = x.PropertyChangedEvent
 
+and Arrival = {
+    Due : Time
+    Origin : string
+    Status : Status
+    Platform : string option
+    Details : LazyAsync<JourneyElement[]>
+} with 
+    override x.ToString() = sprintf "%A" x
+    member x.PlatformIsKnown = x.Platform.IsSome
+    member x.Expected = 
+        match x.Status with
+        | Status.Delayed mins -> Some (x.Due + Time.Create(mins))
+        | _ -> None
+
 and ArrivalInformation = {
     Due : Time
     Destination : string
@@ -58,7 +74,7 @@ and ArrivalInformation = {
         | _ -> x.Due
 
 and Time = 
-    private { TotalMinutes : int }
+    { TotalMinutes : int }
     member x.Hours = x.TotalMinutes / 60
     member x.Minutes = x.TotalMinutes % 1440 % 60
     override x.ToString() = sprintf "%02d:%02d" x.Hours x.Minutes
@@ -71,7 +87,21 @@ and Time =
     static member (+) (t1, t2) = 
         { TotalMinutes = t1.TotalMinutes + t2.TotalMinutes }
     static member Create(dt:DateTime) = 
-        { TotalMinutes = dt.TimeOfDay.Minutes }
+        { TotalMinutes = int dt.TimeOfDay.TotalMinutes }
+    static member Parse(cell:HtmlNode) = 
+        let parseInt str = 
+            match Int32.TryParse(str, NumberStyles.Integer, CultureInfo.InvariantCulture) with
+            | true, i -> Some i
+            | false, _ -> None
+        let time = cell.InnerText
+        let pos = time.IndexOf ':'
+        if pos >= 0 then
+            let hours = time.Substring(0, pos) |> parseInt
+            let minutes = time.Substring(pos+1) |> parseInt
+            match hours, minutes with
+            | Some hours, Some minutes -> Time.Create(hours, minutes)
+            | _ -> raise <| ParseError(sprintf "Invalid time:\n%s" cell.OuterHtml, null)
+        else raise <| ParseError(sprintf "Invalid time:\n%s" cell.OuterHtml, null)
 
 and Status =
     | OnTime
@@ -84,7 +114,7 @@ and Status =
         | Cancelled -> "Cancelled"
 
 and JourneyElement = {
-    Departs : Time
+    Arrives : Time
     Station : string
     Status : JourneyElementStatus
     Platform : string option
@@ -94,7 +124,7 @@ and JourneyElement = {
     member x.PlatformIsKnown = x.Platform.IsSome
     member x.Expected = 
         match x.Status with
-        | Delayed (mins = mins) -> Some (x.Departs + Time.Create(mins))
+        | Delayed (mins = mins) -> Some (x.Arrives + Time.Create(mins))
         | _ -> None
 
 and JourneyElementStatus =
@@ -115,18 +145,10 @@ and JourneyElementStatus =
         | Cancelled -> false
         | Delayed (departed = departed) -> departed
 
-type DepartureType = 
-    | Departure
-    | Arrival
-    override x.ToString() = 
-        match x with
-        | Departure -> "dep"
-        | Arrival -> "arr"
-
-type ParseError(msg:string, exn) = 
+and ParseError(msg:string, exn) = 
     inherit Exception(msg, exn)
 
-type DeparturesTable with
+type DeparturesAndArrivalsTable with
     
     member x.Serialize() =
         match x.CallingAt with
@@ -144,7 +166,7 @@ type DeparturesTable with
 
     static member Create(station, callingAt) =
         if obj.ReferenceEquals(callingAt, null) then
-            DeparturesTable.Create(station)
+            DeparturesAndArrivalsTable.Create(station)
         else
             { Station = station 
               CallingAt = callingAt |> Some}
@@ -154,7 +176,7 @@ type DeparturesTable with
         if pos >= 0 then
             let station = str.Substring(0, pos) |> Stations.get
             let callingAt = str.Substring(pos + 1) |> Stations.get
-            DeparturesTable.Create(station, callingAt)
+            DeparturesAndArrivalsTable.Create(station, callingAt)
         else
             let station = str |> Stations.get
-            DeparturesTable.Create(station)
+            DeparturesAndArrivalsTable.Create(station)

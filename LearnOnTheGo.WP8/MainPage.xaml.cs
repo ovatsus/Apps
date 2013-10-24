@@ -35,7 +35,8 @@ namespace LearnOnTheGo.WP8
             if (e.NavigationMode == NavigationMode.New)
             {
                 ErrorReporting.CheckForPreviousException(true);
-                AppMetadata.CheckForNewVersion(this);
+                AppMetadata.CheckForNewVersion();
+                AppMetadata.CheckForReview();
             }
 
             // settings changed

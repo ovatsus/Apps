@@ -74,7 +74,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Departs}"
+                                <TextBlock Text="{Binding Arrives}"
                                            Foreground="{StaticResource PhoneAccentBrush}"
                                            HorizontalAlignment="Right"
                                            Margin="0,12,0,0" />

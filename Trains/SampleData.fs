@@ -27,10 +27,10 @@ type SampleData() =
                                   7.8, s4
                                   9.2, s1 ]
 
-    member __.RecentStations = [ DeparturesTable.Create(s1)
-                                 DeparturesTable.Create(s2, s3)
-                                 DeparturesTable.Create(s4)
-                                 DeparturesTable.Create(s3, s1) ]
+    member __.RecentStations = [ DeparturesAndArrivalsTable.Create(s1)
+                                 DeparturesAndArrivalsTable.Create(s2, s3)
+                                 DeparturesAndArrivalsTable.Create(s4)
+                                 DeparturesAndArrivalsTable.Create(s3, s1) ]
     
     member x.StationTitle = x.RecentStations.[2]
 
@@ -89,34 +89,63 @@ type SampleData() =
                                Arrival = ref None
                                PropertyChangedEvent = Event<_,_>().Publish } ]
 
-    member x.Arrivals = x.Departures
-    
-    member __.LiveProgress = [ { Departs = t1
+    member x.Arrivals = [ { Due = t1
+                            Origin = s1.Name
+                            Status = Status.Cancelled
+                            Platform = Some "22C"
+                            Details = details }
+                          { Due = t2
+                            Origin = s2.Name
+                            Status = Status.OnTime
+                            Platform = None
+                            Details = details }
+                          { Due = t3
+                            Origin = s3.Name
+                            Status = Status.Delayed 1
+                            Platform = Some "4"
+                            Details = details }
+                          { Due = t4
+                            Origin = s4.Name
+                            Status = Status.Delayed 130
+                            Platform = None
+                            Details = details }
+                          { Due = t1
+                            Origin = s1.Name
+                            Status = Status.Cancelled
+                            Platform = Some "12"
+                            Details = details }
+                          { Due = t2
+                            Origin = s2.Name
+                            Status = Status.OnTime
+                            Platform = None
+                            Details = details } ]
+
+    member __.LiveProgress = [ { Arrives = t1
                                  Station = s1.Name
                                  Status = OnTime true
                                  Platform = None
                                  IsAlternateRoute = false }
-                               { Departs = t2
+                               { Arrives = t2
                                  Station = s2.Name
                                  Status = Delayed (true, 5)
                                  Platform = Some "6"
                                  IsAlternateRoute = false }
-                               { Departs = t3
+                               { Arrives = t3
                                  Station = s3.Name
                                  Status = NoReport
                                  Platform = None
                                  IsAlternateRoute = false }
-                               { Departs = t4
+                               { Arrives = t4
                                  Station = s4.Name
                                  Status = Cancelled
                                  Platform = Some "20D"
                                  IsAlternateRoute = false }
-                               { Departs = t1
+                               { Arrives = t1
                                  Station = "* " + s1.Name
                                  Status = OnTime false
                                  Platform = None
                                  IsAlternateRoute = true }
-                               { Departs = t1
+                               { Arrives = t1
                                  Station = "* " + s2.Name
                                  Status = Delayed (false, 5)
                                  Platform = Some "21"

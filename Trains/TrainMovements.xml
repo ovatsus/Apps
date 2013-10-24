@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfObjTrainMovements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://api.irishrail.ie/realtime/">
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>PERSE</LocationCode>
+    <LocationFullName>Dublin Pearse</LocationFullName>
+    <LocationOrder>1</LocationOrder>
+    <LocationType>O</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>00:00:00</ScheduledArrival>
+    <ScheduledDeparture>20:13:00</ScheduledDeparture>
+    <ExpectedArrival>00:00:00</ExpectedArrival>
+    <ExpectedDeparture>20:13:00</ExpectedDeparture>
+    <Arrival>20:11:06</Arrival>
+    <Departure>20:13:42</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>TARA</LocationCode>
+    <LocationFullName>Tara Street</LocationFullName>
+    <LocationOrder>2</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:15:00</ScheduledArrival>
+    <ScheduledDeparture>20:16:00</ScheduledDeparture>
+    <ExpectedArrival>20:15:42</ExpectedArrival>
+    <ExpectedDeparture>20:15:18</ExpectedDeparture>
+    <Arrival>20:14:18</Arrival>
+    <Departure>20:16:24</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>CNLLY</LocationCode>
+    <LocationFullName>Dublin Connolly</LocationFullName>
+    <LocationOrder>3</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:19:00</ScheduledArrival>
+    <ScheduledDeparture>20:20:00</ScheduledDeparture>
+    <ExpectedArrival>20:19:24</ExpectedArrival>
+    <ExpectedDeparture>20:19:00</ExpectedDeparture>
+    <Arrival>20:18:00</Arrival>
+    <Departure>20:21:06</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>CTARF</LocationCode>
+    <LocationFullName>Clontarf Road</LocationFullName>
+    <LocationOrder>4</LocationOrder>
+    <LocationType>T</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:25:00</ScheduledArrival>
+    <ScheduledDeparture>20:25:00</ScheduledDeparture>
+    <ExpectedArrival>20:26:06</ExpectedArrival>
+    <ExpectedDeparture>20:25:00</ExpectedDeparture>
+    <Arrival>20:25:00</Arrival>
+    <Departure>20:25:12</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>KLSTR</LocationCode>
+    <LocationFullName>Killester</LocationFullName>
+    <LocationOrder>5</LocationOrder>
+    <LocationType>T</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:26:30</ScheduledArrival>
+    <ScheduledDeparture>20:26:30</ScheduledDeparture>
+    <ExpectedArrival>20:26:42</ExpectedArrival>
+    <ExpectedDeparture>20:26:24</ExpectedDeparture>
+    <Arrival>20:26:24</Arrival>
+    <Departure>20:26:42</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>HTOWN</LocationCode>
+    <LocationFullName>Harmonstown</LocationFullName>
+    <LocationOrder>6</LocationOrder>
+    <LocationType>T</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:27:30</ScheduledArrival>
+    <ScheduledDeparture>20:27:30</ScheduledDeparture>
+    <ExpectedArrival>20:27:42</ExpectedArrival>
+    <ExpectedDeparture>20:28:06</ExpectedDeparture>
+    <Arrival>20:28:06</Arrival>
+    <Departure>20:28:30</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>RAHNY</LocationCode>
+    <LocationFullName>Raheny</LocationFullName>
+    <LocationOrder>7</LocationOrder>
+    <LocationType>T</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:28:00</ScheduledArrival>
+    <ScheduledDeparture>20:28:00</ScheduledDeparture>
+    <ExpectedArrival>20:29:00</ExpectedArrival>
+    <ExpectedDeparture>20:28:54</ExpectedDeparture>
+    <Arrival>20:28:54</Arrival>
+    <Departure>20:29:18</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>KBRCK</LocationCode>
+    <LocationFullName>Kilbarrack</LocationFullName>
+    <LocationOrder>8</LocationOrder>
+    <LocationType>T</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:29:00</ScheduledArrival>
+    <ScheduledDeparture>20:29:00</ScheduledDeparture>
+    <ExpectedArrival>20:30:18</ExpectedArrival>
+    <ExpectedDeparture>20:29:36</ExpectedDeparture>
+    <Arrival>20:29:36</Arrival>
+    <Departure>20:29:54</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>HWTHJ</LocationCode>
+    <LocationFullName>Howth Junction</LocationFullName>
+    <LocationOrder>9</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:29:30</ScheduledArrival>
+    <ScheduledDeparture>20:30:00</ScheduledDeparture>
+    <ExpectedArrival>20:30:24</ExpectedArrival>
+    <ExpectedDeparture>20:30:54</ExpectedDeparture>
+    <Arrival>20:30:24</Arrival>
+    <Departure>20:31:48</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>GRGRD</LocationCode>
+    <LocationFullName>Clongriffin</LocationFullName>
+    <LocationOrder>10</LocationOrder>
+    <LocationType>T</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:31:30</ScheduledArrival>
+    <ScheduledDeparture>20:31:30</ScheduledDeparture>
+    <ExpectedArrival>20:33:18</ExpectedArrival>
+    <ExpectedDeparture>20:32:18</ExpectedDeparture>
+    <Arrival>20:32:18</Arrival>
+    <Departure>20:33:18</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>PMNCK</LocationCode>
+    <LocationFullName>Portmarnock</LocationFullName>
+    <LocationOrder>11</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:33:30</ScheduledArrival>
+    <ScheduledDeparture>20:34:00</ScheduledDeparture>
+    <ExpectedArrival>20:35:18</ExpectedArrival>
+    <ExpectedDeparture>20:34:36</ExpectedDeparture>
+    <Arrival>20:34:06</Arrival>
+    <Departure>20:36:54</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>MHIDE</LocationCode>
+    <LocationFullName>Malahide</LocationFullName>
+    <LocationOrder>12</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:38:00</ScheduledArrival>
+    <ScheduledDeparture>20:38:30</ScheduledDeparture>
+    <ExpectedArrival>20:40:54</ExpectedArrival>
+    <ExpectedDeparture>20:39:54</ExpectedDeparture>
+    <Arrival>20:39:24</Arrival>
+    <Departure>20:41:12</Departure>
+    <AutoArrival>1</AutoArrival>
+    <AutoDepart>1</AutoDepart>
+    <StopType>C</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>DBATE</LocationCode>
+    <LocationFullName>Donabate</LocationFullName>
+    <LocationOrder>13</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:42:30</ScheduledArrival>
+    <ScheduledDeparture>20:43:00</ScheduledDeparture>
+    <ExpectedArrival>20:45:12</ExpectedArrival>
+    <ExpectedDeparture>20:45:42</ExpectedDeparture>
+    <Arrival />
+    <Departure />
+    <AutoArrival />
+    <AutoDepart />
+    <StopType>N</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>RLUSK</LocationCode>
+    <LocationFullName>Rush and Lusk</LocationFullName>
+    <LocationOrder>14</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:47:00</ScheduledArrival>
+    <ScheduledDeparture>20:47:30</ScheduledDeparture>
+    <ExpectedArrival>20:49:42</ExpectedArrival>
+    <ExpectedDeparture>20:50:12</ExpectedDeparture>
+    <Arrival />
+    <Departure />
+    <AutoArrival />
+    <AutoDepart />
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>SKRES</LocationCode>
+    <LocationFullName>Skerries</LocationFullName>
+    <LocationOrder>15</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:52:30</ScheduledArrival>
+    <ScheduledDeparture>20:53:00</ScheduledDeparture>
+    <ExpectedArrival>20:55:12</ExpectedArrival>
+    <ExpectedDeparture>20:55:42</ExpectedDeparture>
+    <Arrival />
+    <Departure />
+    <AutoArrival />
+    <AutoDepart />
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>BBRGN</LocationCode>
+    <LocationFullName>Balbriggan</LocationFullName>
+    <LocationOrder>16</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>20:58:00</ScheduledArrival>
+    <ScheduledDeparture>20:58:30</ScheduledDeparture>
+    <ExpectedArrival>21:00:42</ExpectedArrival>
+    <ExpectedDeparture>21:01:12</ExpectedDeparture>
+    <Arrival />
+    <Departure />
+    <AutoArrival />
+    <AutoDepart />
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>GSTON</LocationCode>
+    <LocationFullName>Gormanston</LocationFullName>
+    <LocationOrder>17</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>21:02:30</ScheduledArrival>
+    <ScheduledDeparture>21:03:00</ScheduledDeparture>
+    <ExpectedArrival>21:05:12</ExpectedArrival>
+    <ExpectedDeparture>21:05:42</ExpectedDeparture>
+    <Arrival />
+    <Departure />
+    <AutoArrival />
+    <AutoDepart />
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>MSNEY</LocationCode>
+    <LocationFullName>Mosney</LocationFullName>
+    <LocationOrder>18</LocationOrder>
+    <LocationType>T</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>21:05:30</ScheduledArrival>
+    <ScheduledDeparture>21:05:30</ScheduledDeparture>
+    <ExpectedArrival>21:08:12</ExpectedArrival>
+    <ExpectedDeparture>21:08:12</ExpectedDeparture>
+    <Arrival />
+    <Departure />
+    <AutoArrival />
+    <AutoDepart />
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>LTOWN</LocationCode>
+    <LocationFullName>Laytown</LocationFullName>
+    <LocationOrder>19</LocationOrder>
+    <LocationType>S</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>21:07:30</ScheduledArrival>
+    <ScheduledDeparture>21:08:00</ScheduledDeparture>
+    <ExpectedArrival>21:10:12</ExpectedArrival>
+    <ExpectedDeparture>21:10:42</ExpectedDeparture>
+    <Arrival />
+    <Departure />
+    <AutoArrival />
+    <AutoDepart />
+    <StopType>-</StopType>
+  </objTrainMovements>
+  <objTrainMovements>
+    <TrainCode>D820 </TrainCode>
+    <TrainDate>24 Oct 2013</TrainDate>
+    <LocationCode>DGHDA</LocationCode>
+    <LocationFullName>Drogheda</LocationFullName>
+    <LocationOrder>20</LocationOrder>
+    <LocationType>D</LocationType>
+    <TrainOrigin>Dublin Pearse</TrainOrigin>
+    <TrainDestination>Drogheda</TrainDestination>
+    <ScheduledArrival>21:15:00</ScheduledArrival>
+    <ScheduledDeparture>00:00:00</ScheduledDeparture>
+    <ExpectedArrival>21:17:42</ExpectedArrival>
+    <ExpectedDeparture>00:00:00</ExpectedDeparture>
+    <Arrival />
+    <Departure />
+    <AutoArrival />
+    <AutoDepart />
+    <StopType>-</StopType>
+  </objTrainMovements>
+</ArrayOfObjTrainMovements>

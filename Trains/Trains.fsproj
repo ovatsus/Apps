@@ -55,7 +55,9 @@
     <EmbeddedResource Include="UKStations.csv" />
     <None Include="IrelandStations.fsx" />
     <EmbeddedResource Include="IrelandStations.csv" />
-    <Content Include="IrelandStations.xml" />
+    <EmbeddedResource Include="IrelandStations.xml" />
+    <Content Include="StationData.xml" />
+    <Content Include="TrainMovements.xml" />
     <Compile Include="Stations.fs" />
     <Compile Include="LiveDepartures.fs" />
     <Compile Include="LiveDepartures.IE.fs" />

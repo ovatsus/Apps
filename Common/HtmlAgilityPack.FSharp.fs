@@ -89,6 +89,9 @@ let inline hasId value node =
 let inline hasClass value node = 
     hasAttr "class" value node
 
+let inline hasTagName tagName (node : HtmlNode) = 
+    node.Name.ToLowerInvariant() = tagName
+
 let inline hasText value (node : HtmlNode) = 
     node.InnerText = value
 
@@ -96,3 +99,15 @@ let createDoc html =
     let doc = new HtmlDocument()
     doc.LoadHtml html
     doc.DocumentNode
+
+open System.Text.RegularExpressions
+
+// reduce size of bug reports
+let cleanHtml (str:string) = 
+    let replace pattern (replacement:string) str = Regex.Replace(str, pattern, replacement)
+    str.Replace("\r", null).Replace("\n", null).Trim()
+    |> replace ">\s*<" "><"
+    |> replace "<head>.+?</head>" ""
+    |> replace "<script[^>]*>.+?</script>" ""
+    |> replace "<noscript>.+?</noscript>" ""
+

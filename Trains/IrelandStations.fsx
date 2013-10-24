@@ -2,7 +2,7 @@
 #r "../lib/portable/FSharp.Data.dll"
 #r "../packages/HtmlAgilityPack-PCL.1.4.6/lib/HtmlAgilityPack-PCL.dll"
 
-#load "HtmlAgilityPack.FSharp.fs"
+#load "../Common/HtmlAgilityPack.FSharp.fs"
 
 open System
 open FSharp.Net

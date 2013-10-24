@@ -15,14 +15,13 @@ namespace Trains.WP8
         }
 
         private static string title;
-        private static Departure departure;
+        private static LazyAsync<JourneyElement[]> journeyElementsLazyAsync;
 
         private LazyBlock<JourneyElement[]> journeyElementsLazyBlock;
 
-        //TODO: remove the static and pass in the page parameters
-        public static void SetTarget(string title, Departure departure)
+        public static void SetDetails(string title, LazyAsync<JourneyElement[]> journeyElementsLazyAsync)
         {
-            LiveProgressPage.departure = departure;
+            LiveProgressPage.journeyElementsLazyAsync = journeyElementsLazyAsync;
             LiveProgressPage.title = title;
         }
 
@@ -30,9 +29,9 @@ namespace Trains.WP8
         {
             base.OnNavigatedTo(e);
 
-            if (departure == null)
+            if (journeyElementsLazyAsync == null)
             {
-                ErrorReporting.Log("Departure is null");
+                ErrorReporting.Log("journeyElementsLazyAsync is null");
                 if (NavigationService.CanGoBack)
                 {
                     NavigationService.GoBack();
@@ -57,7 +56,7 @@ namespace Trains.WP8
                 journeyElementsLazyBlock = new LazyBlock<JourneyElement[]>(
                     "live progress",
                     "No information available",
-                    departure.Details,
+                    journeyElementsLazyAsync,
                     items => items.Length == 0,
                     new LazyBlockUI<JourneyElement>(this, journeyElements, journeyElementsMessageTextBlock, journeyElementsLastUpdatedTextBlock),
                     true,

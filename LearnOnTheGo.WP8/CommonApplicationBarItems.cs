@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Windows;
 using Common.WP8;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Microsoft.Phone.Tasks;
 
 namespace LearnOnTheGo.WP8
 {
@@ -44,25 +42,6 @@ namespace LearnOnTheGo.WP8
                     page.NavigationService.Navigate(page.GetUri<DownloadsPage>());
                 };
                 page.ApplicationBar.Buttons.Add(downloadsButton);
-            }
-
-            var installationDate = Settings.GetDateTime(Setting.InstallationDate);
-            if (!installationDate.HasValue)
-            {
-                Settings.Set(Setting.InstallationDate, DateTime.UtcNow);
-            }
-            else if (!Settings.GetBool(Setting.RatingDone))
-            {
-                if ((DateTime.UtcNow - installationDate.Value).TotalDays >= 1)
-                {
-                    var result = MessageBox.Show("Would you mind reviewing the " + AppMetadata.Current.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
-                    if (result == MessageBoxResult.OK)
-                    {
-                        ErrorReporting.Log("MarketplaceReviewTaskShow from Prompt");
-                        new MarketplaceReviewTask().Show();
-                    }
-                    Settings.Set(Setting.RatingDone, true);
-                }
             }
         }
     }

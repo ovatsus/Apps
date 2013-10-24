@@ -165,10 +165,33 @@ namespace Common.WP8
             }
         }
 
-
-
-        public static void CheckForNewVersion(Page page)
+        public static void CheckForReview()
         {
+            var installationDate = Settings.GetDateTime(Setting.InstallationDate);
+            if (!installationDate.HasValue)
+            {
+                Settings.Set(Setting.InstallationDate, DateTime.UtcNow);
+            }
+            else if (!Settings.GetBool(Setting.RatingDone))
+            {
+                if ((DateTime.UtcNow - installationDate.Value).TotalDays >= 1)
+                {
+                    var result = MessageBox.Show("Would you mind reviewing the " + AppMetadata.Current.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
+                    if (result == MessageBoxResult.OK)
+                    {
+                        ErrorReporting.Log("MarketplaceReviewTaskShow from Prompt");
+                        new MarketplaceReviewTask().Show();
+                    }
+                    Settings.Set(Setting.RatingDone, true);
+                }
+            }
+        }
+
+        public static void CheckForNewVersion()
+        {
+#if DEBUG
+            return;
+#endif
             var lastNewVersionCheck = Settings.GetDateTime(Setting.LastNewVersionCheck);
             if (!lastNewVersionCheck.HasValue)
             {
@@ -217,7 +240,7 @@ namespace Common.WP8
 
                                     if (updatedVersion > currentVersion)
                                     {
-                                        page.Dispatcher.BeginInvoke(() =>
+                                        AppMetadata.RootFrame.Dispatcher.BeginInvoke(() =>
                                         {
                                             if (MessageBox.Show("Do you want to install the new version now?", "Update Available", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                                             {

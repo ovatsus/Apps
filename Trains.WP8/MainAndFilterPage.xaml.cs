@@ -57,7 +57,8 @@ namespace Trains.WP8
                 if (e.NavigationMode == NavigationMode.New)
                 {
                     ErrorReporting.CheckForPreviousException(true);
-                    AppMetadata.CheckForNewVersion(this);
+                    AppMetadata.CheckForNewVersion();
+                    AppMetadata.CheckForReview();
                     if (!Settings.GetBool(Setting.LocationServicesEnabled) && !Settings.GetBool(Setting.LocationServicesPromptShown))
                     {
                         Settings.Set(Setting.LocationServicesPromptShown, true);
@@ -209,20 +210,20 @@ namespace Trains.WP8
 
         private void GoToStation(object dataContext)
         {            
-            var target = dataContext as DeparturesTable;
+            var target = dataContext as DeparturesAndArrivalsTable;
             if (target != null)
             {
                 if (fromStation != null)
                 {
                     Debug.Assert(!target.HasDestinationFilter);
-                    target = DeparturesTable.Create(fromStation, target.Station);
+                    target = DeparturesAndArrivalsTable.Create(fromStation, target.Station);
                 }
             }
             else
             {
                 var station = dataContext as Station ?? ((Tuple<double, Station>)dataContext).Item2;
-                target = fromStation == null ? DeparturesTable.Create(station) :
-                         DeparturesTable.Create(fromStation, station);
+                target = fromStation == null ? DeparturesAndArrivalsTable.Create(station) :
+                         DeparturesAndArrivalsTable.Create(fromStation, station);
             }
             NavigationService.Navigate(StationPage.GetUri(this, target, removeBackEntry: fromStation != null));
         }
@@ -237,7 +238,7 @@ namespace Trains.WP8
         private void OnRecentItemRemoveClick(object sender, RoutedEventArgs e)
         {
             ErrorReporting.Log("OnRecentItemRemoveClick");
-            var dataContext = (DeparturesTable)((MenuItem)sender).DataContext;
+            var dataContext = (DeparturesAndArrivalsTable)((MenuItem)sender).DataContext;
             RecentItems.Remove(dataContext);
             RefreshRecentItemsList();
         }
