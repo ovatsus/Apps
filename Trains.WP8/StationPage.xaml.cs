@@ -211,11 +211,11 @@ namespace Trains.WP8
             }
             else
             {
-                content = (forPrimaryTile ? departuresTableHeader + "\n" : (departuresAndArrivalsTable.HasDestinationFilter ? "" : firstDeparture.Destination + "\n")) +
-                          (firstDeparture.PlatformIsKnown ? "Platform " + firstDeparture.Platform.Value : "Platform not available") +
+                content = (forPrimaryTile ? departuresTableHeader : (departuresAndArrivalsTable.HasDestinationFilter ? "" : firstDeparture.Destination)) +
+                          (firstDeparture.PlatformIsKnown ? "\nPlatform " + firstDeparture.Platform.Value : "") +
                           (forPrimaryTile ? "" : "\n" + firstDeparture.Due + " " + firstDeparture.Status);
                 wideContent = departuresTableHeader + "\n" +
-                              (firstDeparture.PlatformIsKnown ? "Platform " + firstDeparture.Platform.Value : "Platform not available") + " " +
+                              (firstDeparture.PlatformIsKnown ? "Platform " + firstDeparture.Platform.Value + " " : "") + 
                               firstDeparture.Due + " " + firstDeparture.Status;
             }
 
