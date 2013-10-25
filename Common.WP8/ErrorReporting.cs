@@ -85,21 +85,24 @@ namespace Common.WP8
                 {
                     contents += "\n\n";
                 }
+                contents += "---------------------------------";
                 foreach (var item in log)
                 {
-                    contents += "[" + ToString(item.Item1) + "]" + " " + item.Item2 + "\n";
+                    contents += "\n[" + ToString(item.Item1) + "]" + " " + item.Item2;
                 }
             }
             if (contents.Length > 32000)
             {
                 contents = contents.Substring(0, 32000) + " ...";
             }
-            return "\n\n" + contents + "\n\n" +
+            return "[Your feedback here]\n\n" + contents + "\n---------------------------------\n" +
                    "App Version: " + AppMetadata.Current.Version + "\n" +
                    "OS Version: " + Environment.OSVersion.Version + "\n" +
-                   "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName + "\n" +
-                   "Culture: " + CultureInfo.CurrentCulture + "/" + CultureInfo.CurrentUICulture +
-                   (AppMetadata.Current.UsesLocation ? "\nLocation Services Enabled: " + Settings.GetBool(Setting.LocationServicesEnabled) : "");
+                   "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName + " " + DeviceStatus.DeviceHardwareVersion + " " + DeviceStatus.DeviceFirmwareVersion + "\n" +
+                   "Theme: " + ((Visibility)Application.Current.Resources["PhoneLightThemeVisibility"] == Visibility.Visible ? "Light" : "Dark") + "\n" +
+                   "Culture: " + CultureInfo.CurrentCulture + "/" + CultureInfo.CurrentUICulture + "\n" +
+                   (AppMetadata.Current.UsesLocation ? "Location Services Enabled: " + Settings.GetBool(Setting.LocationServicesEnabled) + "\n" : "") +
+                   "---------------------------------";
         }
     }
 }
