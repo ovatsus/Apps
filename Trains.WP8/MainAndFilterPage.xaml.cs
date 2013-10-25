@@ -58,7 +58,7 @@ namespace Trains.WP8
                 {
                     ErrorReporting.CheckForPreviousException(true);
                     AppMetadata.CheckForNewVersion();
-                    AppMetadata.CheckForReview();
+                    AppMetadata.CheckForReview(this);
                     if (!Settings.GetBool(Setting.LocationServicesEnabled) && !Settings.GetBool(Setting.LocationServicesPromptShown))
                     {
                         Settings.Set(Setting.LocationServicesPromptShown, true);

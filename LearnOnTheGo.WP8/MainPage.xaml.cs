@@ -36,7 +36,7 @@ namespace LearnOnTheGo.WP8
             {
                 ErrorReporting.CheckForPreviousException(true);
                 AppMetadata.CheckForNewVersion();
-                AppMetadata.CheckForReview();
+                AppMetadata.CheckForReview(this);
             }
 
             // settings changed
