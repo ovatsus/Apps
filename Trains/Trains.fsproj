@@ -53,11 +53,12 @@
     <None Include="packages.config" />
     <Compile Include="GeoUtils.fs" />
     <EmbeddedResource Include="UKStations.csv" />
+    <EmbeddedResource Include="UKDepartures.html" />
     <None Include="IrelandStations.fsx" />
     <EmbeddedResource Include="IrelandStations.csv" />
     <EmbeddedResource Include="IrelandStations.xml" />
-    <Content Include="StationData.xml" />
-    <Content Include="TrainMovements.xml" />
+    <Content Include="IrelandStationData.xml" />
+    <Content Include="IrelandTrainMovements.xml" />
     <Compile Include="Stations.fs" />
     <Compile Include="LiveDepartures.fs" />
     <Compile Include="LiveDepartures.IE.fs" />

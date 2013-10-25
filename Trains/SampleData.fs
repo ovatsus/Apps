@@ -1,6 +1,8 @@
 ﻿namespace Trains
 
 open System
+open System.IO
+open System.Reflection
 open FSharp.Control
 open FSharp.GeoUtils
 
@@ -21,6 +23,66 @@ type SampleData() =
 
     let details = LazyAsync.fromValue [| |]
 
+    let departures1 = 
+        use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UKDepartures.html")
+        use streamReader = new StreamReader(stream)
+        let html = streamReader.ReadToEnd()
+        LiveDepartures.UK.getDeparturesFromHtml html None null Unchecked.defaultof<_>
+
+    let departures2 = 
+        [ { Due = t1
+            Destination = s1.Name
+            DestinationDetail = "via " + s2.Name
+            Status = Status.Cancelled
+            Platform = Some "22C"
+            Details = details
+            Arrival = ref None
+            PropertyChangedEvent = Event<_,_>().Publish }
+          { Due = t2
+            Destination = s2.Name
+            DestinationDetail = ""
+            Status = Status.OnTime
+            Platform = None
+            Details = details
+            Arrival = ref <| Some { Due = t3
+                                    Destination = s3.Name
+                                    Status = Status.Delayed 4 }
+            PropertyChangedEvent = Event<_,_>().Publish }
+          { Due = t3
+            Destination = s3.Name
+            DestinationDetail = "via " + s1.Name + " & " + s2.Name + " via " + s4.Name
+            Status = Status.Delayed 130
+            Platform = Some "4"
+            Details = details
+            Arrival = ref None
+            PropertyChangedEvent = Event<_,_>().Publish }
+          { Due = t4
+            Destination = s4.Name
+            DestinationDetail = ""
+            Status = Status.DelayedIndefinitely
+            Platform = None
+            Details = details
+            Arrival = ref <| Some { Due = t1
+                                    Destination = s1.Name
+                                    Status = Status.OnTime }
+            PropertyChangedEvent = Event<_,_>().Publish }
+          { Due = t1
+            Destination = s1.Name
+            DestinationDetail = "via " + s3.Name
+            Status = Status.Cancelled
+            Platform = Some "12"
+            Details = details
+            Arrival = ref None
+            PropertyChangedEvent = Event<_,_>().Publish }
+          { Due = t2
+            Destination = s2.Name
+            DestinationDetail = ""
+            Status = Status.OnTime
+            Platform = None
+            Details = details
+            Arrival = ref None
+            PropertyChangedEvent = Event<_,_>().Publish } ]
+
     member __.NearestStations = [ 1.1, s1 
                                   3.4, s2 
                                   5.6, s3 
@@ -36,58 +98,7 @@ type SampleData() =
 
     member __.AllStations = [ s1; s2; s3; s4 ]
     
-    member __.Departures = [ { Due = t1
-                               Destination = s1.Name
-                               DestinationDetail = "via " + s2.Name
-                               Status = Status.Cancelled
-                               Platform = Some "22C"
-                               Details = details
-                               Arrival = ref None
-                               PropertyChangedEvent = Event<_,_>().Publish }
-                             { Due = t2
-                               Destination = s2.Name
-                               DestinationDetail = ""
-                               Status = Status.OnTime
-                               Platform = None
-                               Details = details
-                               Arrival = ref <| Some { Due = t3
-                                                       Destination = s3.Name
-                                                       Status = Status.Delayed 4 }
-                               PropertyChangedEvent = Event<_,_>().Publish }
-                             { Due = t3
-                               Destination = s3.Name
-                               DestinationDetail = "via " + s1.Name + " & " + s2.Name + " via " + s4.Name
-                               Status = Status.Delayed 1
-                               Platform = Some "4"
-                               Details = details
-                               Arrival = ref None
-                               PropertyChangedEvent = Event<_,_>().Publish }
-                             { Due = t4
-                               Destination = s4.Name
-                               DestinationDetail = ""
-                               Status = Status.Delayed 130
-                               Platform = None
-                               Details = details
-                               Arrival = ref <| Some { Due = t1
-                                                       Destination = s1.Name
-                                                       Status = Status.OnTime }
-                               PropertyChangedEvent = Event<_,_>().Publish }
-                             { Due = t1
-                               Destination = s1.Name
-                               DestinationDetail = "via " + s3.Name
-                               Status = Status.Cancelled
-                               Platform = Some "12"
-                               Details = details
-                               Arrival = ref None
-                               PropertyChangedEvent = Event<_,_>().Publish }
-                             { Due = t2
-                               Destination = s2.Name
-                               DestinationDetail = ""
-                               Status = Status.OnTime
-                               Platform = None
-                               Details = details
-                               Arrival = ref None
-                               PropertyChangedEvent = Event<_,_>().Publish } ]
+    member __.Departures = departures2
 
     member x.Arrivals = [ { Due = t1
                             Origin = s1.Name
@@ -111,7 +122,7 @@ type SampleData() =
                             Details = details }
                           { Due = t1
                             Origin = s1.Name
-                            Status = Status.Cancelled
+                            Status = Status.DelayedIndefinitely
                             Platform = Some "12"
                             Details = details }
                           { Due = t2

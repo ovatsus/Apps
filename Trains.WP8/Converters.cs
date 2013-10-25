@@ -35,6 +35,7 @@ namespace Trains.WP8
     public class StatusToColorConverter : IValueConverter
     {
         public Brush Cancelled { get; set; }
+        public Brush DelayedIndefinitely { get; set; }
         public Brush Delayed { get; set; }
         public Brush OnTime { get; set; }
 
@@ -44,6 +45,10 @@ namespace Trains.WP8
             if (status.IsCancelled)
             {
                 return Cancelled;
+            }
+            else if (status.IsDelayedIndefinitely)
+            {
+                return DelayedIndefinitely;
             }
             else if (status.IsDelayed)
             {

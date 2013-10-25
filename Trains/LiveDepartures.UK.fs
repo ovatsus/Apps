@@ -19,6 +19,8 @@ let private parseInt str =
 let private getStatus due (statusCell:HtmlNode) = 
     if statusCell.InnerText.Trim() = "Cancelled" then
         Status.Cancelled
+    elif statusCell.InnerText.Trim() = "Delayed" then
+        Status.DelayedIndefinitely
     else
         let statusSpan = statusCell.Element("span")
         if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
@@ -132,6 +134,13 @@ let private rowToArrival (tr:HtmlNode) =
       Platform = cells.[3] |> parsePlatform
       Details = details }
 
+let getDeparturesFromHtml html callingAtFilter synchronizationContext token = 
+    createDoc html
+    |> descendants "tbody"
+    |> Seq.collect (fun body -> body |> elements "tr")
+    |> Seq.map (rowToDeparture callingAtFilter synchronizationContext token)
+    |> Seq.toArray
+
 let getDepartures departuresAndArrivalsTable = 
 
     let url, callingAtFilter = 
@@ -149,11 +158,7 @@ let getDepartures departuresAndArrivalsTable =
 
         let getDepartures() = 
             try 
-                createDoc html
-                |> descendants "tbody"
-                |> Seq.collect (fun body -> body |> elements "tr")
-                |> Seq.map (rowToDeparture callingAtFilter synchronizationContext token)
-                |> Seq.toArray
+                getDeparturesFromHtml html callingAtFilter synchronizationContext token
             with 
             | :? ParseError -> reraise()
             | exn -> raise <| ParseError(sprintf "Failed to parse departures html from %s:\n%s" url html, exn)

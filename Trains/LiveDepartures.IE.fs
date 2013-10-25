@@ -21,8 +21,8 @@ type private LocationType =
         | TimingPoint -> "T"
         | Destination -> "D"
 
-type private StationDataXmlT = XmlProvider<"StationData.xml">
-type private TrainMovementsStationDataXmlT = XmlProvider<"TrainMovements.xml">
+type private StationDataXmlT = XmlProvider<"IrelandStationData.xml">
+type private TrainMovementsStationDataXmlT = XmlProvider<"IrelandTrainMovements.xml">
 
 let private xmlToJourneyElement (xml:TrainMovementsStationDataXmlT.DomainTypes.ObjTrainMovements) =
     let hasDeparted = xml.Departure.IsSome

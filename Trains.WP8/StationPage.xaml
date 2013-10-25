@@ -50,10 +50,12 @@
 
             <src:StatusToColorConverter x:Key="statusToColorConverter"
                                         Cancelled="Red"
+                                        DelayedIndefinitely="Red"
                                         Delayed="Orange"
                                         OnTime="{StaticResource PhoneDisabledBrush}" />
             <src:StatusToColorConverter x:Key="statusToColorConverterUsingAccent" 
                                         Cancelled="Red"
+                                        DelayedIndefinitely="Red"
                                         Delayed="Orange"
                                         OnTime="{StaticResource PhoneAccentBrush}" />
             <src:StatusToVisibilityConverter x:Key="statusToVisibilityConverter" />

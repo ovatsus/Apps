@@ -107,11 +107,13 @@ and Time =
 and Status =
     | OnTime
     | Delayed of mins:int
+    | DelayedIndefinitely
     | Cancelled
     override x.ToString() =
         match x with
         | OnTime -> "On time"
         | Delayed mins -> sprintf "Delayed %d mins" mins
+        | DelayedIndefinitely -> sprintf "Delayed"
         | Cancelled -> "Cancelled"
 
 and JourneyElement = {
@@ -213,16 +215,20 @@ type Departure with
 
         let onJourneyElementsObtained (journeyElements:JourneyElement[]) =
       
-            let index = 
-                match callingAtFilter with
-                | Some callingAtFilter -> 
-                    match journeyElements |> Array.tryFindIndex (fun journeyElement -> journeyElement.Station = callingAtFilter) with
-                    | Some index -> Some index
-                    | None -> journeyElements |> Array.tryFindIndex (fun journeyElement -> // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
-                                                                                           callingAtFilter.StartsWith journeyElement.Station)
-                | None -> Some <| journeyElements.Length - 1
-          
-            index |> Option.iter (postArrivalInformation journeyElements)
+            if journeyElements.Length <> 0 then
+
+                let index = 
+                    match callingAtFilter with
+                    | Some callingAtFilter -> 
+                        match journeyElements |> Array.tryFindIndex (fun journeyElement -> journeyElement.Station = callingAtFilter) with
+                        | Some index -> Some index
+                        | None -> journeyElements |> Array.tryFindIndex (fun journeyElement -> // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
+                                                                                               callingAtFilter.StartsWith journeyElement.Station)
+                    | None -> Some <| journeyElements.Length - 1
+                
+                index |> Option.iter (postArrivalInformation journeyElements)
       
-        if departure.Status <> Status.Cancelled then
-            departure.Details.GetValueAsync (Some token) onJourneyElementsObtained ignore ignore |> ignore
+        if synchronizationContext <> null then //it's null on sample data
+
+            if departure.Status <> Status.Cancelled && departure.Status <> Status.DelayedIndefinitely then
+                departure.Details.GetValueAsync (Some token) onJourneyElementsObtained ignore ignore |> ignore
