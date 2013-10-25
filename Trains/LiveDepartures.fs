@@ -3,6 +3,7 @@
 open System
 open System.ComponentModel
 open System.Globalization
+open System.Threading
 open HtmlAgilityPack
 open FSharp.Control
 
@@ -180,3 +181,48 @@ type DeparturesAndArrivalsTable with
         else
             let station = str |> Stations.get
             DeparturesAndArrivalsTable.Create(station)
+
+type Departure with
+    
+    member departure.SubscribeToDepartureInformation callingAtFilter (propertyChangedEvent:Event<_,_>) (synchronizationContext:SynchronizationContext) token = 
+    
+        let postArrivalInformation (journeyElements:JourneyElement[]) index = 
+        
+            let journeyElement = journeyElements.[index]
+
+            let destination = 
+                if index = journeyElements.Length - 1 then "" // don't display it as it would be repeated
+                else journeyElement.Station // display the smaller (journeyElement.Station.Length <= calligAt.Name.Length)
+
+            let status =
+                match journeyElement.Status with
+                | Delayed (_, mins) -> Status.Delayed mins
+                | Cancelled -> failwith "Not possible"
+                | _ -> Status.OnTime
+
+            departure.Arrival := 
+                Some { ArrivalInformation.Due = journeyElement.Arrives
+                       Destination = destination
+                       Status = status }
+        
+            let triggerProperyChanged _ = 
+                propertyChangedEvent.Trigger(departure, PropertyChangedEventArgs "Arrival")
+                propertyChangedEvent.Trigger(departure, PropertyChangedEventArgs "ArrivalIsKnown")
+        
+            synchronizationContext.Post(SendOrPostCallback(triggerProperyChanged), null)
+
+        let onJourneyElementsObtained (journeyElements:JourneyElement[]) =
+      
+            let index = 
+                match callingAtFilter with
+                | Some callingAtFilter -> 
+                    match journeyElements |> Array.tryFindIndex (fun journeyElement -> journeyElement.Station = callingAtFilter) with
+                    | Some index -> Some index
+                    | None -> journeyElements |> Array.tryFindIndex (fun journeyElement -> // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
+                                                                                           callingAtFilter.StartsWith journeyElement.Station)
+                | None -> Some <| journeyElements.Length - 1
+          
+            index |> Option.iter (postArrivalInformation journeyElements)
+      
+        if departure.Status <> Status.Cancelled then
+            departure.Details.GetValueAsync (Some token) onJourneyElementsObtained ignore ignore |> ignore

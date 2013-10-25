@@ -83,10 +83,8 @@ let private getJourneyDetails url = async {
     return getJourneyDetails()
 }
 
-let rowToDeparture departuresAndArrivalsTable (synchronizationContext:SynchronizationContext) token (tr:HtmlNode) =
+let rowToDeparture callingAtFilter synchronizationContext token (tr:HtmlNode) =
     
-    let propertyChangedEvent = Event<_,_>()
-
     let cells = tr |> elements "td" |> Seq.toArray
     let destination, destinationDetail = 
         let dest = cells.[1].InnerText.Trim()
@@ -104,6 +102,9 @@ let rowToDeparture departuresAndArrivalsTable (synchronizationContext:Synchroniz
     let details = 
         let detailsUrl = cells.[4] |> element "a" |> attr "href"
         LazyAsync.fromAsync (getJourneyDetails ("http://ojp.nationalrail.co.uk" + detailsUrl))
+
+    let propertyChangedEvent = Event<_,_>()
+
     let departure = 
         { Due = due
           Destination = destination
@@ -113,48 +114,8 @@ let rowToDeparture departuresAndArrivalsTable (synchronizationContext:Synchroniz
           Details = details
           Arrival = ref None
           PropertyChangedEvent = propertyChangedEvent.Publish }
-
-    let postArrivalInformation (journeyElements:JourneyElement[]) index = 
-        
-        let journeyElement = journeyElements.[index]
-
-        let destination = 
-            if index = journeyElements.Length - 1 then "" // don't display it as it would be repeated
-            else journeyElement.Station // display the smaller (journeyElement.Station.Length <= calligAt.Name.Length)                            
-
-        let status =
-            match journeyElement.Status with
-            | Delayed (_, mins) -> Status.Delayed mins
-            | Cancelled -> failwith "Not possible"
-            | _ -> Status.OnTime
-
-        departure.Arrival := 
-            Some { ArrivalInformation.Due = journeyElement.Arrives
-                   Destination = destination
-                   Status = status }
-        
-        let triggerProperyChanged _ = 
-            propertyChangedEvent.Trigger(departure, PropertyChangedEventArgs "Arrival")
-            propertyChangedEvent.Trigger(departure, PropertyChangedEventArgs "ArrivalIsKnown")
-        
-        synchronizationContext.Post(SendOrPostCallback(triggerProperyChanged), null)
     
-    let onJourneyElementsObtained (journeyElements:JourneyElement[]) =
-
-        let index = 
-            match departuresAndArrivalsTable.CallingAt with
-            | Some callingAt -> 
-                match journeyElements |> Array.tryFindIndex (fun journeyElement -> journeyElement.Station = callingAt.Name) with
-                | Some index -> Some index
-                | None -> journeyElements |> Array.tryFindIndex (fun journeyElement -> // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
-                                                                                       callingAt.Name.StartsWith journeyElement.Station)
-            | None -> Some <| journeyElements.Length - 1
-
-        index |> Option.iter (postArrivalInformation journeyElements)
-
-    if departure.Status <> Status.Cancelled then
-        departure.Details.GetValueAsync (Some token) onJourneyElementsObtained ignore ignore |> ignore
-
+    departure.SubscribeToDepartureInformation callingAtFilter propertyChangedEvent synchronizationContext token
     departure
 
 let private rowToArrival (tr:HtmlNode) =
@@ -173,14 +134,12 @@ let private rowToArrival (tr:HtmlNode) =
 
 let getDepartures departuresAndArrivalsTable = 
 
-    let synchronizationContext = SynchronizationContext.Current
-
-
-
-    let url = 
+    let url, callingAtFilter = 
         match departuresAndArrivalsTable.CallingAt with
-        | None -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/dep/%s" departuresAndArrivalsTable.Station.Code
-        | Some callingAt -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/dep/%s/%s/To" departuresAndArrivalsTable.Station.Code callingAt.Code 
+        | None -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/dep/%s" departuresAndArrivalsTable.Station.Code, None
+        | Some callingAt -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/dep/%s/%s/To" departuresAndArrivalsTable.Station.Code callingAt.Code, Some callingAt.Name
+
+    let synchronizationContext = SynchronizationContext.Current
 
     async {
         let! html = Http.AsyncRequestString url
@@ -193,7 +152,7 @@ let getDepartures departuresAndArrivalsTable =
                 createDoc html
                 |> descendants "tbody"
                 |> Seq.collect (fun body -> body |> elements "tr")
-                |> Seq.map (rowToDeparture departuresAndArrivalsTable synchronizationContext token)
+                |> Seq.map (rowToDeparture callingAtFilter synchronizationContext token)
                 |> Seq.toArray
             with 
             | :? ParseError -> reraise()

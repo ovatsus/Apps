@@ -20,6 +20,13 @@ namespace Common.WP8
                 smallImage.Visibility = Visibility.Visible;
                 tellYourFriendsTextBlock.Text = "Tell your friends about " + AppMetadata.Current.Name;
             }
+            else if (AppMetadata.Current.Name.Length > 10)
+            {
+                headerTextBlock.FontSize = 50;
+                bigImage.Visibility = Visibility.Visible;
+                smallImage.Visibility = Visibility.Collapsed;
+                tellYourFriendsTextBlock.Text = "Tell your friends about the " + AppMetadata.Current.Name + " app";
+            }
             else
             {                
                 bigImage.Visibility = Visibility.Visible;

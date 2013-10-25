@@ -1,5 +1,6 @@
 module Trains.LiveDepartures.IE
 
+open System.Threading
 open HtmlAgilityPack
 open HtmlAgilityPack.FSharp
 open FSharp.Control
@@ -53,32 +54,44 @@ let private getJourneyDetails trainCode trainDate = async {
 
     return getDepartures() 
 }
-            
-let private xmlToDeparture (xml:StationDataXmlT.DomainTypes.ObjStationData) =
-    let arrivalInformation = 
-        { ArrivalInformation.Due = Time.Create xml.Destinationtime
-          Destination = "" // don't display it as it would be repeated
-          Status = Status.OnTime } 
-    xml.Traincode,
-    { Due = Time.Create xml.Schdepart
-      Destination = xml.Destination
-      DestinationDetail = ""
-      Status = if xml.Late > 0 then Status.Delayed xml.Late else Status.OnTime
-      Platform = None
-      Details = LazyAsync.fromAsync (getJourneyDetails xml.Traincode <| xml.Traindate.ToString("dd MMM yyyy"))
-      Arrival = ref <| Some arrivalInformation
-      PropertyChangedEvent = Event<_,_>().Publish }
 
-let private xmlToArrival (xml:StationDataXmlT.DomainTypes.ObjStationData) =
-    xml.Traincode,
+let private trim (s:string) = s.Trim()
+
+let private xmlToDeparture callingAtFilter (xml:StationDataXmlT.DomainTypes.ObjStationData) =
+
+    let arrivalInformation =
+        match callingAtFilter with
+        | None -> 
+            Some { ArrivalInformation.Due = Time.Create xml.Destinationtime
+                   Destination = ""
+                   Status = Status.OnTime }
+        | Some station when xml.Destination = station -> 
+            Some { ArrivalInformation.Due = Time.Create xml.Destinationtime
+                   Destination = ""
+                   Status = Status.OnTime }
+        | Some _ -> None // we'll need to fetch it from getJourneyDetails asynchronously
+    
+    let propertyChangedEvent = Event<_,_>()
+
+    trim xml.Traincode, 
+    ({ Due = Time.Create xml.Schdepart
+       Destination = xml.Destination
+       DestinationDetail = ""
+       Status = if xml.Late > 0 then Status.Delayed xml.Late else Status.OnTime
+       Platform = None
+       Details = LazyAsync.fromAsync (getJourneyDetails (trim xml.Traincode) <| xml.Traindate.ToString("dd MMM yyyy"))
+       Arrival = ref arrivalInformation
+       PropertyChangedEvent = propertyChangedEvent.Publish }, callingAtFilter, propertyChangedEvent)
+
+let private xmlToArrival callingAtFilter (xml:StationDataXmlT.DomainTypes.ObjStationData) =
+    trim xml.Traincode,
     { Due = Time.Create xml.Scharrival
       Origin = xml.Origin
       Status = if xml.Late > 0 then Status.Delayed xml.Late else Status.OnTime
       Platform = None
-      Details = LazyAsync.fromAsync (getJourneyDetails xml.Traincode <| xml.Traindate.ToString("dd MMM yyyy")) }
+      Details = LazyAsync.fromAsync (getJourneyDetails (trim xml.Traincode) <| xml.Traindate.ToString("dd MMM yyyy")) }
 
 let private getCallingPoints (tr:HtmlNode) =
-    let trim (s:string) = s.Trim()
     let trainId = 
         tr 
         |> elements "td" 
@@ -93,28 +106,24 @@ let private getCallingPoints (tr:HtmlNode) =
         |> Seq.filter (hasId ("train" + trainId))
         |> Seq.collect (descendants "tr")
         |> Seq.filter (hasClass "")
-        |> Seq.map (fun tr -> tr 
-                              |> elements "td" 
-                              |> Seq.skip 1 
-                              |> Seq.head 
-                              |> innerText
-                              |> trim)
+        |> Seq.map (fun tr -> let cells = tr |> elements "td" |> Seq.toArray
+                              let station = cells.[1].InnerText |> trim
+                              station)
         |> Set.ofSeq
     trainId, callingPoints
 
-let private getDeparturesOrArrivals forDepartures mapper (departuresAndArrivalsTable:DeparturesAndArrivalsTable) = 
+let private getDeparturesOrArrivals forDepartures mapper getOutput (departuresAndArrivalsTable:DeparturesAndArrivalsTable) = 
 
     let xmlUrl = "http://api.irishrail.ie/realtime/realtime.asmx/getStationDataByCodeXML?StationCode=" + departuresAndArrivalsTable.Station.Code
 
-    let getDeparturesOrArrivals xml extraFilter =
+    let getDeparturesOrArrivals callingAtFilter xml extraFilter =
         try 
             let xmlT = StationDataXmlT.Parse xml
             xmlT.GetObjStationDatas()
             |> Seq.filter (fun xml -> xml.Locationtype <> (if forDepartures then LocationType.Destination else LocationType.Origin).ToString())
-            |> Seq.map mapper
-            |> Seq.toArray
+            |> Seq.map (mapper callingAtFilter)
             |> extraFilter
-            |> Seq.map snd
+            |> Seq.map getOutput
             |> Seq.toArray
         with 
         | exn -> raise <| ParseError(sprintf "Failed to parse xml from %s:\n%s" xmlUrl xml, exn)
@@ -139,11 +148,9 @@ let private getDeparturesOrArrivals forDepartures mapper (departuresAndArrivalsT
     | None ->
 
         async {
-
             let! xml = Http.AsyncRequestString xmlUrl
-            return getDeparturesOrArrivals xml id
-
-        } |> LazyAsync.fromAsync
+            return getDeparturesOrArrivals None xml id
+        }
 
     | Some callingAt ->
 
@@ -160,14 +167,31 @@ let private getDeparturesOrArrivals forDepartures mapper (departuresAndArrivalsT
                 | _ -> Set.empty
 
             let! xml = Http.AsyncRequestString xmlUrl
-            let extraFilter = Seq.filter (fst >> getCallingPoints >> Set.contains callingAt.Name)
 
-            return getDeparturesOrArrivals xml extraFilter
+            let extraFilter =
+                Seq.filter (fst >> getCallingPoints >> Set.contains callingAt.Name)
+         
+            return getDeparturesOrArrivals (Some callingAt.Name) xml extraFilter
 
-        } |> LazyAsync.fromAsync
+        }
 
-let getDepartures = 
-    getDeparturesOrArrivals true xmlToDeparture
+let getDepartures departuresAndArrivalsTable = 
+    
+    let synchronizationContext = SynchronizationContext.Current
 
-let getArrivals =
-    getDeparturesOrArrivals false xmlToArrival
+    async {
+
+        let! token = Async.CancellationToken
+
+        let getDeparture (trainId, (departure:Departure, callingAtFilter, propertyChangedEvent)) = 
+            if (!departure.Arrival).IsNone then
+                departure.SubscribeToDepartureInformation callingAtFilter propertyChangedEvent synchronizationContext token
+            departure
+
+        return! getDeparturesOrArrivals true xmlToDeparture getDeparture departuresAndArrivalsTable
+    } |> LazyAsync.fromAsync
+
+let getArrivals departuresAndArrivalsTable = 
+
+    getDeparturesOrArrivals false xmlToArrival snd departuresAndArrivalsTable
+    |> LazyAsync.fromAsync
