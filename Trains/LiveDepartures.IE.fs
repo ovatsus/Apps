@@ -59,18 +59,6 @@ let private trim (s:string) = s.Trim()
 
 let private xmlToDeparture callingAtFilter (xml:StationDataXmlT.DomainTypes.ObjStationData) =
 
-    let arrivalInformation =
-        match callingAtFilter with
-        | None -> 
-            Some { ArrivalInformation.Due = Time.Create xml.Destinationtime
-                   Destination = ""
-                   Status = Status.OnTime }
-        | Some station when xml.Destination = station -> 
-            Some { ArrivalInformation.Due = Time.Create xml.Destinationtime
-                   Destination = ""
-                   Status = Status.OnTime }
-        | Some _ -> None // we'll need to fetch it from getJourneyDetails asynchronously
-    
     let propertyChangedEvent = Event<_,_>()
 
     trim xml.Traincode, 
@@ -80,7 +68,7 @@ let private xmlToDeparture callingAtFilter (xml:StationDataXmlT.DomainTypes.ObjS
        Status = if xml.Late > 0 then Status.Delayed xml.Late else Status.OnTime
        Platform = None
        Details = LazyAsync.fromAsync (getJourneyDetails (trim xml.Traincode) <| xml.Traindate.ToString("dd MMM yyyy"))
-       Arrival = ref arrivalInformation
+       Arrival = ref None
        PropertyChangedEvent = propertyChangedEvent.Publish }, callingAtFilter, propertyChangedEvent)
 
 let private xmlToArrival callingAtFilter (xml:StationDataXmlT.DomainTypes.ObjStationData) =
