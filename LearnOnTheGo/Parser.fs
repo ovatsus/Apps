@@ -8,7 +8,7 @@ open FSharp.Data
 type ParseError(msg, exn) = 
     inherit Exception(msg, exn)
 
-type JsonT = JsonProvider<"topics.json", SampleList=true, RootName="topic">
+type JsonT = JsonProvider<"topics.json", SampleIsList=true, RootName="topic">
 
 let parseTopicsJson getLectureSections topicsJsonStr = 
 

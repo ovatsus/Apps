@@ -34,6 +34,11 @@
 <member name="">
 
 </member>
+<member name="M:FSharp.Data.Csv.CsvFile.AsyncLoad(System.String,Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{System.Char},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.Boolean})">
+<summary>
+ Loads CSV from the specified uri asynchronously
+</summary>
+</member>
 <member name="">
 
 </member>
@@ -46,6 +51,9 @@
  If &apos;ignoreErrors&apos; is true (the default is false), rows with a different number of columns from the header row
  (or the first row if headers are not present) will be ignored
 </summary>
+</member>
+<member name="">
+
 </member>
 <member name="">
 
@@ -199,12 +207,7 @@
 </member>
 <member name="M:FSharp.Data.Json.JsonValue.AsyncLoad(System.String,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
 <summary>
- Loads JSON from the specified uri
-</summary>
-</member>
-<member name="M:FSharp.Data.Json.JsonValue.AsyncLoad(System.IO.Stream,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
-<summary>
- Loads JSON from the specified stream
+ Loads JSON from the specified uri  asynchronously
 </summary>
 </member>
 <member name="T:FSharp.Data.Json.JsonValue">
@@ -244,14 +247,30 @@
  (assuming that the value is a string or array of strings)
 </summary>
 </member>
-<member name="M:FSharp.Data.Json.Extensions.JsonValue.AsGuid``1(FSharp.Data.Json.JsonValue,Microsoft.FSharp.Core.FSharpOption{``0})">
+<member name="M:FSharp.Data.Json.Extensions.JsonValue.AsGuid(FSharp.Data.Json.JsonValue)">
 <summary>
  Get the guid value of an element (assuming that the value is a guid)
+</summary>
+</member>
+<member name="M:FSharp.Data.Json.Extensions.JsonValue.AsDateTime(FSharp.Data.Json.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
+<summary>
+ Get the datetime value of an element (assuming that the value is a string
+ containing well-formed ISO date or MSFT JSON date)
 </summary>
 </member>
 <member name="M:FSharp.Data.Json.Extensions.JsonValue.AsBoolean(FSharp.Data.Json.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
 <summary>
  Get the boolean value of an element (assuming that the value is a boolean)
+</summary>
+</member>
+<member name="M:FSharp.Data.Json.Extensions.JsonValue.AsFloat(FSharp.Data.Json.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo},Microsoft.FSharp.Core.FSharpOption{System.String[]})">
+<summary>
+ Get a number as a float (assuming that the value is convertible to a float)
+</summary>
+</member>
+<member name="M:FSharp.Data.Json.Extensions.JsonValue.AsDecimal(FSharp.Data.Json.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
+<summary>
+ Get a number as a decimal (assuming that the value fits in decimal)
 </summary>
 </member>
 <member name="M:FSharp.Data.Json.Extensions.JsonValue.AsInteger64(FSharp.Data.Json.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
@@ -264,25 +283,10 @@
  Get a number as an integer (assuming that the value fits in integer)
 </summary>
 </member>
-<member name="M:FSharp.Data.Json.Extensions.JsonValue.AsDecimal(FSharp.Data.Json.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
-<summary>
- Get a number as a decimal (assuming that the value fits in decimal)
-</summary>
-</member>
-<member name="M:FSharp.Data.Json.Extensions.JsonValue.AsFloat(FSharp.Data.Json.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
-<summary>
- Get a number as a float (assuming that the value is convertible to a float)
-</summary>
-</member>
-<member name="M:FSharp.Data.Json.Extensions.JsonValue.AsDateTime(FSharp.Data.Json.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
-<summary>
- Get the datetime value of an element (assuming that the value is a string
- containing well-formed ISO date or MSFT JSON date)
-</summary>
-</member>
 <member name="M:FSharp.Data.Json.Extensions.JsonValue.AsString(FSharp.Data.Json.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
 <summary>
  Get the string value of an element (assuming that the value is a scalar)
+ Returns the empty string for JsonValue.Null
 </summary>
 </member>
 <member name="M:FSharp.Data.Json.Extensions.JsonValue.GetEnumerator(FSharp.Data.Json.JsonValue)">
@@ -306,10 +310,116 @@
 </summary>
 </member>
 <member name="T:FSharp.Data.Json.Extensions">
+
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.CommonRuntime.OptionToNullable``1(Microsoft.FSharp.Core.FSharpOption{``0})">
 <summary>
- Adds extension methods that can be used to work with JsonValue in a less safe, 
- but shorter way. The module also provides the dynamic operator.
+ Turn an F# option type Option&lt;&apos;T&gt; containing a primitive 
+ value type into a .NET type Nullable&lt;&apos;T&gt;
 </summary>
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.CommonRuntime.NullableToOption``1(System.Nullable{``0})">
+<summary>
+ Turn a .NET type Nullable&lt;&apos;T&gt; to an F# option type Option&lt;&apos;T&gt;
+</summary>
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.CommonRuntime.JsonGetNonOptionalValue``1(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.Json.JsonValue})">
+<summary>
+ Operation that extracts the value from an option and reports a meaningful error message when the value is not there
+ If the originalValue is a scalar, for missing strings we return &quot;&quot;, and for missing doubles we return NaN
+ For other types an error is thrown
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.CommonRuntime.GetNonOptionalValue``1(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ Operation that extracts the value from an option and reports a meaningful error message when the value is not there
+ For missing strings we return &quot;&quot;, and for missing doubles we return NaN
+ For other types an error is thrown
+</summary>
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.CommonRuntime.GetCulture(System.String)">
+<summary>
+ Returns CultureInfo matching the specified culture string
+ (or InvariantCulture if the argument is null or empty)
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
 </member>
 <member name="">
 
@@ -430,197 +540,98 @@
 <member name="">
 
 </member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
 <member name="M:FSharp.Data.RuntimeImplementation.JsonDocument.Create(FSharp.Data.Json.JsonValue)">
 <summary>
  Creates a JsonDocument representing the specified value
 </summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
 </member>
 <member name="T:FSharp.Data.RuntimeImplementation.JsonDocument">
 <summary>
  Underlying representation of the generated JSON types
 </summary>
 </member>
-<member name="M:FSharp.Data.RuntimeImplementation.JsonOperations.TryGetValueByTypeTag``2(FSharp.Data.Json.JsonValue,System.String,System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
+<member name="M:FSharp.Data.RuntimeImplementation.JsonRuntime.TryGetValueByTypeTag``2(FSharp.Data.Json.JsonValue,System.String,System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
 <summary>
  Returns a single or no value by tag type
 </summary>
 </member>
-<member name="M:FSharp.Data.RuntimeImplementation.JsonOperations.TryGetArrayChildByTypeTag``2(FSharp.Data.Json.JsonValue,System.String,System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
+<member name="M:FSharp.Data.RuntimeImplementation.JsonRuntime.TryGetArrayChildByTypeTag``2(FSharp.Data.Json.JsonValue,System.String,System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
 <summary>
  Returns single or no value from an array matching the specified tag
 </summary>
 </member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.JsonOperations.GetArrayChildrenByTypeTag``2(FSharp.Data.Json.JsonValue,System.String,System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
+<member name="M:FSharp.Data.RuntimeImplementation.JsonRuntime.GetArrayChildrenByTypeTag``2(FSharp.Data.Json.JsonValue,System.String,System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
 <summary>
  Returns all array values that match the specified tag
  (Follows the same pattern as ConvertXyz functions above)
 </summary>
 </member>
-<member name="M:FSharp.Data.RuntimeImplementation.JsonOperations.GetArrayChildByTypeTag(FSharp.Data.Json.JsonValue,System.String)">
+<member name="M:FSharp.Data.RuntimeImplementation.JsonRuntime.GetArrayChildByTypeTag(FSharp.Data.Json.JsonValue,System.String)">
 <summary>
  Returns a single array children that matches the specified tag
 </summary>
 </member>
-<member name="M:FSharp.Data.RuntimeImplementation.JsonOperations.ConvertOptionalProperty``2(FSharp.Data.Json.JsonValue,System.String,System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
+<member name="M:FSharp.Data.RuntimeImplementation.JsonRuntime.ConvertOptionalProperty``2(FSharp.Data.Json.JsonValue,System.String,System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
 <summary>
  Get optional property of a specified type
 </summary>
 </member>
-<member name="M:FSharp.Data.RuntimeImplementation.JsonOperations.ConvertArray``2(FSharp.Data.Json.JsonValue,System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
+<member name="M:FSharp.Data.RuntimeImplementation.JsonRuntime.ConvertArray``2(``0,System.Func{``0,FSharp.Data.Json.JsonValue},System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
 <summary>
  Converts JSON array to array of target types
  The `packer` function rebuilds representation type (such as
  `JsonDocument`) which is then passed to projection function `f`.
+ The `unpacker` function does the opposite
 </summary>
 </member>
-<member name="T:FSharp.Data.RuntimeImplementation.JsonOperations">
+<member name="M:FSharp.Data.RuntimeImplementation.JsonRuntime.AsyncConvertArray``2(Microsoft.FSharp.Control.FSharpAsync{``0},System.Func{``0,FSharp.Data.Json.JsonValue},System.Func{FSharp.Data.Json.JsonValue,``0},System.Func{``0,``1})">
+<summary>
+ Converts JSON array to array of target types, asynchronously
+ The `packer` function rebuilds representation type (such as
+ `JsonDocument`) which is then passed to projection function `f`.
+ The `unpacker` function does the opposite
+</summary>
+</member>
+<member name="T:FSharp.Data.RuntimeImplementation.JsonRuntime">
 <summary>
  Static helper methods called from the generated code
 </summary>
-</member>
-<member name="">
-
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.Operations.OptionToNullable``1(Microsoft.FSharp.Core.FSharpOption{``0})">
-<summary>
- Turn an F# option type Option&lt;&apos;T&gt; containing a primitive 
- value type into a .NET type Nullable&lt;&apos;T&gt;
-</summary>
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.Operations.NullableToOption``1(System.Nullable{``0})">
-<summary>
- Turn a .NET type Nullable&lt;&apos;T&gt; to an F# option type Option&lt;&apos;T&gt;
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.Operations.GetNonOptionalValue``1(System.String,Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{System.String})">
-<summary>
- Operation that extracts the value from an option and reports a
- meaningful error message when the value is not there
-
- We could just return defaultof&lt;&apos;T&gt; if the value is None, but that is not
- really correct, because this operation is used when the inference engine
- inferred that the value is always present. The user should update their
- sample to infer it as optional (and get None). If we use defaultof&lt;&apos;T&gt; we
- might return 0 and the user would not be able to distinguish between 0
- and missing value.
-</summary>
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.Operations.GetCulture(System.String)">
-<summary>
- Returns CultureInfo matching the specified culture string
- (or InvariantCulture if the argument is null or empty)
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.Operations.AsOption(System.String)">
-<summary>
- Turns empty or null string value into None, otherwise returns Some
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.Operations.AsDateTime(System.IFormatProvider,System.String)">
-<summary>
- Parse date time using either the JSON milliseconds format or using ISO 8601
- that is, either &quot;\/Date(&lt;msec-since-1/1/1970&gt;)\/&quot; or something
- along the lines of &quot;2013-01-28T00:37Z&quot;
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="">
-
 </member>
 <member name="">
 
@@ -649,6 +660,42 @@
 <member name="">
 
 </member>
+<member name="M:FSharp.Data.RuntimeImplementation.TextConversions.AsOption(System.String)">
+<summary>
+ Turns empty or null string value into None, otherwise returns Some
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.TextConversions.AsDateTime(System.IFormatProvider,System.String)">
+<summary>
+ Parse date time using either the JSON milliseconds format or using ISO 8601
+ that is, either &quot;\/Date(&lt;msec-since-1/1/1970&gt;)\/&quot; or something
+ along the lines of &quot;2013-01-28T00:37Z&quot;
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
 <member name="">
 
 </member>
@@ -657,8 +704,14 @@
 </member>
 <member name="M:FSharp.Data.RuntimeImplementation.XmlElement.Create(System.Xml.Linq.XElement)">
 <summary>
- Creates a XmlDocument representing the specified value
+ Creates a XmlElement representing the specified value
 </summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
 </member>
 <member name="T:FSharp.Data.RuntimeImplementation.XmlElement">
 <summary>
@@ -1123,6 +1176,9 @@
 <summary>
  Represents a single object drawn from Freebase. 
 </summary>
+</member>
+<member name="">
+
 </member>
 <member name="">
 
@@ -1913,40 +1969,7 @@
 <member name="">
 
 </member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.getStreamReaderAtRuntime(System.Boolean,System.String,System.String,System.String)">
-<summary>
- Resolve a location of a file (or a web location) and open it for shared
- read at runtime (do not monitor file changes and use runtime resolution rules)
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.asyncReadTextInProvider(System.Boolean,System.Boolean,System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.Unit,Microsoft.FSharp.Core.Unit}},System.String,System.Uri)">
-<summary>
- Given a type provider configuration and a name passed by user, open 
- the uri and return it as text
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.asyncOpenStreamInProvider(System.Boolean,System.Boolean,System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.Unit,Microsoft.FSharp.Core.Unit}},System.String,System.Uri)">
-<summary>
- Given a type provider configuration and a name passed by user, open 
- the uri and return it as a stream
-</summary>
-</member>
-<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.resolveUri(System.Boolean,System.Boolean,System.String,System.String,System.Uri)">
+<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.UriResolver.Resolve(System.Uri)">
 <summary>
  Resolve the absolute location of a file (or web URL) according to the rules
  used by standard F# type providers as described here:
@@ -1954,19 +1977,61 @@
 
   * if it is web resource, just return it
   * if it is full path, just return it
-  * otherwise..
+  * otherwise.
 
     At design-time:
       * if the user specified resolution folder, use that
-      * use the default resolution folder
+      * otherwise use the default resolution folder
     At run-time:
       * if the user specified resolution folder, use that
       * if it is running in F# interactive (config.IsHostedExecution) 
         use the default resolution folder
       * otherwise, use &apos;CurrentDomain.BaseDirectory&apos;
+ returns an absolute uri * isWeb flag
+</summary>
+</member>
+<member name="">
 
- Returns the resolved file name, together with a flag specifying 
- whether it is web based (and we need WebClient to download it)
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.asyncReadTextAtRuntimeWithDesignTimeRules(System.String,System.String,System.String)">
+<summary>
+ Returns a TextReader for the uri using the designtime resolution rules
+</summary>
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.asyncReadTextAtRuntime(System.Boolean,System.String,System.String,System.String)">
+<summary>
+ Returns a TextReader for the uri using the runtime resolution rules
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.asyncOpenStream(Microsoft.FSharp.Core.FSharpOption{System.Tuple{Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.Unit,Microsoft.FSharp.Core.Unit},Microsoft.FSharp.Core.FSharpFunc{System.IDisposable,Microsoft.FSharp.Core.Unit}}},FSharp.Data.RuntimeImplementation.ProviderFileSystem.UriResolver,System.Uri)">
+<summary>
+ Opens a stream to the uri using the uriResolver resolution rules
+ It the uri is a file, uses shared read, so it works when the file locked by Excel or similar tools,
+ and sets up a filesystem watcher that calls the invalidate function whenever the file changes
+</summary>
+</member>
+<member name="M:FSharp.Data.RuntimeImplementation.ProviderFileSystem.asyncRead(System.IO.Stream)">
+<summary>
+ consumes a stream asynchronously until the end
+ and returns a memory stream with the full content
 </summary>
 </member>
 <member name="">
