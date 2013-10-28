@@ -21,6 +21,8 @@ let private getStatus due (statusCell:HtmlNode) =
         Status.Cancelled
     elif statusCell.InnerText.Trim() = "Delayed" then
         Status.DelayedIndefinitely
+    elif statusCell.InnerText.Trim() = "No report" then
+        Status.NoReport
     else
         let statusSpan = statusCell.Element("span")
         if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then

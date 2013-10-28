@@ -21,6 +21,10 @@ UK Trains provides real-time information for UK national rail stations (excludin
 
 Note that background refresh requires Location Services to be enabled
 
+New in 2.3:
+* Correctly display trains with no report information
+* Fixed time display of delayed trains near midnight
+
 New in 2.2:
 * Correctly display trains delayed indefinitely
 

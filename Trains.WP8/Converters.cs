@@ -37,6 +37,7 @@ namespace Trains.WP8
         public Brush Cancelled { get; set; }
         public Brush DelayedIndefinitely { get; set; }
         public Brush Delayed { get; set; }
+        public Brush NoReport { get; set; }
         public Brush OnTime { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -53,6 +54,10 @@ namespace Trains.WP8
             else if (status.IsDelayed)
             {
                 return Delayed;
+            }
+            else if (status.IsNoReport)
+            {
+                return NoReport;
             }
             else 
             {

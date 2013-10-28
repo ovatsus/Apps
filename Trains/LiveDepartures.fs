@@ -77,18 +77,18 @@ and ArrivalInformation = {
 and Time = 
     { TotalMinutes : int }
     member x.Hours = x.TotalMinutes / 60
-    member x.Minutes = x.TotalMinutes % 1440 % 60
+    member x.Minutes = x.TotalMinutes % 60
     override x.ToString() = sprintf "%02d:%02d" x.Hours x.Minutes
+    static member Create(minutes) = 
+        { TotalMinutes = minutes % 1440 }
     static member Create(hours, minutes) = 
         assert (hours >= 0 && hours <= 23)
         assert (minutes >= 0 && minutes <= 59)
-        { TotalMinutes = (minutes + hours * 60) % 1440 }
-    static member Create(minutes) = 
-        { TotalMinutes = minutes % 1440 }
+        Time.Create(minutes + hours * 60)
     static member (+) (t1, t2) = 
-        { TotalMinutes = t1.TotalMinutes + t2.TotalMinutes }
+        Time.Create(t1.TotalMinutes + t2.TotalMinutes)
     static member Create(dt:DateTime) = 
-        { TotalMinutes = int dt.TimeOfDay.TotalMinutes }
+        Time.Create(int dt.TimeOfDay.TotalMinutes)
     static member Parse(cell:HtmlNode) = 
         let parseInt str = 
             match Int32.TryParse(str, NumberStyles.Integer, CultureInfo.InvariantCulture) with
@@ -109,12 +109,14 @@ and Status =
     | Delayed of mins:int
     | DelayedIndefinitely
     | Cancelled
+    | NoReport
     override x.ToString() =
         match x with
         | OnTime -> "On time"
         | Delayed mins -> sprintf "Delayed %d mins" mins
         | DelayedIndefinitely -> sprintf "Delayed"
         | Cancelled -> "Cancelled"
+        | NoReport -> "No Report"
 
 and JourneyElement = {
     Arrives : Time
@@ -223,12 +225,14 @@ type Departure with
                         match journeyElements |> Array.tryFindIndex (fun journeyElement -> journeyElement.Station = callingAtFilter) with
                         | Some index -> Some index
                         | None -> journeyElements |> Array.tryFindIndex (fun journeyElement -> // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
-                                                                                               callingAtFilter.StartsWith journeyElement.Station)
+                                                                                               callingAtFilter.StartsWith journeyElement.Station ||
+                                                                                               journeyElement.Station.StartsWith callingAtFilter)
                     | None -> Some <| journeyElements.Length - 1
                 
                 index |> Option.iter (postArrivalInformation journeyElements)
       
         if synchronizationContext <> null then //it's null on sample data
 
-            if departure.Status <> Status.Cancelled && departure.Status <> Status.DelayedIndefinitely then
-                departure.Details.GetValueAsync (Some token) onJourneyElementsObtained ignore ignore |> ignore
+            match departure.Status with 
+            | Status.Cancelled | Status.DelayedIndefinitely | Status.NoReport -> ()
+            | _ -> departure.Details.GetValueAsync (Some token) onJourneyElementsObtained ignore ignore |> ignore

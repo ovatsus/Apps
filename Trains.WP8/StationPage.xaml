@@ -52,11 +52,13 @@
                                         Cancelled="Red"
                                         DelayedIndefinitely="Red"
                                         Delayed="Orange"
+                                        NoReport="Orange"
                                         OnTime="{StaticResource PhoneDisabledBrush}" />
             <src:StatusToColorConverter x:Key="statusToColorConverterUsingAccent" 
                                         Cancelled="Red"
                                         DelayedIndefinitely="Red"
                                         Delayed="Orange"
+                                        NoReport="Orange"
                                         OnTime="{StaticResource PhoneAccentBrush}" />
             <src:StatusToVisibilityConverter x:Key="statusToVisibilityConverter" />
             <src:ArrivalInformationToMessageConverter x:Key="arrivalInformationToMessageConverter" />
