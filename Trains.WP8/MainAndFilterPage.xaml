@@ -96,13 +96,27 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding Station.Name}"
                                            TextWrapping="Wrap"
                                            FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                <TextBlock Text="{Binding Station.Code}" 
+                                           Grid.Column="1"
+                                           Margin="0,12,0,0"
+                                           Foreground="{StaticResource PhoneDisabledBrush}" />
                                 <TextBlock Text="{Binding CallingAt.Value.Name, StringFormat='calling at {0}'}" 
                                            Visibility="{Binding HasDestinationFilter, Converter={StaticResource booleanToVisibilityConverter}}"
                                            Grid.Row="1"
                                            TextWrapping="Wrap"
+                                           Foreground="{StaticResource PhoneDisabledBrush}" />
+                                <TextBlock Text="{Binding CallingAt.Value.Code}" 
+                                           Visibility="{Binding HasDestinationFilter, Converter={StaticResource booleanToVisibilityConverter}}"
+                                           Grid.Row="1"
+                                           Grid.Column="1"
+                                           HorizontalAlignment="Right"
                                            Foreground="{StaticResource PhoneDisabledBrush}" />
                             </Grid>
                         </ControlTemplate>
