@@ -66,6 +66,7 @@ module Stations =
                     let xml = XmlProvider<"IrelandStations.xml">.Load stream
 #endif
                     xml.GetObjStations()
+                    |> Seq.distinctBy (fun station -> station.StationDesc) // there's two different Adamstown
                     |> Seq.map (fun station -> 
                         { Code = station.StationCode
                           Name = station.StationDesc
@@ -126,3 +127,8 @@ module Stations =
     let get stationCode =
         let _, stationsByCode = getStationInfo()
         stationsByCode.[stationCode]
+
+    [<CompiledName("TryGet")>]
+    let tryGet stationCode =
+        let _, stationsByCode = getStationInfo()
+        stationsByCode.TryGetValue stationCode

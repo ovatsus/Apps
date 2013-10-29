@@ -148,6 +148,7 @@ namespace Common.WP8
             if (e.NavigationMode != NavigationMode.New && e.NavigationMode != NavigationMode.Refresh)
                 return;
 
+            ErrorReporting.Log("Clearing back stack");
             while (RootFrame.RemoveBackEntry() != null);
         }
 

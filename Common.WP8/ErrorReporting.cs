@@ -81,10 +81,6 @@ namespace Common.WP8
         {
             if (log.Count > 0)
             {
-                if (contents.Length > 0)
-                {
-                    contents += "\n\n";
-                }
                 contents += "---------------------------------";
                 foreach (var item in log)
                 {

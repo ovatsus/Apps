@@ -11,6 +11,7 @@ namespace Trains.WP8
             Settings.GetString(Setting.RecentStations)
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(DeparturesAndArrivalsTable.Parse)
+                .Where(x => x != null)
                 .ToList();
 
         public static List<DeparturesAndArrivalsTable> GetItemsToDisplay(Station fromStation, string excludeStation) 

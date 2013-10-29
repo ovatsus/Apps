@@ -179,12 +179,18 @@ type DeparturesAndArrivalsTable with
     static member Parse (str:string) =
         let pos = str.IndexOf '|'
         if pos >= 0 then
-            let station = str.Substring(0, pos) |> Stations.get
-            let callingAt = str.Substring(pos + 1) |> Stations.get
-            DeparturesAndArrivalsTable.Create(station, callingAt)
+            let stationFound, station = str.Substring(0, pos) |> Stations.tryGet
+            let callingAtFound, callingAt = str.Substring(pos + 1) |> Stations.tryGet
+            if stationFound && callingAtFound then
+                DeparturesAndArrivalsTable.Create(station, callingAt)
+            else
+                Unchecked.defaultof<_>
         else
-            let station = str |> Stations.get
-            DeparturesAndArrivalsTable.Create(station)
+            let stationFound, station = str |> Stations.tryGet
+            if stationFound then
+                DeparturesAndArrivalsTable.Create(station)
+            else
+                Unchecked.defaultof<_>
 
 type Departure with
     
