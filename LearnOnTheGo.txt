@@ -13,6 +13,7 @@ This is not an official Coursera app.
 
 New in 2.2:
 * Fix problems with light theme
+* Remove ads
 
 New in 2.1:
 * Bug fixes

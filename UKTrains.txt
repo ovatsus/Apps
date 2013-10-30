@@ -23,8 +23,9 @@ Note that background refresh requires Location Services to be enabled
 
 New in 2.2:
 * Correctly display trains delayed indefinitely
-* Fixed time display of delayed trains near midnight
+* Fixed display of delayed trains near midnight
 * Fix problems with light theme
+* Remove ads
 
 New in 2.1:
 * Improved the text of the live tile

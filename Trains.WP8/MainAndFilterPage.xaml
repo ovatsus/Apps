@@ -11,7 +11,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:trains="clr-namespace:Trains;assembly=Trains"
-    xmlns:adduplex="clr-namespace:AdDuplex;assembly=AdDuplex.WindowsPhone"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -44,11 +43,6 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <Grid Background="Transparent">
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
 
         <Grid.Resources>
 
@@ -220,23 +214,10 @@
             </phone:PivotItem>
         </phone:Pivot>
 
-        <Grid Grid.Row="1" Margin="0,0,0,-1">
-            <adduplex:AdControl x:Name="adControl">
-                <adduplex:AdControl.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleX="1.005" />
-                        <TranslateTransform X="-1" />
-                    </TransformGroup>
-                </adduplex:AdControl.RenderTransform>
-            </adduplex:AdControl>
-            <Border BorderThickness="0,1,0,0"
-                    BorderBrush="{StaticResource PhoneBackgroundBrush}" />
-        </Grid>
-
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+        <shell:ApplicationBar Opacity="0.9">
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="Clear recent items" Click="OnClearRecentItemsClick"/>

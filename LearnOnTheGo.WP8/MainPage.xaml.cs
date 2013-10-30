@@ -22,7 +22,6 @@ namespace LearnOnTheGo.WP8
             }
 #endif
             CommonApplicationBarItems.Init(this);
-            adControl.AppId = AppMetadata.Current.AdDuplexId;
         }
 
         private LazyBlock<Course[]> coursesLazyBlock;

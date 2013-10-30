@@ -51,7 +51,7 @@
     </Grid>
  
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+        <shell:ApplicationBar Opacity="0.9">
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.check.png" Text="Save" Click="OnSaveClick"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
