@@ -75,7 +75,7 @@ namespace Trains.WP8
             {
                 var filterOrClearFilterItem = ApplicationBar.Buttons.Cast<ApplicationBarIconButton>().Single(button => button.Text == "Filter");
                 filterOrClearFilterItem.Text = "Clear Filter";
-                filterOrClearFilterItem.IconUri = new Uri("/Assets/Icons/appbar.filter.clear.png", UriKind.Relative);
+                filterOrClearFilterItem.IconUri = new Uri("/Assets/Icons/dark/appbar.filter.clear.png", UriKind.Relative);
 
                 var filterByAnotherDestinationItem = new ApplicationBarMenuItem("Filter by another destination");
                 filterByAnotherDestinationItem.Click += OnFilterByAnotherDestinationClick;
@@ -225,9 +225,9 @@ namespace Trains.WP8
                 BackTitle = AppMetadata.Current.Name,
                 BackContent = content,
                 WideBackContent = wideContent,
-                SmallBackgroundImage = new Uri("Assets/Tiles/FlipCycleTileSmall.png", UriKind.Relative),
-                BackgroundImage = new Uri("Assets/Tiles/FlipCycleTileMedium.png", UriKind.Relative),
-                WideBackgroundImage = new Uri("Assets/Tiles/FlipCycleTileLarge.png", UriKind.Relative),
+                SmallBackgroundImage = new Uri("Assets/Tiles/dark/FlipCycleTileSmall.png", UriKind.Relative),
+                BackgroundImage = new Uri("Assets/Tiles/dark/FlipCycleTileMedium.png", UriKind.Relative),
+                WideBackgroundImage = new Uri("Assets/Tiles/dark/FlipCycleTileLarge.png", UriKind.Relative),
             };
         }
 

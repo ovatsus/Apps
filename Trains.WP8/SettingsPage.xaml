@@ -67,7 +67,7 @@
  
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.check.png" Text="Save" Click="OnSaveClick"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.check.png" Text="Save" Click="OnSaveClick"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

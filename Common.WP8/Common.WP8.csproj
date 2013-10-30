@@ -105,6 +105,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Coding4Fun.Toolkit.Controls">
+      <HintPath>..\packages\Coding4Fun.Toolkit.Controls.2.0.7\lib\windowsphone8\Coding4Fun.Toolkit.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="FSharp.Core, Version=2.3.5.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\.NETPortable\2.3.5.1\FSharp.Core.dll</HintPath>
@@ -136,31 +139,35 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Icons\appbar.cancel.png" />
-    <Content Include="Assets\Icons\appbar.check.png">
+    <Content Include="Assets\Icons\dark\appbar.cancel.png" />
+    <Content Include="Assets\Icons\dark\appbar.check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Icons\appbar.control.play.png" />
-    <Content Include="Assets\Icons\appbar.coursera.png" />
-    <Content Include="Assets\Icons\appbar.delete.png" />
-    <Content Include="Assets\Icons\appbar.download.png" />
-    <Content Include="Assets\Icons\appbar.email.hardedge.png" />
-    <Content Include="Assets\Icons\appbar.filter.clear.png">
+    <Content Include="Assets\Icons\dark\appbar.control.play.png" />
+    <Content Include="Assets\Icons\dark\appbar.coursera.png" />
+    <Content Include="Assets\Icons\dark\appbar.delete.png" />
+    <Content Include="Assets\Icons\dark\appbar.download.png" />
+    <Content Include="Assets\Icons\dark\appbar.email.hardedge.png" />
+    <Content Include="Assets\Icons\dark\appbar.filter.clear.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Icons\appbar.filter.png">
+    <Content Include="Assets\Icons\dark\appbar.filter.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Icons\appbar.information.png" />
-    <Content Include="Assets\Icons\appbar.message.png" />
-    <Content Include="Assets\Icons\appbar.page.png" />
-    <Content Include="Assets\Icons\appbar.pin.png">
+    <Content Include="Assets\Icons\dark\appbar.information.png" />
+    <Content Include="Assets\Icons\dark\appbar.message.png" />
+    <Content Include="Assets\Icons\dark\appbar.page.png" />
+    <Content Include="Assets\Icons\dark\appbar.pin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Icons\appbar.refresh.png">
+    <Content Include="Assets\Icons\dark\appbar.refresh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Icons\appbar.social.sharethis.png" />
+    <Content Include="Assets\Icons\dark\appbar.social.sharethis.png" />
+    <Content Include="Assets\Icons\light\appbar.check.png" />
+    <Content Include="Assets\Icons\light\appbar.email.hardedge.png" />
+    <Content Include="Assets\Icons\light\appbar.message.png" />
+    <Content Include="Assets\Icons\light\appbar.social.sharethis.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="RateMyAppDVLUP\AppResources.resx">

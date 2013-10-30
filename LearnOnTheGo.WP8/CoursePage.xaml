@@ -47,10 +47,10 @@
         <Grid.Resources>
 
             <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
-
+            <coding4funConverters:ThemedImageConverter x:Key="themedImageConverter"/>
             <src:BooleanToImageSourceConverter x:Key="downloadedToImageSourceConverter" 
-                                               True="/Assets/Icons/appbar.control.play.png"
-                                               False="/Assets/Icons/appbar.download.png" />
+                                               True="/Assets/Icons/dark/appbar.control.play.png"
+                                               False="/Assets/Icons/dark/appbar.download.png" />
 
             <DataTemplate x:Key="lectureTemplate">
                 <Grid Margin="12,12,0,0">
@@ -63,7 +63,9 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Image Source="/Assets/Icons/appbar.check.png" 
+                    <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
+                                            ConverterParameter={StaticResource PhoneBackgroundColor}}"
+                           DataContext="/Assets/Icons/{0}/appbar.check.png" 
                            Width="48"
                            Height="48"
                            Margin="-10,6,0,0"
@@ -78,7 +80,7 @@
                                 VerticalAlignment="Center">
                         <coding4fun:RoundButton Tap="OnLectureNotesClick"
                                                 Margin="-4,4,-4,-4"
-                                                ImageSource="/Assets/Icons/appbar.page.png" 
+                                                ImageSource="/Assets/Icons/dark/appbar.page.png" 
                                                 Visibility="{Binding HasLectureNotes, Converter={StaticResource booleanToVisibilityConverter}}"/>
                         <coding4fun:RoundButton Tap="OnLectureVideoClick"
                                                 Margin="-4,4,-4,-4"
@@ -106,7 +108,9 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Image Source="/Assets/Icons/appbar.check.png" 
+                        <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
+                                                ConverterParameter={StaticResource PhoneBackgroundColor}}"
+                               DataContext="/Assets/Icons/{0}/appbar.check.png" 
                                Width="48"
                                Height="48"
                                Margin="-10,0,0,0"
@@ -146,8 +150,8 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
-            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
-            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/appbar.coursera.png" Text="Coursera Website" Click="OnOpenInBrowserClick" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.coursera.png" Text="Coursera Website" Click="OnOpenInBrowserClick" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

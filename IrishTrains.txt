@@ -21,9 +21,6 @@ Irish Trains provides real-time information for Irish Rail train stations.
 
 Note that background refresh requires Location Services to be enabled
 
-New in 1.1:
-* Fixed repeat listing of some stations
-
 Keywords:
 Train
 Rail

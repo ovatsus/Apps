@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{B7851CCE-9817-4014-94F6-A07D7DECE6C1}" Title="Learn On The Go" RuntimeType="Silverlight" Version="2.1.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="Learn On The Go enables you to watch the videos and read the lecture notes of your enrolled Coursera courses." Publisher="Code Beside" PublisherID="{417736af-53cd-4019-abc5-61895f426ea0}">
+  <App xmlns="" ProductID="{B7851CCE-9817-4014-94F6-A07D7DECE6C1}" Title="Learn On The Go" RuntimeType="Silverlight" Version="2.2.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="Learn On The Go enables you to watch the videos and read the lecture notes of your enrolled Coursera courses." Publisher="Code Beside" PublisherID="{417736af-53cd-4019-abc5-61895f426ea0}">
     <IconPath IsRelative="true" IsResource="false">Assets/ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -12,9 +12,9 @@
     <Tokens>
       <PrimaryToken TokenID="LearnOnTheGo.WP8.Token" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">Assets/Tiles/FlipCycleTileSmall.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">Assets/Tiles/dark/FlipCycleTileSmall.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/FlipCycleTileMedium.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/dark/FlipCycleTileMedium.png</BackgroundImageURI>
           <Title>Learn On The Go</Title>
           <BackContent>
           </BackContent>
@@ -22,7 +22,7 @@
           </BackBackgroundImageURI>
           <BackTitle>
           </BackTitle>
-          <LargeBackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/FlipCycleTileLarge.png</LargeBackgroundImageURI>
+          <LargeBackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/dark/FlipCycleTileLarge.png</LargeBackgroundImageURI>
           <LargeBackContent />
           <LargeBackBackgroundImageURI IsRelative="true" IsResource="false">
           </LargeBackBackgroundImageURI>

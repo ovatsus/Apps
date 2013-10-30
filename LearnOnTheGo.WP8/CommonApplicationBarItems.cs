@@ -25,7 +25,7 @@ namespace LearnOnTheGo.WP8
                 page.ApplicationBar.MenuItems.Add(settingsMenuItem);
             }
 
-            var aboutButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.information.png", UriKind.Relative)) { Text = "About" };
+            var aboutButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/dark/appbar.information.png", UriKind.Relative)) { Text = "About" };
             aboutButton.Click += delegate
             {
                 ErrorReporting.Log("OnAboutClick");
@@ -35,7 +35,7 @@ namespace LearnOnTheGo.WP8
 
             if (!(page is DownloadsPage))
             {
-                var downloadsButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.download.png", UriKind.Relative)) { Text = "Video Downloads" };
+                var downloadsButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/dark/appbar.download.png", UriKind.Relative)) { Text = "Video Downloads" };
                 downloadsButton.Click += delegate
                 {
                     ErrorReporting.Log("OnVideoDownloadsClick");

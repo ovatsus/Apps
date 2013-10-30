@@ -20,7 +20,7 @@ namespace Trains.WP8
                 page.ApplicationBar.MenuItems.Add(settingsMenuItem);
             }
 
-            var aboutButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/appbar.information.png", UriKind.Relative)) { Text = "About" };
+            var aboutButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/dark/appbar.information.png", UriKind.Relative)) { Text = "About" };
             aboutButton.Click += delegate
             {
                 ErrorReporting.Log("OnAboutClick");

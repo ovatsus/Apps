@@ -49,8 +49,8 @@
             <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
 
             <src:BooleanToImageSourceConverter x:Key="downloadedToImageSourceConverter" 
-                                               True="/Assets/Icons/appbar.delete.png"
-                                               False="/Assets/Icons/appbar.cancel.png" />
+                                               True="/Assets/Icons/dark/appbar.delete.png"
+                                               False="/Assets/Icons/dark/appbar.cancel.png" />
 
             <DataTemplate x:Key="videoTemplate">
                 <Grid Margin="12,12,0,0">
@@ -79,7 +79,7 @@
                         <coding4fun:RoundButton Tap="OnPlayClick"
                                                 Margin="-4,4,-4,-4"
                                                 Visibility="{Binding Downloaded, Converter={StaticResource booleanToVisibilityConverter}}"
-                                                ImageSource="/Assets/Icons/appbar.control.play.png" />
+                                                ImageSource="/Assets/Icons/dark/appbar.control.play.png" />
                     </StackPanel>
                     <toolkit:TransferControl Monitor="{Binding Monitor}"
                                              Visibility="{Binding Downloading, Converter={StaticResource booleanToVisibilityConverter}}"

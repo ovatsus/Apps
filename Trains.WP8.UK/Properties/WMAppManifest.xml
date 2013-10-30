@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{7C7E6936-95A7-40ED-B765-BFBD5BEDA095}" Title="UK Trains" RuntimeType="Silverlight" Version="2.3.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="UK Trains provides real-time information for UK national rail stations (excluding Northern Ireland)." Publisher="Code Beside" PublisherID="{417736af-53cd-4019-abc5-61895f426ea0}">
+  <App xmlns="" ProductID="{7C7E6936-95A7-40ED-B765-BFBD5BEDA095}" Title="UK Trains" RuntimeType="Silverlight" Version="2.2.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="UK Trains provides real-time information for UK national rail stations (excluding Northern Ireland)." Publisher="Code Beside" PublisherID="{417736af-53cd-4019-abc5-61895f426ea0}">
     <IconPath IsRelative="true" IsResource="false">Assets/ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -18,9 +18,9 @@
     <Tokens>
       <PrimaryToken TokenID="Trains.WP8.UK.Token" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">Assets/Tiles/FlipCycleTileSmall.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">Assets/Tiles/dark/FlipCycleTileSmall.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/FlipCycleTileMedium.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/dark/FlipCycleTileMedium.png</BackgroundImageURI>
           <Title>UK Trains</Title>
           <BackContent>
           </BackContent>
@@ -28,7 +28,7 @@
           </BackBackgroundImageURI>
           <BackTitle>
           </BackTitle>
-          <LargeBackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/FlipCycleTileLarge.png</LargeBackgroundImageURI>
+          <LargeBackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/dark/FlipCycleTileLarge.png</LargeBackgroundImageURI>
           <LargeBackContent />
           <LargeBackBackgroundImageURI IsRelative="true" IsResource="false">
           </LargeBackBackgroundImageURI>

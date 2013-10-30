@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:common="clr-namespace:Common;assembly=Common"
+    xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -40,8 +41,15 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <Grid Background="Transparent">
+
+        <Grid.Resources>
+            <coding4funConverters:ThemedImageConverter x:Key="themedImageConverter"/>
+        </Grid.Resources>
+
         <Image x:Name="bigImage"
-               Source="/Assets/Tiles/FlipCycleTileSmall.png" 
+               Source="{Binding Converter={StaticResource themedImageConverter}, 
+                                ConverterParameter={StaticResource PhoneBackgroundColor}}"
+               DataContext="/Assets/Tiles/{0}/FlipCycleTileSmall.png" 
                HorizontalAlignment="Right"
                VerticalAlignment="Top"
                Stretch="None" />
@@ -56,7 +64,9 @@
                         <TextBlock x:Name="headerTextBlock" 
                                    Text="{Binding AppTitle}" />
                         <Image x:Name="smallImage"
-                               Source="/Assets/Tiles/IconicTileSmall.png"
+                               Source="{Binding Converter={StaticResource themedImageConverter}, 
+                                                ConverterParameter={StaticResource PhoneBackgroundColor}}"
+                               DataContext="/Assets/Tiles/{0}/IconicTileSmall.png"
                                Margin="0,-16"
                                Grid.Column="1" />
                     </Grid>
@@ -82,7 +92,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding AppTitle}"
+                        <TextBlock Text="{Binding TellYourFriends}"
                                    x:Name="tellYourFriendsTextBlock"
                                    TextAlignment="Right"
                                    TextWrapping="Wrap"
@@ -90,19 +100,25 @@
                         <Button Click="OnShareBySMSClick"
                                 Padding="0"
                                 Grid.Column="1">
-                            <Image Source="/Assets/Icons/appbar.message.png" 
+                            <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
+                                                    ConverterParameter={StaticResource PhoneBackgroundColor}}"
+                                   DataContext="/Assets/Icons/{0}/appbar.message.png"
                                    Width="48" Height="48" />
                         </Button>
                         <Button Click="OnShareByEmailClick" 
                                 Padding="0"
                                 Grid.Column="2">
-                            <Image Source="/Assets/Icons/appbar.email.hardedge.png"
+                            <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
+                                                    ConverterParameter={StaticResource PhoneBackgroundColor}}"
+                                   DataContext="/Assets/Icons/{0}/appbar.email.hardedge.png"
                                    Width="48" Height="48" />
                         </Button>
                         <Button Click="OnShareBySocialNetworksClick" 
                                 Padding="0"
                                 Grid.Column="3">
-                            <Image Source="/Assets/Icons/appbar.social.sharethis.png"
+                            <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
+                                                    ConverterParameter={StaticResource PhoneBackgroundColor}}"
+                                   DataContext="/Assets/Icons/{0}/appbar.social.sharethis.png"
                                    Width="48" Height="48" />
                         </Button>
                     </Grid>
