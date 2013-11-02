@@ -69,7 +69,6 @@ namespace Common.WP8
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
             ErrorReporting.Log("Launching");
-            NokiaFeedbackDemo.Helpers.FeedbackHelper.Default.Launching();
         }
 
         private void Application_Activated(object sender, ActivatedEventArgs e)
@@ -167,29 +166,24 @@ namespace Common.WP8
 
         public static void CheckForReview(Page page)
         {
-            var feedbackOverlay = new NokiaFeedbackDemo.Controls.FeedbackOverlay();
-            NokiaFeedbackDemo.Controls.FeedbackOverlay.SetEnableAnimation(feedbackOverlay, false);
-            var grid = (Grid)page.Content;
-            grid.Children.Add(feedbackOverlay);
-
-            //var installationDate = Settings.GetDateTime(Setting.InstallationDate);
-            //if (!installationDate.HasValue)
-            //{
-            //    Settings.Set(Setting.InstallationDate, DateTime.UtcNow);
-            //}
-            //else if (!Settings.GetBool(Setting.RatingDone))
-            //{
-            //    if ((DateTime.UtcNow - installationDate.Value).TotalDays >= 1)
-            //    {
-            //        var result = MessageBox.Show("Would you mind reviewing the " + AppMetadata.Current.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
-            //        if (result == MessageBoxResult.OK)
-            //        {
-            //            ErrorReporting.Log("MarketplaceReviewTaskShow from Prompt");
-            //            new MarketplaceReviewTask().Show();
-            //        }
-            //        Settings.Set(Setting.RatingDone, true);
-            //    }
-            //}
+            var installationDate = Settings.GetDateTime(Setting.InstallationDate);
+            if (!installationDate.HasValue)
+            {
+                Settings.Set(Setting.InstallationDate, DateTime.UtcNow);
+            }
+            else if (!Settings.GetBool(Setting.RatingDone))
+            {
+                if ((DateTime.UtcNow - installationDate.Value).TotalDays >= 1)
+                {
+                    var result = MessageBox.Show("Would you mind reviewing the " + AppMetadata.Current.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
+                    if (result == MessageBoxResult.OK)
+                    {
+                        ErrorReporting.Log("MarketplaceReviewTaskShow from Prompt");
+                        new MarketplaceReviewTask().Show();
+                    }
+                    Settings.Set(Setting.RatingDone, true);
+                }
+            }
         }
 
         public static void CheckForNewVersion()
