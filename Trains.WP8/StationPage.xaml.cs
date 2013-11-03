@@ -50,11 +50,7 @@ namespace Trains.WP8
                 return;
             }
 
-            string stationStr;
-            if (!NavigationContext.QueryString.TryGetValue("station", out stationStr))
-            {
-                stationStr = NavigationContext.QueryString["stationCode"]; // old version
-            }
+            var stationStr = NavigationContext.QueryString["station"];
             var from = Stations.Get(stationStr);
             var to = NavigationContext.QueryString.ContainsKey("callingAt") ? Stations.Get(NavigationContext.QueryString["callingAt"]) : null;
             var removeBackEntry = NavigationContext.QueryString.ContainsKey("removeBackEntry");

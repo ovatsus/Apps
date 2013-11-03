@@ -23,6 +23,7 @@ Note that background refresh requires Location Services to be enabled
 
 New in 2.3:
 * Improved handling of network failures
+* Fixed compatibility with live tiles from previous versions
 
 New in 2.2:
 * Correctly display trains delayed indefinitely
