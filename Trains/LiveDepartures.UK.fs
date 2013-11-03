@@ -3,6 +3,7 @@ module Trains.LiveDepartures.UK
 open System
 open System.ComponentModel
 open System.Globalization
+open System.Net
 open System.Text.RegularExpressions
 open System.Threading
 open HtmlAgilityPack
@@ -82,6 +83,9 @@ let private getJourneyDetails url = async {
             |> Seq.toArray
         with 
         | :? ParseError -> reraise()
+        | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+                   html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
+            raise <| new WebException()
         | exn -> raise <| ParseError(sprintf "Failed to parse journey details html from %s:\n%s" url html, exn)
 
     return getJourneyDetails()
@@ -163,6 +167,9 @@ let getDepartures departuresAndArrivalsTable =
                 getDeparturesFromHtml html callingAtFilter synchronizationContext token
             with 
             | :? ParseError -> reraise()
+            | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+                       html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
+                raise <| new WebException()
             | exn -> raise <| ParseError(sprintf "Failed to parse departures html from %s:\n%s" url html, exn)
 
         return getDepartures()
@@ -189,6 +196,9 @@ let getArrivals departuresAndArrivalsTable =
                 |> Seq.toArray
             with 
             | :? ParseError -> reraise()
+            | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+                       html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
+                raise <| new WebException()
             | exn -> raise <| ParseError(sprintf "Failed to parse arrivals html from %s:\n%s" url html, exn)
 
         return getArrivals()

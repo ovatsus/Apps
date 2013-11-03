@@ -1,5 +1,7 @@
 module Trains.LiveDepartures.IE
 
+open System
+open System.Net
 open System.Threading
 open HtmlAgilityPack
 open HtmlAgilityPack.FSharp
@@ -130,6 +132,9 @@ let private getDeparturesOrArrivals forDepartures mapper getOutput (departuresAn
             |> Map.ofSeq
         with 
         | :? ParseError -> reraise()
+        | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+                   html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
+            raise <| new WebException()
         | exn -> raise <| ParseError(sprintf "Failed to parse departures html from %s:\n%s" htmlUrl html, exn)
 
     match departuresAndArrivalsTable.CallingAt with

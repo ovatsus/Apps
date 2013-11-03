@@ -136,7 +136,7 @@
                     </ItemsControl>
                     <TextBlock x:Name="journeyElementsMessageTextBlock" 
                                TextWrapping="Wrap"
-                               Margin="12,12,12,48"
+                               Margin="12,12,12,144"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
                     <TextBlock x:Name="journeyElementsLastUpdatedTextBlock" 

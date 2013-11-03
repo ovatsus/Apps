@@ -89,6 +89,7 @@
                         <TextBlock x:Name="activeCoursesEmptyMessage" 
                                    Visibility="Collapsed"
                                    Text="No active courses"
+                                   Margin="0,0,0,144"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
@@ -104,6 +105,7 @@
                         <TextBlock x:Name="upcomingCoursesEmptyMessage" 
                                    Visibility="Collapsed"
                                    Text="No upcoming courses"
+                                   Margin="0,0,0,144"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
@@ -119,6 +121,7 @@
                         <TextBlock x:Name="finishedCoursesEmptyMessage" 
                                    Visibility="Collapsed"
                                    Text="No finished courses"
+                                   Margin="0,0,0,144"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
@@ -128,7 +131,7 @@
         </phone:Pivot>
 
         <TextBlock x:Name="messageTextBlock" 
-                   Margin="24,0,12,0"
+                   Margin="24,144,12,120"
                    TextWrapping="Wrap"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center" />

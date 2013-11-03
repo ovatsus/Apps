@@ -1,6 +1,7 @@
 ﻿module LearnOnTheGo.Parser
 
 open System
+open System.Net
 open HtmlAgilityPack.FSharp
 open FSharp.Control
 open FSharp.Data
@@ -12,51 +13,54 @@ type JsonT = JsonProvider<"topics.json", SampleIsList=true, RootName="topic">
 
 let parseTopicsJson getLectureSections topicsJsonStr = 
 
-    let topicsJson = JsonT.Parse topicsJsonStr
+    try 
 
-    let parseTopic (json:JsonT.DomainTypes.Topic) =
-        { Display = json.Display
-          Id = json.Id
-          Instructor = json.Instructor
-          Language = json.Language
-          LargeIcon = json.LargeIcon
-          Name = json.Name
-          Photo = json.Photo
-          PreviewLink = json.PreviewLink
-          SelfServiceCourseId = json.SelfServiceCourseId.Number
-          ShortDescription = json.ShortDescription
-          ShortName = json.ShortName
-          SmallIcon = json.SmallIcon
-          SmallIconHover = json.SmallIcon
-          Visible = json.Visibility.Number.IsSome }
+        let topicsJson = JsonT.Parse topicsJsonStr
+    
+        let parseTopic (json:JsonT.DomainTypes.Topic) =
+            { Display = json.Display
+              Id = json.Id
+              Instructor = json.Instructor
+              Language = json.Language
+              LargeIcon = json.LargeIcon
+              Name = json.Name
+              Photo = json.Photo
+              PreviewLink = json.PreviewLink
+              SelfServiceCourseId = json.SelfServiceCourseId.Number
+              ShortDescription = json.ShortDescription
+              ShortName = json.ShortName
+              SmallIcon = json.SmallIcon
+              SmallIconHover = json.SmallIcon
+              Visible = json.Visibility.Number.IsSome }
+    
+        let parseCourse topic (json:JsonT.DomainTypes.Course) =
+            let id = json.Id
+            let homeLink = json.HomeLink
+            { Id = id
+              Name = json.Name.String.Value
+              StartDate = 
+                match json.StartYear.Number, json.StartMonth.Number, json.StartDay.Number with
+                | Some y, Some m, Some d -> sprintf "%d/%02d/%02d" y m d
+                | _ -> ""
+              Duration = json.DurationString
+              HomeLink = homeLink
+              Active = json.Active
+              HasFinished = json.CertificatesReady || not json.Status
+              Topic = topic 
+              LectureSections = getLectureSections id topic.Name homeLink }
+    
+        [| for topicJson in topicsJson do
+            let topic = parseTopic topicJson
+            if topic.Visible && topic.Display then
+                for courseJson in topicJson.Courses do
+                    yield parseCourse topic courseJson |]
 
-    let parseCourse topic (json:JsonT.DomainTypes.Course) =
-        let id = json.Id
-        let homeLink = json.HomeLink
-        { Id = id
-          Name = json.Name.String.Value
-          StartDate = 
-            match json.StartYear.Number, json.StartMonth.Number, json.StartDay.Number with
-            | Some y, Some m, Some d -> sprintf "%d/%02d/%02d" y m d
-            | _ -> ""
-          Duration = json.DurationString
-          HomeLink = homeLink
-          Active = json.Active
-          HasFinished = json.CertificatesReady || not json.Status
-          Topic = topic 
-          LectureSections = getLectureSections id topic.Name homeLink }
-
-    let courses = 
-        try 
-            [| for topicJson in topicsJson do
-                let topic = parseTopic topicJson
-                if topic.Visible && topic.Display then
-                    for courseJson in topicJson.Courses do
-                        yield parseCourse topic courseJson |]
-        with exn ->
+    with exn ->
+        if topicsJsonStr.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+           topicsJsonStr.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 then
+            raise <| new WebException()
+        else
             raise <| ParseError(sprintf "Failed to parse topics JSON:\n%s\n" topicsJsonStr, exn)
-
-    courses
 
 let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
 
@@ -75,7 +79,11 @@ let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
                 |> Seq.head
                 |> attr "src"
         with exn ->
-            raise <| ParseError(sprintf "Failed to parse video HTML:\n%s\n" iframeHtml, exn)
+            if iframeHtml.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+               iframeHtml.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 then
+                raise <| new WebException()
+            else
+                raise <| ParseError(sprintf "Failed to parse video HTML:\n%s\n" iframeHtml, exn)
             return ""
     }
 
@@ -130,6 +138,15 @@ let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
                   Lectures = lectures })
             |> Seq.toArray 
         with exn ->
-            raise <| ParseError(sprintf "Failed to parse lectures HTML:\n%s\n" lecturesHtmlStr, exn)
+            if lecturesHtmlStr.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+               lecturesHtmlStr.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 then
+                raise <| new WebException()
+            else
+                raise <| ParseError(sprintf "Failed to parse lectures HTML:\n%s\n" lecturesHtmlStr, exn)
+
+    if lectureSections.Length = 0 &&
+       (lecturesHtmlStr.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+        lecturesHtmlStr.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0) then
+        raise <| new WebException()
 
     lectureSections

@@ -21,11 +21,14 @@ UK Trains provides real-time information for UK national rail stations (excludin
 
 Note that background refresh requires Location Services to be enabled
 
+New in 2.3:
+* Improved handling of network failures
+
 New in 2.2:
 * Correctly display trains delayed indefinitely
 * Fixed display of delayed trains near midnight
-* Fix problems with light theme
-* Remove ads
+* Fixed problems with light theme
+* Removed ads
 
 New in 2.1:
 * Improved the text of the live tile
@@ -65,8 +68,8 @@ New in 1.4:
 * More efficient use of space in departures list
 * Allow to press enter to go to station when filtering the list of all stations
 * Allow to remove stations individually from the recent station list
-* Fix stations with long names not displaying correctly
-* Fix platforms with long names not displaying correctly
+* Fixed stations with long names not displaying correctly
+* Fixed platforms with long names not displaying correctly
 * Fixed some reported crashes
 
 New in 1.3:
@@ -85,7 +88,7 @@ New in 1.1:
 * Show walk directions to station
 * Refresh location in background
 * Compress HTTP requests
-* Fix crash when app resumes into a station page after tombstoning
+* Fixed crash when app resumes into a station page after tombstoning
 
 Keywords:
 Train

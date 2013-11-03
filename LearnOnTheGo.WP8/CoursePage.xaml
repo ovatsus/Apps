@@ -63,14 +63,15 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
-                                            ConverterParameter={StaticResource PhoneBackgroundColor}}"
-                           DataContext="/Assets/Icons/{0}/appbar.check.png" 
-                           Width="48"
-                           Height="48"
-                           Margin="-10,6,0,0"
-                           VerticalAlignment="Top"
-                           Visibility="{Binding Viewed, Converter={StaticResource booleanToVisibilityConverter}}" />
+                    <Grid Width="48"
+                          Height="48"
+                          Margin="-10,6,0,0"
+                          VerticalAlignment="Top"
+                          Visibility="{Binding Viewed, Converter={StaticResource booleanToVisibilityConverter}}">
+                        <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
+                                                ConverterParameter={StaticResource PhoneBackgroundColor}}"
+                               DataContext="/Assets/Icons/{0}/appbar.check.png" />
+                    </Grid>
                     <TextBlock TextWrapping="Wrap"
                                Grid.Column="1"
                                VerticalAlignment="Center"
@@ -108,14 +109,15 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
-                                                ConverterParameter={StaticResource PhoneBackgroundColor}}"
-                               DataContext="/Assets/Icons/{0}/appbar.check.png" 
-                               Width="48"
+                        <Grid Width="48"
                                Height="48"
                                Margin="-10,0,0,0"
                                VerticalAlignment="Top"
-                               Visibility="{Binding Completed, Converter={StaticResource booleanToVisibilityConverter}}" />
+                               Visibility="{Binding Completed, Converter={StaticResource booleanToVisibilityConverter}}">
+                            <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
+                                                    ConverterParameter={StaticResource PhoneBackgroundColor}}"
+                                   DataContext="/Assets/Icons/{0}/appbar.check.png" />
+                        </Grid>
                         <TextBlock Text="{Binding Title}"
                                    Grid.Column="1"
                                    FontSize="{StaticResource PhoneFontSizeLarge}"
@@ -142,7 +144,7 @@
         </phone:Pivot>
 
         <TextBlock x:Name="messageTextBlock" 
-                   Margin="24,0,12,0"
+                   Margin="24,144,12,120"
                    TextWrapping="Wrap"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center" />
