@@ -84,6 +84,7 @@
                     <toolkit:TransferControl Monitor="{Binding Monitor}"
                                              Visibility="{Binding Downloading, Converter={StaticResource booleanToVisibilityConverter}}"
                                              IsContextMenuEnabled="False"
+                                             AutoHide="True"
                                              Grid.Row="1"
                                              Grid.ColumnSpan="2">
                         <toolkit:TransferControl.HeaderTemplate>
@@ -104,6 +105,7 @@
                         <TextBlock x:Name="inProgressDownloadsEmptyMessage" 
                                    Visibility="Collapsed"
                                    Text="No downloads"
+                                   Margin="12,12,12,144"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
@@ -119,6 +121,7 @@
                         <TextBlock x:Name="completedDownloadsEmptyMessage" 
                                    Visibility="Collapsed"
                                    Text="No downloads"
+                                   Margin="12,12,12,144"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />

@@ -6,12 +6,13 @@ open System.Reflection
 open FSharp.Control
 
 // an object expression with just the interface implementation won't work with data binding
-type DownloadInfo (courseId, courseTopicName, lectureId, lectureTitle, downloaded) =    
+type DownloadInfo (courseId, courseTopicName, lectureId, lectureTitle, downloaded, index) =    
     let propertyChanged = Event<_,_>()
     member __.CourseId = courseId
     member __.CourseTopicName = courseTopicName
     member __.LectureId = lectureId
     member __.LectureTitle = lectureTitle
+    member __.Index = index
     member __.Downloading = false
     member __.Downloaded = downloaded
     member __.VideoLocation = null 
@@ -20,6 +21,7 @@ type DownloadInfo (courseId, courseTopicName, lectureId, lectureTitle, downloade
         member x.CourseTopicName = x.CourseTopicName
         member x.LectureId = x.LectureId
         member x.LectureTitle = x.LectureTitle
+        member x.Index = x.Index
         member x.Downloading = x.Downloading
         member x.Downloaded = x.Downloaded
         member x.VideoLocation = x.VideoLocation
@@ -45,9 +47,9 @@ type SampleData() =
 
     static let mutable downloaded = false
 
-    let createDownloadInfo courseId courseTopicName lectureId lectureTitle =
+    let createDownloadInfo courseId courseTopicName lectureId lectureTitle index =
         downloaded <- not downloaded
-        DownloadInfo(courseId, courseTopicName, lectureId, lectureTitle, downloaded) :> IDownloadInfo
+        DownloadInfo(courseId, courseTopicName, lectureId, lectureTitle, downloaded, index) :> IDownloadInfo
 
     let lectureSections =  
         use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("lectures.html")

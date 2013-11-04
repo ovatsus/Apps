@@ -67,7 +67,7 @@ module private Implementation =
                 cacheSet url html
                 return html }
 
-type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>, createDownloadInfo:Func<_,_,_,_,_>) =
+type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>, createDownloadInfo:Func<_,_,_,_,_,_>) =
 
     let urlToFilename (url:string) = 
         url.Replace("https://www.coursera.org/", null)
@@ -99,7 +99,7 @@ type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>, crea
         let sections = 
             (crawler (getLecturesUrl courseBaseUrl))
             |> LazyAsync.fromAsync
-            |> LazyAsync.map (Parser.parseLecturesHtml crawler (fun lectureId lectureTitle -> createDownloadInfo.Invoke(courseId, courseTopicName, lectureId, lectureTitle)))
+            |> LazyAsync.map (Parser.parseLecturesHtml crawler (fun lectureId lectureTitle index -> createDownloadInfo.Invoke(courseId, courseTopicName, lectureId, lectureTitle, index)))
         sections
 
     let parseTopicsJson topicsJson = 

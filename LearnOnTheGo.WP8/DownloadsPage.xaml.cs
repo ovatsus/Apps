@@ -23,7 +23,7 @@ namespace LearnOnTheGo.WP8
 
         private void Refresh()
         {
-            var downloads = DownloadInfo.GetAll().OrderByDescending(x => x.CourseId).ThenBy(x => x.LectureTitle);
+            var downloads = DownloadInfo.GetAll().OrderBy(x => x.CourseId).ThenBy(x => x.Index);
             var inProgress = new List<IDownloadInfo>();
             var completed = new List<IDownloadInfo>();
             foreach (var download in downloads)

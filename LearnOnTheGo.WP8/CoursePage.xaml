@@ -90,6 +90,7 @@
                     <toolkit:TransferControl Monitor="{Binding DownloadInfo.Monitor}"
                                              Visibility="{Binding DownloadInfo.Downloading, Converter={StaticResource booleanToVisibilityConverter}}"
                                              IsContextMenuEnabled="True"
+                                             AutoHide="True"
                                              Grid.Row="1"
                                              Grid.ColumnSpan="3">
                         <toolkit:TransferControl.HeaderTemplate>

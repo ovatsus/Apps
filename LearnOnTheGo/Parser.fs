@@ -88,6 +88,7 @@ let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
     }
 
     let lectureSections = 
+        let index = ref -1
         try
             createDoc lecturesHtmlStr
             |> descendants "h3"
@@ -125,13 +126,14 @@ let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
                             [".ppsx"; ".pps"; ".pptx"; ".ppt"; ".pdf"] 
                             |> List.tryPick (fun ext -> List.tryFind (endsWith ext) urls)
                         let viewed = a |> parent |> hasClass "viewed"
+                        incr index
                         { Id = id
                           Title = title
                           VideoUrl = videoUrl
                           LectureNotesUrl = defaultArg lectureNotesUrl ""
                           Viewed = viewed 
                           QuizAttempted = quizAttempted
-                          DownloadInfo = createDownloadInfo id title })
+                          DownloadInfo = createDownloadInfo id title !index })
                     |> Seq.toArray
                 { Title = title
                   Completed = completed

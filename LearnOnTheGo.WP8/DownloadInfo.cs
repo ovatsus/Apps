@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
@@ -16,18 +17,21 @@ namespace LearnOnTheGo.WP8
         private readonly string _courseTopicName;
         private readonly int _lectureId;
         private readonly string _lectureTitle;
+        private readonly int _index;
 
         private const string TransfersFolder = "shared/transfers/";
         private const string DoneSuffix = ".done";
         private const string CourseTopicNameSuffix = ".courseTopicName";
         private const string LectureTitleSuffix = ".lectureTitle";
+        private const string IndexSuffix = ".index";
 
-        private DownloadInfo(int courseId, string courseTopicName, int lectureId, string lectureTitle)
+        private DownloadInfo(int courseId, string courseTopicName, int lectureId, string lectureTitle, int index)
         {
             _courseId = courseId;
             _courseTopicName = courseTopicName;
             _lectureId = lectureId;
             _lectureTitle = lectureTitle;
+            _index = index;
             RefreshStatus();
 
             var filename = GetBaseFilename();
@@ -38,15 +42,16 @@ namespace LearnOnTheGo.WP8
             }
         }
 
-        public static IDownloadInfo Create(int courseId, string courseTopicName, int lectureId, string lectureTitle)
+        public static IDownloadInfo Create(int courseId, string courseTopicName, int lectureId, string lectureTitle, int index)
         {
-            return new DownloadInfo(courseId, courseTopicName, lectureId, lectureTitle);
+            return new DownloadInfo(courseId, courseTopicName, lectureId, lectureTitle, index);
         }
 
         public int CourseId { get { return _courseId; } }
         public string CourseTopicName { get { return _courseTopicName; } }
         public int LectureId { get { return _lectureId; } }
         public string LectureTitle { get { return _lectureTitle; } }
+        public int Index { get { return _index; } }
 
         public override int GetHashCode()
         {
@@ -199,6 +204,7 @@ namespace LearnOnTheGo.WP8
             IsolatedStorageDelete(GetBaseFilename() + DoneSuffix);
             IsolatedStorageDelete(GetBaseFilename() + CourseTopicNameSuffix);
             IsolatedStorageDelete(GetBaseFilename() + LectureTitleSuffix);
+            IsolatedStorageDelete(GetBaseFilename() + IndexSuffix);
             RefreshStatus();
         }
 
@@ -223,6 +229,7 @@ namespace LearnOnTheGo.WP8
                 IsolatedStorageDelete(GetBaseFilename());
                 IsolatedStorageDelete(GetBaseFilename() + CourseTopicNameSuffix);
                 IsolatedStorageDelete(GetBaseFilename() + LectureTitleSuffix);
+                IsolatedStorageDelete(GetBaseFilename() + IndexSuffix);
             }
         }
 
@@ -245,6 +252,7 @@ namespace LearnOnTheGo.WP8
                 {
                     IsolatedStorageWriteAllText(GetBaseFilename() + CourseTopicNameSuffix, CourseTopicName);
                     IsolatedStorageWriteAllText(GetBaseFilename() + LectureTitleSuffix, LectureTitle);
+                    IsolatedStorageWriteAllText(GetBaseFilename() + IndexSuffix, Index.ToString());
                     Monitor.RequestStart();
                 }
             }
@@ -271,7 +279,10 @@ namespace LearnOnTheGo.WP8
             var lectureId = int.Parse(parts[1]);
             var courseTopicName = IsolatedStorageReadAllText(GetBaseFilename(courseId, lectureId) + CourseTopicNameSuffix) ?? "<Unknown Course>";
             var lectureTitle = IsolatedStorageReadAllText(GetBaseFilename(courseId, lectureId) + LectureTitleSuffix) ?? "<Unknown Lecture>";
-            return Create(courseId, courseTopicName, lectureId, lectureTitle);
+            var indexStr = IsolatedStorageReadAllText(GetBaseFilename(courseId, lectureId) + IndexSuffix);
+            int index;
+            int.TryParse(indexStr, NumberStyles.Integer, CultureInfo.InvariantCulture, out index);
+            return Create(courseId, courseTopicName, lectureId, lectureTitle, index);
         }
 
         public static void SetupBackgroundTransfers()

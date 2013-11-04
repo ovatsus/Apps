@@ -60,6 +60,7 @@ and IDownloadInfo =
     abstract CourseTopicName : string
     abstract LectureId : int
     abstract LectureTitle : string
+    abstract Index : int
     abstract Downloading : bool
     abstract Downloaded : bool
     abstract VideoLocation : Uri
