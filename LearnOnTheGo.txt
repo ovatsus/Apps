@@ -13,6 +13,8 @@ This is not an official Coursera app.
 
 New in 2.3:
 * Improved handling of network failures
+* Fixed viewed lectures marker not displaying correctly
+* Fixed problems with background downloads
 
 New in 2.2:
 * Fixed problems with light theme

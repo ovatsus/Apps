@@ -10,6 +10,8 @@ namespace LearnOnTheGo.WP8
             InitializeComponent();
 
             new AppMetadata(this, "Learn On The Go", "learnonthego@codebeside.org");
+
+            DownloadInfo.SetupBackgroundTransfers();
         }
 
         public static Crawler Crawler { get; set; }

@@ -274,11 +274,26 @@ namespace LearnOnTheGo.WP8
             return Create(courseId, courseTopicName, lectureId, lectureTitle);
         }
 
+        public static void SetupBackgroundTransfers()
+        {
+            foreach (var request in BackgroundTransferService.Requests)
+            {
+                // this will subscribe to completion and failure events
+                Get(request.Tag);
+            }
+        }
+
         public static IEnumerable<IDownloadInfo> GetAll()
         {
             foreach (var request in BackgroundTransferService.Requests)
             {
-                yield return Get(request.Tag);
+                var downloadInfo = Get(request.Tag);
+                if (!downloadInfo.Downloaded)
+                {
+                    // if it is already downloaded, the Get removed it from the BackgroundTransferService,
+                    // but this time it's still present as a duplicate
+                    yield return downloadInfo;
+                }
             }
             using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
             {
