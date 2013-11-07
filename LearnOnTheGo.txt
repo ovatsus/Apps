@@ -11,15 +11,13 @@ Learn On The Go enables you to watch the videos and read the lecture notes of yo
 Pre-download the videos while on good connection and then watch them later on the train or the bus.
 This is not an official Coursera app.
 
-New in 2.4:
-* Fixed not being able to scroll to the last lecture
-* Allow to download a whole lecture section at once
-* Allow to cancel and delete all downloads
-
 New in 2.3:
 * Improved handling of network failures
 * Fixed viewed lectures marker not displaying correctly
 * Fixed problems with background downloads
+* Fixed not being able to scroll to the last lecture
+* Allow to download a whole lecture section in bulk
+* Allow to cancel and delete all downloads
 
 New in 2.2:
 * Fixed problems with light theme
