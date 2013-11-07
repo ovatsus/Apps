@@ -100,6 +100,7 @@
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="inProgressDownloads"
+                                      Margin="0,0,0,95"
                                       ItemsSource="{Binding DownloadsInProgress}"
                                       ItemTemplate="{StaticResource videoTemplate}" />
                         <TextBlock x:Name="inProgressDownloadsEmptyMessage" 
@@ -116,6 +117,7 @@
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="completedDownloads"
+                                      Margin="0,0,0,95"
                                       ItemsSource="{Binding CompletedDownloads}"
                                       ItemTemplate="{StaticResource videoTemplate}" />
                         <TextBlock x:Name="completedDownloadsEmptyMessage" 

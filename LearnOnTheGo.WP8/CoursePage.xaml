@@ -125,7 +125,8 @@
                                    TextWrapping="Wrap" />
                     </Grid>
                     <ScrollViewer Grid.Row="1" ManipulationStarted="OnScrollViewerManipulationStarted">
-                        <ItemsControl ItemsSource="{Binding Lectures}"
+                        <ItemsControl Margin="0,0,0,95"
+                                      ItemsSource="{Binding Lectures}"
                                       ItemTemplate="{StaticResource lectureTemplate}" />
                     </ScrollViewer>
                 </Grid>

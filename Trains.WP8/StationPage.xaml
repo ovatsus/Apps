@@ -211,7 +211,7 @@
                         <ItemsControl.Template>
                             <ControlTemplate TargetType="ItemsControl">
                                 <ScrollViewer>
-                                    <ItemsPresenter/>
+                                    <ItemsPresenter Margin="0,0,0,95" />
                                 </ScrollViewer>
                             </ControlTemplate>
                         </ItemsControl.Template>
@@ -242,7 +242,7 @@
                         <ItemsControl.Template>
                             <ControlTemplate TargetType="ItemsControl">
                                 <ScrollViewer>
-                                    <ItemsPresenter/>
+                                    <ItemsPresenter Margin="0,0,0,95" />
                                 </ScrollViewer>
                             </ControlTemplate>
                         </ItemsControl.Template>

@@ -84,6 +84,7 @@
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="activeCourses"
+                                      Margin="0,0,0,95"
                                       ItemsSource="{Binding ActiveCourses}"
                                       ItemTemplate="{StaticResource courseTemplate}" />
                         <TextBlock x:Name="activeCoursesEmptyMessage" 
@@ -100,6 +101,7 @@
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="upcomingCourses"
+                                      Margin="0,0,0,95"
                                       ItemsSource="{Binding UpcomingCourses}"
                                       ItemTemplate="{StaticResource courseTemplate}" />
                         <TextBlock x:Name="upcomingCoursesEmptyMessage" 
@@ -116,6 +118,7 @@
                 <ScrollViewer>
                     <Grid>
                         <ItemsControl x:Name="finishedCourses"
+                                      Margin="0,0,0,95"
                                       ItemsSource="{Binding FinishedCourses}"
                                       ItemTemplate="{StaticResource courseTemplate}" />
                         <TextBlock x:Name="finishedCoursesEmptyMessage" 
