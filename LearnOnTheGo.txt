@@ -13,6 +13,7 @@ This is not an official Coursera app.
 
 New in 2.4:
 * Fixed not being able to scroll to the last lecture
+* Allow to download a whole lecture section at once
 
 New in 2.3:
 * Improved handling of network failures

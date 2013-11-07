@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +21,7 @@ namespace LearnOnTheGo.WP8
 
         private int courseId;
         private LazyBlock<LectureSection[]> lecturesLazyBlock;
-        private LazyBlock<string> videoLazyBlock;
+        private Dictionary<int, LazyBlock<string>> videoLazyBlocks = new Dictionary<int, LazyBlock<string>>();
         private bool userInteracted;
         private string lastEmail;
 
@@ -127,6 +128,7 @@ namespace LearnOnTheGo.WP8
             if (lecturesLazyBlock != null)
             {
                 lecturesLazyBlock.Cancel();
+                lecturesLazyBlock = null;
             }
             var course = App.Crawler.GetCourse(courseId);
             if (!course.Active)
@@ -186,10 +188,11 @@ namespace LearnOnTheGo.WP8
             {
                 lecturesLazyBlock.Cancel();
             }
-            if (videoLazyBlock != null)
+            foreach (var videoLazyBlock in videoLazyBlocks.Values)
             {
                 videoLazyBlock.Cancel();
             }
+            videoLazyBlocks.Clear();
         }
 
         private void OnRefreshClick(object sender, EventArgs e)
@@ -202,14 +205,14 @@ namespace LearnOnTheGo.WP8
         {
             ErrorReporting.Log("OnLectureVideoClick");
 
-            if (videoLazyBlock != null)
-            {
-                ErrorReporting.Log("videoLazyBlock is not null");
-                return;
-            }
-
             var lecture = (Lecture)((Button)sender).DataContext;
             ErrorReporting.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
+
+            if (videoLazyBlocks.ContainsKey(lecture.Id))
+            {
+                ErrorReporting.Log("Already fetching video url");
+                return;
+            }
 
             if (lecture.DownloadInfo.Downloading)
             {
@@ -217,32 +220,37 @@ namespace LearnOnTheGo.WP8
                 return;
             }
 
-            videoLazyBlock = new LazyBlock<string>(
-                "video location",
-                null,
-                lecture.VideoUrl,
-                _ => false,
-                new LazyBlockUI<string>(
-                    this,
-                    videoUrl =>
-                    {
-                        if (lecture.DownloadInfo.Downloaded)
-                        {
-                            ErrorReporting.Log("Launching video");
-                            LaunchVideo(lecture.DownloadInfo.VideoLocation);
-                        }
-                        else
+            if (lecture.DownloadInfo.Downloaded)
+            {
+                ErrorReporting.Log("Launching video");
+                LaunchVideo(lecture.DownloadInfo.VideoLocation);
+            }
+            else
+            {
+                StartDownload(lecture);
+            }
+        }
+
+        private void StartDownload(Lecture lecture)
+        {
+            videoLazyBlocks.Add(lecture.Id, new LazyBlock<string>(
+                    "video location",
+                    null,
+                    lecture.VideoUrl,
+                    _ => false,
+                    new LazyBlockUI<string>(
+                        this,
+                        videoUrl =>
                         {
                             ErrorReporting.Log("Queued download");
                             lecture.DownloadInfo.QueueDowload(videoUrl);
-                        }
-                    },
-                    () => false,
-                    null),
-                false,
-                null,
-                _ => videoLazyBlock = null,
-                null);
+                        },
+                        () => false,
+                        null),
+                    false,
+                    null,
+                    _ => videoLazyBlocks.Remove(lecture.Id),
+                    null));
         }
 
         public static void LaunchVideo(Uri videoUrl)
@@ -292,6 +300,17 @@ namespace LearnOnTheGo.WP8
         private void OnScrollViewerManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
         {
             userInteracted = true;
+        }
+
+        private void OnDownloadAllClick(object sender, EventArgs e)
+        {
+            foreach (var lecture in pivot.ItemsSource.Cast<LectureSection>().ElementAt(pivot.SelectedIndex).Lectures)
+            {
+                if (!videoLazyBlocks.ContainsKey(lecture.Id) && !lecture.DownloadInfo.Downloading && !lecture.DownloadInfo.Downloaded)
+                {
+                    StartDownload(lecture);
+                }
+            }
         }
     }
 }
