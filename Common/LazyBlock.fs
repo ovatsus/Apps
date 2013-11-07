@@ -38,6 +38,7 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<
         | [] -> ""
         | [Loading x] -> sprintf "Loading %s..." x
         | [Refreshing x] -> sprintf "Refreshing %s..." x
+        | x when Seq.distinct x |> Seq.length = 1 -> (getMessage [x.Head]).Replace("...", "s...")
         | [Loading x; Loading y] -> sprintf "Loading %s & %s..." x y
         | [Refreshing x; Refreshing y] -> sprintf "Refreshing %s & %s..." x y
         | Loading x::xs -> sprintf "Loading %s & %s" x ((getMessage xs).ToLower())
