@@ -95,7 +95,7 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <phone:Pivot x:Name="pivot" Title="Video Downloads">
+        <phone:Pivot x:Name="pivot" Title="Video Downloads" SelectionChanged="OnPivotSelectionChanged">
             <phone:PivotItem Header="In Progress">
                 <ScrollViewer>
                     <Grid>

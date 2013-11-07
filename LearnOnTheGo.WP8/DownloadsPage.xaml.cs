@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Common.WP8;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace LearnOnTheGo.WP8
 {
@@ -77,6 +80,52 @@ namespace LearnOnTheGo.WP8
                 downloadInfo.DeleteVideo();
             }
             Refresh();
+        }
+
+        private void OnCancelAllClick(object sender, EventArgs e)
+        {
+            ErrorReporting.Log("OnCancelAllClick");
+            if (inProgressDownloads.ItemsSource != null)
+            {
+                foreach (var downloadInfo in inProgressDownloads.ItemsSource.Cast<DownloadInfo>().ToArray())
+                {
+                    downloadInfo.Monitor.RequestCancel();
+                }
+                Refresh();
+            }
+        }
+
+        private void OnDeleteAllClick(object sender, EventArgs e)
+        {
+            ErrorReporting.Log("OnDeleteAllClick");
+            if (completedDownloads.ItemsSource != null)
+            {
+                foreach (var downloadInfo in completedDownloads.ItemsSource.Cast<DownloadInfo>().ToArray())
+                {
+                    downloadInfo.DeleteVideo();
+                }
+                Refresh();
+            }
+        }
+
+        private void OnPivotSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            while (ApplicationBar.MenuItems.Count > 1)
+            {
+                ApplicationBar.MenuItems.RemoveAt(0);
+            }
+            if (pivot.SelectedIndex == 0)
+            {
+                var menuItem = new ApplicationBarMenuItem("Cancel all");
+                menuItem.Click += OnCancelAllClick;
+                ApplicationBar.MenuItems.Insert(0, menuItem);
+            }
+            else
+            {
+                var menuItem = new ApplicationBarMenuItem("Delete all");
+                menuItem.Click += OnDeleteAllClick;
+                ApplicationBar.MenuItems.Insert(0, menuItem);
+            }            
         }
     }
 }

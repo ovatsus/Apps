@@ -304,11 +304,15 @@ namespace LearnOnTheGo.WP8
 
         private void OnDownloadAllClick(object sender, EventArgs e)
         {
-            foreach (var lecture in pivot.ItemsSource.Cast<LectureSection>().ElementAt(pivot.SelectedIndex).Lectures)
+            ErrorReporting.Log("OnDownloadAllClick");
+            if (pivot.ItemsSource != null)
             {
-                if (!videoLazyBlocks.ContainsKey(lecture.Id) && !lecture.DownloadInfo.Downloading && !lecture.DownloadInfo.Downloaded)
+                foreach (var lecture in pivot.ItemsSource.Cast<LectureSection>().ElementAt(pivot.SelectedIndex).Lectures)
                 {
-                    StartDownload(lecture);
+                    if (!videoLazyBlocks.ContainsKey(lecture.Id) && !lecture.DownloadInfo.Downloading && !lecture.DownloadInfo.Downloaded)
+                    {
+                        StartDownload(lecture);
+                    }
                 }
             }
         }
