@@ -86,7 +86,13 @@
                         <ItemsControl x:Name="activeCourses"
                                       Margin="0,0,0,95"
                                       ItemsSource="{Binding ActiveCourses}"
-                                      ItemTemplate="{StaticResource courseTemplate}" />
+                                      ItemTemplate="{StaticResource courseTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
                         <TextBlock x:Name="activeCoursesEmptyMessage" 
                                    Visibility="Collapsed"
                                    Text="No active courses"
@@ -103,7 +109,13 @@
                         <ItemsControl x:Name="upcomingCourses"
                                       Margin="0,0,0,95"
                                       ItemsSource="{Binding UpcomingCourses}"
-                                      ItemTemplate="{StaticResource courseTemplate}" />
+                                      ItemTemplate="{StaticResource courseTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
                         <TextBlock x:Name="upcomingCoursesEmptyMessage" 
                                    Visibility="Collapsed"
                                    Text="No upcoming courses"
@@ -120,7 +132,13 @@
                         <ItemsControl x:Name="finishedCourses"
                                       Margin="0,0,0,95"
                                       ItemsSource="{Binding FinishedCourses}"
-                                      ItemTemplate="{StaticResource courseTemplate}" />
+                                      ItemTemplate="{StaticResource courseTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
                         <TextBlock x:Name="finishedCoursesEmptyMessage" 
                                    Visibility="Collapsed"
                                    Text="No finished courses"

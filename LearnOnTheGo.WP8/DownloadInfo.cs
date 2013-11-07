@@ -25,7 +25,12 @@ namespace LearnOnTheGo.WP8
         private const string LectureTitleSuffix = ".lectureTitle";
         private const string IndexSuffix = ".index";
 
-        private DownloadInfo(int courseId, string courseTopicName, int lectureId, string lectureTitle, int index)
+        public static IDictionary<string, BackgroundTransferRequest> GetBackgroundTransferRequests()
+        {
+            return BackgroundTransferService.Requests.ToDictionary(req => req.Tag);
+        }
+
+        private DownloadInfo(int courseId, string courseTopicName, int lectureId, string lectureTitle, int index, IDictionary<string, BackgroundTransferRequest> backgroundTransferRequests)
         {
             _courseId = courseId;
             _courseTopicName = courseTopicName;
@@ -35,8 +40,8 @@ namespace LearnOnTheGo.WP8
             RefreshStatus();
 
             var filename = GetBaseFilename();
-            var existingRequest = BackgroundTransferService.Requests.FirstOrDefault(req => req.Tag == filename);
-            if (existingRequest != null)
+            BackgroundTransferRequest existingRequest;
+            if (backgroundTransferRequests.TryGetValue(filename, out existingRequest))
             {
                 StartDownload(existingRequest);
             }
@@ -44,7 +49,7 @@ namespace LearnOnTheGo.WP8
 
         public static IDownloadInfo Create(int courseId, string courseTopicName, int lectureId, string lectureTitle, int index)
         {
-            return new DownloadInfo(courseId, courseTopicName, lectureId, lectureTitle, index);
+            return new DownloadInfo(courseId, courseTopicName, lectureId, lectureTitle, index, GetBackgroundTransferRequests());
         }
 
         public int CourseId { get { return _courseId; } }
@@ -272,7 +277,7 @@ namespace LearnOnTheGo.WP8
             }
         }
 
-        private static IDownloadInfo Get(string filename)
+        private static IDownloadInfo Get(string filename, IDictionary<string, BackgroundTransferRequest> backgroundTransferRequests)
         {
             var parts = filename.Replace(DoneSuffix, null).Substring(filename.LastIndexOf('/') + 1).Split('_');
             var courseId = int.Parse(parts[0]);
@@ -282,23 +287,25 @@ namespace LearnOnTheGo.WP8
             var indexStr = IsolatedStorageReadAllText(GetBaseFilename(courseId, lectureId) + IndexSuffix);
             int index;
             int.TryParse(indexStr, NumberStyles.Integer, CultureInfo.InvariantCulture, out index);
-            return Create(courseId, courseTopicName, lectureId, lectureTitle, index);
+            return new DownloadInfo(courseId, courseTopicName, lectureId, lectureTitle, index, backgroundTransferRequests);
         }
 
         public static void SetupBackgroundTransfers()
         {
-            foreach (var request in BackgroundTransferService.Requests)
+            var backgroundTransferRequests = GetBackgroundTransferRequests();
+            foreach (var request in backgroundTransferRequests.Values)
             {
                 // this will subscribe to completion and failure events
-                Get(request.Tag);
+                Get(request.Tag, backgroundTransferRequests);
             }
         }
 
         public static IEnumerable<IDownloadInfo> GetAll()
         {
-            foreach (var request in BackgroundTransferService.Requests)
+            var backgroundTransferRequests = GetBackgroundTransferRequests();
+            foreach (var request in backgroundTransferRequests.Values)
             {
-                var downloadInfo = Get(request.Tag);
+                var downloadInfo = Get(request.Tag, backgroundTransferRequests);
                 if (!downloadInfo.Downloaded)
                 {
                     // if it is already downloaded, the Get removed it from the BackgroundTransferService,
@@ -310,7 +317,7 @@ namespace LearnOnTheGo.WP8
             {
                 foreach (var filename in isolatedStorage.GetFileNames(TransfersFolder + "*" + DoneSuffix))
                 {
-                    yield return Get(filename);
+                    yield return Get(filename, backgroundTransferRequests);
                 }
             }
         }
