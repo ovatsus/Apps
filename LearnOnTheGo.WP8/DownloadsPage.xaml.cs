@@ -116,13 +116,13 @@ namespace LearnOnTheGo.WP8
             }
             if (pivot.SelectedIndex == 0)
             {
-                var menuItem = new ApplicationBarMenuItem("Cancel all");
+                var menuItem = new ApplicationBarMenuItem("Cancel all downloads");
                 menuItem.Click += OnCancelAllClick;
                 ApplicationBar.MenuItems.Insert(0, menuItem);
             }
             else
             {
-                var menuItem = new ApplicationBarMenuItem("Delete all");
+                var menuItem = new ApplicationBarMenuItem("Delete all videos");
                 menuItem.Click += OnDeleteAllClick;
                 ApplicationBar.MenuItems.Insert(0, menuItem);
             }            

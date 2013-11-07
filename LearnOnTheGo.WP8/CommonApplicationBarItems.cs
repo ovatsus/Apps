@@ -32,17 +32,6 @@ namespace LearnOnTheGo.WP8
                 page.NavigationService.Navigate(page.GetUri<AboutPage>());
             };
             page.ApplicationBar.Buttons.Insert(0, aboutButton);
-
-            if (!(page is DownloadsPage))
-            {
-                var downloadsButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/dark/appbar.download.png", UriKind.Relative)) { Text = "Video Downloads" };
-                downloadsButton.Click += delegate
-                {
-                    ErrorReporting.Log("OnVideoDownloadsClick");
-                    page.NavigationService.Navigate(page.GetUri<DownloadsPage>());
-                };
-                page.ApplicationBar.Buttons.Add(downloadsButton);
-            }
         }
     }
 }

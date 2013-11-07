@@ -16,7 +16,7 @@ New in 2.3:
 * Fixed viewed lectures marker not displaying correctly
 * Fixed problems with background downloads
 * Fixed not being able to scroll to the last lecture
-* Allow to download a whole lecture section in bulk
+* Allow to download an entire week of lectures in bulk
 * Allow to cancel and delete all downloads
 
 New in 2.2:

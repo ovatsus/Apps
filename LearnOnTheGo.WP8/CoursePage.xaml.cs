@@ -234,23 +234,23 @@ namespace LearnOnTheGo.WP8
         private void StartDownload(Lecture lecture)
         {
             videoLazyBlocks.Add(lecture.Id, new LazyBlock<string>(
-                    "video location",
-                    null,
-                    lecture.VideoUrl,
-                    _ => false,
-                    new LazyBlockUI<string>(
-                        this,
-                        videoUrl =>
-                        {
-                            ErrorReporting.Log("Queued download");
-                            lecture.DownloadInfo.QueueDowload(videoUrl);
-                        },
-                        () => false,
-                        null),
-                    false,
-                    null,
-                    _ => videoLazyBlocks.Remove(lecture.Id),
-                    null));
+                "video location",
+                null,
+                lecture.VideoUrl,
+                _ => false,
+                new LazyBlockUI<string>(
+                    this,
+                    videoUrl =>
+                    {
+                        ErrorReporting.Log("Queued download");
+                        lecture.DownloadInfo.QueueDowload(videoUrl);
+                    },
+                    () => false,
+                    null),
+                false,
+                null,
+                _ => videoLazyBlocks.Remove(lecture.Id),
+                null));
         }
 
         public static void LaunchVideo(Uri videoUrl)
@@ -315,6 +315,12 @@ namespace LearnOnTheGo.WP8
                     }
                 }
             }
+        }
+
+        private void OnViewAllDownloadsClick(object sender, EventArgs e)
+        {
+            ErrorReporting.Log("OnVideoDownloadsClick");
+            NavigationService.Navigate(this.GetUri<DownloadsPage>());
         }
     }
 }

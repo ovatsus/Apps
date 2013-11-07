@@ -169,5 +169,11 @@ namespace LearnOnTheGo.WP8
             var course = (Course)((Button)sender).DataContext;
             NavigationService.Navigate(new Uri("/CoursePage.xaml?courseId=" + course.Id, UriKind.Relative));
         }
+
+        private void OnVideoDownloadsClick(object sender, EventArgs e)
+        {
+            ErrorReporting.Log("OnVideoDownloadsClick");
+            NavigationService.Navigate(this.GetUri<DownloadsPage>());
+        }
     }
 }
