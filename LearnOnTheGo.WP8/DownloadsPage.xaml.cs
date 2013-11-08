@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Navigation;
 using Common.WP8;
 using Microsoft.Phone.Controls;
@@ -13,29 +13,40 @@ namespace LearnOnTheGo.WP8
 {
     public partial class DownloadsPage : PhoneApplicationPage
     {
+        private ObservableCollection<DownloadInfo> inProgress = new ObservableCollection<DownloadInfo>();
+        private ObservableCollection<DownloadInfo> completed = new ObservableCollection<DownloadInfo>();
+        
         public DownloadsPage()
         {
             InitializeComponent();
             CommonApplicationBarItems.Init(this);
+            var inProgressView = new CollectionViewSource { Source = inProgress }.View;
+            var completedView = new CollectionViewSource { Source = completed }.View;
+            inProgressView.SortDescriptions.Add(new SortDescription("CourseId", ListSortDirection.Ascending));
+            inProgressView.SortDescriptions.Add(new SortDescription("Index", ListSortDirection.Ascending));
+            completedView.SortDescriptions.Add(new SortDescription("CourseId", ListSortDirection.Ascending));
+            completedView.SortDescriptions.Add(new SortDescription("Index", ListSortDirection.Ascending));
+            inProgressDownloads.ItemsSource = inProgressView;
+            completedDownloads.ItemsSource = completedView;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Refresh();
-        }
-
-        private void Refresh()
-        {
-            var downloads = DownloadInfo.GetAll().OrderBy(x => x.CourseId).ThenBy(x => x.Index);
-            var inProgress = new List<IDownloadInfo>();
-            var completed = new List<IDownloadInfo>();
-            foreach (var download in downloads)
+            var downloads = DownloadInfo.GetAll();
+            inProgress.Clear();
+            completed.Clear();
+            foreach (DownloadInfo download_ in downloads)
             {
+                var download = download_;
                 download.PropertyChanged += (_, args) =>
                 {
                     if (args.PropertyName == "Downloaded")
-                    {
-                        Refresh();
+                    {                        
+                        if (inProgress.Remove(download) && download.Downloaded)
+                        {
+                            completed.Add(download);
+                        }
+                        RefreshEmptyMessagesVisibility();
                     }
                 };
                 if (download.Downloaded)
@@ -43,14 +54,17 @@ namespace LearnOnTheGo.WP8
                 else
                     inProgress.Add(download);
             }
-            inProgressDownloads.ItemsSource = inProgress;
-            completedDownloads.ItemsSource = completed;
-            inProgressDownloadsEmptyMessage.Visibility = inProgress.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-            completedDownloadsEmptyMessage.Visibility = completed.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            RefreshEmptyMessagesVisibility();
             if (inProgress.Count == 0 && completed.Count != 0)
             {
                 pivot.SelectedIndex = 1;
             }
+        }
+
+        private void RefreshEmptyMessagesVisibility()
+        {
+            inProgressDownloadsEmptyMessage.Visibility = inProgress.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            completedDownloadsEmptyMessage.Visibility = completed.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OnPlayClick(object sender, RoutedEventArgs e)
@@ -66,7 +80,7 @@ namespace LearnOnTheGo.WP8
         private void OnCancelOrDeleteClick(object sender, RoutedEventArgs e)
         {
             ErrorReporting.Log("OnCancelOrDeleteClick");
-            
+
             var downloadInfo = (DownloadInfo)((Button)sender).DataContext;
             ErrorReporting.Log("Course = " + downloadInfo.CourseTopicName + " [" + downloadInfo.CourseId + "] Lecture = " + downloadInfo.LectureTitle + " [" + downloadInfo.LectureId + "]");
 
@@ -75,39 +89,37 @@ namespace LearnOnTheGo.WP8
             {
                 ErrorReporting.Log("Cancelling download");
                 monitor.RequestCancel();
+                inProgress.Remove(downloadInfo);
             }
             else
             {
                 ErrorReporting.Log("Deleting Video");
                 downloadInfo.DeleteVideo();
+                completed.Remove(downloadInfo);
             }
-            Refresh();
+            RefreshEmptyMessagesVisibility();
         }
 
         private void OnCancelAllClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnCancelAllClick");
-            if (inProgressDownloads.ItemsSource != null)
+            foreach (var downloadInfo in inProgress)
             {
-                foreach (var downloadInfo in inProgressDownloads.ItemsSource.Cast<DownloadInfo>().ToArray())
-                {
-                    downloadInfo.Monitor.RequestCancel();
-                }
-                Refresh();
+                downloadInfo.Monitor.RequestCancel();
             }
+            inProgress.Clear();
+            RefreshEmptyMessagesVisibility();
         }
 
         private void OnDeleteAllClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnDeleteAllClick");
-            if (completedDownloads.ItemsSource != null)
+            foreach (var downloadInfo in completed)
             {
-                foreach (var downloadInfo in completedDownloads.ItemsSource.Cast<DownloadInfo>().ToArray())
-                {
-                    downloadInfo.DeleteVideo();
-                }
-                Refresh();
+                downloadInfo.DeleteVideo();
             }
+            completed.Clear();
+            RefreshEmptyMessagesVisibility();
         }
 
         private void OnPivotSelectionChanged(object sender, SelectionChangedEventArgs e)
