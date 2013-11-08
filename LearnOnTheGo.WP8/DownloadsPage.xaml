@@ -48,9 +48,9 @@
 
             <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
 
-            <src:BooleanToImageSourceConverter x:Key="downloadedToImageSourceConverter" 
-                                               True="/Assets/Icons/dark/appbar.delete.png"
-                                               False="/Assets/Icons/dark/appbar.cancel.png" />
+            <src:DownloadInfoToImageSourceConverter x:Key="downloadInfoToImageSourceConverter" 
+                                                    Downloaded="/Assets/Icons/dark/appbar.delete.png"
+                                                    Downloading="/Assets/Icons/dark/appbar.cancel.png" />
 
             <DataTemplate x:Key="videoTemplate">
                 <Grid Margin="12,12,0,0">
@@ -73,9 +73,9 @@
                     <StackPanel Grid.Column="2"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center">
-                        <coding4fun:RoundButton Tap="OnDeleteClick"
+                        <coding4fun:RoundButton Tap="OnCancelOrDeleteClick"
                                                 Margin="-4,4,-4,-4"
-                                                ImageSource="{Binding Downloaded, Converter={StaticResource downloadedToImageSourceConverter}}" />
+                                                ImageSource="{Binding Self, Converter={StaticResource downloadInfoToImageSourceConverter}}" />
                         <coding4fun:RoundButton Tap="OnPlayClick"
                                                 Margin="-4,4,-4,-4"
                                                 Visibility="{Binding Downloaded, Converter={StaticResource booleanToVisibilityConverter}}"

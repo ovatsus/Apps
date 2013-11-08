@@ -216,7 +216,8 @@ namespace LearnOnTheGo.WP8
 
             if (lecture.DownloadInfo.Downloading)
             {
-                ErrorReporting.Log("Already downloading");
+                ErrorReporting.Log("Cancelling download");
+                ((DownloadInfo)lecture.DownloadInfo).Monitor.RequestCancel();
                 return;
             }
 

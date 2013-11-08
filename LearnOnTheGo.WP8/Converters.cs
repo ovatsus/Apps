@@ -5,14 +5,27 @@ using System.Windows.Media;
 
 namespace LearnOnTheGo.WP8
 {
-    public class BooleanToImageSourceConverter : IValueConverter
+    public class DownloadInfoToImageSourceConverter : IValueConverter
     {
-        public ImageSource True { get; set; }
-        public ImageSource False { get; set; }
+        public ImageSource Downloaded { get; set; }
+        public ImageSource Downloading { get; set; }
+        public ImageSource None { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (bool)value ? True : False;
+            var downloadInfo = (IDownloadInfo)value;
+            if (downloadInfo.Downloaded)
+            {
+                return Downloaded;
+            }
+            else if (downloadInfo.Downloading)
+            {
+                return Downloading;
+            }
+            else
+            {
+                return None;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

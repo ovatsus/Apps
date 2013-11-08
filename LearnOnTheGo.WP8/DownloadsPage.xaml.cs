@@ -63,9 +63,9 @@ namespace LearnOnTheGo.WP8
             CoursePage.LaunchVideo(downloadInfo.VideoLocation);
         }
 
-        private void OnDeleteClick(object sender, RoutedEventArgs e)
+        private void OnCancelOrDeleteClick(object sender, RoutedEventArgs e)
         {
-            ErrorReporting.Log("OnDeleteClick");
+            ErrorReporting.Log("OnCancelOrDeleteClick");
             
             var downloadInfo = (DownloadInfo)((Button)sender).DataContext;
             ErrorReporting.Log("Course = " + downloadInfo.CourseTopicName + " [" + downloadInfo.CourseId + "] Lecture = " + downloadInfo.LectureTitle + " [" + downloadInfo.LectureId + "]");
@@ -73,10 +73,12 @@ namespace LearnOnTheGo.WP8
             var monitor = downloadInfo.Monitor;
             if (monitor != null)
             {
+                ErrorReporting.Log("Cancelling download");
                 monitor.RequestCancel();
             }
             else
             {
+                ErrorReporting.Log("Deleting Video");
                 downloadInfo.DeleteVideo();
             }
             Refresh();

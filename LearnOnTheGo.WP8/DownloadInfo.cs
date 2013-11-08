@@ -96,6 +96,8 @@ namespace LearnOnTheGo.WP8
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public DownloadInfo Self { get { return this; } }
+
         private void SetAndNotify<T>(ref T prop, T value, [CallerMemberName] string propertyName = "")
         {
             if (!Equals(prop, value))
@@ -105,6 +107,7 @@ namespace LearnOnTheGo.WP8
                 if (propertyChanged != null)
                 {
                     propertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                    propertyChanged(this, new PropertyChangedEventArgs("Self"));
                 }
             }
         }

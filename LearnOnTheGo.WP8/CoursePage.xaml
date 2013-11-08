@@ -48,9 +48,10 @@
 
             <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
             <coding4funConverters:ThemedImageConverter x:Key="themedImageConverter"/>
-            <src:BooleanToImageSourceConverter x:Key="downloadedToImageSourceConverter" 
-                                               True="/Assets/Icons/dark/appbar.control.play.png"
-                                               False="/Assets/Icons/dark/appbar.download.png" />
+            <src:DownloadInfoToImageSourceConverter x:Key="downloadInfoToImageSourceConverter" 
+                                                    Downloaded="/Assets/Icons/dark/appbar.control.play.png"
+                                                    Downloading="/Assets/Icons/dark/appbar.cancel.png"
+                                                    None="/Assets/Icons/dark/appbar.download.png" />
 
             <DataTemplate x:Key="lectureTemplate">
                 <Grid Margin="12,12,0,0">
@@ -85,7 +86,7 @@
                                                 Visibility="{Binding HasLectureNotes, Converter={StaticResource booleanToVisibilityConverter}}"/>
                         <coding4fun:RoundButton Tap="OnLectureVideoClick"
                                                 Margin="-4,4,-4,-4"
-                                                ImageSource="{Binding DownloadInfo.Downloaded, Converter={StaticResource downloadedToImageSourceConverter}}" />
+                                                ImageSource="{Binding DownloadInfo.Self, Converter={StaticResource downloadInfoToImageSourceConverter}}" />
                     </StackPanel>
                     <toolkit:TransferControl Monitor="{Binding DownloadInfo.Monitor}"
                                              Visibility="{Binding DownloadInfo.Downloading, Converter={StaticResource booleanToVisibilityConverter}}"
