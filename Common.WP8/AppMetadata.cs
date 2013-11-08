@@ -159,7 +159,6 @@ namespace Common.WP8
             using (var xmlReader = XmlReader.Create("WMAppManifest.xml", xmlReaderSettings))
             {
                 xmlReader.ReadToDescendant("App");
-
                 return xmlReader.GetAttribute(attributeName);
             }
         }
@@ -173,15 +172,29 @@ namespace Common.WP8
             }
             else if (!Settings.GetBool(Setting.RatingDone))
             {
-                if ((DateTime.UtcNow - installationDate.Value).TotalDays >= 1)
+                bool shouldAskForReview;
+                var daysSinceInstallation = (DateTime.UtcNow - installationDate.Value).TotalDays;
+                var lastAskForReviewDate = Settings.GetDateTime(Setting.LastAskForReviewDate);
+                // ask on day 2^n + 1, for n >= 0 (2, 3, 5, 9, 17, 33, etc...)
+                if (!lastAskForReviewDate.HasValue)
                 {
+                    shouldAskForReview = daysSinceInstallation >= 1;
+                } 
+                else 
+                {
+                    var daysSinceLastAskForReview = (DateTime.UtcNow - lastAskForReviewDate.Value).TotalDays;
+                    shouldAskForReview = daysSinceLastAskForReview * 2 >= daysSinceInstallation;
+                }
+                if (shouldAskForReview)
+                {
+                    Settings.Set(Setting.LastAskForReviewDate, DateTime.UtcNow);
                     var result = MessageBox.Show("Would you mind reviewing the " + AppMetadata.Current.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
                     if (result == MessageBoxResult.OK)
                     {
                         ErrorReporting.Log("MarketplaceReviewTaskShow from Prompt");
                         new MarketplaceReviewTask().Show();
+                        Settings.Set(Setting.RatingDone, true);
                     }
-                    Settings.Set(Setting.RatingDone, true);
                 }
             }
         }
