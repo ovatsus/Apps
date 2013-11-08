@@ -11,6 +11,7 @@ namespace Common.WP8
         // Common
         RatingDone,
         InstallationDate,
+        LastAskForReviewDate,
         LastNewVersionCheck,
 
         // Learn On The Go
