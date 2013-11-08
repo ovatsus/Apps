@@ -142,47 +142,39 @@
 
         <phone:Pivot x:Name="pivot" Title="Rail Stations">
             <phone:PivotItem x:Name="nearest" Header="Near Me">
-                <Grid>
-                    <ItemsControl x:Name="nearestStations" 
-                                  ItemsSource="{Binding NearestStations}"
-                                  ItemTemplate="{StaticResource stationTemplateWithDistance}">
+                <ScrollViewer>
+                    <Grid>
+                        <ItemsControl x:Name="nearestStations" 
+                                        Margin="0,0,0,95" 
+                                        ItemsSource="{Binding NearestStations}"
+                                        ItemTemplate="{StaticResource stationTemplateWithDistance}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <TextBlock x:Name="nearestStationsMessageTextBlock" 
+                                    TextWrapping="Wrap"
+                                    Margin="12,12,12,144"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center" />
+                    </Grid>
+                </ScrollViewer>
+            </phone:PivotItem>
+            <phone:PivotItem Header="Recent">
+                <ScrollViewer>
+                    <ItemsControl x:Name="recentStations" 
+                                  Margin="0,0,0,95"
+                                  ItemsSource="{Binding RecentStations}"
+                                  ItemTemplate="{StaticResource recentItemTemplate}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
-                        <ItemsControl.Template>
-                            <ControlTemplate TargetType="ItemsControl">
-                                <ScrollViewer>
-                                    <ItemsPresenter Margin="0,0,0,95" />
-                                </ScrollViewer>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
                     </ItemsControl>
-                    <TextBlock x:Name="nearestStationsMessageTextBlock" 
-                               TextWrapping="Wrap"
-                               Margin="12,12,12,144"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center" />
-                </Grid>
-            </phone:PivotItem>
-            <phone:PivotItem Header="Recent">
-                <ItemsControl x:Name="recentStations" 
-                              ItemsSource="{Binding RecentStations}"
-                              ItemTemplate="{StaticResource recentItemTemplate}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="ItemsControl">
-                            <ScrollViewer>
-                                <ItemsPresenter Margin="0,0,0,95" />
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                </ItemsControl>
+                </ScrollViewer>
             </phone:PivotItem>
             <phone:PivotItem Header="All">
                 <Grid>
@@ -205,7 +197,7 @@
                         <ItemsControl.Template>
                             <ControlTemplate TargetType="ItemsControl">
                                 <ScrollViewer>
-                                    <ItemsPresenter Margin="0,0,0,95" />
+                                    <ItemsPresenter />
                                 </ScrollViewer>
                             </ControlTemplate>
                         </ItemsControl.Template>

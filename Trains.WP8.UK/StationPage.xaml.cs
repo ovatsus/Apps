@@ -16,7 +16,7 @@ namespace Trains.WP8.UK
             if (e.NavigationMode == NavigationMode.New) 
             {
                 var uri = e.Uri.OriginalString.Replace("/StationPage.xaml", "/Trains.WP8;component/StationPage.xaml")
-                                              .Replace("stationCode", "station") + "?removeBackEntry"
+                                              .Replace("stationCode", "station") + "?removeBackEntry";
                 NavigationService.Navigate(new Uri(uri, UriKind.Relative));
             }
         }

@@ -200,22 +200,18 @@
         <phone:Pivot x:Name="pivot" Title="{Binding StationTitle}">
             <phone:PivotItem Header="Departures">
                 <Grid>
-                    <ItemsControl x:Name="departures"
-                                  ItemsSource="{Binding Departures}"
-                                  ItemTemplate="{StaticResource departureTemplate}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.Template>
-                            <ControlTemplate TargetType="ItemsControl">
-                                <ScrollViewer>
-                                    <ItemsPresenter Margin="0,0,0,95" />
-                                </ScrollViewer>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
-                    </ItemsControl>
+                    <ScrollViewer>
+                        <ItemsControl x:Name="departures"
+                                      Margin="0,0,0,95"
+                                      ItemsSource="{Binding Departures}"
+                                      ItemTemplate="{StaticResource departureTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
                     <TextBlock x:Name="departuresMessageTextBlock" 
                                TextWrapping="Wrap"
                                Margin="12,12,12,144"
@@ -231,22 +227,18 @@
             </phone:PivotItem>
             <phone:PivotItem Header="Arrivals" x:Name="arrivalsPivotItem">
                 <Grid>
-                    <ItemsControl x:Name="arrivals" 
-                                  ItemsSource="{Binding Arrivals}"
-                                  ItemTemplate="{StaticResource arrivalTemplate}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.Template>
-                            <ControlTemplate TargetType="ItemsControl">
-                                <ScrollViewer>
-                                    <ItemsPresenter Margin="0,0,0,95" />
-                                </ScrollViewer>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
-                    </ItemsControl>
+                    <ScrollViewer>
+                        <ItemsControl x:Name="arrivals" 
+                                      Margin="0,0,0,95"
+                                      ItemsSource="{Binding Arrivals}"
+                                      ItemTemplate="{StaticResource arrivalTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
                     <TextBlock x:Name="arrivalsMessageTextBlock" 
                                TextWrapping="Wrap"
                                Margin="12,12,12,144"

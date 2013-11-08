@@ -118,22 +118,18 @@
         <phone:Pivot x:Name="pivot">
             <phone:PivotItem Header="Live Progress">
                 <Grid>
-                    <ItemsControl x:Name="journeyElements" 
-                                  ItemsSource="{Binding LiveProgress}"
-                                  ItemTemplate="{StaticResource journeyElementTemplate}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.Template>
-                            <ControlTemplate TargetType="ItemsControl">
-                                <ScrollViewer>
-                                    <ItemsPresenter Margin="0,0,0,95" />
-                                </ScrollViewer>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
-                    </ItemsControl>
+                    <ScrollViewer>
+                        <ItemsControl x:Name="journeyElements" 
+                                      Margin="0,0,0,95" 
+                                      ItemsSource="{Binding LiveProgress}"
+                                      ItemTemplate="{StaticResource journeyElementTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
                     <TextBlock x:Name="journeyElementsMessageTextBlock" 
                                TextWrapping="Wrap"
                                Margin="12,12,12,144"
