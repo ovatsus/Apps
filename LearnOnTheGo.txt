@@ -14,6 +14,7 @@ This is not an official Coursera app.
 New in 2.4:
 * Allow to cancel downloads from the course page
 * Improved the performance of the video downloads page
+* Mantain video position when putting the app in the background and then resuming
 
 New in 2.3:
 * Improved handling of network failures

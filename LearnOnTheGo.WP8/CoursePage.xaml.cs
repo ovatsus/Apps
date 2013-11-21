@@ -30,7 +30,6 @@ namespace LearnOnTheGo.WP8
             courseId = int.Parse(NavigationContext.QueryString["courseId"]);
 
             // settings changed
-            // settings changed
             if (lastEmail != null && lastEmail != Settings.GetString(Setting.Email))
             {
                 ErrorReporting.Log("Settings changed");
@@ -224,7 +223,7 @@ namespace LearnOnTheGo.WP8
             if (lecture.DownloadInfo.Downloaded)
             {
                 ErrorReporting.Log("Launching video");
-                LaunchVideo(lecture.DownloadInfo.VideoLocation);
+                VideoPage.LaunchVideo(this, lecture.DownloadInfo.VideoLocation);
             }
             else
             {
@@ -252,22 +251,6 @@ namespace LearnOnTheGo.WP8
                 null,
                 _ => videoLazyBlocks.Remove(lecture.Id),
                 null));
-        }
-
-        public static void LaunchVideo(Uri videoUrl)
-        {
-            try
-            {
-                var launcher = new MediaPlayerLauncher();
-                launcher.Location = MediaLocationType.Data;
-                launcher.Media = videoUrl;
-                launcher.Show();
-            }
-            catch (Exception ex)
-            {
-                ErrorReporting.ReportException(ex, string.Format("Launching media player for " + videoUrl.OriginalString));
-                ErrorReporting.CheckForPreviousException(false);
-            }
         }
 
         private void OnLectureNotesClick(object sender, RoutedEventArgs e)
