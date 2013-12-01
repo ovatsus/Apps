@@ -15,6 +15,7 @@ New in 2.5:
 * Allow to stream not yet downloaded videos from the lecture context menu
 * Fix download of videos bigger than 100MB
 * Allow to delete videos from the course page
+* Remove viewed lectures marker as it's not accurate
 
 New in 2.4:
 * Allow to cancel downloads from the course page

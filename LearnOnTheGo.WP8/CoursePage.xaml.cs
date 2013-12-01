@@ -22,7 +22,6 @@ namespace LearnOnTheGo.WP8
         private int courseId;
         private LazyBlock<LectureSection[]> lecturesLazyBlock;
         private Dictionary<int, LazyBlock<string>> videoLazyBlocks = new Dictionary<int, LazyBlock<string>>();
-        private bool userInteracted;
         private string lastEmail;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -147,7 +146,6 @@ namespace LearnOnTheGo.WP8
                 {
                     course = App.Crawler.RefreshCourse(course.Id);
                 }
-                userInteracted = false;
                 lecturesLazyBlock = new LazyBlock<LectureSection[]>(
                     "lectures",
                     "No lectures available. Make sure you have accepted the honor code.",
@@ -155,16 +153,7 @@ namespace LearnOnTheGo.WP8
                     a => a.Length == 0,
                     new LazyBlockUI<LectureSection[]>(
                         this,
-                        lectureSections =>
-                        {
-                            pivot.ItemsSource = lectureSections;
-                            var lastCompleted = lectureSections.Zip(Enumerable.Range(0, lectureSections.Length), (section, index) => Tuple.Create(index, section))
-                                                               .LastOrDefault(tuple => tuple.Item2.Completed);
-                            if (!userInteracted && lastCompleted != null && lastCompleted.Item1 < lectureSections.Length - 1)
-                            {
-                                pivot.SelectedIndex = lastCompleted.Item1 + 1;
-                            }
-                        },
+                        lectureSections => pivot.ItemsSource = lectureSections,
                         () => pivot.ItemsSource != null,
                         messageTextBlock),
                     false,
@@ -315,16 +304,6 @@ namespace LearnOnTheGo.WP8
             var task = new WebBrowserTask();
             task.Uri = new Uri(course.HomeLink);
             task.Show();
-        }
-
-        private void OnPivotSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            userInteracted = true;
-        }
-
-        private void OnScrollViewerManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
-        {
-            userInteracted = true;
         }
 
         private void OnDownloadAllClick(object sender, EventArgs e)

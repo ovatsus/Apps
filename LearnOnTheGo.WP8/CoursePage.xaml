@@ -56,7 +56,6 @@
             <DataTemplate x:Key="lectureTemplate">
                 <Grid Margin="12,12,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
@@ -64,20 +63,10 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Grid Width="48"
-                          Height="48"
-                          Margin="-10,6,0,0"
-                          VerticalAlignment="Top"
-                          Visibility="{Binding Viewed, Converter={StaticResource booleanToVisibilityConverter}}">
-                        <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
-                                                ConverterParameter={StaticResource PhoneBackgroundColor}}"
-                               DataContext="/Assets/Icons/{0}/appbar.check.png" />
-                    </Grid>
                     <TextBlock TextWrapping="Wrap"
-                               Grid.Column="1"
                                VerticalAlignment="Center"
                                Text="{Binding Title}" />
-                    <StackPanel Grid.Column="2"
+                    <StackPanel Grid.Column="1"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center">
                         <coding4fun:RoundButton Tap="OnLectureNotesClick"
@@ -126,26 +115,11 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Grid Margin="12,-24,12,12">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid Width="48"
-                               Height="48"
-                               Margin="-10,0,0,0"
-                               VerticalAlignment="Top"
-                               Visibility="{Binding Completed, Converter={StaticResource booleanToVisibilityConverter}}">
-                            <Image Source="{Binding Converter={StaticResource themedImageConverter}, 
-                                                    ConverterParameter={StaticResource PhoneBackgroundColor}}"
-                                   DataContext="/Assets/Icons/{0}/appbar.check.png" />
-                        </Grid>
-                        <TextBlock Text="{Binding Title}"
-                                   Grid.Column="1"
-                                   FontSize="{StaticResource PhoneFontSizeLarge}"
-                                   TextWrapping="Wrap" />
-                    </Grid>
-                    <ScrollViewer Grid.Row="1" ManipulationStarted="OnScrollViewerManipulationStarted">
+                    <TextBlock Text="{Binding Title}"
+                               Margin="12,-24,12,12"
+                               FontSize="{StaticResource PhoneFontSizeLarge}"
+                               TextWrapping="Wrap" />
+                    <ScrollViewer Grid.Row="1">
                         <ItemsControl Margin="0,0,0,95"
                                       ItemsSource="{Binding Lectures}"
                                       ItemTemplate="{StaticResource lectureTemplate}">
@@ -161,7 +135,6 @@
         </Grid.Resources>
 
         <phone:Pivot x:Name="pivot" 
-                        SelectionChanged="OnPivotSelectionChanged"
                         Title="{Binding CourseTitle}"
                         ItemsSource="{Binding LectureSections}"
                         ItemTemplate="{StaticResource sectionTemplate}">
