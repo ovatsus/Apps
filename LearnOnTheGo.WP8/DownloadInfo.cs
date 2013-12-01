@@ -204,7 +204,11 @@ namespace LearnOnTheGo.WP8
                 BackgroundTransferService.Remove(request);
             }
             catch { }
-            request.Dispose();
+            try
+            {
+                request.Dispose();
+            }
+            catch { }
         }
 
         public void DeleteVideo()
