@@ -13,7 +13,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Landscape" Orientation="Landscape"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="False">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -38,7 +38,7 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <Grid Background="Transparent">
-        <mmppf:MediaPlayer x:Name="mediaPlayer" />
+        <mmppf:MediaPlayer x:Name="mediaPlayer" PlayerStateChanged="OnPlayerStateChanged" />
     </Grid>
 
 </phone:PhoneApplicationPage>

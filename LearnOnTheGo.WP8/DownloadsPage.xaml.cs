@@ -105,7 +105,11 @@ namespace LearnOnTheGo.WP8
             ErrorReporting.Log("OnCancelAllClick");
             foreach (var downloadInfo in inProgress)
             {
-                downloadInfo.Monitor.RequestCancel();
+                // might be null if it was just completed, but hasn't been removed from the list yet
+                if (downloadInfo.Monitor != null)
+                {                    
+                    downloadInfo.Monitor.RequestCancel();
+                }
             }
             inProgress.Clear();
             RefreshEmptyMessagesVisibility();

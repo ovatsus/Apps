@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Windows;
 using System.Windows.Navigation;
 using Common.WP8;
 using Microsoft.Phone.Controls;
@@ -23,24 +24,21 @@ namespace LearnOnTheGo.WP8
             if (NavigationContext.QueryString.TryGetValue("url", out url))
             {
                 mediaPlayer.Source = new Uri(url);
-                if (mediaState != null)
+            }
+            else
+            {
+                var filename = NavigationContext.QueryString["filename"];
+                using (var file = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    mediaPlayer.RestoreMediaState(mediaState);
-                    mediaState = null;
+                    var stream = file.OpenFile(filename, FileMode.Open, FileAccess.Read);
+                    mediaPlayer.SetSource(stream);
                 }
-                return;
             }
 
-            var filename = NavigationContext.QueryString["filename"];
-            using (var file = IsolatedStorageFile.GetUserStoreForApplication())
+            if (mediaState != null)
             {
-                var stream = file.OpenFile(filename, FileMode.Open, FileAccess.Read);
-                mediaPlayer.SetSource(stream);
-                if (mediaState != null)
-                {
-                    mediaPlayer.RestoreMediaState(mediaState);
-                    mediaState = null;
-                }
+                mediaPlayer.RestoreMediaState(mediaState);
+                mediaState = null;
             }
         }
 
@@ -57,6 +55,14 @@ namespace LearnOnTheGo.WP8
         public static void LaunchVideoFromUrl(PhoneApplicationPage source, string videoUrl)
         {
             source.NavigationService.Navigate(source.GetUri<VideoPage>().WithParameters("url", videoUrl));
+        }
+
+        private void OnPlayerStateChanged(object sender, RoutedPropertyChangedEventArgs<PlayerState> e)
+        {
+            if (e.NewValue == PlayerState.Ending)
+            {
+                NavigationService.GoBack();
+            }
         }
     }
 }
