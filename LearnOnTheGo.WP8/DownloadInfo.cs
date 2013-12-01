@@ -238,6 +238,7 @@ namespace LearnOnTheGo.WP8
                 IsolatedStorageDelete(GetBaseFilename() + CourseTopicNameSuffix);
                 IsolatedStorageDelete(GetBaseFilename() + LectureTitleSuffix);
                 IsolatedStorageDelete(GetBaseFilename() + IndexSuffix);
+                SafeRemoveRequest(request);
             }
         }
 
@@ -255,7 +256,19 @@ namespace LearnOnTheGo.WP8
             {
                 Monitor = new TransferMonitor(request);
                 Monitor.Complete += (_, args) => { OnCompletion(request); };
-                Monitor.Failed += (_, args) => { OnFailure(request); };
+                Monitor.Failed += (_, args) =>
+                {
+                    OnFailure(request);
+                    if (args.Request.StatusCode == 206 && args.Request.TotalBytesToReceive > 100000000 && args.Request.TransferPreferences == TransferPreferences.AllowCellularAndBattery)
+                    {
+                        var newRequest = new BackgroundTransferRequest(args.Request.RequestUri, args.Request.DownloadLocation)
+                        {
+                            Tag = args.Request.Tag,
+                            TransferPreferences = TransferPreferences.None,
+                        };
+                        StartDownload(newRequest);
+                    }
+                };
                 if (request.TransferStatus == TransferStatus.None)
                 {
                     IsolatedStorageWriteAllText(GetBaseFilename() + CourseTopicNameSuffix, CourseTopicName);
@@ -309,7 +322,7 @@ namespace LearnOnTheGo.WP8
             foreach (var request in backgroundTransferRequests.Values)
             {
                 var downloadInfo = Get(request.Tag, backgroundTransferRequests);
-                if (!downloadInfo.Downloaded)
+                if (downloadInfo.Downloading && !downloadInfo.Downloaded)
                 {
                     // if it is already downloaded, the Get removed it from the BackgroundTransferService,
                     // but this time it's still present as a duplicate
