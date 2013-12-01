@@ -74,7 +74,7 @@ namespace LearnOnTheGo.WP8
             var downloadInfo = (DownloadInfo)((Button)sender).DataContext;
             ErrorReporting.Log("Course = " + downloadInfo.CourseTopicName + " [" + downloadInfo.CourseId + "] Lecture = " + downloadInfo.LectureTitle + " [" + downloadInfo.LectureId + "]");
 
-            VideoPage.LaunchVideo(this, downloadInfo.VideoLocation);
+            VideoPage.LaunchDownloadedVideo(this, downloadInfo);
         }
 
         private void OnCancelOrDeleteClick(object sender, RoutedEventArgs e)

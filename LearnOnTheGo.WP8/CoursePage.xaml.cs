@@ -200,9 +200,9 @@ namespace LearnOnTheGo.WP8
             Load(true);
         }
 
-        private void OnLectureVideoClick(object sender, RoutedEventArgs e)
+        private void OnPlayOrDownloadOrCancelClick(object sender, RoutedEventArgs e)
         {
-            ErrorReporting.Log("OnLectureVideoClick");
+            ErrorReporting.Log("OnPlayOrDownloadOrCancelClick");
 
             var lecture = (Lecture)((Button)sender).DataContext;
             ErrorReporting.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
@@ -219,12 +219,46 @@ namespace LearnOnTheGo.WP8
             }
             else if (lecture.DownloadInfo.Downloaded)
             {
-                ErrorReporting.Log("Launching video");
-                VideoPage.LaunchVideo(this, lecture.DownloadInfo.VideoLocation);
+                ErrorReporting.Log("Launching downloaded video");
+                VideoPage.LaunchDownloadedVideo(this, lecture.DownloadInfo);
             }
             else
             {
                 StartDownload(lecture);
+            }
+        }
+
+        private void OnStreamClick(object sender, RoutedEventArgs e)
+        {
+            ErrorReporting.Log("OnStreamClick");
+
+            var lecture = (Lecture)((MenuItem)sender).DataContext;
+            ErrorReporting.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
+
+            if (videoLazyBlocks.ContainsKey(lecture.Id))
+            {
+                ErrorReporting.Log("Already fetching video url");
+            }
+            else 
+            {
+                videoLazyBlocks.Add(lecture.Id, new LazyBlock<string>(
+                    "video location",
+                    null,
+                    lecture.VideoUrl,
+                    _ => false,
+                    new LazyBlockUI<string>(
+                        this,
+                        videoUrl =>
+                        {
+                            ErrorReporting.Log("Launching video from url");
+                            VideoPage.LaunchVideoFromUrl(this, videoUrl);
+                        },
+                        () => false,
+                        null),
+                    false,
+                    null,
+                    _ => videoLazyBlocks.Remove(lecture.Id),
+                    null));
             }
         }
 

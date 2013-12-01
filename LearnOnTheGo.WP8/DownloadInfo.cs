@@ -91,7 +91,12 @@ namespace LearnOnTheGo.WP8
         public bool Downloaded
         {
             get { return _downloaded; }
-            set { SetAndNotify(ref _downloaded, value); }
+            set { SetAndNotify(ref _downloaded, value); Notify("NotDownloaded"); }
+        }
+
+        public bool NotDownloaded
+        {
+            get { return !_downloaded; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -103,12 +108,17 @@ namespace LearnOnTheGo.WP8
             if (!Equals(prop, value))
             {
                 prop = value;
-                var propertyChanged = PropertyChanged;
-                if (propertyChanged != null)
-                {
-                    propertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                    propertyChanged(this, new PropertyChangedEventArgs("Self"));
-                }
+                Notify(propertyName);
+            }
+        }
+
+        private void Notify(string propertyName)
+        {
+            var propertyChanged = PropertyChanged;
+            if (propertyChanged != null)
+            {
+                propertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                propertyChanged(this, new PropertyChangedEventArgs("Self"));
             }
         }
 

@@ -84,23 +84,38 @@
                                                 Margin="-4,4,-4,-4"
                                                 ImageSource="/Assets/Icons/dark/appbar.page.png" 
                                                 Visibility="{Binding HasLectureNotes, Converter={StaticResource booleanToVisibilityConverter}}"/>
-                        <coding4fun:RoundButton Tap="OnLectureVideoClick"
+                        <coding4fun:RoundButton Tap="OnPlayOrDownloadOrCancelClick"
                                                 Margin="-4,4,-4,-4"
                                                 ImageSource="{Binding DownloadInfo.Self, Converter={StaticResource downloadInfoToImageSourceConverter}}" />
                     </StackPanel>
                     <toolkit:TransferControl Monitor="{Binding DownloadInfo.Monitor}"
                                              Visibility="{Binding DownloadInfo.Downloading, Converter={StaticResource booleanToVisibilityConverter}}"
-                                             IsContextMenuEnabled="False"
+                                             IsContextMenuEnabled="True"
                                              AutoHide="True"
                                              Grid.Row="1"
                                              Grid.ColumnSpan="3">
                         <toolkit:TransferControl.HeaderTemplate>
                             <DataTemplate />
                         </toolkit:TransferControl.HeaderTemplate>
+                        <toolkit:ContextMenuService.ContextMenu>
+                            <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="Delete downloaded video"
+                                                  Click="OnDeleteClick"
+                                                  Visibility="{Binding DownloadInfo.Downloaded, Converter={StaticResource booleanToVisibilityConverter}}" />
+                                <toolkit:MenuItem Header="Stream video from web"
+                                                  Click="OnStreamClick"
+                                                  Visibility="{Binding DownloadInfo.NotDownloaded, Converter={StaticResource booleanToVisibilityConverter}}" />
+                            </toolkit:ContextMenu>
+                        </toolkit:ContextMenuService.ContextMenu>
                     </toolkit:TransferControl>
                     <toolkit:ContextMenuService.ContextMenu>
                         <toolkit:ContextMenu>
-                            <toolkit:MenuItem Header="Delete" Visibility="{Binding DownloadInfo.Downloaded, Converter={StaticResource booleanToVisibilityConverter}}" Click="OnDeleteClick" />
+                            <toolkit:MenuItem Header="Delete downloaded video"
+                                              Click="OnDeleteClick"
+                                              Visibility="{Binding DownloadInfo.Downloaded, Converter={StaticResource booleanToVisibilityConverter}}" />
+                            <toolkit:MenuItem Header="Stream video from web"
+                                              Click="OnStreamClick"
+                                              Visibility="{Binding DownloadInfo.NotDownloaded, Converter={StaticResource booleanToVisibilityConverter}}" />
                         </toolkit:ContextMenu>
                     </toolkit:ContextMenuService.ContextMenu>
                 </Grid>

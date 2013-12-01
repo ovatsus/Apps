@@ -19,6 +19,18 @@ namespace LearnOnTheGo.WP8
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            string url;
+            if (NavigationContext.QueryString.TryGetValue("url", out url))
+            {
+                mediaPlayer.Source = new Uri(url);
+                if (mediaState != null)
+                {
+                    mediaPlayer.RestoreMediaState(mediaState);
+                    mediaState = null;
+                }
+                return;
+            }
+
             var filename = NavigationContext.QueryString["filename"];
             using (var file = IsolatedStorageFile.GetUserStoreForApplication())
             {
@@ -37,9 +49,14 @@ namespace LearnOnTheGo.WP8
             mediaState = mediaPlayer.GetMediaState();
         }
 
-        public static void LaunchVideo(PhoneApplicationPage source, Uri videoLocation)
+        public static void LaunchDownloadedVideo(PhoneApplicationPage source, IDownloadInfo downloadInfo)
         {
-            source.NavigationService.Navigate(source.GetUri<VideoPage>().WithParameters("filename", videoLocation.OriginalString));
+            source.NavigationService.Navigate(source.GetUri<VideoPage>().WithParameters("filename", downloadInfo.VideoLocation.OriginalString));
+        }
+
+        public static void LaunchVideoFromUrl(PhoneApplicationPage source, string videoUrl)
+        {
+            source.NavigationService.Navigate(source.GetUri<VideoPage>().WithParameters("url", videoUrl));
         }
     }
 }

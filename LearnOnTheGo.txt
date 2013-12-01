@@ -12,6 +12,7 @@ Pre-download the videos while on good connection and then watch them later on th
 This is not an official Coursera app.
 
 New in 2.5:
+* Allow to stream not yet downloaded videos from the lecture context menu
 * Fix download of videos bigger than 100MB
 * Allow to delete videos from the course page
 
