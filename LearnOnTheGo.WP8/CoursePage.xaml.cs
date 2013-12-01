@@ -210,17 +210,14 @@ namespace LearnOnTheGo.WP8
             if (videoLazyBlocks.ContainsKey(lecture.Id))
             {
                 ErrorReporting.Log("Already fetching video url");
-                return;
             }
-
-            if (lecture.DownloadInfo.Downloading)
+            else if (lecture.DownloadInfo.Downloading)
             {
                 ErrorReporting.Log("Cancelling download");
                 ((DownloadInfo)lecture.DownloadInfo).Monitor.RequestCancel();
-                return;
-            }
 
-            if (lecture.DownloadInfo.Downloaded)
+            }
+            else if (lecture.DownloadInfo.Downloaded)
             {
                 ErrorReporting.Log("Launching video");
                 VideoPage.LaunchVideo(this, lecture.DownloadInfo.VideoLocation);
@@ -229,6 +226,16 @@ namespace LearnOnTheGo.WP8
             {
                 StartDownload(lecture);
             }
+        }
+
+        private void OnDeleteClick(object sender, RoutedEventArgs e)
+        {
+            ErrorReporting.Log("OnDeleteClick");
+
+            var lecture = (Lecture)((MenuItem)sender).DataContext;
+            ErrorReporting.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
+
+            lecture.DownloadInfo.DeleteVideo();
         }
 
         private void StartDownload(Lecture lecture)

@@ -90,7 +90,7 @@
                     </StackPanel>
                     <toolkit:TransferControl Monitor="{Binding DownloadInfo.Monitor}"
                                              Visibility="{Binding DownloadInfo.Downloading, Converter={StaticResource booleanToVisibilityConverter}}"
-                                             IsContextMenuEnabled="True"
+                                             IsContextMenuEnabled="False"
                                              AutoHide="True"
                                              Grid.Row="1"
                                              Grid.ColumnSpan="3">
@@ -98,6 +98,11 @@
                             <DataTemplate />
                         </toolkit:TransferControl.HeaderTemplate>
                     </toolkit:TransferControl>
+                    <toolkit:ContextMenuService.ContextMenu>
+                        <toolkit:ContextMenu>
+                            <toolkit:MenuItem Header="Delete" Visibility="{Binding DownloadInfo.Downloaded, Converter={StaticResource booleanToVisibilityConverter}}" Click="OnDeleteClick" />
+                        </toolkit:ContextMenu>
+                    </toolkit:ContextMenuService.ContextMenu>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="sectionTemplate">
