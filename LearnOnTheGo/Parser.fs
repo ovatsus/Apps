@@ -30,8 +30,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
               ShortDescription = json.ShortDescription
               ShortName = json.ShortName
               SmallIcon = json.SmallIcon
-              SmallIconHover = json.SmallIcon
-              Visible = json.Visibility.Number.IsSome }
+              SmallIconHover = json.SmallIcon }
     
         let parseCourse topic (json:JsonT.DomainTypes.Course) =
             let id = json.Id
@@ -51,7 +50,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
     
         [| for topicJson in topicsJson do
             let topic = parseTopic topicJson
-            if topic.Visible && topic.Display then
+            if topic.Display then
                 for courseJson in topicJson.Courses do
                     yield parseCourse topic courseJson |]
 

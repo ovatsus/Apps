@@ -17,6 +17,7 @@ New in 2.5:
 * Allow to delete videos from the course page
 * Remove viewed lectures marker as it's not accurate
 * Go back to list when video ends
+* Fixed problem that caused some courses to not be listed
 
 New in 2.4:
 * Allow to cancel downloads from the course page

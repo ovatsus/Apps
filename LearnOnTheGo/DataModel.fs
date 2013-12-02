@@ -30,8 +30,7 @@ and Topic =
       ShortDescription : string
       ShortName : string
       SmallIcon : string
-      SmallIconHover : string
-      Visible : bool }
+      SmallIconHover : string }
 
     override x.ToString() = sprintf "%A" x
 
