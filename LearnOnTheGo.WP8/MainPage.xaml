@@ -164,7 +164,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Opacity="0.9">
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
-            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.download.png" Text="Video Downloads" Click="OnVideoDownloadsClick" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.download.list.png" Text="View All Downloads" Click="OnVideoDownloadsClick" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

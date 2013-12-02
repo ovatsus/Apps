@@ -158,7 +158,7 @@
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.coursera.png" Text="Coursera Website" Click="OnOpenInBrowserClick" />
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.download.png" Text="Download Whole Week" Click="OnDownloadAllClick" />
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="View all downloads" Click="OnViewAllDownloadsClick" />
+                <shell:ApplicationBarMenuItem Text="View All Downloads" Click="OnViewAllDownloadsClick" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
