@@ -89,6 +89,7 @@
     <Compile Include="AppMetadata.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ErrorReporting.cs" />
+    <Compile Include="ImageCacheConverter.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>

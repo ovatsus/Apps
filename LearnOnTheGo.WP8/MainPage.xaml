@@ -5,6 +5,7 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:coding4funConverters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
+    xmlns:commonWP8="clr-namespace:Common.WP8;assembly=Common.WP8"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
@@ -45,6 +46,7 @@
         <Grid.Resources>
 
             <coding4funConverters:StringToVisibilityConverter x:Key="stringToVisibilityConverter" />
+            <commonWP8:ImageCacheConverter x:Key="imageCacheConverter" />
 
             <DataTemplate x:Key="courseTemplate">
                 <Button Tap="OnCourseClick">
@@ -55,7 +57,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{Binding Topic.SmallIconHover}"
+                                <Image Source="{Binding Topic.SmallIconHover, Converter={StaticResource imageCacheConverter}}"                                       
                                        Width="103"
                                        Height="58"
                                        VerticalAlignment="Top" />

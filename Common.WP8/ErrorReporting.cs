@@ -54,7 +54,7 @@ namespace Common.WP8
                 {
                     if (isolatedStorage.FileExists(filename))
                     {
-                        using (var reader = new StreamReader(isolatedStorage.OpenFile(filename, FileMode.Open, FileAccess.Read, FileShare.None)))
+                        using (var reader = new StreamReader(isolatedStorage.OpenFile(filename, FileMode.Open)))
                         {
                             contents = reader.ReadToEnd();
                         }

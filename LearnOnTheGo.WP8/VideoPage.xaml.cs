@@ -30,7 +30,7 @@ namespace LearnOnTheGo.WP8
                 var filename = NavigationContext.QueryString["filename"];
                 using (var file = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    var stream = file.OpenFile(filename, FileMode.Open, FileAccess.Read);
+                    var stream = file.OpenFile(filename, FileMode.Open);
                     mediaPlayer.SetSource(stream);
                 }
             }
