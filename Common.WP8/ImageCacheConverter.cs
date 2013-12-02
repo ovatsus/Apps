@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
-using System.IO.IsolatedStorage;
 using System.Net;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
@@ -20,22 +18,19 @@ namespace Common.WP8
             var uri = new Uri((string)value);
             if (uri.Scheme == "http" || uri.Scheme == "https")
             {
-                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
+                var filename = CacheFolder + "/" + uri.AbsoluteUri.GetHashCode() + ".img";
+                if (IsolatedStorage.FileExists(filename))
                 {
-                    var filename = CacheFolder + "/" + uri.AbsoluteUri.GetHashCode() + ".img";
-                    if (isolatedStorage.FileExists(filename))
+                    var bm = new BitmapImage();
+                    using (var stream = IsolatedStorage.OpenFileToRead(filename))
                     {
-                        using (var sourceFile = isolatedStorage.OpenFile(filename, FileMode.Open))
-                        {
-                            var bm = new BitmapImage();
-                            bm.SetSource(sourceFile);
-                            return bm;
-                        }
+                        bm.SetSource(stream);
                     }
-                    else
-                    {
-                        return DownloadFromWeb(uri, filename);
-                    }
+                    return bm;
+                }
+                else
+                {
+                    return DownloadFromWeb(uri, filename);
                 }
             }
             else
@@ -55,38 +50,17 @@ namespace Common.WP8
                 {
                     return;
                 }
-                using (var stream = e.Result)
+                using (var inputStream = e.Result)
                 {
-                    using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
+                    IsolatedStorage.WriteToFile(filename, outputStream =>
                     {
-                        try
+                        byte[] buffer = new byte[32768];
+                        int read;
+                        while ((read = inputStream.Read(buffer, 0, buffer.Length)) > 0)
                         {
-                            if (!isolatedStorage.DirectoryExists(CacheFolder))
-                            {
-                                isolatedStorage.CreateDirectory(CacheFolder);
-                            }
-                            if (isolatedStorage.FileExists(filename))
-                            {
-                                isolatedStorage.DeleteFile(filename);
-                            }
-                            using (var outputStream = isolatedStorage.CreateFile(filename))
-                            {
-                                byte[] buffer = new byte[32768];
-                                int read;
-                                while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
-                                {
-                                    outputStream.Write(buffer, 0, read);
-                                }
-                            }
-                            using (var sourceFile = isolatedStorage.OpenFile(filename, FileMode.Open))
-                            {
-                                bm.SetSource(sourceFile);
-                            }
+                            outputStream.Write(buffer, 0, read);
                         }
-                        catch
-                        {
-                        }
-                    }
+                    });
                 }
             };
             webClient.OpenReadAsync(uri);

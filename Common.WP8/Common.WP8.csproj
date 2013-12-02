@@ -90,6 +90,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="ErrorReporting.cs" />
     <Compile Include="ImageCacheConverter.cs" />
+    <Compile Include="IsolatedStorage.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>

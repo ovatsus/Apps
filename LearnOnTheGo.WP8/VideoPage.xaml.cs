@@ -1,6 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.IO.IsolatedStorage;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Navigation;
 using Common.WP8;
@@ -16,6 +15,7 @@ namespace LearnOnTheGo.WP8
             InitializeComponent();
         }
 
+        private string stateFile;
         private MediaState mediaState;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -28,11 +28,8 @@ namespace LearnOnTheGo.WP8
             else
             {
                 var filename = NavigationContext.QueryString["filename"];
-                using (var file = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    var stream = file.OpenFile(filename, FileMode.Open);
-                    mediaPlayer.SetSource(stream);
-                }
+                stateFile = DownloadInfo.GetStateFile(filename);
+                mediaPlayer.SetSource(IsolatedStorage.OpenFileToRead(filename));
             }
 
             if (mediaState != null)
@@ -40,11 +37,25 @@ namespace LearnOnTheGo.WP8
                 mediaPlayer.RestoreMediaState(mediaState);
                 mediaState = null;
             }
+            else if (stateFile != null && IsolatedStorage.FileExists(stateFile))
+            {
+                var ticks = long.Parse(IsolatedStorage.ReadAllText(stateFile), CultureInfo.InvariantCulture);
+                mediaPlayer.RestoreMediaState(new MediaState
+                {
+                    IsPlaying = true,
+                    IsStarted = true,
+                    Position = TimeSpan.FromTicks(ticks),
+                });
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             mediaState = mediaPlayer.GetMediaState();
+            if (stateFile != null)
+            {
+                IsolatedStorage.WriteAllText(stateFile, mediaState.Position.Ticks.ToString(CultureInfo.InvariantCulture));
+            }
         }
 
         public static void LaunchDownloadedVideo(PhoneApplicationPage source, IDownloadInfo downloadInfo)

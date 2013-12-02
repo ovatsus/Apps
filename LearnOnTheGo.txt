@@ -17,6 +17,7 @@ New in 2.5:
 * Allow to delete videos from the course page
 * Remove viewed lectures marker as it's not accurate
 * Go back to list when video ends
+* Remember last position of videos
 * Fixed problem that caused some courses to not be listed
 * Cache the course images
 

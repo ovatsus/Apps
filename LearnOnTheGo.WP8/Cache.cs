@@ -1,29 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.IO.IsolatedStorage;
+using Common.WP8;
 
 namespace LearnOnTheGo.WP8
 {
     public static class Cache
     {
+        private const string CacheFolder = "Cache";
+
         public static void SaveFile(string filename, string contents)
         {
             lock (typeof(Cache))
             {
-                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    if (!isolatedStorage.DirectoryExists("Cache"))
-                    {
-                        isolatedStorage.CreateDirectory("Cache");
-                    }
-                    using (var stream = isolatedStorage.CreateFile("Cache/" + filename))
-                    {
-                        using (var streamWriter = new StreamWriter(stream))
-                        {
-                            streamWriter.Write(contents);
-                        }
-                    }
-                }
+                IsolatedStorage.WriteAllText(CacheFolder + "/" + filename, contents);
             }
         }
 
@@ -31,25 +20,12 @@ namespace LearnOnTheGo.WP8
         {
             lock (typeof(Cache))
             {
-                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
+                var files = new Dictionary<string, string>();
+                foreach (var filename in IsolatedStorage.GetFiles(CacheFolder))
                 {
-                    var files = new Dictionary<string, string>();
-                    if (isolatedStorage.DirectoryExists("Cache"))
-                    {
-                        foreach (var filename in isolatedStorage.GetFileNames("Cache/*"))
-                        {
-                            using (var stream = isolatedStorage.OpenFile("Cache/" + filename, FileMode.Open))
-                            {
-                                using (var streamReader = new StreamReader(stream))
-                                {
-                                    var content = streamReader.ReadToEnd();
-                                    files.Add(filename, content);
-                                }
-                            }
-                        }
-                    }
-                    return files;
+                    files.Add(Path.GetFileName(filename), IsolatedStorage.ReadAllText(filename));
                 }
+                return files;
             }
         }
 
@@ -57,15 +33,9 @@ namespace LearnOnTheGo.WP8
         {
             lock (typeof(Cache))
             {
-                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
+                foreach (var filename in IsolatedStorage.GetFiles(CacheFolder))
                 {
-                    if (isolatedStorage.DirectoryExists("Cache"))
-                    {
-                        foreach (var filename in isolatedStorage.GetFileNames("Cache/*"))
-                        {
-                            isolatedStorage.DeleteFile("Cache/" + filename);
-                        }
-                    }
+                    IsolatedStorage.Delete(filename);
                 }
             }
         }

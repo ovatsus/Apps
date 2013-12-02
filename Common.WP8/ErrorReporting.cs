@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.IO.IsolatedStorage;
 using System.Windows;
 using Microsoft.Phone.Info;
 using Microsoft.Phone.Tasks;
@@ -11,7 +9,7 @@ namespace Common.WP8
 {
     public static class ErrorReporting
     {
-        private const string filename = "ErrorReporting.txt";
+        private const string ErrorReportFile = "ErrorReporting.txt";
 
         private static string ToString(DateTime d)
         {
@@ -22,18 +20,13 @@ namespace Common.WP8
         {
             try
             {
-                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
+                var content = "[" + ToString(DateTime.UtcNow) + "]" + " " + header;
+                if (ex != null)
                 {
-                    using (var output = new StreamWriter(isolatedStorage.OpenFile(filename, FileMode.Append, FileAccess.Write)))
-                    {
-                        output.WriteLine("[" + ToString(DateTime.UtcNow) + "]" + " " + header);
-                        if (ex != null)
-                        {
-                            output.WriteLine(ex.ToString());
-                        }
-                        output.WriteLine();
-                    }
+                    content += ex.ToString();
                 }
+                content += "\n";
+                IsolatedStorage.AppendText(ErrorReportFile, content);
             }
             catch { }
         }
@@ -50,17 +43,8 @@ namespace Common.WP8
             string contents = null;
             try
             {
-                using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    if (isolatedStorage.FileExists(filename))
-                    {
-                        using (var reader = new StreamReader(isolatedStorage.OpenFile(filename, FileMode.Open)))
-                        {
-                            contents = reader.ReadToEnd();
-                        }
-                        isolatedStorage.DeleteFile(filename);
-                    }
-                }
+                contents = IsolatedStorage.ReadAllText(ErrorReportFile);
+                IsolatedStorage.Delete(ErrorReportFile);
             }
             catch { }
             if (contents != null)

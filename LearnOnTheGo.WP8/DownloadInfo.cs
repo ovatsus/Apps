@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Common.WP8;
 using Microsoft.Phone.BackgroundTransfer;
 using Microsoft.Phone.Controls;
 
@@ -19,11 +19,17 @@ namespace LearnOnTheGo.WP8
         private readonly string _lectureTitle;
         private readonly int _index;
 
-        private const string TransfersFolder = "shared/transfers/";
+        private const string TransfersFolder = "shared/transfers";
         private const string DoneSuffix = ".done";
         private const string CourseTopicNameSuffix = ".courseTopicName";
         private const string LectureTitleSuffix = ".lectureTitle";
         private const string IndexSuffix = ".index";
+        private const string StateSuffix = ".state";
+
+        public static string GetStateFile(string videoFile) 
+        {
+            return videoFile.Replace(DoneSuffix, StateSuffix);
+        }
 
         public static IDictionary<string, BackgroundTransferRequest> GetBackgroundTransferRequests()
         {
@@ -129,7 +135,7 @@ namespace LearnOnTheGo.WP8
 
         private static string GetBaseFilename(int courseId, int lectureId)
         {
-            return TransfersFolder + courseId + "_" + lectureId;
+            return TransfersFolder + "/" + courseId + "_" + lectureId;
         }
 
         private string GetBaseFilename()
@@ -139,72 +145,7 @@ namespace LearnOnTheGo.WP8
 
         public void RefreshStatus()
         {
-            using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                Downloaded = isolatedStorage.FileExists(GetBaseFilename() + DoneSuffix);
-            }
-        }
-
-        private static void IsolatedStorageDelete(string filename)
-        {
-            using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (isolatedStorage.FileExists(filename))
-                {
-                    isolatedStorage.DeleteFile(filename);
-                }
-            }
-        }
-
-        private static void IsolatedStorageMove(string from, string to)
-        {
-            using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (isolatedStorage.FileExists(from))
-                {
-                    if (isolatedStorage.FileExists(to))
-                    {
-                        isolatedStorage.DeleteFile(to);
-                    }
-                    isolatedStorage.MoveFile(from, to);
-                }
-            }
-        }
-
-        private static void IsolatedStorageWriteAllText(string filename, string content)
-        {
-            using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (isolatedStorage.FileExists(filename))
-                {
-                    isolatedStorage.DeleteFile(filename);
-                }
-                using (var stream = isolatedStorage.CreateFile(filename))
-                {
-                    using (var streamWriter = new StreamWriter(stream))
-                    {
-                        streamWriter.Write(content);
-                    }
-                }
-            }
-        }
-
-        private static string IsolatedStorageReadAllText(string filename)
-        {
-            using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (isolatedStorage.FileExists(filename))
-                {
-                    using (var stream = isolatedStorage.OpenFile(filename, FileMode.Open))
-                    {
-                        using (var streamReader = new StreamReader(stream))
-                        {
-                            return streamReader.ReadToEnd();
-                        }
-                    }
-                }
-            }
-            return null;
+            Downloaded = IsolatedStorage.FileExists(GetBaseFilename() + DoneSuffix);
         }
 
         private static void SafeRemoveRequest(BackgroundTransferRequest request)
@@ -223,10 +164,11 @@ namespace LearnOnTheGo.WP8
 
         public void DeleteVideo()
         {
-            IsolatedStorageDelete(GetBaseFilename() + DoneSuffix);
-            IsolatedStorageDelete(GetBaseFilename() + CourseTopicNameSuffix);
-            IsolatedStorageDelete(GetBaseFilename() + LectureTitleSuffix);
-            IsolatedStorageDelete(GetBaseFilename() + IndexSuffix);
+            IsolatedStorage.Delete(GetBaseFilename() + DoneSuffix);
+            IsolatedStorage.Delete(GetBaseFilename() + CourseTopicNameSuffix);
+            IsolatedStorage.Delete(GetBaseFilename() + LectureTitleSuffix);
+            IsolatedStorage.Delete(GetBaseFilename() + IndexSuffix);
+            IsolatedStorage.Delete(GetBaseFilename() + StateSuffix);
             RefreshStatus();
         }
 
@@ -236,7 +178,7 @@ namespace LearnOnTheGo.WP8
             lock (typeof(DownloadInfo))
             {
                 Monitor = null;
-                IsolatedStorageMove(GetBaseFilename(), GetBaseFilename() + DoneSuffix);
+                IsolatedStorage.Move(GetBaseFilename(), GetBaseFilename() + DoneSuffix);
                 RefreshStatus();
                 SafeRemoveRequest(request);
             }
@@ -248,10 +190,10 @@ namespace LearnOnTheGo.WP8
             lock (typeof(DownloadInfo))
             {
                 Monitor = null;
-                IsolatedStorageDelete(GetBaseFilename());
-                IsolatedStorageDelete(GetBaseFilename() + CourseTopicNameSuffix);
-                IsolatedStorageDelete(GetBaseFilename() + LectureTitleSuffix);
-                IsolatedStorageDelete(GetBaseFilename() + IndexSuffix);
+                IsolatedStorage.Delete(GetBaseFilename());
+                IsolatedStorage.Delete(GetBaseFilename() + CourseTopicNameSuffix);
+                IsolatedStorage.Delete(GetBaseFilename() + LectureTitleSuffix);
+                IsolatedStorage.Delete(GetBaseFilename() + IndexSuffix);
                 SafeRemoveRequest(request);
             }
         }
@@ -285,9 +227,9 @@ namespace LearnOnTheGo.WP8
                 };
                 if (request.TransferStatus == TransferStatus.None)
                 {
-                    IsolatedStorageWriteAllText(GetBaseFilename() + CourseTopicNameSuffix, CourseTopicName);
-                    IsolatedStorageWriteAllText(GetBaseFilename() + LectureTitleSuffix, LectureTitle);
-                    IsolatedStorageWriteAllText(GetBaseFilename() + IndexSuffix, Index.ToString());
+                    IsolatedStorage.WriteAllText(GetBaseFilename() + CourseTopicNameSuffix, CourseTopicName);
+                    IsolatedStorage.WriteAllText(GetBaseFilename() + LectureTitleSuffix, LectureTitle);
+                    IsolatedStorage.WriteAllText(GetBaseFilename() + IndexSuffix, Index.ToString());
                     Monitor.RequestStart();
                 }
             }
@@ -312,9 +254,9 @@ namespace LearnOnTheGo.WP8
             var parts = filename.Replace(DoneSuffix, null).Substring(filename.LastIndexOf('/') + 1).Split('_');
             var courseId = int.Parse(parts[0]);
             var lectureId = int.Parse(parts[1]);
-            var courseTopicName = IsolatedStorageReadAllText(GetBaseFilename(courseId, lectureId) + CourseTopicNameSuffix) ?? "<Unknown Course>";
-            var lectureTitle = IsolatedStorageReadAllText(GetBaseFilename(courseId, lectureId) + LectureTitleSuffix) ?? "<Unknown Lecture>";
-            var indexStr = IsolatedStorageReadAllText(GetBaseFilename(courseId, lectureId) + IndexSuffix);
+            var courseTopicName = IsolatedStorage.ReadAllText(GetBaseFilename(courseId, lectureId) + CourseTopicNameSuffix) ?? "<Unknown Course>";
+            var lectureTitle = IsolatedStorage.ReadAllText(GetBaseFilename(courseId, lectureId) + LectureTitleSuffix) ?? "<Unknown Lecture>";
+            var indexStr = IsolatedStorage.ReadAllText(GetBaseFilename(courseId, lectureId) + IndexSuffix);
             int index;
             int.TryParse(indexStr, NumberStyles.Integer, CultureInfo.InvariantCulture, out index);
             return new DownloadInfo(courseId, courseTopicName, lectureId, lectureTitle, index, backgroundTransferRequests);
@@ -343,12 +285,9 @@ namespace LearnOnTheGo.WP8
                     yield return downloadInfo;
                 }
             }
-            using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
+            foreach (var filename in IsolatedStorage.GetFiles(TransfersFolder, DoneSuffix))
             {
-                foreach (var filename in isolatedStorage.GetFileNames(TransfersFolder + "*" + DoneSuffix))
-                {
-                    yield return Get(filename, backgroundTransferRequests);
-                }
+                yield return Get(filename, backgroundTransferRequests);
             }
         }
     }
