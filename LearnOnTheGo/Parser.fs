@@ -17,7 +17,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
 
         let topicsJson = JsonT.Parse topicsJsonStr
     
-        let parseTopic (json:JsonT.DomainTypes.Topic) =
+        let parseTopic (json:JsonT.Topic) =
             { Display = json.Display
               Id = json.Id
               Instructor = json.Instructor
@@ -32,7 +32,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
               SmallIcon = json.SmallIcon
               SmallIconHover = json.SmallIcon }
     
-        let parseCourse topic (json:JsonT.DomainTypes.Course) =
+        let parseCourse topic (json:JsonT.Course) =
             let id = json.Id
             let homeLink = json.HomeLink
             { Id = id

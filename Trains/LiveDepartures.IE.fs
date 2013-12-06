@@ -26,7 +26,7 @@ type private LocationType =
 type private StationDataXmlT = XmlProvider<"IrelandStationData.xml">
 type private TrainMovementsStationDataXmlT = XmlProvider<"IrelandTrainMovements.xml">
 
-let private xmlToJourneyElement (xml:TrainMovementsStationDataXmlT.DomainTypes.ObjTrainMovements) =
+let private xmlToJourneyElement (xml:TrainMovementsStationDataXmlT.ObjTrainMovements) =
     let hasDeparted = xml.Departure.IsSome
     let delayedMins = int (if xml.LocationType = LocationType.Origin.ToString()
                            then xml.ExpectedDeparture - xml.ScheduledDeparture
@@ -59,7 +59,7 @@ let private getJourneyDetails trainCode trainDate = async {
 
 let private trim (s:string) = s.Trim()
 
-let private xmlToDeparture callingAtFilter (xml:StationDataXmlT.DomainTypes.ObjStationData) =
+let private xmlToDeparture callingAtFilter (xml:StationDataXmlT.ObjStationData) =
 
     let propertyChangedEvent = Event<_,_>()
 
@@ -73,7 +73,7 @@ let private xmlToDeparture callingAtFilter (xml:StationDataXmlT.DomainTypes.ObjS
        Arrival = ref None
        PropertyChangedEvent = propertyChangedEvent.Publish }, callingAtFilter, propertyChangedEvent)
 
-let private xmlToArrival callingAtFilter (xml:StationDataXmlT.DomainTypes.ObjStationData) =
+let private xmlToArrival callingAtFilter (xml:StationDataXmlT.ObjStationData) =
     trim xml.Traincode,
     { Due = Time.Create xml.Scharrival
       Origin = xml.Origin
