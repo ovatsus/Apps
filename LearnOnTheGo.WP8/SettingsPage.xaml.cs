@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Windows;
 using Common.WP8;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
 
 namespace LearnOnTheGo.WP8
 {
@@ -24,6 +26,14 @@ namespace LearnOnTheGo.WP8
             Settings.Set(Setting.Password, password.Password);
             App.Crawler = null;
             NavigationService.GoBack();
+        }
+
+        private void OnCreateAccountClick(object sender, RoutedEventArgs e)
+        {
+            ErrorReporting.Log("OnCreateAccountClick");
+            var task = new WebBrowserTask();
+            task.Uri = new Uri("https://accounts.coursera.org/signup");
+            task.Show();
         }
     }
 }

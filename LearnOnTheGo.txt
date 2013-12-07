@@ -12,7 +12,7 @@ Pre-download the videos while on good connection and then watch them later on th
 This is not an official Coursera app.
 
 New in 2.6:
-* Bug fixing
+* Add create account button
 
 New in 2.5:
 * Allow to stream not yet downloaded videos from the lecture context menu
