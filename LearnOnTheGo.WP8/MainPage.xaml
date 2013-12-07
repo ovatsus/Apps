@@ -97,11 +97,18 @@
                         </ItemsControl>
                         <TextBlock x:Name="activeCoursesEmptyMessage" 
                                    Visibility="Collapsed"
-                                   Text="No active courses"
+                                   Text="It's lonely here, go and enroll in some courses"
                                    Margin="12,12,12,144"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
+                        <Button Margin="24,120,12,120"
+                                x:Name="activeCoursesCourseCatalogButton"
+                                Visibility="Collapsed"
+                                Content="Course Catalog"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" 
+                                Click="OnCourseCatalogClick" />
                     </Grid>
                 </ScrollViewer>
             </phone:PivotItem>
@@ -120,11 +127,18 @@
                         </ItemsControl>
                         <TextBlock x:Name="upcomingCoursesEmptyMessage" 
                                    Visibility="Collapsed"
-                                   Text="No upcoming courses"
+                                   Text="It's lonely here, go and enroll in some courses"
                                    Margin="12,12,12,144"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
+                        <Button Margin="24,120,12,120"
+                                x:Name="upcomingCoursesCourseCatalogButton"
+                                Visibility="Collapsed"
+                                Content="Course Catalog"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" 
+                                Click="OnCourseCatalogClick" />
                     </Grid>
                 </ScrollViewer>
             </phone:PivotItem>
@@ -143,7 +157,7 @@
                         </ItemsControl>
                         <TextBlock x:Name="finishedCoursesEmptyMessage" 
                                    Visibility="Collapsed"
-                                   Text="No finished courses"
+                                   Text="You haven't completed any course yet"
                                    Margin="12,12,12,144"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"
@@ -153,7 +167,8 @@
             </phone:PivotItem>
         </phone:Pivot>
 
-        <TextBlock x:Name="messageTextBlock" 
+        <TextBlock x:Name="messageTextBlock"
+                   Visibility="Collapsed"
                    Margin="24,144,12,120"
                    TextWrapping="Wrap"
                    VerticalAlignment="Center"
@@ -164,6 +179,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Opacity="0.9">
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.coursera.png" Text="Course Catalog" Click="OnCourseCatalogClickFromAppBar" />
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.download.list.png" Text="View All Downloads" Click="OnVideoDownloadsClick" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

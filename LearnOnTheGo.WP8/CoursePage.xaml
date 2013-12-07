@@ -155,7 +155,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Opacity="0.9">
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
-            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.coursera.png" Text="Coursera Website" Click="OnOpenInBrowserClick" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.coursera.png" Text="Course Page" Click="OnOpenInBrowserClick" />
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.download.png" Text="Download Whole Week" Click="OnDownloadAllClick" />
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="View All Downloads" Click="OnViewAllDownloadsClick" />

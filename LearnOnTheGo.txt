@@ -12,7 +12,7 @@ Pre-download the videos while on good connection and then watch them later on th
 This is not an official Coursera app.
 
 New in 2.6:
-* Add create account button
+* Add buttons to create account and to see the course catalog in the browser
 
 New in 2.5:
 * Allow to stream not yet downloaded videos from the lecture context menu

@@ -19,18 +19,26 @@ namespace Common.WP8
             if (uri.Scheme == "http" || uri.Scheme == "https")
             {
                 var filename = CacheFolder + "/" + uri.AbsoluteUri.GetHashCode() + ".img";
-                if (IsolatedStorage.FileExists(filename))
+                try
                 {
-                    var bm = new BitmapImage();
-                    using (var stream = IsolatedStorage.OpenFileToRead(filename))
+                    if (IsolatedStorage.FileExists(filename))
                     {
-                        bm.SetSource(stream);
+                        var bm = new BitmapImage();
+                        using (var stream = IsolatedStorage.OpenFileToRead(filename))
+                        {
+                            bm.SetSource(stream);
+                        }
+                        return bm;
                     }
-                    return bm;
+                    else
+                    {
+                        return DownloadFromWeb(uri, filename);
+                    }
                 }
-                else
+                catch
                 {
-                    return DownloadFromWeb(uri, filename);
+                    // crashes in the VS preview when trying to access isolated storage
+                    return new BitmapImage(uri);
                 }
             }
             else

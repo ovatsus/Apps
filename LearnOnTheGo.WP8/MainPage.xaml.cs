@@ -6,6 +6,7 @@ using System.Windows.Navigation;
 using Common.WP8;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
 
 namespace LearnOnTheGo.WP8
 {
@@ -51,6 +52,11 @@ namespace LearnOnTheGo.WP8
                 {
                     this.NavigateToSettings();
                 }
+                else
+                {
+                    messageTextBlock.Text = "Please set your email and password in the Settings page.";
+                    messageTextBlock.Visibility = Visibility.Visible;
+                }
             }
             else if (activeCourses.ItemsSource == null)
             {
@@ -74,9 +80,9 @@ namespace LearnOnTheGo.WP8
             }
             coursesLazyBlock = new LazyBlock<Course[]>(
                 "courses",
-                "No courses",
+                null,
                 App.Crawler.Courses,
-                a => a.Length == 0,
+                _ => false,
                 new LazyBlockUI<Course[]>(
                     this,
                     courses =>
@@ -96,8 +102,8 @@ namespace LearnOnTheGo.WP8
                         activeCourses.ItemsSource = active;
                         upcomingCourses.ItemsSource = upcoming;
                         finishedCourses.ItemsSource = finished;
-                        activeCoursesEmptyMessage.Visibility = active.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-                        upcomingCoursesEmptyMessage.Visibility = upcoming.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                        activeCoursesCourseCatalogButton.Visibility = activeCoursesEmptyMessage.Visibility = active.Count == 0 ? Visibility.Visible : Visibility.Collapsed;                        
+                        upcomingCoursesCourseCatalogButton.Visibility = upcomingCoursesEmptyMessage.Visibility = upcoming.Count == 0 ? Visibility.Visible : Visibility.Collapsed;                        
                         finishedCoursesEmptyMessage.Visibility = finished.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                         if (active.Count == 0)
                         {
@@ -167,6 +173,22 @@ namespace LearnOnTheGo.WP8
         {
             ErrorReporting.Log("OnVideoDownloadsClick");
             NavigationService.Navigate(this.GetUri<DownloadsPage>());
+        }
+
+        private void OnCourseCatalogClick(object sender, RoutedEventArgs e)
+        {
+            ErrorReporting.Log("OnCourseCatalogClick");
+            var task = new WebBrowserTask();
+            task.Uri = new Uri("https://www.coursera.org/courses");
+            task.Show();
+        }
+
+        private void OnCourseCatalogClickFromAppBar(object sender, EventArgs e)
+        {
+            ErrorReporting.Log("OnCourseCatalogClickFromAppBar");
+            var task = new WebBrowserTask();
+            task.Uri = new Uri("https://www.coursera.org/courses");
+            task.Show();
         }
     }
 }
