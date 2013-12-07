@@ -67,7 +67,7 @@ namespace LearnOnTheGo.WP8
         {
             if (webException.Response != null && webException.Response.ResponseUri.IsAbsoluteUri && webException.Response.ResponseUri.AbsoluteUri == URLs.Login)
             {
-                return "Login did not work, please check your email and password in the Settings page and try again.";
+                return "Login did not work, please check your email and password in the Settings and try again.";
             }
             else
             {

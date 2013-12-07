@@ -54,7 +54,7 @@ namespace LearnOnTheGo.WP8
                 }
                 else
                 {
-                    messageTextBlock.Text = "Please set your email and password in the Settings page.";
+                    messageTextBlock.Text = "Please set your email and password in the Settings.";
                     messageTextBlock.Visibility = Visibility.Visible;
                 }
             }

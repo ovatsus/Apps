@@ -49,8 +49,8 @@ namespace Common.WP8
             catch { }
             if (contents != null)
             {
-                var title = "A problem occurred" + (startingUp ? " the last time you ran this application" : "") + ". Would you like to send an email to report it?";
-                if (MessageBox.Show(title, "Problem Report", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                var text = "A problem occurred" + (startingUp ? " the last time you ran this application" : "") + ". Would you like to send an email to report it?";
+                if (Extensions.ShowMessageBox("Problem Report", text, "Send report", "No thanks"))
                 {
                     var email = new EmailComposeTask();
                     email.To = AppMetadata.Current.Email;
@@ -75,7 +75,7 @@ namespace Common.WP8
             {
                 contents = contents.Substring(0, 32000) + " ...";
             }
-            return "[Your feedback here]\n\n" + contents + "\n---------------------------------\n" +
+            return "Write your feedback here\n\n" + contents + "\n---------------------------------\n" +
                    "App Version: " + AppMetadata.Current.Version + "\n" +
                    "OS Version: " + Environment.OSVersion.Version + "\n" +
                    "Phone: " + DeviceStatus.DeviceManufacturer + " " + DeviceStatus.DeviceName + " " + DeviceStatus.DeviceHardwareVersion + " " + DeviceStatus.DeviceFirmwareVersion + "\n" +

@@ -188,8 +188,8 @@ namespace Common.WP8
                 if (shouldAskForReview)
                 {
                     Settings.Set(Setting.LastAskForReviewDate, DateTime.UtcNow);
-                    var result = MessageBox.Show("Would you mind reviewing the " + AppMetadata.Current.Name + " app?", "Rate and Review", MessageBoxButton.OKCancel);
-                    if (result == MessageBoxResult.OK)
+                    if (Extensions.ShowMessageBox("Enjoying " + AppMetadata.Current.Name + "?", "If you find this app useful please rate it. Reviews encourage me to keep improving.",
+                                                  "Rate and Review", "Maybe later"))
                     {
                         ErrorReporting.Log("MarketplaceReviewTaskShow from Prompt");
                         new MarketplaceReviewTask().Show();
@@ -254,7 +254,7 @@ namespace Common.WP8
                                     {
                                         AppMetadata.RootFrame.Dispatcher.BeginInvoke(() =>
                                         {
-                                            if (MessageBox.Show("Do you want to install the new version now?", "Update Available", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                                            if (Extensions.ShowMessageBox("Update Available", "A new version of " + AppMetadata.Current.Name + " is available. Do you want to install it now?", "Install Update", "Maybe later"))
                                             {
                                                 ErrorReporting.Log("MarketplaceDetailTaskShow from Prompt");
                                                 new MarketplaceDetailTask().Show();

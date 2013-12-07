@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Phone.Controls;
+using Microsoft.Xna.Framework.GamerServices;
 
 namespace Common.WP8
 {
@@ -32,6 +33,23 @@ namespace Common.WP8
         public static Uri WithParametersIf(this Uri originalUri, bool condition, params Func<string>[] args)
         {
             return condition ? originalUri.WithParameters(args.Select(arg => arg()).ToArray()) : originalUri;
+        }
+
+        public static bool ShowMessageBox(string title, string text, string yesButton = "Yes", string noButton = "No")
+        {
+            IAsyncResult result = Guide.BeginShowMessageBox(
+                title,
+                text,
+                new[] { yesButton, noButton },
+                0,
+                Microsoft.Xna.Framework.GamerServices.MessageBoxIcon.None,
+                null,
+                null);
+
+            result.AsyncWaitHandle.WaitOne();
+
+            int? choice = Guide.EndShowMessageBox(result);
+            return choice.HasValue && choice.Value == 0;
         }
     }
 }

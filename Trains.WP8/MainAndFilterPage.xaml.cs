@@ -61,10 +61,8 @@ namespace Trains.WP8
                     if (!Settings.GetBool(Setting.LocationServicesEnabled) && !Settings.GetBool(Setting.LocationServicesPromptShown))
                     {
                         Settings.Set(Setting.LocationServicesPromptShown, true);
-                        var result = MessageBox.Show("This application uses your current location to improve the experience. Do you wish to give it permission to use your location?",
-                                                     "Location Services",
-                                                     MessageBoxButton.OKCancel);
-                        if (result == MessageBoxResult.OK)
+                        if (Extensions.ShowMessageBox("Location Services", "This application uses your current location to improve the experience. Do you wish to give it permission to use your location?",
+                                                      "Use location", "No thanks")) 
                         {
                             Settings.Set(Setting.LocationServicesEnabled, true);
                         }
@@ -139,7 +137,7 @@ namespace Trains.WP8
                 if (!Settings.GetBool(Setting.LocationServicesEnabled))
                 {
                     lazyBlockUI.SetItems(null);
-                    lazyBlockUI.SetLocalProgressMessage("Locations Services are disabled");
+                    lazyBlockUI.SetLocalProgressMessage("Locations Services are disabled.\nYou can enable them in the Settings.");
                     nearestLazyBlock = null;
                     return;
                 }
