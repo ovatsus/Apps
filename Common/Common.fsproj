@@ -51,6 +51,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <None Include="packages.config" />
+    <Compile Include="Helpers.fs" />
     <Compile Include="HtmlAgilityPack.FSharp.fs" />
     <Compile Include="LazyAsync.fsi" />
     <Compile Include="LazyAsync.fs" />

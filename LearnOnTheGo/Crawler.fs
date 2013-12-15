@@ -70,10 +70,11 @@ module private Implementation =
 type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>, createDownloadInfo:Func<_,_,_,_,_,_>) =
 
     let urlToFilename (url:string) = 
-        url.Replace("https://www.coursera.org/", null)
-           .Replace("https://class.coursera.org/", null)
-           .Replace("/", "_")
-           .Replace("?", "_")
+        url
+        |> remove "https://www.coursera.org/"
+        |> remove "https://class.coursera.org/"
+        |> replace "/" "_"
+        |> replace "?" "_"
 
     let cacheGet url =
         let filename = urlToFilename url 

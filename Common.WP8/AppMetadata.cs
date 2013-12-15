@@ -9,7 +9,6 @@ using System.Xml;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
-using SharpGIS;
 
 namespace Common.WP8
 {
@@ -54,9 +53,6 @@ namespace Common.WP8
             application.UnhandledException += Application_UnhandledException;
 
             InitializePhoneApplication();
-
-            WebRequest.RegisterPrefix("http://", WebRequestCreator.GZip);
-            WebRequest.RegisterPrefix("https://", WebRequestCreator.GZip);
 
             if (Debugger.IsAttached)
             {

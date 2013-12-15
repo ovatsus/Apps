@@ -1,5 +1,6 @@
 ﻿module HtmlAgilityPack.FSharp
 
+open System
 open HtmlAgilityPack
 
 type HtmlNode with 
@@ -71,43 +72,44 @@ let precedingSibling name (node : HtmlNode) =
 let precedingSiblings name (node : HtmlNode) = 
     node.PrecedingSiblings name
 
-let inline innerText (node : HtmlNode) = 
-    node.InnerText
-
-let inline attr name (node : HtmlNode) = 
-    node.GetAttributeValue(name, "")
-
-let inline (?) (node : HtmlNode) name = 
-    attr name node
-
-let inline hasAttr name value node = 
-    attr name node = value
-
-let inline hasId value node = 
-    hasAttr "id" value node
-
-let inline hasClass value node = 
-    hasAttr "class" value node
-
-let inline hasTagName tagName (node : HtmlNode) = 
+let hasTagName tagName (node : HtmlNode) = 
     node.Name.ToLowerInvariant() = tagName
 
-let inline hasText value (node : HtmlNode) = 
-    node.InnerText = value
+let innerText (node : HtmlNode) = 
+    node.Descendants()
+    |> Seq.filter (fun n -> not (n.HasChildNodes))
+    |> Seq.map (fun n -> if hasTagName "br" n then "\n" else n.InnerText)
+    |> String.concat ""
+    |> trimAndUnescape
+
+let attr name (node : HtmlNode) = 
+    node.GetAttributeValue(name, "")
+
+let (?) (node : HtmlNode) name = 
+    attr name node
+
+let hasAttr name value node = 
+    attr name node = value
+
+let hasId value node = 
+    hasAttr "id" value node
+
+let hasClass value node = 
+    hasAttr "class" value node
 
 let createDoc html =
     let doc = new HtmlDocument()
     doc.LoadHtml html
     doc.DocumentNode
 
-open System.Text.RegularExpressions
-
 // reduce size of bug reports
 let cleanHtml (str:string) = 
-    let replace pattern (replacement:string) str = Regex.Replace(str, pattern, replacement)
-    str.Replace("\r", null).Replace("\n", null).Trim()
-    |> replace ">\s*<" "><"
-    |> replace "<head>.+?</head>" ""
-    |> replace "<script[^>]*>.+?</script>" ""
-    |> replace "<noscript>.+?</noscript>" ""
+    str
+    |> remove "\r"
+    |> remove "\n"
+    |> trim
+    |> replaceRegex ">\s*<" "><"
+    |> removeRegex "<head>.+?</head>"
+    |> removeRegex "<script[^>]*>.+?</script>"
+    |> removeRegex "<noscript>.+?</noscript>"
 

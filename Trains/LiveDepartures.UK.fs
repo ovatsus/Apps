@@ -12,75 +12,77 @@ open FSharp.Control
 open FSharp.Net
 open Trains
 
-let private parseInt str = 
-    match Int32.TryParse(str, NumberStyles.Integer, CultureInfo.InvariantCulture) with
-    | true, i -> Some i
-    | false, _ -> None
+let wp8UserAgent = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)"
 
-let private getStatus due (statusCell:HtmlNode) = 
-    if statusCell.InnerText.Trim() = "Cancelled" then
-        Status.Cancelled
-    elif statusCell.InnerText.Trim() = "Delayed" then
-        Status.DelayedIndefinitely
-    elif statusCell.InnerText.Trim() = "No report" then
-        Status.NoReport
-    else
-        let statusSpan = statusCell.Element("span")
-        if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
-            match statusSpan.InnerText.Replace(" mins late", "") |> parseInt with
-            | Some delayMins -> Status.Delayed delayMins
-            | _ -> raise <| ParseError(sprintf "Invalid status:\n%s" statusCell.OuterHtml, null)
-        else
-            Status.OnTime
+let private asyncRequestString (url:string) =
+    Http.AsyncRequestString(url, headers = ["User-Agent", wp8UserAgent])
 
-let private getJourneyElementStatus due (statusCell:HtmlNode) = 
-    if statusCell.InnerText.Trim() = "Cancelled" then
-        Cancelled
-    elif statusCell.InnerText.Trim() = "No report" then
-        NoReport
-    else
-        let statusSpan = statusCell.Element("span")
-        let hasDeparted = statusSpan <> null && (statusSpan.InnerText = "Departed" || statusSpan.InnerText = "Arrived")
-        let statusSpan = statusCell.Elements("span") |> Seq.last
-        if statusSpan <> null && statusSpan.InnerText.Contains(" mins late") then
-            match statusSpan.InnerText.Replace(" mins late", "") |> parseInt with
-            | Some delayMins -> Delayed (hasDeparted, delayMins)
-            | _ -> raise <| ParseError(sprintf "Invalid status:\n%s" statusCell.OuterHtml, null)
-        else
-            OnTime hasDeparted
+let private getStatus (due:Time) (str:string) = 
+    match remove "*" str with
+    | "On time" | "Starts here" -> Status.OnTime
+    | "Cancelled" -> Status.Cancelled
+    | "Delayed" -> Status.DelayedIndefinitely
+    | "No report" -> Status.NoReport
+    | str -> let expected = Time.Parse str
+             let delay = expected - due 
+             Status.Delayed delay.TotalMinutes
+
+let private getJourneyElementStatus (due:Time) (str:string) = 
+    match remove "*" str with
+    | "On time" | "Starts here" -> OnTime (Time.Create(DateTime.Now) >= due)
+    | "Cancelled" -> Cancelled
+    | "No report" -> NoReport
+    | str -> let expected = Time.Parse str
+             let delay = expected - due 
+             Delayed (Time.Create(DateTime.Now) >= expected, delay.TotalMinutes)
 
 let private parsePlatform (cell:HtmlNode) = 
-    match cell.InnerText.Trim() with
+    match innerText cell |> remove "Platform\n" with
     | "" -> None
     | platform -> platform |> Some
 
-let private rowToJourneyElement (tr:HtmlNode) = 
-    let cells = tr |> elements "td" |> Seq.toArray
-    let arrives = cells.[0] |> Time.Parse
-    let status = cells.[2] |> getJourneyElementStatus arrives
-    let station = cells.[1].InnerText
-    let pos = station.IndexOf "Train divides here"
-    let station = if pos >= 0 then station.Substring(0, pos) else station
-    let isAlternateRoute = tr.Ancestors("tbody") |> Seq.length > 1
+let private rowToJourneyElement platform due (li:HtmlNode) = 
+
+    let cells = li |> elements "span" |> Seq.toArray
+
+    let station, isAlternateRoute = 
+        let station = cells.[1] |> innerText
+        let pos = station.IndexOf "Train divides here"
+        let station = if pos >= 0 then station.Substring(0, pos) |> trim else station
+        let isAlternateRoute = li |> parent |> precedingSibling "hr" <> null
+        station, isAlternateRoute
+    
+    let arrives, status =
+        let dueCell = cells.[0]
+        let statusStr = dueCell |> element "small" |> innerText
+        let dueStr = dueCell |> innerText |> remove statusStr
+        let due = Time.Parse dueStr
+        due, getJourneyElementStatus due statusStr
+
+    let platform = if arrives = due then platform else None
+
     { Arrives = arrives
-      Station = (if isAlternateRoute then "* " else "") + station.Trim()
+      Station = (if isAlternateRoute then "* " else "") + (trim station)
       Status = status
-      Platform = cells.[3] |> parsePlatform 
+      Platform = platform
       IsAlternateRoute = isAlternateRoute }
 
-let private getJourneyDetails url = async {
 
-    let! html = Http.AsyncRequestString url
+let internal getJourneyDetailsFromHtml platform due html = 
+    createDoc html
+    |> descendants "ul"
+    |> Seq.collect (fun ul -> ul |> elements "li")
+    |> Seq.map (rowToJourneyElement platform due)
+    |> Seq.toArray
+
+let private getJourneyDetails platform due url = async {
+
+    let! html = asyncRequestString url
     let html = cleanHtml html
 
     let getJourneyDetails() = 
         try 
-            createDoc html
-            |> descendants "tbody"
-            |> Seq.collect (fun body -> body |> elements "tr")
-            |> Seq.filter (not << (hasClass "callingpoints"))
-            |> Seq.map rowToJourneyElement
-            |> Seq.toArray
+            getJourneyDetailsFromHtml platform due html
         with 
         | :? ParseError -> reraise()
         | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
@@ -91,25 +93,27 @@ let private getJourneyDetails url = async {
     return getJourneyDetails()
 }
 
-let rowToDeparture callingAtFilter synchronizationContext token (tr:HtmlNode) =
+let private rowToDeparture callingAtFilter synchronizationContext token (li:HtmlNode) =
     
-    let cells = tr |> elements "td" |> Seq.toArray
+    let link = li |> element "a" 
+    let cells = link |> elements "span" |> Seq.toArray
+
     let destination, destinationDetail = 
-        let dest = cells.[1].InnerText.Trim()
-        let dest = Regex.Replace(dest, "\s+", " ")
-        let pos = dest.IndexOf " via"
-        if pos >= 0
-        then dest.Substring(0, pos), dest.Substring(pos + 1)
-        else
-            let pos = dest.IndexOf " (circular route)"
-            if pos >= 0
-            then dest.Substring(0, pos), dest.Substring(pos + 1)
-            else dest, ""
-    let due = cells.[0] |> Time.Parse
-    let status = cells.[2] |> getStatus due
+        let dest = (cells.[1] |> innerText).Split('\n')
+        dest.[0], dest |> Seq.skip 1 |> String.concat "\n" |> replace " via" "via"  |> replace "\nvia" " via"
+
+    let due, status =
+        let dueCell = cells.[0]
+        let statusStr = dueCell |> element "small" |> innerText
+        let dueStr = dueCell |> innerText |> remove statusStr
+        let due = Time.Parse dueStr
+        due, getStatus due statusStr
+
+    let platform = cells |> Array.tryFind (hasClass "platform") |> Option.bind parsePlatform
+
     let details = 
-        let detailsUrl = cells.[4] |> element "a" |> attr "href"
-        LazyAsync.fromAsync (getJourneyDetails ("http://ojp.nationalrail.co.uk" + detailsUrl))
+        let detailsUrl = link |> attr "href"
+        LazyAsync.fromAsync (getJourneyDetails platform due ("http://m.nationalrail.co.uk" + detailsUrl))
 
     let propertyChangedEvent = Event<_,_>()
 
@@ -118,7 +122,7 @@ let rowToDeparture callingAtFilter synchronizationContext token (tr:HtmlNode) =
           Destination = destination
           DestinationDetail = destinationDetail
           Status = status
-          Platform = cells.[3] |> parsePlatform
+          Platform = platform
           Details = details
           Arrival = ref None
           PropertyChangedEvent = propertyChangedEvent.Publish }
@@ -126,24 +130,36 @@ let rowToDeparture callingAtFilter synchronizationContext token (tr:HtmlNode) =
     departure.SubscribeToDepartureInformation callingAtFilter propertyChangedEvent synchronizationContext token
     departure
 
-let private rowToArrival (tr:HtmlNode) =
-    let cells = tr.Elements "td" |> Seq.toArray        
-    let origin = cells.[1].InnerText.Trim()
-    let due = cells.[0] |> Time.Parse
-    let status = cells.[2] |> getStatus due
+let private rowToArrival (li:HtmlNode) =
+
+    let link = li |> element "a" 
+    let cells = link |> elements "span" |> Seq.toArray
+
+    let origin = cells.[1] |> innerText
+    
+    let due, status =
+        let dueCell = cells.[0]
+        let statusStr = dueCell |> element "small" |> innerText
+        let dueStr = dueCell |> innerText |> remove statusStr
+        let due = Time.Parse dueStr
+        due, getStatus due statusStr
+
+    let platform = cells |> Array.tryFind (hasClass "platform") |> Option.bind parsePlatform
+
     let details = 
-        let detailsUrl = cells.[4] |> element "a" |> attr "href"
-        LazyAsync.fromAsync (getJourneyDetails ("http://ojp.nationalrail.co.uk" + detailsUrl))
+        let detailsUrl = link |> attr "href"
+        LazyAsync.fromAsync (getJourneyDetails platform due ("http://m.nationalrail.co.uk" + detailsUrl))
+
     { Due = due
       Origin = origin
       Status = status
-      Platform = cells.[3] |> parsePlatform
+      Platform = platform
       Details = details }
 
-let getDeparturesFromHtml html callingAtFilter synchronizationContext token = 
+let internal getDeparturesFromHtml html callingAtFilter synchronizationContext token = 
     createDoc html
-    |> descendants "tbody"
-    |> Seq.collect (fun body -> body |> elements "tr")
+    |> descendants "ul"
+    |> Seq.collect (fun ul -> ul |> elements "li")
     |> Seq.map (rowToDeparture callingAtFilter synchronizationContext token)
     |> Seq.toArray
 
@@ -151,13 +167,13 @@ let getDepartures departuresAndArrivalsTable =
 
     let url, callingAtFilter = 
         match departuresAndArrivalsTable.CallingAt with
-        | None -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/dep/%s" departuresAndArrivalsTable.Station.Code, None
-        | Some callingAt -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/dep/%s/%s/To" departuresAndArrivalsTable.Station.Code callingAt.Code, Some callingAt.Name
+        | None -> sprintf "http://m.nationalrail.co.uk/pj/ldbboard/dep/%s" departuresAndArrivalsTable.Station.Code, None
+        | Some callingAt -> sprintf "http://m.nationalrail.co.uk/pj/ldbboard/dep/%s/%s/To" departuresAndArrivalsTable.Station.Code callingAt.Code, Some callingAt.Name
 
     let synchronizationContext = SynchronizationContext.Current
 
     async {
-        let! html = Http.AsyncRequestString url
+        let! html = asyncRequestString url
         let html = cleanHtml html
 
         let! token = Async.CancellationToken
@@ -180,18 +196,18 @@ let getArrivals departuresAndArrivalsTable =
 
     let url = 
         match departuresAndArrivalsTable.CallingAt with
-        | None -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/arr/%s" departuresAndArrivalsTable.Station.Code
-        | Some callingAt -> sprintf "http://ojp.nationalrail.co.uk/service/ldbboard/arr/%s/%s/From" departuresAndArrivalsTable.Station.Code callingAt.Code 
+        | None -> sprintf "http://m.nationalrail.co.uk/pj/ldbboard/arr/%s" departuresAndArrivalsTable.Station.Code
+        | Some callingAt -> sprintf "http://m.nationalrail.co.uk/pj/ldbboard/arr/%s/%s/From" departuresAndArrivalsTable.Station.Code callingAt.Code 
 
     async {
-        let! html = Http.AsyncRequestString url
+        let! html = asyncRequestString url
         let html = cleanHtml html
 
         let getArrivals() = 
             try 
                 createDoc html
-                |> descendants "tbody"
-                |> Seq.collect (fun body -> body |> elements "tr")
+                |> descendants "ul"
+                |> Seq.collect (fun ul -> ul |> elements "li")
                 |> Seq.map rowToArrival
                 |> Seq.toArray
             with 

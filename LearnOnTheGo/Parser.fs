@@ -63,7 +63,6 @@ let parseTopicsJson getLectureSections topicsJsonStr =
 
 let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
 
-    let trimAndUnescape (text:string) = text.Replace("&nbsp;", "").Trim().Replace("&amp;", "&").Replace("&quot;", "\"").Replace("apos;", "'").Replace("&lt;", "<").Replace("&gt;", ">")
     let endsWith suffix (text:string) = text.EndsWith suffix
 
     let getVideoUrlAsync iFrameUrl = async {
@@ -92,7 +91,7 @@ let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
             createDoc lecturesHtmlStr
             |> descendants "h3"
             |> Seq.map (fun h3 ->
-                let title = h3 |> innerText |> trimAndUnescape
+                let title = innerText h3
                 let completed = h3 |> parent |> hasClass "course-item-list-header contracted"
                 let ul = 
                     h3 
@@ -107,12 +106,11 @@ let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
                     |> Seq.map (element "a")
                     |> Seq.map (fun a ->
                         let id = a |> attr "data-lecture-id" |> int
-                        let title = innerText a |> trimAndUnescape
+                        let title = innerText a
                         let quizAttemptedSpan = a |> elements "span" |> Seq.tryFind (hasClass "label label-success")
                         let title, quizAttempted =
                             match quizAttemptedSpan with
-                            | Some span ->
-                                title.Replace(trimAndUnescape span.InnerText, "").Trim(), true
+                            | Some span -> title |> remove (innerText a) |> trim, true
                             | None -> title, false
                         let videoUrl = a |> attr "data-modal-iframe" 
                                          |> getVideoUrlAsync 

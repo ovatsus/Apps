@@ -71,7 +71,6 @@ namespace Common.WP8
         private static readonly string _title = "Check out \"" + AppMetadata.Current.Name + "\" for Windows Phone";
         private static readonly string _fullMessage = _title + " " + _appLink;
 
-
         private void OnShareBySMSClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnShareBySMSClick");

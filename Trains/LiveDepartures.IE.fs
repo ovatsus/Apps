@@ -57,8 +57,6 @@ let private getJourneyDetails trainCode trainDate = async {
     return getDepartures() 
 }
 
-let private trim (s:string) = s.Trim()
-
 let private xmlToDeparture callingAtFilter (xml:StationDataXmlT.ObjStationData) =
 
     let propertyChangedEvent = Event<_,_>()
@@ -88,7 +86,6 @@ let private getCallingPoints (tr:HtmlNode) =
         |> Seq.head 
         |> element "a" 
         |> innerText
-        |> trim
     let callingPoints = 
         tr
         |> parent
@@ -97,7 +94,7 @@ let private getCallingPoints (tr:HtmlNode) =
         |> Seq.collect (descendants "tr")
         |> Seq.filter (hasClass "")
         |> Seq.map (fun tr -> let cells = tr |> elements "td" |> Seq.toArray
-                              let station = cells.[1].InnerText |> trim
+                              let station = cells.[1] |> innerText
                               station)
         |> Set.ofSeq
     trainId, callingPoints

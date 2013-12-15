@@ -83,6 +83,44 @@ type SampleData() =
             Arrival = ref None
             PropertyChangedEvent = Event<_,_>().Publish } ]
 
+    let liveProgress1 = 
+        use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UKLiveProgress.html")
+        use streamReader = new StreamReader(stream)
+        let html = streamReader.ReadToEnd()
+        LiveDepartures.UK.getJourneyDetailsFromHtml None (Time.Create(0)) html
+
+    let liveProgress2 = 
+        [ { Arrives = t1
+            Station = s1.Name
+            Status = OnTime true
+            Platform = None
+            IsAlternateRoute = false }
+          { Arrives = t2
+            Station = s2.Name
+            Status = Delayed (true, 5)
+            Platform = Some "6"
+            IsAlternateRoute = false }
+          { Arrives = t3
+            Station = s3.Name
+            Status = NoReport
+            Platform = None
+            IsAlternateRoute = false }
+          { Arrives = t4
+            Station = s4.Name
+            Status = Cancelled
+            Platform = Some "20D"
+            IsAlternateRoute = false }
+          { Arrives = t1
+            Station = "* " + s1.Name
+            Status = OnTime false
+            Platform = None
+            IsAlternateRoute = true }
+          { Arrives = t1
+            Station = "* " + s2.Name
+            Status = Delayed (false, 5)
+            Platform = Some "21"
+            IsAlternateRoute = true } ]
+
     member __.NearestStations = [ 1.1, s1 
                                   3.4, s2 
                                   5.6, s3 
@@ -131,35 +169,6 @@ type SampleData() =
                             Platform = None
                             Details = details } ]
 
-    member __.LiveProgress = [ { Arrives = t1
-                                 Station = s1.Name
-                                 Status = OnTime true
-                                 Platform = None
-                                 IsAlternateRoute = false }
-                               { Arrives = t2
-                                 Station = s2.Name
-                                 Status = Delayed (true, 5)
-                                 Platform = Some "6"
-                                 IsAlternateRoute = false }
-                               { Arrives = t3
-                                 Station = s3.Name
-                                 Status = NoReport
-                                 Platform = None
-                                 IsAlternateRoute = false }
-                               { Arrives = t4
-                                 Station = s4.Name
-                                 Status = Cancelled
-                                 Platform = Some "20D"
-                                 IsAlternateRoute = false }
-                               { Arrives = t1
-                                 Station = "* " + s1.Name
-                                 Status = OnTime false
-                                 Platform = None
-                                 IsAlternateRoute = true }
-                               { Arrives = t1
-                                 Station = "* " + s2.Name
-                                 Status = Delayed (false, 5)
-                                 Platform = Some "21"
-                                 IsAlternateRoute = true } ]
+    member __.LiveProgress = liveProgress2
 
     member __.LastUpdated = "last updated at " + DateTime.Now.ToString("HH:mm:ss")

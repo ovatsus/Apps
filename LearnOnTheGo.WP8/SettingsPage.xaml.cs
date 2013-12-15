@@ -31,9 +31,7 @@ namespace LearnOnTheGo.WP8
         private void OnCreateAccountClick(object sender, RoutedEventArgs e)
         {
             ErrorReporting.Log("OnCreateAccountClick");
-            var task = new WebBrowserTask();
-            task.Uri = new Uri("https://accounts.coursera.org/signup");
-            task.Show();
+            new WebBrowserTask { Uri = new Uri("https://accounts.coursera.org/signup") }.Show();
         }
     }
 }

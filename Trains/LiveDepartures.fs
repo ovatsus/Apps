@@ -4,7 +4,6 @@ open System
 open System.ComponentModel
 open System.Globalization
 open System.Threading
-open HtmlAgilityPack
 open FSharp.Control
 
 type DeparturesAndArrivalsTable = 
@@ -87,22 +86,20 @@ and Time =
         Time.Create(minutes + hours * 60)
     static member (+) (t1, t2) = 
         Time.Create(t1.TotalMinutes + t2.TotalMinutes)
+    static member (-) (t1, t2) = 
+        assert  (t1.TotalMinutes >= t2.TotalMinutes)
+        Time.Create(t1.TotalMinutes - t2.TotalMinutes)
     static member Create(dt:DateTime) = 
         Time.Create(int dt.TimeOfDay.TotalMinutes)
-    static member Parse(cell:HtmlNode) = 
-        let parseInt str = 
-            match Int32.TryParse(str, NumberStyles.Integer, CultureInfo.InvariantCulture) with
-            | true, i -> Some i
-            | false, _ -> None
-        let time = cell.InnerText
-        let pos = time.IndexOf ':'
+    static member Parse(str:string) = 
+        let pos = str.IndexOf ':'
         if pos >= 0 then
-            let hours = time.Substring(0, pos) |> parseInt
-            let minutes = time.Substring(pos+1) |> parseInt
+            let hours = str.Substring(0, pos) |> parseInt
+            let minutes = str.Substring(pos+1) |> parseInt
             match hours, minutes with
             | Some hours, Some minutes -> Time.Create(hours, minutes)
-            | _ -> raise <| ParseError(sprintf "Invalid time:\n%s" cell.OuterHtml, null)
-        else raise <| ParseError(sprintf "Invalid time:\n%s" cell.OuterHtml, null)
+            | _ -> raise <| ParseError(sprintf "Invalid time:\n%s" str, null)
+        else raise <| ParseError(sprintf "Invalid time:\n%s" str, null)
 
 and Status =
     | OnTime

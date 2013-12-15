@@ -178,17 +178,13 @@ namespace LearnOnTheGo.WP8
         private void OnCourseCatalogClick(object sender, RoutedEventArgs e)
         {
             ErrorReporting.Log("OnCourseCatalogClick");
-            var task = new WebBrowserTask();
-            task.Uri = new Uri("https://www.coursera.org/courses");
-            task.Show();
+            new WebBrowserTask { Uri = new Uri("https://www.coursera.org/courses") }.Show();
         }
 
         private void OnCourseCatalogClickFromAppBar(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnCourseCatalogClickFromAppBar");
-            var task = new WebBrowserTask();
-            task.Uri = new Uri("https://www.coursera.org/courses");
-            task.Show();
+            new WebBrowserTask { Uri = new Uri("https://www.coursera.org/courses") }.Show();
         }
     }
 }

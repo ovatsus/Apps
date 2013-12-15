@@ -290,9 +290,7 @@ namespace LearnOnTheGo.WP8
             var lecture = (Lecture)((Button)sender).DataContext;
             ErrorReporting.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
-            var task = new WebBrowserTask();
-            task.Uri = new Uri(lecture.LectureNotesUrl);
-            task.Show();
+            new WebBrowserTask { Uri = new Uri(lecture.LectureNotesUrl) }.Show();
         }
 
         private void OnOpenInBrowserClick(object sender, EventArgs e)
@@ -300,10 +298,7 @@ namespace LearnOnTheGo.WP8
             ErrorReporting.Log("OnOpenInBrowserClick");
 
             var course = App.Crawler.GetCourse(courseId);
-
-            var task = new WebBrowserTask();
-            task.Uri = new Uri(course.HomeLink);
-            task.Show();
+            new WebBrowserTask { Uri = new Uri(course.HomeLink) }.Show();
         }
 
         private void OnDownloadAllClick(object sender, EventArgs e)

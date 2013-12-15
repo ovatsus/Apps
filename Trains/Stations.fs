@@ -51,7 +51,7 @@ module Stations =
                             |> Seq.sortBy (fun station -> -station.RevisionNumber) 
                             |> Seq.head
                         { Code = code
-                          Name = station.StationName.Replace(" Rail Station", null).Replace(" Railway Station", null)
+                          Name = station.StationName |> remove " Rail Station" |> remove " Railway Station"
                           Location = LatLong.Create station.Latitude station.Longitude })
                     |> Seq.toList
 
