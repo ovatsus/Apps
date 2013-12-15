@@ -121,7 +121,7 @@ namespace Trains.WP8
                     departuresAndArrivalsTable.GetDepartures(),
                     items => items.Length == 0,
                     new LazyBlockUI<Departure>(this, departures, departuresMessageTextBlock, departuresLastUpdatedTextBlock),
-                    true,
+                    Settings.GetBool(Setting.AutoRefresh),
                     null,
                     success => {
                         if (success)
@@ -147,7 +147,7 @@ namespace Trains.WP8
                     departuresAndArrivalsTable.GetArrivals(),
                     items => items.Length == 0,
                     new LazyBlockUI<Arrival>(this, arrivals, arrivalsMessageTextBlock, arrivalsLastUpdatedTextBlock),
-                    true,
+                    Settings.GetBool(Setting.AutoRefresh),
                     null,
                     null,
                     null);

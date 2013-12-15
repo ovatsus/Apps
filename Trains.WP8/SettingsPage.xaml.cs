@@ -13,7 +13,7 @@ namespace Trains.WP8
         {
             InitializeComponent();
             enableLocationServices.IsChecked = Settings.GetBool(Setting.LocationServicesEnabled);
-            useMilesInsteadOfKms.IsChecked = Settings.GetBool(Setting.UseMilesInsteadOfKMs);
+            autoRefresh.IsChecked = Settings.GetBool(Setting.AutoRefresh);
             pivot.Title = AppMetadata.Current.Name;
         }
 
@@ -28,7 +28,7 @@ namespace Trains.WP8
         {
             ErrorReporting.Log("OnSaveClick");
             Settings.Set(Setting.LocationServicesEnabled, enableLocationServices.IsChecked == true);
-            Settings.Set(Setting.UseMilesInsteadOfKMs, useMilesInsteadOfKms.IsChecked == true);
+            Settings.Set(Setting.AutoRefresh, autoRefresh.IsChecked == true);
             LocationService.Setup();
             NavigationService.GoBack();
         }

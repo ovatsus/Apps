@@ -23,6 +23,7 @@ Note that background refresh requires Location Services to be enabled
 
 New in 1.2:
 * Only fetch the arrival time for the first 4 departures to reduce data usage
+* Disable auto-refresh by default and add an option to enable it
 
 New in 1.1:
 * Improved handling of network failures

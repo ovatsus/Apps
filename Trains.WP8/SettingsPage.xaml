@@ -42,23 +42,23 @@
     <Grid Background="Transparent">
         <phone:Pivot x:Name="pivot" Title="{Binding AppTitle}">
             <phone:PivotItem Header="Settings">
-                <StackPanel>
+                <StackPanel Margin="0,-32,0,0">
                     <toolkit:ToggleSwitch Content="Enable Location"
                                           x:Name="enableLocationServices" />
                     <TextBlock TextWrapping="Wrap" Margin="12,0">
                         Your privacy is important to us. This application uses 
                         your current location to show you the nearest stations. No 
-                        information is stored or shared. You may disable 
-                        Location Services, but if you do so the
-                        app will not refresh in the background.
+                        information is stored or shared.
                     </TextBlock>
                     <Button Content="Show departures on lock screen" 
-                            Margin="0,36,0,12"
+                            Margin="0,24,0,0"
                             Tap="OnShowDeparturesOnLockScreenClick" />
-                    <toolkit:ToggleSwitch Content="Use imperial system"
-                                          x:Name="useMilesInsteadOfKms" />
+                    <toolkit:ToggleSwitch Content="Auto Refresh"
+                                          x:Name="autoRefresh" />
                     <TextBlock TextWrapping="Wrap" Margin="12,0">
-                        Otherwise metric system will be used.
+                        When auto refresh is enabled, the departures, arrivals and live progress pages will be refreshed automatically every 60 seconds.
+                        If location services are also enabled, this will happen even when the app is in the background.
+                        Please note that this may increase the data usage.
                     </TextBlock>
                 </StackPanel>
             </phone:PivotItem>

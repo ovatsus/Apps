@@ -47,7 +47,6 @@
         <Grid.Resources>
 
             <coding4funConverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
-            <src:DistanceToStringConverter x:Key="distanceToStringConverter" />
 
             <DataTemplate x:Key="stationTemplateWithDistance">
                 <Button Tap="OnStationClick">
@@ -59,7 +58,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Item1, Converter={StaticResource distanceToStringConverter}}"
+                                <TextBlock Text="{Binding Item1, StringFormat=\{0\,1:F1\} km}"
                                            Margin="0,12,0,0"
                                            Foreground="{StaticResource PhoneAccentBrush}" />
                                 <TextBlock Text="{Binding Item2.Name}"

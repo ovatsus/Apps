@@ -59,7 +59,7 @@ namespace Trains.WP8
                     journeyElementsLazyAsync,
                     items => items.Length == 0,
                     new LazyBlockUI<JourneyElement>(this, journeyElements, journeyElementsMessageTextBlock, journeyElementsLastUpdatedTextBlock),
-                    true,
+                    Settings.GetBool(Setting.AutoRefresh),
                     null,
                     null,
                     null);

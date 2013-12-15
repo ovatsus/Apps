@@ -24,7 +24,7 @@ namespace Common.WP8
         CurrentLat,
         CurrentLong,
         RecentStations,
-        UseMilesInsteadOfKMs,
+        AutoRefresh,
     }
 
     public static class Settings
