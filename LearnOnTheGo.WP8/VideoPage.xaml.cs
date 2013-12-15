@@ -16,7 +16,7 @@ namespace LearnOnTheGo.WP8
         }
 
         private string stateFile;
-        private MediaState mediaState;
+        private TimeSpan? position;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -32,29 +32,34 @@ namespace LearnOnTheGo.WP8
                 mediaPlayer.SetSource(IsolatedStorage.OpenFileToRead(filename));
             }
 
-            if (mediaState != null)
+            if (!position.HasValue && stateFile != null && IsolatedStorage.FileExists(stateFile))
             {
-                mediaPlayer.RestoreMediaState(mediaState);
-                mediaState = null;
+                position = TimeSpan.FromTicks(long.Parse(IsolatedStorage.ReadAllText(stateFile), CultureInfo.InvariantCulture));
             }
-            else if (stateFile != null && IsolatedStorage.FileExists(stateFile))
-            {
-                var ticks = long.Parse(IsolatedStorage.ReadAllText(stateFile), CultureInfo.InvariantCulture);
+            if (position.HasValue)
+            {                
                 mediaPlayer.RestoreMediaState(new MediaState
                 {
                     IsPlaying = true,
                     IsStarted = true,
-                    Position = TimeSpan.FromTicks(ticks),
+                    Position = position.Value,
                 });
             }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            mediaState = mediaPlayer.GetMediaState();
+            position = mediaPlayer.Position;
             if (stateFile != null)
             {
-                IsolatedStorage.WriteAllText(stateFile, mediaState.Position.Ticks.ToString(CultureInfo.InvariantCulture));
+                if (mediaPlayer.NaturalDuration.HasTimeSpan && (mediaPlayer.NaturalDuration.TimeSpan - position.Value).TotalSeconds < 5)
+                {
+                    IsolatedStorage.Delete(stateFile);
+                }
+                else
+                {
+                    IsolatedStorage.WriteAllText(stateFile, position.Value.Ticks.ToString(CultureInfo.InvariantCulture));
+                }
             }
         }
 
