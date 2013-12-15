@@ -81,6 +81,12 @@
             </DataTemplate>
         </Grid.Resources>
 
+        <Image Source="Assets/ApplicationIcon.png"
+               Height="50"
+               Margin="8"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top" />
+
         <phone:Pivot Title="Enrolled Courses" x:Name="pivot">
             <phone:PivotItem Header="Active">
                 <ScrollViewer>

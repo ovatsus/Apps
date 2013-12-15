@@ -25,6 +25,7 @@ New in 2.5:
 * Use alternative data source for more efficient data use
 * Only fetch the arrival time for the first 4 departures to reduce data usage
 * Disable auto-refresh by default and add an option to enable it
+* Small UI improvements
 
 New in 2.4:
 * Fixed compatibility with live tiles from previous versions

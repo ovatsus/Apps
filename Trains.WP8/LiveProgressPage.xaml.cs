@@ -14,15 +14,15 @@ namespace Trains.WP8
             CommonApplicationBarItems.Init(this);
         }
 
-        private static string title;
+        private static string trainTitle;
         private static LazyAsync<JourneyElement[]> journeyElementsLazyAsync;
 
         private LazyBlock<JourneyElement[]> journeyElementsLazyBlock;
 
-        public static void SetDetails(string title, LazyAsync<JourneyElement[]> journeyElementsLazyAsync)
+        public static void SetDetails(string trainTitle, LazyAsync<JourneyElement[]> journeyElementsLazyAsync)
         {
             LiveProgressPage.journeyElementsLazyAsync = journeyElementsLazyAsync;
-            LiveProgressPage.title = title;
+            LiveProgressPage.trainTitle = trainTitle;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -52,7 +52,9 @@ namespace Trains.WP8
             }
             else
             {
-                pivot.Title = title;
+                title.Text = trainTitle;
+                if (title.Text.Length > 40)
+                    title.Text = title.Text.Replace(" to ", "\nto ");
                 journeyElementsLazyBlock = new LazyBlock<JourneyElement[]>(
                     "live progress",
                     "No information available",

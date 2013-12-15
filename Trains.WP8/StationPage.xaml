@@ -10,6 +10,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:src="clr-namespace:Trains.WP8"
     xmlns:trains="clr-namespace:Trains;assembly=Trains"
+    xmlns:commonWP8="clr-namespace:Common.WP8;assembly=Common.WP8"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -196,8 +197,20 @@
             </DataTemplate>
 
         </Grid.Resources>
-        
-        <phone:Pivot x:Name="pivot" Title="{Binding StationTitle}">
+
+        <Image Source="Assets/ApplicationIcon.png"
+               Height="50"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top" />
+
+        <phone:Pivot x:Name="pivot">
+            <phone:Pivot.Title>
+                <commonWP8:DynamicTextBlock x:Name="title"
+                                            Text="{Binding StationTitle}"
+                                            FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                            FontSize="{StaticResource PhoneFontSizeMedium}"
+                                            Margin="0,0,48,0" />
+            </phone:Pivot.Title>
             <phone:PivotItem Header="Departures">
                 <Grid>
                     <ScrollViewer>

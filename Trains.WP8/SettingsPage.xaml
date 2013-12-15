@@ -40,6 +40,12 @@
     </toolkit:TransitionService.NavigationOutTransition>
     
     <Grid Background="Transparent">
+
+        <Image Source="Assets/ApplicationIcon.png"
+               Height="50"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top" />
+
         <phone:Pivot x:Name="pivot" Title="{Binding AppTitle}">
             <phone:PivotItem Header="Settings">
                 <StackPanel Margin="0,-32,0,0">

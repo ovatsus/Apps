@@ -90,7 +90,7 @@ namespace LearnOnTheGo.WP8
             }
 
             var course = App.Crawler.GetCourse(courseId);
-            pivot.Title = course.Topic.Name;
+            title.Text = course.Topic.Name;
             ErrorReporting.Log(courseId + " = " + course.Topic.Name + " [" + course.Name + "]");
 
             if (pivot.ItemsSource == null)

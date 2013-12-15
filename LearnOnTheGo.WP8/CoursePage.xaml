@@ -11,6 +11,7 @@
     xmlns:src="clr-namespace:LearnOnTheGo.WP8"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:lotg="clr-namespace:LearnOnTheGo;assembly=LearnOnTheGo"
+    xmlns:commonWP8="clr-namespace:Common.WP8;assembly=Common.WP8"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -134,10 +135,22 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <phone:Pivot x:Name="pivot" 
-                        Title="{Binding CourseTitle}"
-                        ItemsSource="{Binding LectureSections}"
-                        ItemTemplate="{StaticResource sectionTemplate}">
+        <Image Source="Assets/ApplicationIcon.png"
+               Height="50"
+               Margin="8"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top" />
+
+        <phone:Pivot x:Name="pivot"
+                     ItemsSource="{Binding LectureSections}"
+                     ItemTemplate="{StaticResource sectionTemplate}">
+            <phone:Pivot.Title>
+                <commonWP8:DynamicTextBlock x:Name="title"
+                                            Text="{Binding CourseTitle}"
+                                            FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                            FontSize="{StaticResource PhoneFontSizeMedium}"
+                                            Margin="0,0,58,0" />
+            </phone:Pivot.Title>
             <phone:Pivot.HeaderTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" />

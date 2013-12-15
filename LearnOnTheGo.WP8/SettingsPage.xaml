@@ -39,6 +39,13 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <Grid Background="Transparent">
+
+        <Image Source="Assets/ApplicationIcon.png"
+               Height="50"
+               Margin="8"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top" />
+
         <phone:Pivot Title="Learn On The Go">
             <phone:PivotItem Header="Settings">
                 <StackPanel>

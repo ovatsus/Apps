@@ -55,7 +55,9 @@ namespace Trains.WP8
             var to = NavigationContext.QueryString.ContainsKey("callingAt") ? Stations.Get(NavigationContext.QueryString["callingAt"]) : null;
             var removeBackEntry = NavigationContext.QueryString.ContainsKey("removeBackEntry");
             departuresAndArrivalsTable = DeparturesAndArrivalsTable.Create(from, to);
-            pivot.Title = departuresAndArrivalsTable.ToString();
+            title.Text = departuresAndArrivalsTable.ToString();
+            if (title.Text.Length > 40)
+                title.Text = title.Text.Replace(" calling at ", "\ncalling at ");
 
             if (e.NavigationMode == NavigationMode.New)
             {

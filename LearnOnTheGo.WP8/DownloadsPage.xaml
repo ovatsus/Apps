@@ -95,6 +95,12 @@
             </DataTemplate>
         </Grid.Resources>
 
+        <Image Source="Assets/ApplicationIcon.png"
+               Height="50"
+               Margin="8"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top" />
+        
         <phone:Pivot x:Name="pivot" Title="Video Downloads" SelectionChanged="OnPivotSelectionChanged">
             <phone:PivotItem Header="In Progress">
                 <ScrollViewer>

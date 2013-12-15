@@ -139,6 +139,11 @@
             </DataTemplate>
         </Grid.Resources>
 
+        <Image Source="Assets/ApplicationIcon.png"
+               Height="50"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top" />
+
         <phone:Pivot x:Name="pivot" Title="Rail Stations">
             <phone:PivotItem x:Name="nearest" Header="Near Me">
                 <ScrollViewer>
