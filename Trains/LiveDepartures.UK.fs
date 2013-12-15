@@ -93,7 +93,7 @@ let private getJourneyDetails platform due url = async {
     return getJourneyDetails()
 }
 
-let private rowToDeparture callingAtFilter synchronizationContext token (li:HtmlNode) =
+let private rowToDeparture callingAtFilter synchronizationContext token i (li:HtmlNode) =
     
     let link = li |> element "a" 
     let cells = link |> elements "span" |> Seq.toArray
@@ -127,7 +127,10 @@ let private rowToDeparture callingAtFilter synchronizationContext token (li:Html
           Arrival = ref None
           PropertyChangedEvent = propertyChangedEvent.Publish }
     
-    departure.SubscribeToDepartureInformation callingAtFilter propertyChangedEvent synchronizationContext token
+    // only fetch the arrival time for the first 4 departures
+    if i < 4 then
+        departure.SubscribeToDepartureInformation callingAtFilter propertyChangedEvent synchronizationContext token
+
     departure
 
 let private rowToArrival (li:HtmlNode) =
@@ -160,7 +163,7 @@ let internal getDeparturesFromHtml html callingAtFilter synchronizationContext t
     createDoc html
     |> descendants "ul"
     |> Seq.collect (fun ul -> ul |> elements "li")
-    |> Seq.map (rowToDeparture callingAtFilter synchronizationContext token)
+    |> Seq.mapi (rowToDeparture callingAtFilter synchronizationContext token)
     |> Seq.toArray
 
 let getDepartures departuresAndArrivalsTable = 

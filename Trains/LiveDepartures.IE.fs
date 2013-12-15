@@ -110,7 +110,7 @@ let private getDeparturesOrArrivals forDepartures mapper getOutput (departuresAn
             |> Seq.filter (fun xml -> xml.Locationtype <> (if forDepartures then LocationType.Destination else LocationType.Origin).ToString())
             |> Seq.map (mapper callingAtFilter)
             |> extraFilter
-            |> Seq.map getOutput
+            |> Seq.mapi getOutput
             |> Seq.toArray
         with 
         | exn -> raise <| ParseError(sprintf "Failed to parse xml from %s:\n%s" xmlUrl xml, exn)
@@ -173,9 +173,11 @@ let getDepartures departuresAndArrivalsTable =
 
         let! token = Async.CancellationToken
 
-        let getDeparture (trainId, (departure:Departure, callingAtFilter, propertyChangedEvent)) = 
+        let getDeparture i (trainId, (departure:Departure, callingAtFilter, propertyChangedEvent)) = 
             if (!departure.Arrival).IsNone then
-                departure.SubscribeToDepartureInformation callingAtFilter propertyChangedEvent synchronizationContext token
+                // only fetch the arrival time for the first 4 departures
+                if i < 4 then
+                    departure.SubscribeToDepartureInformation callingAtFilter propertyChangedEvent synchronizationContext token
             departure
 
         return! getDeparturesOrArrivals true xmlToDeparture getDeparture departuresAndArrivalsTable
@@ -183,5 +185,5 @@ let getDepartures departuresAndArrivalsTable =
 
 let getArrivals departuresAndArrivalsTable = 
 
-    getDeparturesOrArrivals false xmlToArrival snd departuresAndArrivalsTable
+    getDeparturesOrArrivals false xmlToArrival (fun _ (_, arrival) -> arrival) departuresAndArrivalsTable
     |> LazyAsync.fromAsync
