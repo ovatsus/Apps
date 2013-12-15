@@ -32,18 +32,22 @@ namespace LearnOnTheGo.WP8
                 mediaPlayer.SetSource(IsolatedStorage.OpenFileToRead(filename));
             }
 
-            if (!position.HasValue && stateFile != null && IsolatedStorage.FileExists(stateFile))
+            // only restore position for downloaded videos
+            if (stateFile != null)
             {
-                position = TimeSpan.FromTicks(long.Parse(IsolatedStorage.ReadAllText(stateFile), CultureInfo.InvariantCulture));
-            }
-            if (position.HasValue)
-            {                
-                mediaPlayer.RestoreMediaState(new MediaState
+                if (!position.HasValue && IsolatedStorage.FileExists(stateFile))
                 {
-                    IsPlaying = true,
-                    IsStarted = true,
-                    Position = position.Value,
-                });
+                    position = TimeSpan.FromTicks(long.Parse(IsolatedStorage.ReadAllText(stateFile), CultureInfo.InvariantCulture));
+                }
+                if (position.HasValue)
+                {
+                    mediaPlayer.RestoreMediaState(new MediaState
+                    {
+                        IsPlaying = true,
+                        IsStarted = true,
+                        Position = position.Value,
+                    });
+                }
             }
         }
 

@@ -129,6 +129,7 @@
     <Content Include="Assets\Icons\dark\appbar.check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Icons\dark\appbar.control.play.streaming.png" />
     <Content Include="Assets\Icons\dark\appbar.control.play.png" />
     <Content Include="Assets\Icons\dark\appbar.coursera.png" />
     <Content Include="Assets\Icons\dark\appbar.delete.png" />

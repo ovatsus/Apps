@@ -221,7 +221,7 @@ namespace LearnOnTheGo.WP8
         {
             ErrorReporting.Log("OnStreamClick");
 
-            var lecture = (Lecture)((MenuItem)sender).DataContext;
+            var lecture = (Lecture)((Button)sender).DataContext;
             ErrorReporting.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
             if (videoLazyBlocks.ContainsKey(lecture.Id))

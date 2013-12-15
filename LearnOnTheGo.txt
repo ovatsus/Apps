@@ -13,8 +13,8 @@ This is not an official Coursera app.
 
 New in 2.6:
 * Add buttons to create account and to see the course catalog in the browser
-* Small UI improvements
 * Fixed video not resuming when it was paused before the app was put in the background
+* UI improvements
 
 New in 2.5:
 * Allow to stream not yet downloaded videos from the lecture context menu
