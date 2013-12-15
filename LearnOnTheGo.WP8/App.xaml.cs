@@ -12,6 +12,7 @@ namespace LearnOnTheGo.WP8
             new AppMetadata(this, "Learn On The Go", "learnonthego@codebeside.org");
 
             DownloadInfo.SetupBackgroundTransfers();
+            SettingsPage.EnableOrDisableLockScreen();
         }
 
         public static Crawler Crawler { get; set; }

@@ -54,6 +54,7 @@
                     <watermark:WatermarkPasswordBox x:Name="password" WatermarkText="Password" />
                     <TextBlock Margin="12,24,12,0" Text="Not signed up yet?" />
                     <Button Content="Create Account" Click="OnCreateAccountClick" />
+                    <toolkit:ToggleSwitch Content="Run under Lock Screen" x:Name="runUnderLockScreen" Visibility="Collapsed" />
                 </StackPanel>
             </phone:PivotItem>
         </phone:Pivot>

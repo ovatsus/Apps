@@ -7,12 +7,13 @@ Pre-download the videos while on good connection
 Watch the lectures later on the train or the bus
 
 Description:
+Take the world's best courses, online, for free. Learn from top instructors representing more than 100 partner institutions, including leading US and global universities. Over 500 courses available in more than 20 subject areas, from mathematics to music to medicine.
 Learn On The Go enables you to watch the videos and read the lecture notes of your enrolled Coursera courses.
 Pre-download the videos while on good connection and then watch them later on the train or the bus.
 This is not an official Coursera app.
 
 New in 2.6:
-* Add buttons to create account and to see the course catalog in the browser
+* Added buttons to create account and to see the course catalog in the browser
 * Fixed video not resuming when it was paused before the app was put in the background
 * UI improvements
 

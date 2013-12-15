@@ -17,6 +17,7 @@ namespace Common.WP8
         // Learn On The Go
         Email,
         Password,
+        RunUnderLockScreen,
 
         // Trains
         LocationServicesEnabled,
