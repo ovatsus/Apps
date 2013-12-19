@@ -70,8 +70,7 @@ let private rowToJourneyElement platform due (li:HtmlNode) =
 
 let internal getJourneyDetailsFromHtml platform due html = 
     createDoc html
-    |> descendants "ul"
-    |> Seq.collect (fun ul -> ul |> elements "li")
+    |> descendants "li"
     |> Seq.map (rowToJourneyElement platform due)
     |> Seq.toArray
 
@@ -161,8 +160,7 @@ let private rowToArrival (li:HtmlNode) =
 
 let internal getDeparturesFromHtml html callingAtFilter synchronizationContext token = 
     createDoc html
-    |> descendants "ul"
-    |> Seq.collect (fun ul -> ul |> elements "li")
+    |> descendants "li"
     |> Seq.mapi (rowToDeparture callingAtFilter synchronizationContext token)
     |> Seq.toArray
 
@@ -209,8 +207,7 @@ let getArrivals departuresAndArrivalsTable =
         let getArrivals() = 
             try 
                 createDoc html
-                |> descendants "ul"
-                |> Seq.collect (fun ul -> ul |> elements "li")
+                |> descendants "li"
                 |> Seq.map rowToArrival
                 |> Seq.toArray
             with 
