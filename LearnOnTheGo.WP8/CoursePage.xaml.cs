@@ -304,7 +304,7 @@ namespace LearnOnTheGo.WP8
         private void OnDownloadAllClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnDownloadAllClick");
-            if (pivot.SelectedIndex != -1)
+            if (pivot.SelectedIndex != -1 && pivot.ItemsSource != null)
             {
                 foreach (var lecture in pivot.ItemsSource.Cast<LectureSection>().ElementAt(pivot.SelectedIndex).Lectures)
                 {

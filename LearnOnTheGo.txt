@@ -12,6 +12,9 @@ Learn On The Go enables you to watch the videos and read the lecture notes of yo
 Pre-download the videos while on good connection and then watch them later on the train or the bus.
 This is not an official Coursera app.
 
+New in 2.7:
+* Samll bug fixes
+
 New in 2.6:
 * Added buttons to create account and to see the course catalog in the browser
 * Fixed video not resuming when it was paused before the app was put in the background
