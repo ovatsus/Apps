@@ -51,7 +51,7 @@
                 <StackPanel Margin="0,-32,0,0">
                     <toolkit:ToggleSwitch Content="Enable Location"
                                           x:Name="enableLocationServices" />
-                    <TextBlock TextWrapping="Wrap" Margin="12,0">
+                    <TextBlock TextWrapping="Wrap" Margin="12,-12,0,0">
                         Your privacy is important to us. This application uses 
                         your current location to show you the nearest stations. No 
                         information is stored or shared.
@@ -61,7 +61,7 @@
                             Tap="OnShowDeparturesOnLockScreenClick" />
                     <toolkit:ToggleSwitch Content="Auto Refresh"
                                           x:Name="autoRefresh" />
-                    <TextBlock TextWrapping="Wrap" Margin="12,0">
+                    <TextBlock TextWrapping="Wrap" Margin="12,-12,0,0">
                         When auto refresh is enabled, the departures, arrivals and live progress pages will be refreshed automatically every 60 seconds.
                         If location services are also enabled, this will happen even when the app is in the background.
                         Please note that this may increase the data usage.
