@@ -69,6 +69,10 @@ namespace Common.WP8
                             outputStream.Write(buffer, 0, read);
                         }
                     });
+                    using (var stream = IsolatedStorage.OpenFileToRead(filename))
+                    {
+                        bm.SetSource(stream);
+                    }
                 }
             };
             webClient.OpenReadAsync(uri);
