@@ -115,6 +115,7 @@ namespace Common.WP8
             RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
+            RootFrame.Navigating += RootFrame_Navigating;
             RootFrame.Navigated += RootFrame_Navigated;
             phoneApplicationInitialized = true;
         }
@@ -127,22 +128,34 @@ namespace Common.WP8
             RootFrame.Navigated -= CompleteInitializePhoneApplication;
         }
 
+        private bool resetting;
+
+        private void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            ErrorReporting.Log("Navigating " + e.NavigationMode + " " + e.Uri);
+            if (resetting)
+            {
+                resetting = false;
+                if (e.Uri.OriginalString.Contains("?"))
+                {
+                    // respect live tile destination
+                }
+                else
+                {
+                    // just resume, cancel navigation
+                    ErrorReporting.Log("Cancelling navigation");
+                    e.Cancel = true;
+                }
+            }
+        }
+
         private void RootFrame_Navigated(object sender, NavigationEventArgs e)
         {
             ErrorReporting.Log("Navigated " + e.NavigationMode + " " + e.Uri);
             if (e.NavigationMode == NavigationMode.Reset)
-                RootFrame.Navigated += ClearBackStackAfterReset;
-        }
-
-        private void ClearBackStackAfterReset(object sender, NavigationEventArgs e)
-        {
-            RootFrame.Navigated -= ClearBackStackAfterReset;
-
-            if (e.NavigationMode != NavigationMode.New && e.NavigationMode != NavigationMode.Refresh)
-                return;
-
-            ErrorReporting.Log("Clearing back stack");
-            while (RootFrame.RemoveBackEntry() != null);
+            {
+                resetting = true;
+            }
         }
 
         private static string GetManifestAttributeValue(string attributeName)
@@ -175,8 +188,8 @@ namespace Common.WP8
                 if (!lastAskForReviewDate.HasValue)
                 {
                     shouldAskForReview = daysSinceInstallation >= 1;
-                } 
-                else 
+                }
+                else
                 {
                     var daysSinceLastAskForReview = (DateTime.UtcNow - lastAskForReviewDate.Value).TotalDays;
                     shouldAskForReview = daysSinceLastAskForReview * 2 >= daysSinceInstallation;

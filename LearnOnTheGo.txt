@@ -13,7 +13,7 @@ Pre-download the videos while on good connection and then watch them later on th
 This is not an official Coursera app.
 
 New in 2.7:
-* Samll bug fixes
+* Small bug fixes
 
 New in 2.6:
 * Added buttons to create account and to see the course catalog in the browser
