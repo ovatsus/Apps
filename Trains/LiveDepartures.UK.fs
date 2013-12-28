@@ -27,13 +27,14 @@ let private getStatus (due:Time) (str:string) =
              let delay = expected - due 
              Status.Delayed delay.TotalMinutes
 
-let private getJourneyElementStatus (due:Time) (str:string) = 
+let private getJourneyElementStatus (due:Time option) (str:string) = 
     match remove "*" str with
-    | "On time" | "Starts here" -> OnTime (Time.Create(DateTime.Now) >= due)
+    | "On time" | "Starts here" -> OnTime (Time.Create(DateTime.Now) >= due.Value)
     | "Cancelled" -> Cancelled
-    | "No report" -> NoReport
+    | "Delayed" -> DelayedIndefinitely
+    | "" | "No report" -> NoReport
     | str -> let expected = Time.Parse str
-             let delay = expected - due 
+             let delay = expected - due.Value
              Delayed (Time.Create(DateTime.Now) >= expected, delay.TotalMinutes)
 
 let private parsePlatform (cell:HtmlNode) = 
@@ -56,10 +57,10 @@ let private rowToJourneyElement platform due (li:HtmlNode) =
         let dueCell = cells.[0]
         let statusStr = dueCell |> element "small" |> innerText
         let dueStr = dueCell |> innerText |> remove statusStr
-        let due = Time.Parse dueStr
+        let due = Time.TryParse dueStr
         due, getJourneyElementStatus due statusStr
 
-    let platform = if arrives = due then platform else None
+    let platform = if arrives = Some due then platform else None
 
     { Arrives = arrives
       Station = (if isAlternateRoute then "* " else "") + (trim station)
@@ -87,7 +88,7 @@ let private getJourneyDetails platform due url = async {
         | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
                    html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
             raise <| new WebException()
-        | exn -> raise <| ParseError(sprintf "Failed to parse journey details html from %s:\n%s" url html, exn)
+        | exn -> raise <| ParseError(sprintf "Failed to parse journey details html from %s:\n%s\n" url html, exn)
 
     return getJourneyDetails()
 }
@@ -187,7 +188,7 @@ let getDepartures departuresAndArrivalsTable =
             | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
                        html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
                 raise <| new WebException()
-            | exn -> raise <| ParseError(sprintf "Failed to parse departures html from %s:\n%s" url html, exn)
+            | exn -> raise <| ParseError(sprintf "Failed to parse departures html from %s:\n%s\n" url html, exn)
 
         return getDepartures()
 
@@ -215,7 +216,7 @@ let getArrivals departuresAndArrivalsTable =
             | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
                        html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
                 raise <| new WebException()
-            | exn -> raise <| ParseError(sprintf "Failed to parse arrivals html from %s:\n%s" url html, exn)
+            | exn -> raise <| ParseError(sprintf "Failed to parse arrivals html from %s:\n%s\n" url html, exn)
 
         return getArrivals()
 

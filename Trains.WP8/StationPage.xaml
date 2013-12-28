@@ -122,7 +122,7 @@
                                            FontSize="{StaticResource PhoneFontSizeSmall}"
                                            Visibility="{Binding Status, Converter={StaticResource statusToVisibilityConverter}}"
                                            Foreground="{Binding Status, Converter={StaticResource statusToColorConverter}}" />
-                                <TextBlock Text="{Binding Arrival.Value.Value.Expected}" 
+                                <TextBlock Text="{Binding Arrival.Value.Value.Expected.Value}" 
                                            Visibility="{Binding ArrivalIsKnown, Converter={StaticResource booleanToVisibilityConverter}}"
                                            Foreground="{Binding Arrival.Value.Value.Status, Converter={StaticResource statusToColorConverterUsingAccent}}"
                                            Grid.Row="3" 

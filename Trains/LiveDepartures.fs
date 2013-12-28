@@ -63,14 +63,14 @@ and Arrival = {
         | _ -> None
 
 and ArrivalInformation = {
-    Due : Time
+    Due : Time option
     Destination : string
     Status : Status
 } with 
     override x.ToString() = sprintf "%A" x
     member x.Expected = 
-        match x.Status with
-        | Status.Delayed mins -> x.Due + Time.Create(mins)
+        match x.Status, x.Due with
+        | Status.Delayed mins, Some due -> Some (due + Time.Create(mins))
         | _ -> x.Due
 
 and Time = 
@@ -91,15 +91,19 @@ and Time =
         Time.Create(t1.TotalMinutes - t2.TotalMinutes)
     static member Create(dt:DateTime) = 
         Time.Create(int dt.TimeOfDay.TotalMinutes)
-    static member Parse(str:string) = 
+    static member TryParse(str:string) = 
         let pos = str.IndexOf ':'
         if pos >= 0 then
             let hours = str.Substring(0, pos) |> parseInt
             let minutes = str.Substring(pos+1) |> parseInt
             match hours, minutes with
-            | Some hours, Some minutes -> Time.Create(hours, minutes)
-            | _ -> raise <| ParseError(sprintf "Invalid time:\n%s" str, null)
-        else raise <| ParseError(sprintf "Invalid time:\n%s" str, null)
+            | Some hours, Some minutes -> Some <| Time.Create(hours, minutes)
+            | _ -> None
+        else None
+    static member Parse str = 
+        match Time.TryParse str with
+        | Some time -> time
+        | None -> raise <| ParseError(sprintf "Invalid time:\n%s" str, null)
 
 and Status =
     | OnTime
@@ -116,7 +120,7 @@ and Status =
         | NoReport -> "No Report"
 
 and JourneyElement = {
-    Arrives : Time
+    Arrives : Time option
     Station : string
     Status : JourneyElementStatus
     Platform : string option
@@ -125,8 +129,8 @@ and JourneyElement = {
     override x.ToString() = sprintf "%A" x
     member x.PlatformIsKnown = x.Platform.IsSome
     member x.Expected = 
-        match x.Status with
-        | Delayed (mins = mins) -> Some (x.Arrives + Time.Create(mins))
+        match x.Status, x.Arrives with
+        | Delayed (mins = mins), Some arrives -> Some (arrives + Time.Create(mins))
         | _ -> None
 
 and JourneyElementStatus =
@@ -134,18 +138,21 @@ and JourneyElementStatus =
     | NoReport
     | Cancelled
     | Delayed of departed:bool * mins:int
+    | DelayedIndefinitely
     override x.ToString() =
         match x with
         | OnTime _ -> "On time"
         | NoReport -> "No report"
         | Cancelled -> "Cancelled"
         | Delayed (mins = mins) -> sprintf "Delayed %d mins" mins
+        | DelayedIndefinitely -> sprintf "Delayed"
     member x.HasDeparted =
         match x with
         | OnTime hasDeparted -> hasDeparted
         | NoReport -> true
         | Cancelled -> false
         | Delayed (departed = departed) -> departed
+        | DelayedIndefinitely -> false
 
 and ParseError(msg:string, exn) = 
     inherit Exception(msg, exn)
@@ -204,7 +211,7 @@ type Departure with
             let status =
                 match journeyElement.Status with
                 | Delayed (_, mins) -> Status.Delayed mins
-                | Cancelled -> failwith "Not possible"
+                | Cancelled -> Status.Cancelled
                 | _ -> Status.OnTime
 
             departure.Arrival := 

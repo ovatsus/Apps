@@ -33,7 +33,7 @@ let private xmlToJourneyElement (xml:TrainMovementsStationDataXmlT.ObjTrainMovem
                            else xml.ExpectedArrival - xml.ScheduledArrival).TotalMinutes
     { Arrives = Time.Create (if xml.LocationType = LocationType.Origin.ToString()
                              then xml.ScheduledDeparture
-                             else xml.ScheduledArrival)
+                             else xml.ScheduledArrival) |> Some
       Station = xml.LocationFullName
       Status = if delayedMins > 0 then Delayed(hasDeparted, delayedMins) else OnTime(hasDeparted)
       Platform = None

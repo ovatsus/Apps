@@ -23,7 +23,7 @@ namespace Common.WP8
                 var content = "[" + ToString(DateTime.UtcNow) + "]" + " " + header;
                 if (ex != null)
                 {
-                    content += ex.ToString();
+                    content += "\n" + ex.ToString();
                 }
                 content += "\n";
                 IsolatedStorage.AppendText(ErrorReportFile, content);

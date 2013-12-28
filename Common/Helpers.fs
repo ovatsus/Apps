@@ -14,13 +14,13 @@ let trim (s:string) =
     s.Trim()
 
 let replace (value:string) replacement (str:string) = 
-    str.Replace(value, replacement)
+    if str = "" then "" else str.Replace(value, replacement)
 
 let replaceRegex pattern (replacement:string) str = 
     Regex.Replace(str, pattern, replacement)
 
 let remove value (str:string) = 
-    str.Replace(value, "")
+    if str = "" then "" else str.Replace(value, "")
 
 let removeRegex pattern (str:string) = 
     Regex.Replace(str, pattern, "")

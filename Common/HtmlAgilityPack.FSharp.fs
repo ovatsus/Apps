@@ -111,5 +111,5 @@ let cleanHtml (str:string) =
     |> replaceRegex ">\s*<" "><"
     |> removeRegex "<head>.+?</head>"
     |> removeRegex "<script[^>]*>.+?</script>"
+    |> removeRegex "<script[^>]*></script>"
     |> removeRegex "<noscript>.+?</noscript>"
-

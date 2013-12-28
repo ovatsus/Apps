@@ -44,7 +44,7 @@ type SampleData() =
             Status = Status.OnTime
             Platform = None
             Details = details
-            Arrival = ref <| Some { Due = t3
+            Arrival = ref <| Some { Due = Some t3
                                     Destination = s3.Name
                                     Status = Status.Delayed 4 }
             PropertyChangedEvent = Event<_,_>().Publish }
@@ -62,7 +62,7 @@ type SampleData() =
             Status = Status.DelayedIndefinitely
             Platform = None
             Details = details
-            Arrival = ref <| Some { Due = t1
+            Arrival = ref <| Some { Due = Some t1
                                     Destination = s1.Name
                                     Status = Status.OnTime }
             PropertyChangedEvent = Event<_,_>().Publish }
@@ -90,32 +90,32 @@ type SampleData() =
         LiveDepartures.UK.getJourneyDetailsFromHtml None (Time.Create(0)) html
 
     let liveProgress2 = 
-        [ { Arrives = t1
+        [ { Arrives = Some t1
             Station = s1.Name
             Status = OnTime true
             Platform = None
             IsAlternateRoute = false }
-          { Arrives = t2
+          { Arrives = Some t2
             Station = s2.Name
             Status = Delayed (true, 5)
             Platform = Some "6"
             IsAlternateRoute = false }
-          { Arrives = t3
+          { Arrives = Some t3
             Station = s3.Name
             Status = NoReport
             Platform = None
             IsAlternateRoute = false }
-          { Arrives = t4
+          { Arrives = Some t4
             Station = s4.Name
             Status = Cancelled
             Platform = Some "20D"
             IsAlternateRoute = false }
-          { Arrives = t1
+          { Arrives = Some t1
             Station = "* " + s1.Name
             Status = OnTime false
             Platform = None
             IsAlternateRoute = true }
-          { Arrives = t1
+          { Arrives = Some t1
             Station = "* " + s2.Name
             Status = Delayed (false, 5)
             Platform = Some "21"

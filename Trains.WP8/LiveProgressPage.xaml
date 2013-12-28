@@ -52,6 +52,7 @@
             <src:JourneyElementStatusToColorConverter x:Key="statusToColorConverter" 
                                                       Cancelled="Red"
                                                       Delayed="Orange"
+                                                      DelayedIndefinitely="Red"
                                                       NoReport="Orange"
                                                       OnTime="{StaticResource PhoneForegroundBrush}" />
             <src:JourneyElementStatusToVisibilityConverter x:Key="statusToVisibilityConverter" />
@@ -75,7 +76,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Arrives}"
+                                <TextBlock Text="{Binding Arrives.Value}"
                                            Foreground="{StaticResource PhoneAccentBrush}"
                                            HorizontalAlignment="Right"
                                            Margin="0,12,0,0" />
