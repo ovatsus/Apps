@@ -25,17 +25,24 @@ let private getStatus (due:Time) (str:string) =
     | "No report" -> Status.NoReport
     | str -> let expected = Time.Parse str
              let delay = expected - due 
-             Status.Delayed delay.TotalMinutes
+             if delay.TotalMinutes > 0
+             then Status.Delayed delay.TotalMinutes
+             else Status.OnTime
 
 let private getJourneyElementStatus (due:Time option) (str:string) = 
     match remove "*" str with
-    | "On time" | "Starts here" -> OnTime (Time.Create(DateTime.Now) >= due.Value)
+    | "On time" | "Starts here" -> 
+        let departed = Time.Create(DateTime.Now) >= due.Value
+        OnTime departed
     | "Cancelled" -> Cancelled
     | "Delayed" -> DelayedIndefinitely
     | "" | "No report" -> NoReport
     | str -> let expected = Time.Parse str
              let delay = expected - due.Value
-             Delayed (Time.Create(DateTime.Now) >= expected, delay.TotalMinutes)
+             let departed = Time.Create(DateTime.Now) >= expected
+             if delay.TotalMinutes > 0
+             then Delayed (departed, delay.TotalMinutes)
+             else OnTime departed
 
 let private parsePlatform (cell:HtmlNode) = 
     match innerText cell |> remove "Platform\n" with
