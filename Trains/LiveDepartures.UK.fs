@@ -22,7 +22,7 @@ let private getStatus (due:Time) (str:string) =
     | "On time" | "Starts here" -> Status.OnTime
     | "Cancelled" -> Status.Cancelled
     | "Delayed" -> Status.DelayedIndefinitely
-    | "No report" -> Status.NoReport
+    | "" | "No report" -> Status.NoReport
     | str -> let expected = Time.Parse str
              let delay = expected - due 
              if delay.TotalMinutes > 0
@@ -91,7 +91,6 @@ let private getJourneyDetails platform due url = async {
         try 
             getJourneyDetailsFromHtml platform due html
         with 
-        | :? ParseError -> reraise()
         | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
                    html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
             raise <| new WebException()
@@ -191,7 +190,6 @@ let getDepartures departuresAndArrivalsTable =
             try 
                 getDeparturesFromHtml html callingAtFilter synchronizationContext token
             with 
-            | :? ParseError -> reraise()
             | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
                        html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
                 raise <| new WebException()
@@ -219,7 +217,6 @@ let getArrivals departuresAndArrivalsTable =
                 |> Seq.map rowToArrival
                 |> Seq.toArray
             with 
-            | :? ParseError -> reraise()
             | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
                        html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
                 raise <| new WebException()

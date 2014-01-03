@@ -128,7 +128,6 @@ let private getDeparturesOrArrivals forDepartures mapper getOutput (departuresAn
             |> Seq.map getCallingPoints
             |> Map.ofSeq
         with 
-        | :? ParseError -> reraise()
         | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
                    html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
             raise <| new WebException()
