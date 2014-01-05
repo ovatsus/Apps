@@ -22,6 +22,9 @@ let replaceRegex pattern (replacement:string) str =
 let remove value (str:string) = 
     if str = "" then "" else str.Replace(value, "")
 
+let trimEnd value (str:string) = 
+    if str.EndsWith value then str.Substring(0, str.Length - value.Length) else str
+
 let removeRegex pattern (str:string) = 
     Regex.Replace(str, pattern, "")
 

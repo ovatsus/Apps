@@ -17,28 +17,28 @@ let wp8UserAgent = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Tride
 let private asyncRequestString (url:string) =
     Http.AsyncRequestString(url, headers = ["User-Agent", wp8UserAgent])
 
-let private getStatus (due:Time) (str:string) = 
-    match remove "*" str with
+let private getStatus due (str:string) = 
+    match trimEnd "*" str with
     | "On time" | "Starts here" -> Status.OnTime
     | "Cancelled" -> Status.Cancelled
     | "Delayed" -> Status.DelayedIndefinitely
     | "" | "No report" -> Status.NoReport
     | str -> let expected = Time.Parse str
-             let delay = expected - due 
+             let delay = expected - due
              if delay.TotalMinutes > 0
              then Status.Delayed delay.TotalMinutes
              else Status.OnTime
 
-let private getJourneyElementStatus (due:Time option) (str:string) = 
-    match remove "*" str with
+let private getJourneyElementStatus getDue (str:string) = 
+    match trimEnd "*" str with
     | "On time" | "Starts here" -> 
-        let departed = Time.Create(DateTime.Now) >= due.Value
+        let departed = Time.Create(DateTime.Now) >= getDue()
         OnTime departed
     | "Cancelled" -> Cancelled
     | "Delayed" -> DelayedIndefinitely
     | "" | "No report" -> NoReport
     | str -> let expected = Time.Parse str
-             let delay = expected - due.Value
+             let delay = expected - getDue()
              let departed = Time.Create(DateTime.Now) >= expected
              if delay.TotalMinutes > 0
              then Delayed (departed, delay.TotalMinutes)
@@ -48,6 +48,22 @@ let private parsePlatform (cell:HtmlNode) =
     match innerText cell |> remove "Platform\n" with
     | "" -> None
     | platform -> platform |> Some
+
+let private parseDueAndStatus parseStatus dueCell =
+    let statusStr = dueCell |> element "small" |> innerText
+    let dueStr = dueCell |> innerText |> trimEnd statusStr |> trim
+    let due = Time.TryParse dueStr
+    let getDue() =
+        match due with
+        | Some due -> due
+        | None -> raise <| ParseError(sprintf "Invalid time:\n%s" dueStr, null)
+    due, parseStatus getDue statusStr
+
+let private parseDueAndStatusForceDue parseStatus dueCell =
+    let statusStr = dueCell |> element "small" |> innerText
+    let dueStr = dueCell |> innerText |> trimEnd statusStr |> trim
+    let due = Time.Parse dueStr
+    due, parseStatus due statusStr
 
 let private rowToJourneyElement platform due (li:HtmlNode) = 
 
@@ -60,12 +76,8 @@ let private rowToJourneyElement platform due (li:HtmlNode) =
         let isAlternateRoute = li |> parent |> precedingSibling "hr" <> null
         station, isAlternateRoute
     
-    let arrives, status =
-        let dueCell = cells.[0]
-        let statusStr = dueCell |> element "small" |> innerText
-        let dueStr = dueCell |> innerText |> remove statusStr
-        let due = Time.TryParse dueStr
-        due, getJourneyElementStatus due statusStr
+    let arrives, status = 
+        cells.[0] |> parseDueAndStatus getJourneyElementStatus
 
     let platform = if arrives = Some due then platform else None
 
@@ -74,7 +86,6 @@ let private rowToJourneyElement platform due (li:HtmlNode) =
       Status = status
       Platform = platform
       IsAlternateRoute = isAlternateRoute }
-
 
 let internal getJourneyDetailsFromHtml platform due html = 
     createDoc html
@@ -108,12 +119,8 @@ let private rowToDeparture callingAtFilter synchronizationContext token i (li:Ht
         let dest = (cells.[1] |> innerText).Split('\n')
         dest.[0], dest |> Seq.skip 1 |> String.concat "\n" |> replace " via" "via"  |> replace "\nvia" " via"
 
-    let due, status =
-        let dueCell = cells.[0]
-        let statusStr = dueCell |> element "small" |> innerText
-        let dueStr = dueCell |> innerText |> remove statusStr
-        let due = Time.Parse dueStr
-        due, getStatus due statusStr
+    let due, status = 
+        cells.[0] |> parseDueAndStatusForceDue getStatus
 
     let platform = cells |> Array.tryFind (hasClass "platform") |> Option.bind parsePlatform
 
@@ -146,12 +153,8 @@ let private rowToArrival (li:HtmlNode) =
 
     let origin = cells.[1] |> innerText
     
-    let due, status =
-        let dueCell = cells.[0]
-        let statusStr = dueCell |> element "small" |> innerText
-        let dueStr = dueCell |> innerText |> remove statusStr
-        let due = Time.Parse dueStr
-        due, getStatus due statusStr
+    let due, status = 
+        cells.[0] |> parseDueAndStatusForceDue getStatus
 
     let platform = cells |> Array.tryFind (hasClass "platform") |> Option.bind parsePlatform
 
