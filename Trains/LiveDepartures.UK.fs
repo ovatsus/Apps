@@ -68,6 +68,7 @@ let private parseDueAndStatusForceDue parseStatus dueCell =
 let private rowToJourneyElement platform due (li:HtmlNode) = 
 
     let cells = li |> elements "span" |> Seq.toArray
+    if cells.Length <> 3 then None else
 
     let station, isAlternateRoute = 
         let station = cells.[1] |> innerText
@@ -81,16 +82,18 @@ let private rowToJourneyElement platform due (li:HtmlNode) =
 
     let platform = if arrives = Some due then platform else None
 
-    { Arrives = arrives
-      Station = (if isAlternateRoute then "* " else "") + (trim station)
-      Status = status
-      Platform = platform
-      IsAlternateRoute = isAlternateRoute }
+    let journeyElement = { Arrives = arrives
+                           Station = (if isAlternateRoute then "* " else "") + (trim station)
+                           Status = status
+                           Platform = platform
+                           IsAlternateRoute = isAlternateRoute }
+    
+    Some journeyElement
 
 let internal getJourneyDetailsFromHtml platform due html = 
     createDoc html
     |> descendants "li"
-    |> Seq.map (rowToJourneyElement platform due)
+    |> Seq.choose (rowToJourneyElement platform due)
     |> Seq.toArray
 
 let private getJourneyDetails platform due url = async {
@@ -113,7 +116,10 @@ let private getJourneyDetails platform due url = async {
 let private rowToDeparture callingAtFilter synchronizationContext token i (li:HtmlNode) =
     
     let link = li |> element "a" 
+    if link = null then None else
+
     let cells = link |> elements "span" |> Seq.toArray
+    if cells.Length <> 3 then None else
 
     let destination, destinationDetail = 
         let dest = (cells.[1] |> innerText).Split('\n')
@@ -144,12 +150,15 @@ let private rowToDeparture callingAtFilter synchronizationContext token i (li:Ht
     if i < 4 then
         departure.SubscribeToDepartureInformation callingAtFilter propertyChangedEvent synchronizationContext token
 
-    departure
+    Some departure
 
 let private rowToArrival (li:HtmlNode) =
 
     let link = li |> element "a" 
+    if link = null then None else
+
     let cells = link |> elements "span" |> Seq.toArray
+    if cells.Length <> 3 then None else
 
     let origin = cells.[1] |> innerText
     
@@ -162,16 +171,19 @@ let private rowToArrival (li:HtmlNode) =
         let detailsUrl = link |> attr "href"
         LazyAsync.fromAsync (getJourneyDetails platform due ("http://m.nationalrail.co.uk" + detailsUrl))
 
-    { Due = due
-      Origin = origin
-      Status = status
-      Platform = platform
-      Details = details }
+    let arrival = { Due = due
+                    Origin = origin
+                    Status = status
+                    Platform = platform
+                    Details = details }
+
+    Some arrival
 
 let internal getDeparturesFromHtml html callingAtFilter synchronizationContext token = 
     createDoc html
     |> descendants "li"
     |> Seq.mapi (rowToDeparture callingAtFilter synchronizationContext token)
+    |> Seq.choose id
     |> Seq.toArray
 
 let getDepartures departuresAndArrivalsTable = 
@@ -217,7 +229,7 @@ let getArrivals departuresAndArrivalsTable =
             try 
                 createDoc html
                 |> descendants "li"
-                |> Seq.map rowToArrival
+                |> Seq.choose rowToArrival
                 |> Seq.toArray
             with 
             | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
