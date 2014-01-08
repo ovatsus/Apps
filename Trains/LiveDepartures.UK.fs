@@ -68,7 +68,7 @@ let private parseDueAndStatusForceDue parseStatus dueCell =
 let private rowToJourneyElement platform due (li:HtmlNode) = 
 
     let cells = li |> elements "span" |> Seq.toArray
-    if cells.Length <> 3 then None else
+    if cells.Length <> 2 then None else
 
     let station, isAlternateRoute = 
         let station = cells.[1] |> innerText
