@@ -306,11 +306,15 @@ namespace LearnOnTheGo.WP8
             ErrorReporting.Log("OnDownloadAllClick");
             if (pivot.SelectedIndex != -1 && pivot.ItemsSource != null)
             {
-                foreach (var lecture in pivot.ItemsSource.Cast<LectureSection>().ElementAt(pivot.SelectedIndex).Lectures)
+                var lectureSections = (LectureSection[])pivot.ItemsSource;
+                if (pivot.SelectedIndex < lectureSections.Length)
                 {
-                    if (!videoLazyBlocks.ContainsKey(lecture.Id) && !lecture.DownloadInfo.Downloading && !lecture.DownloadInfo.Downloaded)
+                    foreach (var lecture in lectureSections[pivot.SelectedIndex].Lectures)
                     {
-                        StartDownload(lecture);
+                        if (!videoLazyBlocks.ContainsKey(lecture.Id) && !lecture.DownloadInfo.Downloading && !lecture.DownloadInfo.Downloaded)
+                        {
+                            StartDownload(lecture);
+                        }
                     }
                 }
             }
