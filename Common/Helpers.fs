@@ -10,6 +10,9 @@ let parseInt str =
     | true, i -> Some i
     | false, _ -> None
 
+let contains value (s:string) =
+    s.Contains value
+
 let trim (s:string) = 
     s.Trim()
 

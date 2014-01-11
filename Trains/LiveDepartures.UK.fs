@@ -65,10 +65,14 @@ let private parseDueAndStatusForceDue parseStatus dueCell =
     let due = Time.Parse dueStr
     due, parseStatus due statusStr
 
+let private isDisruption (li:HtmlNode) = 
+    let link = li |> element "a" 
+    link <> null && contains "/disruption" link?href
+
 let private rowToJourneyElement platform due (li:HtmlNode) = 
 
     let cells = li |> elements "span" |> Seq.toArray
-    if cells.Length <> 2 then None else
+    if cells.Length < 2 then None else
 
     let station, isAlternateRoute = 
         let station = cells.[1] |> innerText
@@ -93,6 +97,7 @@ let private rowToJourneyElement platform due (li:HtmlNode) =
 let internal getJourneyDetailsFromHtml platform due html = 
     createDoc html
     |> descendants "li"
+    |> Seq.filter (not << isDisruption)
     |> Seq.choose (rowToJourneyElement platform due)
     |> Seq.toArray
 
@@ -119,7 +124,7 @@ let private rowToDeparture callingAtFilter synchronizationContext token i (li:Ht
     if link = null then None else
 
     let cells = link |> elements "span" |> Seq.toArray
-    if cells.Length <> 3 then None else
+    if cells.Length < 2 then None else
 
     let destination, destinationDetail = 
         let dest = (cells.[1] |> innerText).Split('\n')
@@ -158,7 +163,7 @@ let private rowToArrival (li:HtmlNode) =
     if link = null then None else
 
     let cells = link |> elements "span" |> Seq.toArray
-    if cells.Length <> 3 then None else
+    if cells.Length < 2 then None else
 
     let origin = cells.[1] |> innerText
     
@@ -182,6 +187,7 @@ let private rowToArrival (li:HtmlNode) =
 let internal getDeparturesFromHtml html callingAtFilter synchronizationContext token = 
     createDoc html
     |> descendants "li"
+    |> Seq.filter (not << isDisruption)
     |> Seq.mapi (rowToDeparture callingAtFilter synchronizationContext token)
     |> Seq.choose id
     |> Seq.toArray
@@ -229,6 +235,7 @@ let getArrivals departuresAndArrivalsTable =
             try 
                 createDoc html
                 |> descendants "li"
+                |> Seq.filter (not << isDisruption)
                 |> Seq.choose rowToArrival
                 |> Seq.toArray
             with 
