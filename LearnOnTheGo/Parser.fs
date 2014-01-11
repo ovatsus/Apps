@@ -44,7 +44,7 @@ let parseTopicsJson getLectureSections topicsJsonStr =
               Duration = json.DurationString
               HomeLink = homeLink
               Active = json.Active
-              HasFinished = json.GradesReleaseDate.JsonValue <> Json.JsonValue.Null || json.CertificatesReady || not json.Status
+              HasFinished = json.GradesReleaseDate.JsonValue <> Json.JsonValue.Null || json.CertificatesReady || json.Status = false
               Topic = topic 
               LectureSections = getLectureSections id topic.Name homeLink }
     
