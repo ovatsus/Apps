@@ -7,7 +7,6 @@ open HtmlAgilityPack
 open HtmlAgilityPack.FSharp
 open FSharp.Control
 open FSharp.Data
-open FSharp.Net
 open Trains
 
 //http://api.irishrail.ie/realtime/index.htm
@@ -47,7 +46,7 @@ let private getJourneyDetails trainCode trainDate = async {
 
     let getDepartures() = 
         try 
-            xmlT.GetObjTrainMovements()
+            xmlT.ObjTrainMovements
             |> Seq.filter (fun xml -> xml.LocationType <> LocationType.TimingPoint.ToString())
             |> Seq.map xmlToJourneyElement
             |> Seq.toArray
@@ -106,7 +105,7 @@ let private getDeparturesOrArrivals forDepartures mapper getOutput (departuresAn
     let getDeparturesOrArrivals callingAtFilter xml extraFilter =
         try 
             let xmlT = StationDataXmlT.Parse xml
-            xmlT.GetObjStationDatas()
+            xmlT.ObjStationDatas
             |> Seq.filter (fun xml -> xml.Locationtype <> (if forDepartures then LocationType.Destination else LocationType.Origin).ToString())
             |> Seq.map (mapper callingAtFilter)
             |> extraFilter

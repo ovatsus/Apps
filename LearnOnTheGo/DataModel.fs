@@ -8,7 +8,7 @@ type Course =
     { Id : int
       Name : string
       StartDate : string
-      Duration : string
+      Duration : string option
       HomeLink : string
       Active : bool 
       HasFinished : bool 
@@ -25,7 +25,7 @@ and Topic =
       LargeIcon : string
       Name : string
       Photo : string
-      PreviewLink : string
+      PreviewLink : string option
       SelfServiceCourseId : int option
       ShortDescription : string
       ShortName : string

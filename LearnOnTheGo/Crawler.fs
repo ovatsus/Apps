@@ -7,9 +7,9 @@ open System.Text
 open System.Text.RegularExpressions
 open HtmlAgilityPack.FSharp
 open FSharp.Control
-open FSharp.Net
-open FSharp.Data.Json
-open FSharp.Data.Json.Extensions
+open FSharp.Data
+open FSharp.Data.HttpRequestHeaders
+open FSharp.Data.JsonExtensions
 
 module URLs =
     let Login = "https://accounts.coursera.org/api/v1/login"
@@ -33,11 +33,11 @@ module private Implementation =
         let csrfToken = getCsrfToken()
         let cookieContainer = new CookieContainer()
         let! _ = Http.AsyncRequestString(URLs.Login,
-                                         headers = ["Origin", "https://accounts.coursera.org"
-                                                    "X-CSRFToken", csrfToken
-                                                    "Referer", "https://accounts.coursera.org/signin"], 
-                                         body = RequestBody.FormValues ["email", email
-                                                                        "password", password],
+                                         headers = [ Origin "https://accounts.coursera.org"
+                                                     "X-CSRFToken", csrfToken
+                                                     Referer "https://accounts.coursera.org/signin" ], 
+                                         body = FormValues ["email", email
+                                                            "password", password],
                                          cookies = ["csrftoken", csrfToken],
                                          cookieContainer = cookieContainer)
         return cookieContainer }

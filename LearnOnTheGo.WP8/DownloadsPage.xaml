@@ -106,7 +106,7 @@
                 <ScrollViewer>
                     <Grid>
                         <StackPanel>
-                            <TextBlock Text="Please note that files over 20MB can not be downloaded over cellular connection, and files over 100MB can not be downloaded unless connected to external power. This is a Windows Phone limitation."
+                            <TextBlock Text="Please note that files over 20MB cannot be downloaded over cellular connection, and files over 100MB cannot be downloaded unless connected to external power. This is a Windows Phone limitation."
                                        Margin="12,0,0,0" 
                                        Style="{StaticResource PhoneTextSmallStyle}"
                                        TextWrapping="Wrap" />

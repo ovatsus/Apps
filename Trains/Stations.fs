@@ -43,7 +43,7 @@ module Stations =
                     use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UKStations.csv")
                     let csvFile = CsvProvider<"UKStations.csv", Schema="Latitude=float,Longitude=float">.Load stream
 #endif
-                    csvFile.Data
+                    csvFile.Rows
                     |> Seq.groupBy (fun station -> station.CrsCode)
                     |> Seq.map (fun (code, stations) -> 
                         let station = 
@@ -65,7 +65,7 @@ module Stations =
                     use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("IrelandStations.xml")
                     let xml = XmlProvider<"IrelandStations.xml">.Load stream
 #endif
-                    xml.GetObjStations()
+                    xml.ObjStations
                     |> Seq.distinctBy (fun station -> station.StationDesc) // there's two different Adamstown
                     |> Seq.map (fun station -> 
                         { Code = station.StationCode

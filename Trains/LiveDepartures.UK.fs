@@ -9,13 +9,14 @@ open System.Threading
 open HtmlAgilityPack
 open HtmlAgilityPack.FSharp
 open FSharp.Control
-open FSharp.Net
+open FSharp.Data
+open FSharp.Data.HttpRequestHeaders
 open Trains
 
 let wp8UserAgent = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)"
 
 let private asyncRequestString (url:string) =
-    Http.AsyncRequestString(url, headers = ["User-Agent", wp8UserAgent])
+    Http.AsyncRequestString(url, headers = [ UserAgent wp8UserAgent ])
 
 let private getStatus due (str:string) = 
     match trimEnd "*" str with

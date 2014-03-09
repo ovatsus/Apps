@@ -20,13 +20,13 @@ let parseTopicsJson getLectureSections topicsJsonStr =
         let parseTopic (json:JsonT.Topic) =
             { Display = json.Display
               Id = json.Id
-              Instructor = json.Instructor
+              Instructor = defaultArg json.Instructor ""
               Language = json.Language
               LargeIcon = json.LargeIcon
               Name = json.Name
               Photo = json.Photo
               PreviewLink = json.PreviewLink
-              SelfServiceCourseId = json.SelfServiceCourseId.Number
+              SelfServiceCourseId = json.SelfServiceCourseId
               ShortDescription = json.ShortDescription
               ShortName = json.ShortName
               SmallIcon = json.SmallIcon
@@ -34,17 +34,17 @@ let parseTopicsJson getLectureSections topicsJsonStr =
     
         let parseCourse topic (json:JsonT.Course) =
             let id = json.Id
-            let homeLink = json.HomeLink
+            let homeLink = defaultArg json.HomeLink ""
             { Id = id
               Name = json.Name.String.Value
               StartDate = 
-                match json.StartYear.Number, json.StartMonth.Number, json.StartDay.Number with
+                match json.StartYear, json.StartMonth, json.StartDay with
                 | Some y, Some m, Some d -> sprintf "%d/%02d/%02d" y m d
                 | _ -> ""
               Duration = json.DurationString
               HomeLink = homeLink
               Active = json.Active
-              HasFinished = json.GradesReleaseDate.JsonValue <> Json.JsonValue.Null || json.CertificatesReady || json.Status = false
+              HasFinished = json.GradesReleaseDate.IsSome || json.CertificatesReady || json.Status = false
               Topic = topic 
               LectureSections = getLectureSections id topic.Name homeLink }
     
