@@ -36,7 +36,7 @@ module Stations =
                 | UK ->
 
                     //from http://www.data.gov.uk/dataset/naptan
-                    //osgb36 to latitude/longitude converted with http://gridreferencefinder.com/batchConvert/batchConvert.htm                    
+                    //osgb36 to latitude/longitude converted with http://gridreferencefinder.com/batchConvert/batchConvert.htm
 #if INTERACTIVE
                     let csvFile = new CsvProvider<"UKStations.csv", Schema="Latitude=float,Longitude=float">()
 #else

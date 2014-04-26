@@ -21,6 +21,9 @@ UK Trains provides real-time information for UK national rail stations (excludin
 
 Note that background refresh requires Location Services to be enabled
 
+New in 2.7:
+* Update station list with new stations
+
 New in 2.6:
 * Small bug fixes
 
