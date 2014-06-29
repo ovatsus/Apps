@@ -104,6 +104,9 @@ and Time =
         match Time.TryParse str with
         | Some time -> time
         | None -> raise <| ParseError(sprintf "Invalid time:\n%s" str, null)
+    member x.IsAfter(other:Time) = 
+        x.TotalMinutes > other.TotalMinutes ||
+        (x + Time.Create(4, 0)).TotalMinutes > (other + Time.Create(4, 0)).TotalMinutes
 
 and Status =
     | OnTime
@@ -227,16 +230,24 @@ type Departure with
 
         let onJourneyElementsObtained (journeyElements:JourneyElement[]) =
       
+            let isAfterDeparture journeyElement = 
+                journeyElement.Arrives.IsNone || journeyElement.Arrives.Value.IsAfter departure.Due
+
             if journeyElements.Length <> 0 then
 
                 let index = 
                     match callingAtFilter with
                     | Some callingAtFilter -> 
-                        match journeyElements |> Array.tryFindIndex (fun journeyElement -> journeyElement.Station = callingAtFilter) with
+                        match journeyElements
+                              |> Array.tryFindIndex (fun journeyElement -> 
+                                journeyElement.Station = callingAtFilter
+                                && isAfterDeparture journeyElement) with
                         | Some index -> Some index
-                        | None -> journeyElements |> Array.tryFindIndex (fun journeyElement -> // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
-                                                                                               callingAtFilter.StartsWith journeyElement.Station ||
-                                                                                               journeyElement.Station.StartsWith callingAtFilter)
+                        | None -> journeyElements 
+                                  |> Array.tryFindIndex (fun journeyElement -> 
+                                    // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
+                                    (callingAtFilter.StartsWith journeyElement.Station || journeyElement.Station.StartsWith callingAtFilter)
+                                    && isAfterDeparture journeyElement)
                     | None -> Some <| journeyElements.Length - 1
                 
                 index |> Option.iter (postArrivalInformation journeyElements)

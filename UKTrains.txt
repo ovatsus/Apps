@@ -26,6 +26,7 @@ New in 2.7:
 * Update station list with new stations
 * Added send text message option on context menu to let someone know about a departure
 * Fetch the arrival time for the first 10 departures, instead of the first 4 departures
+* Fix the display of times for circular routes that pass on the same station twice
 
 New in 2.6:
 * Small bug fixes
