@@ -42,8 +42,7 @@ module private Implementation =
                                          cookieContainer = cookieContainer)
         return cookieContainer }
 
-    let getTopicsJson email password cacheGet cacheSet =
-        let url = "https://www.coursera.org/maestro/api/topic/list_my"
+    let getJson url email password cacheGet cacheSet =
         match cacheGet url with
         | Some html -> async.Return html
         | None -> async {
@@ -51,6 +50,9 @@ module private Implementation =
             let! json = Http.AsyncRequestString(url, cookieContainer = cookieContainer) 
             cacheSet url json
             return json }
+            
+    let getTopicsJson = getJson "https://www.coursera.org/maestro/api/topic/list_my"
+    let getTopicsJson2 = getJson "https://www.coursera.org/maestro/api/topic/list2_combined"
 
     let getCrawler email password courseBaseUrl cacheGet cacheSet = 
         let cookieContainer = ref None

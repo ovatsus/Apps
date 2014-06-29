@@ -54,6 +54,7 @@
     <None Include="packages.config" />
     <Compile Include="DataModel.fs" />
     <EmbeddedResource Include="topics.json" />
+    <None Include="topics2.json" />
     <EmbeddedResource Include="lectures.html" />
     <Compile Include="Parser.fs" />
     <Compile Include="Crawler.fs" />

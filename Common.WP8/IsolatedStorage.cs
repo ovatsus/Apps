@@ -79,7 +79,7 @@ namespace Common.WP8
                         isolatedStorage.CreateDirectory(folder);
                     }
                 }
-                using (var stream = isolatedStorage.OpenFile(filename, FileMode.Append, FileAccess.Write))
+                using (var stream = isolatedStorage.OpenFile(filename, FileMode.Append, FileAccess.Write, FileShare.None))
                 {
                     using (var streamWriter = new StreamWriter(stream))
                     {
@@ -93,7 +93,7 @@ namespace Common.WP8
         {
             using (var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                return isolatedStorage.OpenFile(filename, FileMode.Open);
+                return isolatedStorage.OpenFile(filename, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
             }
         }
         
@@ -103,7 +103,7 @@ namespace Common.WP8
             {
                 if (isolatedStorage.FileExists(filename))
                 {
-                    using (var stream = isolatedStorage.OpenFile(filename, FileMode.Open))
+                    using (var stream = isolatedStorage.OpenFile(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
                         using (var streamReader = new StreamReader(stream))
                         {

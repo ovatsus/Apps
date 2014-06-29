@@ -10,6 +10,7 @@ type ParseError(msg, exn) =
     inherit Exception(msg, exn)
 
 type JsonT = JsonProvider<"topics.json", SampleIsList=true, RootName="topic">
+type JsonT2 = JsonProvider<"topics2.json">
 
 let parseTopicsJson getLectureSections topicsJsonStr = 
 
@@ -73,7 +74,7 @@ let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
                 |> createDoc
                 |> descendants "source" 
                 |> Seq.filter (hasAttr "type" "video/mp4")
-                //TODO: this crashes on some courses
+                //TODO: this crashes in  970962 = Roman Architecture [001], Lecture = 5.3 Hellenized Houses in Pompeii - 13:27 [51]
                 |> Seq.head
                 |> attr "src"
         with exn ->
