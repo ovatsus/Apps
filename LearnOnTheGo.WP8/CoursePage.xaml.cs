@@ -8,6 +8,7 @@ using Common.WP8;
 using FSharp.Control;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
+using Telerik.Windows.Controls;
 
 namespace LearnOnTheGo.WP8
 {
@@ -251,11 +252,11 @@ namespace LearnOnTheGo.WP8
             }
         }
 
-        private void OnDeleteClick(object sender, RoutedEventArgs e)
+        private void OnDeleteClick(object sender, ContextMenuItemSelectedEventArgs e)
         {
             ErrorReporting.Log("OnDeleteClick");
 
-            var lecture = (Lecture)((MenuItem)sender).DataContext;
+            var lecture = (Lecture)((RadContextMenuItem)sender).DataContext;
             ErrorReporting.Log("Lecture = " + lecture.Title + " [" + lecture.Id + "]");
 
             lecture.DownloadInfo.DeleteVideo();

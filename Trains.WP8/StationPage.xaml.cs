@@ -14,6 +14,7 @@ using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using Nokia.Phone.HereLaunchers;
+using Telerik.Windows.Controls;
 
 namespace Trains.WP8
 {
@@ -423,18 +424,19 @@ namespace Trains.WP8
             Load();
         }
 
-        private void OnSendTextMessage(object sender, RoutedEventArgs e)
+        private void OnSendTextMessage(object sender, ContextMenuItemSelectedEventArgs e)
         {
             ErrorReporting.Log("OnSendTextMessage");
-            var departure = (Departure)((MenuItem)sender).DataContext;
-            var body = 
+            var departure = (Departure)((RadContextMenuItem)sender).DataContext;
+            var body =
                 "I'm taking the "
                 + departure.Due
                 + " train from "
                 + departuresAndArrivalsTable.Station.Name
                 + " to "
                 + departuresAndArrivalsTable.Match(_ => departure.Destination, (_, destination) => destination.Name);
-            if (departure.ArrivalIsKnown) {
+            if (departure.ArrivalIsKnown)
+            {
                 body += ". I'll be there at " + departure.Arrival.Value.Value.Expected.Value;
             }
             new SmsComposeTask { Body = body }.Show();

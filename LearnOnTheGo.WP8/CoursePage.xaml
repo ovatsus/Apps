@@ -12,6 +12,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:lotg="clr-namespace:LearnOnTheGo;assembly=LearnOnTheGo"
     xmlns:commonWP8="clr-namespace:Common.WP8;assembly=Common.WP8"
+    xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Primitives"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -91,21 +92,21 @@
                         <toolkit:TransferControl.HeaderTemplate>
                             <DataTemplate />
                         </toolkit:TransferControl.HeaderTemplate>
-                        <toolkit:ContextMenuService.ContextMenu>
-                            <toolkit:ContextMenu>
-                                <toolkit:MenuItem Header="Delete downloaded video"
-                                                  Click="OnDeleteClick"
-                                                  IsEnabled="{Binding DownloadInfo.Downloaded}" />
-                            </toolkit:ContextMenu>
-                        </toolkit:ContextMenuService.ContextMenu>
+                        <telerikPrimitives:RadContextMenu.ContextMenu>
+                            <telerikPrimitives:RadContextMenu>
+                                <telerikPrimitives:RadContextMenuItem Content="Delete downloaded video"
+                                                                      Tapped="OnDeleteClick"
+                                                                      IsEnabled="{Binding DownloadInfo.Downloaded}" />
+                            </telerikPrimitives:RadContextMenu>
+                        </telerikPrimitives:RadContextMenu.ContextMenu>
                     </toolkit:TransferControl>
-                    <toolkit:ContextMenuService.ContextMenu>
-                        <toolkit:ContextMenu>
-                            <toolkit:MenuItem Header="Delete downloaded video"
-                                              Click="OnDeleteClick"
-                                              IsEnabled="{Binding DownloadInfo.Downloaded}" />
-                        </toolkit:ContextMenu>
-                    </toolkit:ContextMenuService.ContextMenu>
+                    <telerikPrimitives:RadContextMenu.ContextMenu>
+                        <telerikPrimitives:RadContextMenu>
+                            <telerikPrimitives:RadContextMenuItem Content="Delete downloaded video"
+                                                                  Tapped="OnDeleteClick"
+                                                                  IsEnabled="{Binding DownloadInfo.Downloaded}" />
+                        </telerikPrimitives:RadContextMenu>
+                    </telerikPrimitives:RadContextMenu.ContextMenu>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="sectionTemplate">
