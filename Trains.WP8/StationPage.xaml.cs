@@ -12,6 +12,7 @@ using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 using Nokia.Phone.HereLaunchers;
 
 namespace Trains.WP8
@@ -420,6 +421,23 @@ namespace Trains.WP8
         {
             ErrorReporting.Log("OnPivotSelectionChanged " + pivot.SelectedIndex);
             Load();
+        }
+
+        private void OnSendTextMessage(object sender, RoutedEventArgs e)
+        {
+            ErrorReporting.Log("OnSendTextMessage");
+            var departure = (Departure)((MenuItem)sender).DataContext;
+            var body = 
+                "I'm taking the "
+                + departure.Due
+                + " train from "
+                + departuresAndArrivalsTable.Station.Name
+                + " to "
+                + departuresAndArrivalsTable.Match(_ => departure.Destination, (_, destination) => destination.Name);
+            if (departure.ArrivalIsKnown) {
+                body += ". I'll be there at " + departure.Arrival.Value.Value.Expected.Value;
+            }
+            new SmsComposeTask { Body = body }.Show();
         }
     }
 }

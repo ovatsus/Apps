@@ -14,6 +14,7 @@ UK Trains provides real-time information for UK national rail stations (excludin
 * Show train live progress during the journey
 * Auto-refresh every 60 seconds, even under lock screen or when app is in the background
 * Show expected arrival time to discover when later trains arrive first than earlier trains
+* Send text message to let someone know about a departure
 * Allow to pin individual stations to the start screen
 * Show next departure information in live tile and lock screen (refreshed when app is running)
 * No need to manage favourite stations, recent items are remembered
@@ -23,6 +24,7 @@ Note that background refresh requires Location Services to be enabled
 
 New in 2.7:
 * Update station list with new stations
+* Added send text message option on context menu to let someone know about a departure
 
 New in 2.6:
 * Small bug fixes

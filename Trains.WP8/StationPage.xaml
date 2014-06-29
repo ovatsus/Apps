@@ -138,6 +138,11 @@
                             </Grid>
                         </ControlTemplate>
                     </Button.Template>
+                    <toolkit:ContextMenuService.ContextMenu>
+                        <toolkit:ContextMenu>
+                            <toolkit:MenuItem Header="Send Text Message" Click="OnSendTextMessage" />
+                        </toolkit:ContextMenu>
+                    </toolkit:ContextMenuService.ContextMenu>
                 </Button>
             </DataTemplate>
 
