@@ -173,8 +173,8 @@ let getDepartures departuresAndArrivalsTable =
 
         let getDeparture i (trainId, (departure:Departure, callingAtFilter, propertyChangedEvent)) = 
             if (!departure.Arrival).IsNone then
-                // only fetch the arrival time for the first 4 departures
-                if i < 4 then
+                // only fetch the arrival time for the first 10 departures
+                if i < 10 then
                     departure.SubscribeToDepartureInformation callingAtFilter propertyChangedEvent synchronizationContext token
             departure
 

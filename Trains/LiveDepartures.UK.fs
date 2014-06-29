@@ -152,8 +152,8 @@ let private rowToDeparture callingAtFilter synchronizationContext token i (li:Ht
           Arrival = ref None
           PropertyChangedEvent = propertyChangedEvent.Publish }
     
-    // only fetch the arrival time for the first 4 departures
-    if i < 4 then
+    // only fetch the arrival time for the first 10 departures
+    if i < 10 then
         departure.SubscribeToDepartureInformation callingAtFilter propertyChangedEvent synchronizationContext token
 
     Some departure

@@ -25,6 +25,7 @@ Note that background refresh requires Location Services to be enabled
 New in 2.7:
 * Update station list with new stations
 * Added send text message option on context menu to let someone know about a departure
+* Fetch the arrival time for the first 10 departures, instead of the first 4 departures
 
 New in 2.6:
 * Small bug fixes

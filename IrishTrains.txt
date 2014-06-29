@@ -24,6 +24,7 @@ Note that background refresh requires Location Services to be enabled
 
 New in 1.4:
 * Added send text message option on context menu to let someone know about a departure
+* Fetch the arrival time for the first 10 departures, instead of the first 4 departures
 
 New in 1.3:
 * Small bugfixes
