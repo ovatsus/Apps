@@ -74,20 +74,6 @@ module Stations =
                           Location = LatLong.Create (float station.StationLatitude) (float station.StationLongitude) })
                     |> Seq.toList
 
-//#if INTERACTIVE
-//                    let csvFile = new CsvProvider<"IrelandStations.csv">()
-//#else
-//                    use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("IrelandStations.csv")
-//                    let csvFile = CsvProvider<"IrelandStations.csv">.Load stream
-//#endif
-//                    csvFile.Data 
-//                    |> Seq.filter (fun station -> station.Code <> "")
-//                    |> Seq.map (fun station -> 
-//                        { Code = station.Code
-//                          Name = station.Name
-//                          Location = LatLong.Create station.Latitude station.Longitude })
-//                    |> Seq.toList
-
             let stationsByCode =
                 allStations 
                 |> Seq.map (fun station -> station.Code, station) 

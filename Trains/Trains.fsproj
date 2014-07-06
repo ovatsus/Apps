@@ -55,13 +55,9 @@
     <EmbeddedResource Include="UKStations.csv" />
     <EmbeddedResource Include="UKDepartures.html" />
     <None Include="UKLiveProgress.html" />
-    <None Include="IrelandStations.fsx" />
-    <EmbeddedResource Include="IrelandStations.csv" />
     <EmbeddedResource Include="IrelandStations.xml" />
     <Content Include="IrelandStationData.xml" />
     <Content Include="IrelandTrainMovements.xml" />
-    <None Include="IndiaStations.fsx" />
-    <None Include="IndiaStations.csv" />
     <Compile Include="Stations.fs" />
     <Compile Include="LiveDepartures.fs" />
     <Compile Include="LiveDepartures.IE.fs" />
