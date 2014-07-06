@@ -135,6 +135,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SplashScreenImage.jpg" />
+    <Content Include="VoiceCommandDefinition_8.1.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common.WP8\Common.WP8.csproj">

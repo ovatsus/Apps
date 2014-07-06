@@ -185,7 +185,7 @@ namespace Trains.WP8
             var primaryTile = ShellTile.ActiveTiles.First();
             primaryTile.Update(GetTileData(forPrimaryTile: true));
 
-            var secondaryTileUri = GetUri(departuresAndArrivalsTable, removeBackEntry: false);
+            var secondaryTileUri = GetUri(departuresAndArrivalsTable);
             var secondaryTile = ShellTile.ActiveTiles.FirstOrDefault(tile => tile.NavigationUri == secondaryTileUri);
             if (secondaryTile != null)
             {
@@ -329,27 +329,27 @@ namespace Trains.WP8
 
         private bool IsStationPinnedToStart()
         {
-            var uri = GetUri(departuresAndArrivalsTable, removeBackEntry: false);
+            var uri = GetUri(departuresAndArrivalsTable);
             return ShellTile.ActiveTiles.Any(tile => tile.NavigationUri == uri);
         }
 
         private void OnPinToStartClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnPinToStartClick");
-            var uri = GetUri(departuresAndArrivalsTable, removeBackEntry: false);
+            var uri = GetUri(departuresAndArrivalsTable);
             if (!IsStationPinnedToStart())
             {
-                ShellTile.Create(GetUri(departuresAndArrivalsTable, removeBackEntry: false), GetTileData(forPrimaryTile: false), true);
+                ShellTile.Create(GetUri(departuresAndArrivalsTable), GetTileData(forPrimaryTile: false), supportsWideTile: true);
             }
             GetPinToStartButton().IsEnabled = false;
         }
 
-        private Uri GetUri(DeparturesAndArrivalsTable departuresAndArrivalsTable, bool removeBackEntry)
+        private Uri GetUri(DeparturesAndArrivalsTable departuresAndArrivalsTable, bool removeBackEntry = false)
         {
             return GetUri(this, departuresAndArrivalsTable, removeBackEntry);
         }
 
-        public static Uri GetUri(PhoneApplicationPage page, DeparturesAndArrivalsTable departuresAndArrivalsTable, bool removeBackEntry)
+        public static Uri GetUri(PhoneApplicationPage page, DeparturesAndArrivalsTable departuresAndArrivalsTable, bool removeBackEntry = false)
         {
             return page.GetUri<StationPage>().WithParameters("station", departuresAndArrivalsTable.Station.Code)
                                              .WithParametersIf(departuresAndArrivalsTable.HasDestinationFilter, () => "callingAt", () => departuresAndArrivalsTable.CallingAt.Value.Code)
@@ -374,30 +374,30 @@ namespace Trains.WP8
             ErrorReporting.Log("OnFilterOrClearFilterClick");
             if (departuresAndArrivalsTable.HasDestinationFilter)
             {
-                NavigationService.Navigate(GetUri(departuresAndArrivalsTable.WithoutFilter, false));
+                NavigationService.Navigate(GetUri(departuresAndArrivalsTable.WithoutFilter));
             }
             else
             {
-                NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresAndArrivalsTable.Station.Code));
+                NavigationService.Navigate(MainAndFilterPage.GetUri(this, departuresAndArrivalsTable.Station));
             }
         }
 
         private void OnFilterByAnotherDestinationClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnFilterByAnotherDestinationClick");
-            NavigationService.Navigate(this.GetUri<MainAndFilterPage>().WithParameters("fromStation", departuresAndArrivalsTable.Station.Code, "excludeStation", departuresAndArrivalsTable.CallingAt.Value.Code));
+            NavigationService.Navigate(MainAndFilterPage.GetUri(this, departuresAndArrivalsTable.Station, departuresAndArrivalsTable.CallingAt.Value));
         }
 
         private void OnReverseJourneyClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnReverseJourneyClick");
-            NavigationService.Navigate(GetUri(departuresAndArrivalsTable.Reversed, false));
+            NavigationService.Navigate(GetUri(departuresAndArrivalsTable.Reversed));
         }
 
         private void OnAnotherRailStationClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnRailStationsClick");
-            NavigationService.Navigate(this.GetUri<MainAndFilterPage>());
+            NavigationService.Navigate(MainAndFilterPage.GetUri(this));
         }
 
         private void OnLiveProgressFromDeparturesClick(object sender, EventArgs e)

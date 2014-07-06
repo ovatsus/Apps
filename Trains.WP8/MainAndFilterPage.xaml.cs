@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,6 +14,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Reactive;
 using Microsoft.Phone.Shell;
 using Telerik.Windows.Controls;
+using Windows.Phone.Speech.VoiceCommands;
 
 namespace Trains.WP8
 {
@@ -22,7 +24,7 @@ namespace Trains.WP8
         {
             InitializeComponent();
             var allStationsView = new CollectionViewSource { Source = Stations.GetAll() }.View;
-            allStationsView.Filter = x => Filter((Station)x);
+            allStationsView.Filter = x => Filter(filter.Text, fromStation, excludeStation, (Station)x);
             allStations.ItemsSource = allStationsView;
             Observable.FromEvent<TextChangedEventArgs>(filter, "TextChanged")
                 .Throttle(TimeSpan.FromMilliseconds(300))
@@ -56,6 +58,11 @@ namespace Trains.WP8
             {
                 if (e.NavigationMode == NavigationMode.New)
                 {
+                    if (Stations.Country == Country.UK)
+                    {
+                        Task.Run(() => InstallVoiceCommands());
+                    }
+
                     ErrorReporting.CheckForPreviousException(true);
                     AppMetadata.CheckForNewVersion();
                     AppMetadata.CheckForReview(this);
@@ -63,11 +70,11 @@ namespace Trains.WP8
                     {
                         Settings.Set(Setting.LocationServicesPromptShown, true);
                         if (Extensions.ShowMessageBox("Location Services", "This application uses your current location to improve the experience. Do you wish to give it permission to use your location?",
-                                                      "Use location", "No thanks")) 
+                                                      "Use location", "No thanks"))
                         {
                             Settings.Set(Setting.LocationServicesEnabled, true);
                         }
-                    }                    
+                    }
                 }
             }
             else
@@ -76,12 +83,23 @@ namespace Trains.WP8
                 nearest.Header = "Near " + fromStation.Name;
             }
 
+            var removeBackEntry = NavigationContext.QueryString.ContainsKey("removeBackEntry");
+            if (removeBackEntry)
+            {
+                NavigationService.RemoveBackEntry();
+            }
+
             LocationService.PositionChanged += LoadNearestStations;
             LoadNearestStations();
 
             RefreshRecentItemsList();
 
-            if (hasRecentItemsToDisplay)
+            if (NavigationContext.QueryString.ContainsKey("initialFilter"))
+            {
+                filter.Text = NavigationContext.QueryString["initialFilter"];
+                pivot.SelectedIndex = 2;
+            }
+            else if (hasRecentItemsToDisplay)
             {
                 pivot.SelectedIndex = 1;
             }
@@ -95,7 +113,7 @@ namespace Trains.WP8
             }
         }
 
-        private bool Filter(Station station)
+        public static bool Filter(string filter, Station fromStation, string excludeStation, Station station)
         {
             if (fromStation != null && station.Code == fromStation.Code)
             {
@@ -105,17 +123,23 @@ namespace Trains.WP8
             {
                 return false;
             }
-            return string.IsNullOrEmpty(filter.Text) ||
-                   station.Name.IndexOf(filter.Text, StringComparison.OrdinalIgnoreCase) != -1 ||
-                   station.Code.IndexOf(filter.Text, StringComparison.OrdinalIgnoreCase) != -1;
+            return string.IsNullOrEmpty(filter) ||
+                   TextMatchesQuery(filter, station.Name) ||
+                   TextMatchesQuery(filter, station.Code);
+        }
+
+        private static bool TextMatchesQuery(string query, string text)
+        {
+            return query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                        .All(queryPart => text.IndexOf(queryPart, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
-            
+
             LocationService.PositionChanged -= LoadNearestStations;
-            
+
             if (nearestLazyBlock != null)
             {
                 nearestLazyBlock.Cancel();
@@ -162,13 +186,13 @@ namespace Trains.WP8
             nearestLazyBlock = new LazyBlock<Tuple<double, Station>[]>(
                 "nearest stations",
                 "No nearby stations",
-                Stations.GetNearest(from, 150),
+                Stations.GetNearestAsync(from, 150),
                 items => items.Length == 0,
                 lazyBlockUI,
                 false,
                 null,
                 null,
-                nearestUnfiltered => 
+                nearestUnfiltered =>
                 {
                     var nearestFiltered = nearestUnfiltered.AsEnumerable();
                     if (fromStation != null)
@@ -207,7 +231,7 @@ namespace Trains.WP8
         }
 
         private void GoToStation(object dataContext)
-        {            
+        {
             var target = dataContext as DeparturesAndArrivalsTable;
             if (target != null)
             {
@@ -239,6 +263,29 @@ namespace Trains.WP8
             var dataContext = (DeparturesAndArrivalsTable)((RadContextMenuItem)sender).DataContext;
             RecentItems.Remove(dataContext);
             RefreshRecentItemsList();
+        }
+
+        private async void InstallVoiceCommands()
+        {
+            try
+            {
+                if (Environment.OSVersion.Version.Major >= 8 && Environment.OSVersion.Version.Minor >= 10)
+                {
+                    await VoiceCommandService.InstallCommandSetsFromFileAsync(new Uri("ms-appx:///VoiceCommandDefinition_8.1.xml"));
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporting.ReportException(ex, "InstallVoiceCommands");
+            }
+        }
+
+        public static Uri GetUri(PhoneApplicationPage page, Station fromStation = null, Station excludeStation = null, string initialFilter = null, bool removeBackEntry = false)
+        {
+            return page.GetUri<MainAndFilterPage>().WithParametersIf(fromStation != null, () => "fromStation", () => fromStation.Code)
+                                                   .WithParametersIf(excludeStation != null, () => "excludeStation", () => excludeStation.Code)
+                                                   .WithParametersIf(!string.IsNullOrEmpty(initialFilter), () => "initialFilter", () => initialFilter)
+                                                   .WithParametersIf(removeBackEntry, "removeBackEntry");
         }
     }
 }

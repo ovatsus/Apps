@@ -18,6 +18,7 @@ type Station =
     { Code : string
       Name : string
       Location : LatLong }
+    override x.ToString() = x.Name
 
 module Stations = 
 
@@ -99,21 +100,23 @@ module Stations =
 
     [<CompiledName("GetNearest")>]
     let getNearest currentPosition limit = 
-    
-        async {
 
-            let allStations, _ = getStationInfo()
+        let allStations, _ = getStationInfo()
 
-            let nearestStations =
-                allStations
-                |> Seq.map (fun station -> station.Location - currentPosition, station)
-                |> Seq.filter (fun (dist, _) -> dist < 9.5)
-                |> Seq.sortBy (fun (dist, station) -> dist, station.Name)
-                |> Seq.truncate limit
-                |> Seq.toArray
+        let nearestStations =
+            allStations
+            |> Seq.map (fun station -> station.Location - currentPosition, station)
+            |> Seq.filter (fun (dist, _) -> dist < 9.5)
+            |> Seq.sortBy (fun (dist, station) -> dist, station.Name)
+            |> Seq.truncate limit
+            |> Seq.toArray
 
-            return nearestStations
+        nearestStations
 
+    [<CompiledName("GetNearestAsync")>]
+    let getNearestAsync currentPosition limit = 
+        async { 
+            return getNearest currentPosition limit
         } |> LazyAsync.fromAsync
 
     [<CompiledName("GetAll")>]
