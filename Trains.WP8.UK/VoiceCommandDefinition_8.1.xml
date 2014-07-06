@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.1">
+    
     <CommandSet xml:lang="en-gb">
 
         <CommandPrefix> Trains </CommandPrefix>
@@ -74,4 +75,79 @@
         </PhraseTopic>
 
     </CommandSet>
+    
+    <CommandSet xml:lang="en-us">
+
+        <CommandPrefix> Trains </CommandPrefix>
+        <Example> from Gatwick to Farringdon </Example>
+
+        <Command Name="DeparturesFromTo">
+            <Example> from Paddington to Reading </Example>
+            <ListenFor> from {from} to {to} </ListenFor>
+            <ListenFor> to {to} from {from} </ListenFor>
+            <ListenFor> {from} to {to} </ListenFor>
+            <ListenFor> {to} from {from} </ListenFor>
+            <ListenFor> {prefix2} from {from} to {to} </ListenFor>
+            <ListenFor> {prefix2} to {to} from {from} </ListenFor>
+            <ListenFor> {prefix1} the {prefix2} from {from} to {to} </ListenFor>
+            <ListenFor> {prefix1} the {prefix2} to {to} from {from} </ListenFor>
+            <ListenFor> {prefix3} from {from} to {to} </ListenFor>
+            <ListenFor> {prefix3} to {to} from {from} </ListenFor>
+            <Feedback> Checking live travel information... </Feedback>
+            <Navigate Target="Trains.WP8;component/VoiceCommandsPage.xaml" />
+        </Command>
+
+        <Command Name="DeparturesTo">
+            <Example> to LBG </Example>
+            <ListenFor> to {to} </ListenFor>
+            <ListenFor> {prefix2} to {to} </ListenFor>
+            <ListenFor> {prefix1} the {prefix2} to {to} </ListenFor>
+            <ListenFor> {prefix3} to {to} </ListenFor>
+            <Feedback> Checking live travel information... </Feedback>
+            <Navigate Target="Trains.WP8;component/VoiceCommandsPage.xaml" />
+        </Command>
+
+        <Command Name="DeparturesFrom">
+            <Example> London Victoria </Example>
+            <ListenFor> from {from} </ListenFor>
+            <ListenFor> {from} </ListenFor>
+            <ListenFor> {prefix2} from {from} </ListenFor>
+            <ListenFor> {prefix1} the {prefix2} from {from} </ListenFor>
+            <ListenFor> {prefix3} from {from} </ListenFor>
+            <Feedback> Checking live travel information... </Feedback>
+            <Navigate Target="Trains.WP8;component/VoiceCommandsPage.xaml" />
+        </Command>
+
+        <PhraseList Label="prefix1">
+            <Item> what's </Item>
+            <Item> what is </Item>
+            <Item> where's </Item>
+            <Item> where is </Item>
+            <Item> when's </Item>
+            <Item> when is </Item>
+            <Item> show me </Item>
+        </PhraseList>
+
+        <PhraseList Label="prefix2">
+            <Item> next </Item>
+            <Item> next departure </Item>
+            <Item> next train </Item>
+            <Item> next one </Item>
+        </PhraseList>
+
+        <PhraseList Label="prefix3">
+            <Item> departures </Item>
+            <Item> show me departures </Item>
+        </PhraseList>
+
+        <PhraseTopic Label="from" Scenario="Search">
+            <Subject> Station </Subject>
+        </PhraseTopic>
+
+        <PhraseTopic Label="to" Scenario="Search">
+            <Subject> Station </Subject>
+        </PhraseTopic>
+
+    </CommandSet>
+    
 </VoiceCommands>
