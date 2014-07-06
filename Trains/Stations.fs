@@ -69,8 +69,8 @@ module Stations =
                     xml.ObjStations
                     |> Seq.distinctBy (fun station -> station.StationDesc) // there's two different Adamstown
                     |> Seq.map (fun station -> 
-                        { Code = station.StationCode
-                          Name = station.StationDesc
+                        { Code = station.StationCode.Trim()
+                          Name = station.StationDesc.Trim()
                           Location = LatLong.Create (float station.StationLatitude) (float station.StationLongitude) })
                     |> Seq.toList
 
