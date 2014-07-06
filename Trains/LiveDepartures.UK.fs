@@ -13,7 +13,7 @@ open FSharp.Data
 open FSharp.Data.HttpRequestHeaders
 open Trains
 
-let wp8UserAgent = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)"
+let private wp8UserAgent = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)"
 
 let private asyncRequestString (url:string) =
     Http.AsyncRequestString(url, headers = [ UserAgent wp8UserAgent ])
@@ -193,6 +193,8 @@ let internal getDeparturesFromHtml html callingAtFilter synchronizationContext t
     |> Seq.choose id
     |> Seq.toArray
 
+let mutable LastHtml = ""
+
 let getDepartures departuresAndArrivalsTable = 
 
     let url, callingAtFilter = 
@@ -205,6 +207,7 @@ let getDepartures departuresAndArrivalsTable =
     async {
         let! html = asyncRequestString url
         let html = cleanHtml html
+        LastHtml <- html
 
         let! token = Async.CancellationToken
 
@@ -231,6 +234,7 @@ let getArrivals departuresAndArrivalsTable =
     async {
         let! html = asyncRequestString url
         let html = cleanHtml html
+        LastHtml <- html
 
         let getArrivals() = 
             try 

@@ -18,6 +18,7 @@ namespace Common.WP8
         public readonly string Email;
         public readonly bool UsesLocation;
         public readonly string MapAuthenticationToken;
+        public readonly Func<string> GetExtraErrorReportingInfo;
 
         public string Version
         {
@@ -33,12 +34,13 @@ namespace Common.WP8
 
         public static AppMetadata Current { get; private set; }
 
-        public AppMetadata(Application application, string name, string email, bool usesLocation = false, string mapAuthenticationToken = null)
+        public AppMetadata(Application application, string name, string email, bool usesLocation = false, string mapAuthenticationToken = null, Func<string> getExtraErrorReportingInfo = null)
         {
             Name = name;
             Email = email;
             UsesLocation = usesLocation;
             MapAuthenticationToken = mapAuthenticationToken;
+            GetExtraErrorReportingInfo = getExtraErrorReportingInfo;
 
             Current = this;
 

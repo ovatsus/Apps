@@ -63,6 +63,18 @@ namespace Common.WP8
 
         public static string GetMailBody(string contents)
         {
+            if (string.IsNullOrEmpty(contents))
+            {
+                if (AppMetadata.Current.GetExtraErrorReportingInfo != null)
+                {
+                    var extraInfo = AppMetadata.Current.GetExtraErrorReportingInfo();
+                    if (!string.IsNullOrEmpty(extraInfo))
+                    {
+                        contents = extraInfo + "\n";
+                    }
+                }
+            }
+
             if (log.Count > 0)
             {
                 contents += "---------------------------------";
