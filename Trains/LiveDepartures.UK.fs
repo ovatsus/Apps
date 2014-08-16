@@ -125,16 +125,19 @@ let private rowToDeparture callingAtFilter synchronizationContext token i (li:Ht
     if link = null then None else
 
     let cells = link |> elements "span" |> Seq.toArray
-    if cells.Length < 2 then None else
 
-    let destination, destinationDetail = 
-        let dest = (cells.[1] |> innerText).Split('\n')
-        dest.[0], dest |> Seq.skip 1 |> String.concat "\n" |> replace " via" "via"  |> replace "\nvia" " via"
+    let platform = cells |> Array.tryFind (hasClass "platform") |> Option.bind parsePlatform
+    
+    let length = cells.Length - match platform with Some _ -> 1 | None -> 0
+   
+    if length < 2 then None else
 
     let due, status = 
         cells.[0] |> parseDueAndStatusForceDue getStatus
 
-    let platform = cells |> Array.tryFind (hasClass "platform") |> Option.bind parsePlatform
+    let destination, destinationDetail = 
+        let dest = (cells.[1] |> innerText).Split('\n')
+        dest.[0], dest |> Seq.skip 1 |> String.concat "\n" |> replace " via" "via"  |> replace "\nvia" " via"
 
     let details = 
         let detailsUrl = link |> attr "href"
@@ -164,14 +167,17 @@ let private rowToArrival (li:HtmlNode) =
     if link = null then None else
 
     let cells = link |> elements "span" |> Seq.toArray
-    if cells.Length < 2 then None else
 
-    let origin = cells.[1] |> innerText
+    let platform = cells |> Array.tryFind (hasClass "platform") |> Option.bind parsePlatform
     
+    let length = cells.Length - match platform with Some _ -> 1 | None -> 0
+   
+    if length < 2 then None else
+
     let due, status = 
         cells.[0] |> parseDueAndStatusForceDue getStatus
 
-    let platform = cells |> Array.tryFind (hasClass "platform") |> Option.bind parsePlatform
+    let origin = cells.[1] |> innerText
 
     let details = 
         let detailsUrl = link |> attr "href"

@@ -182,14 +182,17 @@ namespace Trains.WP8
 
         private void UpdateTiles()
         {
-            var primaryTile = ShellTile.ActiveTiles.First();
-            primaryTile.Update(GetTileData(forPrimaryTile: true));
-
-            var secondaryTileUri = GetUri(departuresAndArrivalsTable);
-            var secondaryTile = ShellTile.ActiveTiles.FirstOrDefault(tile => tile.NavigationUri == secondaryTileUri);
-            if (secondaryTile != null)
+            var primaryTile = ShellTile.ActiveTiles.FirstOrDefault();
+            if (primaryTile != null)
             {
-                secondaryTile.Update(GetTileData(forPrimaryTile: false));
+                primaryTile.Update(GetTileData(forPrimaryTile: true));
+
+                var secondaryTileUri = GetUri(departuresAndArrivalsTable);
+                var secondaryTile = ShellTile.ActiveTiles.FirstOrDefault(tile => tile.NavigationUri == secondaryTileUri);
+                if (secondaryTile != null)
+                {
+                    secondaryTile.Update(GetTileData(forPrimaryTile: false));
+                }
             }
         }
 
