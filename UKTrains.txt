@@ -17,7 +17,7 @@ UK Trains provides real-time information for UK national rail stations (excludin
 * Allow to pin individual stations to the start screen
 * Show next departure information in live tile and lock screen (refreshed only when app is running)
 * No need to manage favourite stations, recent items are remembered
-* Cortana support
+* Cortana integration
 
 Note that background refresh requires Location Services to be enabled
 
