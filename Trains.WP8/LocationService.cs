@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Device.Location;
+using System.Windows.Threading;
 using Common.WP8;
 using FSharp.GeoUtils;
 
@@ -11,6 +12,7 @@ namespace Trains.WP8
         public static GeoCoordinate CurrentPosition { get; private set; }
         private static DateTimeOffset currentPositionTimestamp;
         private static GeoCoordinateWatcher watcher;
+        private static DispatcherTimer timer;
 
         static LocationService()
         {
@@ -29,7 +31,7 @@ namespace Trains.WP8
             }
             watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High)
             {
-                MovementThreshold = 50
+                MovementThreshold = 20
             };
             watcher.PositionChanged += OnGeoPositionChanged;
             Setup();
@@ -37,13 +39,29 @@ namespace Trains.WP8
 
         public static void Setup()
         {
+            watcher.Stop();
             if (Settings.GetBool(Setting.LocationServicesEnabled))
             {                
                 watcher.Start();
+                StartTimer(Setup);
             }
-            else
+        }
+
+        public static void StartTimer(Action action)
+        {
+            StopTimer();
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(60);
+            timer.Tick += (sender, args) => action();
+            timer.Start();
+        }
+
+        public static void StopTimer()
+        {
+            if (timer != null)
             {
-                watcher.Stop();    
+                timer.Stop();
+                timer = null;
             }
         }
 
@@ -54,7 +72,7 @@ namespace Trains.WP8
                 var previousPosition = CurrentPosition;
                 var newPosition = e.Position.Location;
                 if (previousPosition == null || previousPosition.IsUnknown || currentPositionTimestamp == default(DateTimeOffset) ||
-                    LatLong.Create(previousPosition.Latitude, previousPosition.Longitude) - LatLong.Create(newPosition.Latitude, newPosition.Longitude) >= 0.1)
+                    LatLong.Create(previousPosition.Latitude, previousPosition.Longitude) - LatLong.Create(newPosition.Latitude, newPosition.Longitude) >= 0.050)
                 {
                     CurrentPosition = newPosition;
                     Settings.Set(Setting.CurrentLat, CurrentPosition.Latitude);

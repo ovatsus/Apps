@@ -217,12 +217,6 @@ namespace Trains.WP8
             ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().Single(item => item.Text == "Clear recent items").IsEnabled = hasRecentItemsToDisplay;
         }
 
-        private void OnRefreshClick(object sender, EventArgs e)
-        {
-            ErrorReporting.Log("OnRefreshClick");
-            LoadNearestStations();
-        }
-
         private void OnStationClick(object sender, RoutedEventArgs e)
         {
             ErrorReporting.Log("OnStationClick");
