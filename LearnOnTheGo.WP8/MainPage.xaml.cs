@@ -29,7 +29,6 @@ namespace LearnOnTheGo.WP8
             {
                 ErrorReporting.CheckForPreviousException(true);
                 AppMetadata.CheckForNewVersion();
-                AppMetadata.CheckForReview(this);
             }
 
             // settings changed
@@ -61,6 +60,15 @@ namespace LearnOnTheGo.WP8
             else if (activeCourses.ItemsSource == null)
             {
                 LoadCourses(email, password, false);
+            }
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnBackKeyPress(e);
+            if (!NavigationService.CanGoBack)
+            {
+                AppMetadata.CheckForReview(this);
             }
         }
 

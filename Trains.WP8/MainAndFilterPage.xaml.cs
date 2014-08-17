@@ -65,7 +65,6 @@ namespace Trains.WP8
 
                     ErrorReporting.CheckForPreviousException(true);
                     AppMetadata.CheckForNewVersion();
-                    AppMetadata.CheckForReview(this);
                     if (!Settings.GetBool(Setting.LocationServicesEnabled) && !Settings.GetBool(Setting.LocationServicesPromptShown))
                     {
                         Settings.Set(Setting.LocationServicesPromptShown, true);
@@ -110,6 +109,15 @@ namespace Trains.WP8
             else
             {
                 pivot.SelectedIndex = 2;
+            }
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnBackKeyPress(e);
+            if (!NavigationService.CanGoBack)
+            {
+                AppMetadata.CheckForReview(this);
             }
         }
 
