@@ -2,7 +2,6 @@ namespace FSharp.Control
 
 open System
 open System.Net
-open System.Runtime.InteropServices
 
 type LazyBlockUIState =
     | Loading of string
@@ -108,7 +107,7 @@ type LazyBlock<'a>(subject, emptyMessage, lazyAsync:LazyAsync<'a>, isEmpty:Func<
         lazyAsync.Reset()
         load true
 
-    member x.Cancel() = 
+    member __.Cancel() = 
         if useRefreshTimer then
             ui.StopTimer()
         !cts |> Option.iter (fun cts -> cts.Cancel(); cts.Dispose())

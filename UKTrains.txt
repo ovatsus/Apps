@@ -23,6 +23,7 @@ UK Trains provides real-time information for UK national rail stations (excludin
 Note that background refresh requires Location Services to be enabled
 
 New in 2.10:
+* Improved information displayed on live tiles
 * Small bug fixes
 
 New in 2.9:

@@ -58,9 +58,9 @@ type LazyAsync<'a>(state:AsyncState<'a>) =
             Async.Start(computation, cancelationTokenSource.Token)
         lock state <| fun () -> 
             match !state with
-            | Completed(asyncValue, value) ->
+            | Completed(_, value) ->
                 Some <| fun () -> f value
-            | Started asyncValue ->
+            | Started _ ->
                 icompleted.Add f
                 None
             | NotStarted asyncValue ->
@@ -129,8 +129,7 @@ module LazyAsync =
 
     let innerToAsync (x:LazyAsync<'a>) = async { 
         return! Async.FromContinuations <| fun (cont, _, _) -> 
-            let tokenSource = x.DoWhenCompleted None true ignore cont
-            ()
+            x.DoWhenCompleted None true ignore cont |> ignore
     }
 
     let toAsync x = async { 
@@ -147,6 +146,5 @@ module LazyAsync =
 
     let subscribe onSuccess onFailure (x:LazyAsync<'a>) =
         let f = ComputationResult.combine onSuccess onFailure
-        let cancelF = ignore
-        let tokenSource = x.DoWhenCompleted None false cancelF f 
+        x.DoWhenCompleted None false ignore f |> ignore
         x

@@ -4,7 +4,6 @@ open System
 open System.IO
 open System.Reflection
 open FSharp.Control
-open FSharp.GeoUtils
 
 type SampleData() =
     inherit Common.SampleData()

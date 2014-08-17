@@ -216,16 +216,16 @@ namespace Trains.WP8
             {
                 content = (forPrimaryTile ? departuresTableHeader : (departuresAndArrivalsTable.HasDestinationFilter ? "" : firstDeparture.Destination)) +
                           (firstDeparture.PlatformIsKnown ? "\nPlatform " + firstDeparture.Platform.Value : "") +
-                          (forPrimaryTile ? "" : "\n" + firstDeparture.Due + " " + firstDeparture.Status);
+                          (forPrimaryTile ? "" : "\n" + (firstDeparture.IsDelayed ? firstDeparture.Expected.Value : firstDeparture.Due) + " " + firstDeparture.Status);
                 wideContent = departuresTableHeader + "\n" +
-                              (firstDeparture.PlatformIsKnown ? "Platform " + firstDeparture.Platform.Value + " " : "") + 
-                              firstDeparture.Due + " " + firstDeparture.Status;
+                              (firstDeparture.PlatformIsKnown ? "Platform " + firstDeparture.Platform.Value + " " : "") +
+                              (firstDeparture.IsDelayed ? firstDeparture.Expected.Value : firstDeparture.Due) + " " + firstDeparture.Status;
             }
 
             return new FlipTileData
             {
                 Title = forPrimaryTile ? AppMetadata.Current.Name : departuresAndArrivalsTable.ToSmallString(),
-                BackTitle = AppMetadata.Current.Name,
+                BackTitle = departuresAndArrivalsTable.ToSmallString(),
                 BackContent = content,
                 WideBackContent = wideContent,
                 SmallBackgroundImage = new Uri("Assets/Tiles/dark/FlipCycleTileSmall.png", UriKind.Relative),

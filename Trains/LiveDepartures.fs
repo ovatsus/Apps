@@ -2,7 +2,6 @@
 
 open System
 open System.ComponentModel
-open System.Globalization
 open System.Threading
 open FSharp.Control
 
@@ -40,6 +39,10 @@ type Departure = {
     override x.ToString() = sprintf "%A" x
     member x.PlatformIsKnown = x.Platform.IsSome
     member x.ArrivalIsKnown = x.Arrival.Value.IsSome
+    member x.IsDelayed = 
+        match x.Status with
+        | Status.Delayed _ -> true
+        | _ -> false
     member x.Expected = 
         match x.Status with
         | Status.Delayed mins -> Some (x.Due + Time.Create(mins))

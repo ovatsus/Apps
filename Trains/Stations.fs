@@ -1,6 +1,5 @@
 ﻿namespace Trains
 
-open System
 open System.Reflection
 open FSharp.Control
 open FSharp.Data

@@ -111,8 +111,8 @@ let private getJourneyDetails platform due url = async {
         try 
             getJourneyDetailsFromHtml platform due html
         with 
-        | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
-                   html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
+        | _ when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+                 html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
             raise <| new WebException()
         | exn -> raise <| ParseError(sprintf "Failed to parse journey details html from %s:\n%s\n" url html, exn)
 
@@ -221,8 +221,8 @@ let getDepartures departuresAndArrivalsTable =
             try 
                 getDeparturesFromHtml html callingAtFilter synchronizationContext token
             with 
-            | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
-                       html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
+            | _ when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+                     html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
                 raise <| new WebException()
             | exn -> raise <| ParseError(sprintf "Failed to parse departures html from %s:\n%s\n" url html, exn)
 
@@ -250,8 +250,8 @@ let getArrivals departuresAndArrivalsTable =
                 |> Seq.choose rowToArrival
                 |> Seq.toArray
             with 
-            | exn when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
-                       html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
+            | _ when html.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
+                     html.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 ->
                 raise <| new WebException()
             | exn -> raise <| ParseError(sprintf "Failed to parse arrivals html from %s:\n%s\n" url html, exn)
 
