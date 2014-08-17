@@ -33,14 +33,14 @@ let private getStatus due (str:string) =
 let private getJourneyElementStatus getDue (str:string) = 
     match trimEnd "*" str with
     | "On time" | "Starts here" -> 
-        let departed = Time.Create(DateTime.Now) >= getDue()
+        let departed = Time.Create(DateTime.Now).IsAfter(getDue())
         OnTime departed
     | "Cancelled" -> Cancelled
     | "Delayed" -> DelayedIndefinitely
     | "" | "No report" -> NoReport
     | str -> let expected = Time.Parse str
              let delay = expected - getDue()
-             let departed = Time.Create(DateTime.Now) >= expected
+             let departed = Time.Create(DateTime.Now).IsAfter(expected)
              if delay.TotalMinutes > 0
              then Delayed (departed, delay.TotalMinutes)
              else OnTime departed
