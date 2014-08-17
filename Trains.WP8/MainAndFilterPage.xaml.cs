@@ -274,9 +274,8 @@ namespace Trains.WP8
                     await VoiceCommandService.InstallCommandSetsFromFileAsync(new Uri("ms-appx:///VoiceCommandDefinition_8.1.xml"));
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorReporting.ReportException(ex, "InstallVoiceCommands");
             }
         }
 
