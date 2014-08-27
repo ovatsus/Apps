@@ -58,7 +58,7 @@ module Stations =
 
                 | Ireland ->
 
-                    //from "http://api.irishrail.ie/realtime/realtime.asmx/getAllStationsXML
+                    //from http://api.irishrail.ie/realtime/realtime.asmx/getAllStationsXML
 #if INTERACTIVE
                     let xml = XmlProvider<"IrelandStations.xml">.GetSample()
 #else

@@ -1,4 +1,4 @@
-﻿#r "../packages/FSharp.Data.2.0.9/lib/portable-net40+sl5+wp8+win8/FSharp.Data.dll"
+﻿#r "../packages/FSharp.Data.2.0.11/lib/portable-net40+sl5+wp8+win8/FSharp.Data.dll"
 #r "../packages/HtmlAgilityPack-PCL.1.4.6/lib/HtmlAgilityPack-PCL.dll"
 
 open System

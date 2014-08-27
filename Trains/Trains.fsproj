@@ -72,8 +72,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Data">
-      <HintPath>..\packages\FSharp.Data.2.0.9\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\FSharp.Data.2.0.11\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack-PCL">
       <HintPath>..\packages\HtmlAgilityPack-PCL.1.4.6\lib\HtmlAgilityPack-PCL.dll</HintPath>
