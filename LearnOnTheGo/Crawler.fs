@@ -37,7 +37,8 @@ module private Implementation =
                                                      "X-CSRFToken", csrfToken
                                                      Referer "https://accounts.coursera.org/signin" ], 
                                          body = FormValues ["email", email
-                                                            "password", password],
+                                                            "password", password
+                                                            "webrequest", "true"],
                                          cookies = ["csrftoken", csrfToken],
                                          cookieContainer = cookieContainer)
         return cookieContainer }

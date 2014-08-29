@@ -12,6 +12,9 @@ Learn On The Go enables you to watch the videos and read the lecture notes of yo
 Pre-download the videos while on good connection and then watch them later on the train or the bus.
 This is not an official Coursera app.
 
+New in 2.9:
+* Fixed authentication not working after latest Coursera site update
+
 New in 2.8:
 * Fixed some courses being incorrectly marked as finished
 
