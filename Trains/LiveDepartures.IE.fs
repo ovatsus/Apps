@@ -3,8 +3,6 @@ module Trains.LiveDepartures.IE
 open System
 open System.Net
 open System.Threading
-open HtmlAgilityPack
-open HtmlAgilityPack.FSharp
 open FSharp.Control
 open FSharp.Data
 open Trains
@@ -47,9 +45,8 @@ let private getJourneyDetails trainCode trainDate = async {
     let getDepartures() = 
         try 
             xmlT.ObjTrainMovements
-            |> Seq.filter (fun xml -> xml.LocationType <> LocationType.TimingPoint.ToString())
-            |> Seq.map xmlToJourneyElement
-            |> Seq.toArray
+            |> Array.filter (fun xml -> xml.LocationType <> LocationType.TimingPoint.ToString())
+            |> Array.map xmlToJourneyElement
         with 
         | exn -> raise <| ParseError(sprintf "Failed to parse departures xml from %s:\n%s" url xml, exn)
 
@@ -60,40 +57,40 @@ let private xmlToDeparture callingAtFilter (xml:StationDataXmlT.ObjStationData) 
 
     let propertyChangedEvent = Event<_,_>()
 
-    trim xml.Traincode, 
+    String.trim xml.Traincode, 
     ({ Due = Time.Create xml.Schdepart
        Destination = xml.Destination
        DestinationDetail = ""
        Status = if xml.Late > 0 then Status.Delayed xml.Late else Status.OnTime
        Platform = None
-       Details = LazyAsync.fromAsync (getJourneyDetails (trim xml.Traincode) <| xml.Traindate.ToString("dd MMM yyyy"))
+       Details = LazyAsync.fromAsync (getJourneyDetails (String.trim xml.Traincode) <| xml.Traindate.ToString("dd MMM yyyy"))
        Arrival = ref None
        PropertyChangedEvent = propertyChangedEvent.Publish }, callingAtFilter, propertyChangedEvent)
 
 let private xmlToArrival callingAtFilter (xml:StationDataXmlT.ObjStationData) =
-    trim xml.Traincode,
+    String.trim xml.Traincode,
     { Due = Time.Create xml.Scharrival
       Origin = xml.Origin
       Status = if xml.Late > 0 then Status.Delayed xml.Late else Status.OnTime
       Platform = None
-      Details = LazyAsync.fromAsync (getJourneyDetails (trim xml.Traincode) <| xml.Traindate.ToString("dd MMM yyyy")) }
+      Details = LazyAsync.fromAsync (getJourneyDetails (String.trim xml.Traincode) <| xml.Traindate.ToString("dd MMM yyyy")) }
 
-let private getCallingPoints (tr:HtmlNode) =
+let private getCallingPoints (tr:HtmlNode, table:HtmlNode) =
     let trainId = 
         tr 
-        |> elements "td" 
-        |> Seq.head 
-        |> element "a" 
-        |> innerText
+        |> HtmlNode.elementsNamed ["td" ]
+        |> List.head 
+        |> HtmlNode.elementsNamed ["a"]
+        |> List.head
+        |> Html.innerText
     let callingPoints = 
-        tr
-        |> parent
-        |> elements "tr"
-        |> Seq.filter (hasId ("train" + trainId))
-        |> Seq.collect (descendants "tr")
-        |> Seq.filter (hasClass "")
-        |> Seq.map (fun tr -> let cells = tr |> elements "td" |> Seq.toArray
-                              let station = cells.[1] |> innerText
+        table
+        |> HtmlNode.elementsNamed ["tr"]
+        |> Seq.filter (HtmlNode.hasId ("train" + trainId))
+        |> Seq.collect (HtmlNode.descendantsNamed false ["tr"])
+        |> Seq.filter (HtmlNode.hasClass "")
+        |> Seq.map (fun tr -> let cells = tr |> HtmlNode.elementsNamed ["td"]
+                              let station = cells.[1] |> Html.innerText
                               station)
         |> Set.ofSeq
     trainId, callingPoints
@@ -106,11 +103,10 @@ let private getDeparturesOrArrivals forDepartures mapper getOutput (departuresAn
         try 
             let xmlT = StationDataXmlT.Parse xml
             xmlT.ObjStationDatas
-            |> Seq.filter (fun xml -> xml.Locationtype <> (if forDepartures then LocationType.Destination else LocationType.Origin).ToString())
-            |> Seq.map (mapper callingAtFilter)
+            |> Array.filter (fun xml -> xml.Locationtype <> (if forDepartures then LocationType.Destination else LocationType.Origin).ToString())
+            |> Array.map (mapper callingAtFilter)
             |> extraFilter
-            |> Seq.mapi getOutput
-            |> Seq.toArray
+            |> Array.mapi getOutput
         with 
         | exn -> raise <| ParseError(sprintf "Failed to parse xml from %s:\n%s" xmlUrl xml, exn)
     
@@ -119,11 +115,11 @@ let private getDeparturesOrArrivals forDepartures mapper getOutput (departuresAn
     let getCallingPointsByTrain html =
         let (&&&) f1 f2 arg = f1 arg && f2 arg
         try 
-            createDoc html
-            |> descendants "table"
-            |> Seq.filter (not << (parent >> hasTagName "td"))
-            |> Seq.collect (fun table -> table |> elements "tr")
-            |> Seq.filter (hasClass "" &&& hasId "")
+            html
+            |> HtmlDocument.Parse
+            |> HtmlDocument.descendantsNamed false ["table"]
+            |> Seq.collect (fun table -> table |> HtmlNode.elementsNamed ["tr"] |> List.map (fun tr -> tr, table))
+            |> Seq.filter (fst >> (HtmlNode.hasClass "" &&& HtmlNode.hasId ""))
             |> Seq.map getCallingPoints
             |> Map.ofSeq
         with 
@@ -145,7 +141,7 @@ let private getDeparturesOrArrivals forDepartures mapper getOutput (departuresAn
         async {
             
             let! html = Http.AsyncRequestString htmlUrl
-            let html = cleanHtml html
+            let html = Html.clean html
 
             let callingPointsByTrainId = getCallingPointsByTrain html
             
@@ -157,7 +153,7 @@ let private getDeparturesOrArrivals forDepartures mapper getOutput (departuresAn
             let! xml = Http.AsyncRequestString xmlUrl
 
             let extraFilter =
-                Seq.filter (fst >> getCallingPoints >> Set.contains callingAt.Name)
+                Array.filter (fst >> getCallingPoints >> Set.contains callingAt.Name)
          
             return getDeparturesOrArrivals (Some callingAt.Name) xml extraFilter
 

@@ -2,7 +2,6 @@
 
 open System
 open System.Net
-open HtmlAgilityPack.FSharp
 open FSharp.Control
 open FSharp.Data
 
@@ -64,19 +63,17 @@ let parseTopicsJson getLectureSections topicsJsonStr =
 
 let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
 
-    let endsWith suffix (text:string) = text.EndsWith suffix
-
     let getVideoUrlAsync iFrameUrl = async {
         let! iframeHtml = iFrameUrl |> getHtmlAsync
         try 
             return
                 iframeHtml
-                |> createDoc
-                |> descendants "source" 
-                |> Seq.filter (hasAttr "type" "video/mp4")
+                |> HtmlDocument.Parse
+                |> HtmlDocument.descendantsNamed false ["source"]
+                |> Seq.filter (HtmlNode.hasAttribute "type" "video/mp4")
                 //TODO: this crashes in  970962 = Roman Architecture [001], Lecture = 5.3 Hellenized Houses in Pompeii - 13:27 [51]
                 |> Seq.head
-                |> attr "src"
+                |> HtmlNode.attributeValue "src"
         with exn ->
             if iframeHtml.IndexOf("Wi-Fi", StringComparison.OrdinalIgnoreCase) > 0 ||
                iframeHtml.IndexOf("WiFi", StringComparison.OrdinalIgnoreCase) > 0 then
@@ -89,41 +86,41 @@ let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
     let lectureSections = 
         let index = ref -1
         try
-            createDoc lecturesHtmlStr
-            |> descendants "h3"
-            |> Seq.map (fun h3 ->
-                let title = innerText h3
-                let completed = h3 |> parent |> hasClass "course-item-list-header contracted"
+            lecturesHtmlStr
+            |> HtmlDocument.Parse
+            |> HtmlDocument.descendantsNamedWithPath false ["h3"]
+            |> Seq.choose (fun (h3, parents) ->
+                let title = Html.innerText h3
+                let completed = parents |> List.head |> HtmlNode.hasClass "course-item-list-header contracted"
                 let ul = 
-                    h3 
-                    |> parent
-                    |> followingSibling "ul"
-                ul, title, completed)
-            |> Seq.filter (fun (ul, _, _) -> ul <> null)
+                    (List.head parents, List.tail parents)
+                    |> Html.followingSibling "ul"
+                ul |> Option.map (fun ul -> ul, title, completed))
             |> Seq.map (fun (ul, title, completed) -> 
                 let lectures =
                     ul
-                    |> elements "li"
-                    |> Seq.map (element "a")
-                    |> Seq.map (fun a ->
-                        let id = a |> attr "data-lecture-id" |> int
-                        let title = innerText a
-                        let quizAttemptedSpan = a |> elements "span" |> Seq.tryFind (hasClass "label label-success")
+                    |> HtmlNode.elementsNamed ["li"]
+                    |> List.map (fun li -> li, li |> HtmlNode.elementsNamed ["a"] |> List.head)
+                    |> List.map (fun (li, a) ->
+                        let id = a |> HtmlNode.attributeValue "data-lecture-id" |> int
+                        let title = Html.innerText a
+                        let quizAttemptedSpan = a |> HtmlNode.elementsNamed ["span"] |> List.tryFind (HtmlNode.hasClass "label label-success")
                         let title, quizAttempted =
                             match quizAttemptedSpan with
-                            | Some span -> title |> remove (innerText a) |> trim, true
+                            | Some span -> title |> String.remove (Html.innerText a) |> String.trim, true
                             | None -> title, false
-                        let videoUrl = a |> attr "data-modal-iframe" 
+                        let videoUrl = a |> HtmlNode.attributeValue "data-modal-iframe" 
                                          |> getVideoUrlAsync 
                                          |> LazyAsync.fromAsync
                         let lectureNotesUrl = 
-                            let urls = a |> followingSibling "div" 
-                                         |> elements "a" 
-                                         |> Seq.map (attr "href") 
-                                         |> Seq.toList
+                            let urls = li 
+                                       |> HtmlNode.elementsNamed ["div"]
+                                       |> Seq.exactlyOne
+                                       |> HtmlNode.elementsNamed ["a" ]
+                                       |> List.map (HtmlNode.attributeValue "href") 
                             [".ppsx"; ".pps"; ".pptx"; ".ppt"; ".pdf"] 
-                            |> List.tryPick (fun ext -> List.tryFind (endsWith ext) urls)
-                        let viewed = a |> parent |> hasClass "viewed"
+                            |> List.tryPick (fun ext -> List.tryFind (String.endsWith ext) urls)
+                        let viewed = li |> HtmlNode.hasClass "viewed"
                         incr index
                         { Id = id
                           Title = title
@@ -132,7 +129,7 @@ let parseLecturesHtml getHtmlAsync createDownloadInfo lecturesHtmlStr =
                           Viewed = viewed 
                           QuizAttempted = quizAttempted
                           DownloadInfo = createDownloadInfo id title !index })
-                    |> Seq.toArray
+                    |> List.toArray
                 { Title = title
                   Completed = completed
                   Lectures = lectures })

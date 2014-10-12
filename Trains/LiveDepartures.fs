@@ -2,8 +2,10 @@
 
 open System
 open System.ComponentModel
+open System.Globalization
 open System.Threading
 open FSharp.Control
+open FSharp.Data.Runtime
 
 type DeparturesAndArrivalsTable = 
     { Station : Station
@@ -97,8 +99,8 @@ and Time =
     static member TryParse(str:string) = 
         let pos = str.IndexOf ':'
         if pos >= 0 then
-            let hours = str.Substring(0, pos) |> parseInt
-            let minutes = str.Substring(pos+1) |> parseInt
+            let hours = str.Substring(0, pos) |> TextConversions.AsInteger CultureInfo.InvariantCulture
+            let minutes = str.Substring(pos+1) |> TextConversions.AsInteger CultureInfo.InvariantCulture
             match hours, minutes with
             | Some hours, Some minutes -> Some <| Time.Create(hours, minutes)
             | _ -> None

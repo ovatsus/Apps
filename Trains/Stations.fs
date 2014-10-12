@@ -51,7 +51,7 @@ module Stations =
                             |> Seq.sortBy (fun station -> -station.RevisionNumber) 
                             |> Seq.head
                         { Code = code
-                          Name = station.StationName |> remove " Rail Station" |> remove " Railway Station"
+                          Name = station.StationName |> String.remove " Rail Station" |> String.remove " Railway Station"
                           Location = LatLong.Create station.Latitude station.Longitude })
                     |> Seq.toList
 
@@ -75,7 +75,7 @@ module Stations =
 
             let stationsByCode =
                 allStations 
-                |> Seq.map (fun station -> station.Code, station) 
+                |> List.map (fun station -> station.Code, station) 
                 |> dict 
 
             stationInfo := Some (allStations, stationsByCode)
@@ -90,9 +90,9 @@ module Stations =
 
         let nearestStations =
             allStations
-            |> Seq.map (fun station -> station.Location - currentPosition, station)
-            |> Seq.filter (fun (dist, _) -> dist < 9.5)
-            |> Seq.sortBy (fun (dist, station) -> dist, station.Name)
+            |> List.map (fun station -> station.Location - currentPosition, station)
+            |> List.filter (fun (dist, _) -> dist < 9.5)
+            |> List.sortBy (fun (dist, station) -> dist, station.Name)
             |> Seq.truncate limit
             |> Seq.toArray
 
@@ -108,7 +108,7 @@ module Stations =
     let getAll() =     
         let allStations, _ = getStationInfo()
         allStations
-        |> Seq.sortBy (fun station -> station.Name)
+        |> List.sortBy (fun station -> station.Name)
         |> Seq.toArray
 
     [<CompiledName("Get")>]

@@ -5,7 +5,6 @@ open System.Collections.Generic
 open System.Net
 open System.Text
 open System.Text.RegularExpressions
-open HtmlAgilityPack.FSharp
 open FSharp.Control
 open FSharp.Data
 open FSharp.Data.HttpRequestHeaders
@@ -66,7 +65,7 @@ module private Implementation =
                     let! _ = Http.AsyncRequestString(getLoginUrl courseBaseUrl, cookieContainer = cc)
                     cookieContainer := Some cc
                 let! html = Http.AsyncRequestString(url, cookieContainer = (!cookieContainer).Value)
-                let html = cleanHtml html
+                let html = Html.clean html
                 cacheSet url html
                 return html }
 
@@ -74,10 +73,10 @@ type Crawler(email, password, cache:IDictionary<_,_>, cacheSet:Action<_,_>, crea
 
     let urlToFilename (url:string) = 
         url
-        |> remove "https://www.coursera.org/"
-        |> remove "https://class.coursera.org/"
-        |> replace "/" "_"
-        |> replace "?" "_"
+        |> String.remove "https://www.coursera.org/"
+        |> String.remove "https://class.coursera.org/"
+        |> String.replace "/" "_"
+        |> String.replace "?" "_"
 
     let cacheGet url =
         let filename = urlToFilename url 

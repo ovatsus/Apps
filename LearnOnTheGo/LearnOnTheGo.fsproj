@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile47</TargetFrameworkProfile>
     <Name>LearnOnTheGo</Name>
-    <TargetFSharpCoreVersion>2.3.5.1</TargetFSharpCoreVersion>
+    <TargetFSharpCoreVersion>2.3.5.0</TargetFSharpCoreVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,19 +67,15 @@
       <HintPath>$(MSBuildExtensionsPath32)\..\Reference Assemblies\Microsoft\FSharp\.NETPortable\$(TargetFSharpCoreVersion)\FSharp.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FSharp.Data">
-      <HintPath>..\packages\FSharp.Data.2.0.14\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="HtmlAgilityPack-PCL">
-      <HintPath>..\packages\HtmlAgilityPack-PCL.1.4.6\lib\HtmlAgilityPack-PCL.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <ProjectReference Include="..\Common\Common.fsproj">
       <Name>Common</Name>
       <Project>{e3a1693b-9eec-4d86-a54e-0321ca206748}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <Reference Include="FSharp.Data">
+      <HintPath>..\packages\FSharp.Data.2.1.0\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Zlib.Portable">
       <HintPath>..\packages\Zlib.Portable.1.10.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
       <Private>True</Private>

@@ -155,13 +155,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\wp8\CS.Windows.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Core, Version=2.3.5.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="FSharp.Core">
+      <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\.NETPortable\2.3.5.0\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Data, Version=2.1.0.47, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\.NETPortable\2.3.5.1\FSharp.Core.dll</HintPath>
+      <HintPath>..\packages\FSharp.Data.2.1.0\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Zlib.Portable, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Zlib.Portable.1.10.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
