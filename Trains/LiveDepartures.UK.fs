@@ -100,10 +100,13 @@ let internal getJourneyDetailsFromHtml platform due html =
     |> Seq.choose (rowToJourneyElement platform due)
     |> Seq.toArray
 
+let mutable LastHtml = ""
+
 let private getJourneyDetails platform due url = async {
 
     let! html = asyncRequestString url
     let html = Html.clean html
+    LastHtml <- html
 
     let getJourneyDetails() = 
         try 
@@ -203,8 +206,6 @@ let internal getDeparturesFromHtml html callingAtFilter synchronizationContext t
     |> Seq.mapi (rowToDeparture callingAtFilter synchronizationContext token)
     |> Seq.choose id
     |> Seq.toArray
-
-let mutable LastHtml = ""
 
 let getDepartures departuresAndArrivalsTable = 
 
