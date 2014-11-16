@@ -110,7 +110,7 @@ and Time =
         | Some time -> time
         | None -> raise <| ParseError(sprintf "Invalid time:\n%s" str, null)
     member x.IsAfter(other:Time) = 
-        x.TotalMinutes > other.TotalMinutes ||
+        x.TotalMinutes > other.TotalMinutes && (not (other.IsAfter x)) ||
         (x + Time.Create(4, 0)).TotalMinutes > (other + Time.Create(4, 0)).TotalMinutes
 
 and Status =
