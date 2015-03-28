@@ -124,7 +124,7 @@
                     </Grid>
                     <TextBlock TextWrapping="Wrap" 
                                Margin="12"
-                               Text="This app is free and done entirely on my own personal time. If you'd like to support this work, please give a small donation." />
+                               Text="This app is free and done entirely on my own personal time. If you'd like to support this work, please consider giving a small donation." />
                     <Button Content="Donate" Tap="OnDonateClick" />
                 </StackPanel>
             </phone:PivotItem>

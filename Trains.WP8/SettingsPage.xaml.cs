@@ -17,13 +17,6 @@ namespace Trains.WP8
             pivot.Title = AppMetadata.Current.Name;
         }
 
-        private async void OnShowDeparturesOnLockScreenClick(object sender, EventArgs e)
-        {
-            ErrorReporting.Log("OnShowDeparturesOnLockScreenClick");
-            MessageBox.Show("Please select " + AppMetadata.Current.Name + " as the detailed status app in the notifications section", "Show departures on lock screen", MessageBoxButton.OK);
-            await Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
-        }
-
         private void OnSaveClick(object sender, EventArgs e)
         {
             ErrorReporting.Log("OnSaveClick");

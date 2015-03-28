@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{7C7E6936-95A7-40ED-B765-BFBD5BEDA095}" Title="UK Trains" RuntimeType="Silverlight" Version="2.11.0.2" Genre="apps.normal" Author="Gustavo Guerra" Description="UK Trains provides real-time information for UK national rail stations (excluding Northern Ireland)." Publisher="Code Beside" PublisherID="{417736af-53cd-4019-abc5-61895f426ea0}">
+  <App xmlns="" ProductID="{7C7E6936-95A7-40ED-B765-BFBD5BEDA095}" Title="UK Trains" RuntimeType="Silverlight" Version="2.12.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="UK Trains provides real-time information for UK national rail stations (excluding Northern Ireland)." Publisher="Code Beside" PublisherID="{417736af-53cd-4019-abc5-61895f426ea0}">
     <IconPath IsRelative="true" IsResource="false">Assets/ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -10,11 +10,7 @@
       <Capability Name="ID_CAP_SPEECH_RECOGNITION" />
     </Capabilities>
     <Tasks>
-      <DefaultTask Name="_default" NavigationPage="Trains.WP8;component/MainAndFilterPage.xaml" ActivationPolicy="Resume">
-        <BackgroundExecution>
-          <ExecutionType Name="LocationTracking" />
-        </BackgroundExecution>
-      </DefaultTask>
+      <DefaultTask Name="_default" NavigationPage="Trains.WP8;component/MainAndFilterPage.xaml" ActivationPolicy="Resume" />
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="Trains.WP8.UK.Token" TaskName="_default">
@@ -39,9 +35,6 @@
         </TemplateFlip>
       </PrimaryToken>
     </Tokens>
-    <Extensions>
-      <Extension ExtensionName="LockScreen_Notification_TextField" ConsumerID="{111DFF24-AA15-4A96-8006-2BFF8122084F}" TaskID="_default" />
-    </Extensions>
     <ScreenResolutions>
       <ScreenResolution Name="ID_RESOLUTION_WVGA" />
       <ScreenResolution Name="ID_RESOLUTION_WXGA" />

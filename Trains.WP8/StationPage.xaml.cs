@@ -127,12 +127,7 @@ namespace Trains.WP8
                     new LazyBlockUI<Departure>(this, departures, departuresMessageTextBlock, departuresLastUpdatedTextBlock),
                     Settings.GetBool(Setting.AutoRefresh),
                     null,
-                    success => {
-                        if (success)
-                        {
-                            UpdateTiles();
-                        }
-                    },
+                    null,
                     null);
             }
             else if (departures.ItemsSource == null)
@@ -180,54 +175,11 @@ namespace Trains.WP8
             }
         }
 
-        private void UpdateTiles()
+        private ShellTileData GetTileData()
         {
-            var primaryTile = ShellTile.ActiveTiles.FirstOrDefault();
-            if (primaryTile != null)
-            {
-                primaryTile.Update(GetTileData(forPrimaryTile: true));
-
-                var secondaryTileUri = GetUri(departuresAndArrivalsTable);
-                var secondaryTile = ShellTile.ActiveTiles.FirstOrDefault(tile => tile.NavigationUri == secondaryTileUri);
-                if (secondaryTile != null)
-                {
-                    secondaryTile.Update(GetTileData(forPrimaryTile: false));
-                }
-            }
-        }
-
-        private ShellTileData GetTileData(bool forPrimaryTile)
-        {
-            var firstDeparture = departures.ItemsSource == null ? null : departures.ItemsSource.Cast<Departure>().FirstOrDefault();
-
-            var departuresTableHeader =
-                departuresAndArrivalsTable.ToSmallString() +
-                (departuresAndArrivalsTable.HasDestinationFilter || firstDeparture == null ? "" : " to " + firstDeparture.Destination);
-
-            string content;
-            string wideContent;
-            if (firstDeparture == null)
-            {
-                content = (forPrimaryTile ? departuresTableHeader + "\n" : "") +
-                          "No more trains today";
-                wideContent = departuresTableHeader + "\n" + "No more trains today";
-            }
-            else
-            {
-                content = (forPrimaryTile ? departuresTableHeader : (departuresAndArrivalsTable.HasDestinationFilter ? "" : firstDeparture.Destination)) +
-                          (firstDeparture.PlatformIsKnown ? "\nPlatform " + firstDeparture.Platform.Value : "") +
-                          (forPrimaryTile ? "" : "\n" + (firstDeparture.IsDelayed ? firstDeparture.Expected.Value : firstDeparture.Due) + " " + firstDeparture.Status);
-                wideContent = departuresTableHeader + "\n" +
-                              (firstDeparture.PlatformIsKnown ? "Platform " + firstDeparture.Platform.Value + " " : "") +
-                              (firstDeparture.IsDelayed ? firstDeparture.Expected.Value : firstDeparture.Due) + " " + firstDeparture.Status;
-            }
-
             return new FlipTileData
             {
-                Title = forPrimaryTile ? AppMetadata.Current.Name : departuresAndArrivalsTable.ToSmallString(),
-                BackTitle = departuresAndArrivalsTable.ToSmallString(),
-                BackContent = content,
-                WideBackContent = wideContent,
+                Title = departuresAndArrivalsTable.ToSmallString(),
                 SmallBackgroundImage = new Uri("Assets/Tiles/dark/FlipCycleTileSmall.png", UriKind.Relative),
                 BackgroundImage = new Uri("Assets/Tiles/dark/FlipCycleTileMedium.png", UriKind.Relative),
                 WideBackgroundImage = new Uri("Assets/Tiles/dark/FlipCycleTileLarge.png", UriKind.Relative),
@@ -342,7 +294,7 @@ namespace Trains.WP8
             var uri = GetUri(departuresAndArrivalsTable);
             if (!IsStationPinnedToStart())
             {
-                ShellTile.Create(GetUri(departuresAndArrivalsTable), GetTileData(forPrimaryTile: false), supportsWideTile: true);
+                ShellTile.Create(GetUri(departuresAndArrivalsTable), GetTileData(), supportsWideTile: true);
             }
             GetPinToStartButton().IsEnabled = false;
         }
