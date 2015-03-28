@@ -5,7 +5,7 @@ open System.ComponentModel
 open System.Globalization
 open System.Threading
 open FSharp.Control
-open FSharp.Data.Runtime
+open FSharp.Data
 
 type DeparturesAndArrivalsTable = 
     { Station : Station
