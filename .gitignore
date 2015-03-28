@@ -3,3 +3,5 @@ obj/
 packages/
 *.suo
 *.user
+.paket/paket.exe
+.vs

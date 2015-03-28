@@ -1,0 +1,7 @@
+source https://www.nuget.org/api/v2
+
+nuget Coding4Fun.Toolkit.Controls 2.0.7
+nuget FSharp.Data 2.1.0
+nuget HereLaunchers 1.2
+nuget WPtoolkit 4.2013.08.16
+nuget Zlib.Portable 1.10.0
