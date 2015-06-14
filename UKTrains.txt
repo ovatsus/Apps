@@ -19,7 +19,7 @@ UK Trains provides real-time information for UK national rail stations (excludin
 * Cortana integration
 
 New in 2.13:
-* Make it easier to go back to the list of stations when when opening from a tile pinned to a specific station.
+* Make it easier to go back to the list of stations when opening from a tile pinned to a specific station.
 
 New in 2.12:
 * Small bug fixes, and remove deprecated features.
