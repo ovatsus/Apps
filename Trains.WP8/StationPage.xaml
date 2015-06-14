@@ -278,7 +278,7 @@
         <shell:ApplicationBar Opacity="0.9">
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.refresh.png" Text="Refresh" Click="OnRefreshClick" />
             <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.filter.png" Text="Filter" Click="OnFilterOrClearFilterClick" />
-            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.pin.png" Text="Pin to Start" Click="OnPinToStartClick" x:Name="pinToStart" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/Icons/dark/appbar.pin.png" Text="Pin to Start" Click="OnPinToStartClick" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

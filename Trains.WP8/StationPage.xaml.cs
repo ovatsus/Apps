@@ -88,16 +88,24 @@ namespace Trains.WP8
 
             if (!NavigationService.CanGoBack)
             {
-                var anotherRailStationItem = new ApplicationBarMenuItem("Another rail station");
-                anotherRailStationItem.Click += OnAnotherRailStationClick;
-                ApplicationBar.MenuItems.Insert(0, anotherRailStationItem);
+                var homeButton = new ApplicationBarIconButton
+                {
+                    IconUri = new Uri("/Assets/Icons/dark/appbar.list.png", UriKind.Relative),
+                    Text = "All Stations",
+                };
+                homeButton.Click += OnHomeClick;
+                ApplicationBar.Buttons.Remove(GetPinToStartButton());
+                ApplicationBar.Buttons.Add(homeButton);
             }
-
-            GetPinToStartButton().IsEnabled = !IsStationPinnedToStart();
+            else
+            {
+                GetPinToStartButton().IsEnabled = !IsStationPinnedToStart();
+            }
 
             CreateDirectionsPivotItem();
 
-            if (!Stations.Country.SupportsArrivals) { 
+            if (!Stations.Country.SupportsArrivals)
+            {
                 // when supportsArrivals is false PivotSelectionChanged won't be triggered
                 Load();
             }
@@ -195,8 +203,8 @@ namespace Trains.WP8
                 {
                     RouteOptimization = RouteOptimization.MinimizeTime,
                     TravelMode = TravelMode.Walking,
-                    Waypoints = new[] { 
-                    currentPosition, 
+                    Waypoints = new[] {
+                    currentPosition,
                     new GeoCoordinate(departuresAndArrivalsTable.Station.Location.Lat, departuresAndArrivalsTable.Station.Location.Long) },
                 };
 
@@ -349,9 +357,9 @@ namespace Trains.WP8
             NavigationService.Navigate(GetUri(departuresAndArrivalsTable.Reversed));
         }
 
-        private void OnAnotherRailStationClick(object sender, EventArgs e)
+        private void OnHomeClick(object sender, EventArgs e)
         {
-            ErrorReporting.Log("OnRailStationsClick");
+            ErrorReporting.Log("OnHomeClick");
             NavigationService.Navigate(MainAndFilterPage.GetUri(this));
         }
 

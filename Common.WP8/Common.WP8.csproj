@@ -119,37 +119,60 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Icons\dark\appbar.cancel.png" />
+    <Content Include="Assets\Icons\dark\appbar.cancel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Icons\dark\appbar.check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Icons\dark\appbar.control.play.streaming.png" />
-    <Content Include="Assets\Icons\dark\appbar.control.play.png" />
-    <Content Include="Assets\Icons\dark\appbar.coursera.png" />
-    <Content Include="Assets\Icons\dark\appbar.delete.png" />
-    <Content Include="Assets\Icons\dark\appbar.download.list.png" />
-    <Content Include="Assets\Icons\dark\appbar.download.png" />
-    <Content Include="Assets\Icons\dark\appbar.email.hardedge.png" />
+    <Content Include="Assets\Icons\dark\appbar.control.play.streaming.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\dark\appbar.control.play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\dark\appbar.coursera.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\dark\appbar.delete.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\dark\appbar.download.list.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\dark\appbar.download.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\dark\appbar.email.hardedge.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Icons\dark\appbar.filter.clear.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Icons\dark\appbar.filter.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Icons\dark\appbar.information.png" />
-    <Content Include="Assets\Icons\dark\appbar.message.png" />
-    <Content Include="Assets\Icons\dark\appbar.page.png" />
+    <Content Include="Assets\Icons\dark\appbar.information.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\dark\appbar.list.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\dark\appbar.message.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\dark\appbar.page.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Icons\dark\appbar.pin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Icons\dark\appbar.refresh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Icons\dark\appbar.social.sharethis.png" />
-    <Content Include="Assets\Icons\light\appbar.check.png" />
-    <Content Include="Assets\Icons\light\appbar.email.hardedge.png" />
-    <Content Include="Assets\Icons\light\appbar.message.png" />
-    <Content Include="Assets\Icons\light\appbar.social.sharethis.png" />
+    <Content Include="Assets\Icons\dark\appbar.social.sharethis.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
