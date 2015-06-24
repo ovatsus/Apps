@@ -59,7 +59,9 @@ namespace Trains.WP8
             departuresAndArrivalsTable = DeparturesAndArrivalsTable.Create(from, to);
             title.Text = departuresAndArrivalsTable.ToString();
             if (title.Text.Length > 40)
+            {
                 title.Text = title.Text.Replace(" calling at ", "\ncalling at ");
+            }
 
             if (e.NavigationMode == NavigationMode.New)
             {
