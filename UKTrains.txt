@@ -18,6 +18,9 @@ UK Trains provides real-time information for UK national rail stations (excludin
 * No need to manage favourite stations, recent items are remembered
 * Cortana integration
 
+New in 2.14:
+* Fix voice commands not being registered in Windows 10.
+
 New in 2.13:
 * Make it easier to go back to the list of stations when opening from a tile pinned to a specific station.
 

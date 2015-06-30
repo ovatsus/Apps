@@ -271,7 +271,7 @@ namespace Trains.WP8
         {
             try
             {
-                if (Environment.OSVersion.Version.Major >= 8 && Environment.OSVersion.Version.Minor >= 10)
+                if (Environment.OSVersion.Version >= new Version(8, 1))
                 {
                     await VoiceCommandService.InstallCommandSetsFromFileAsync(new Uri("ms-appx:///VoiceCommandDefinition_8.1.xml"));
                 }
