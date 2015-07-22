@@ -35,8 +35,8 @@ module Stations =
                 match Country with
                 | UK ->
 
-                    //from http://www.data.gov.uk/dataset/naptan
-                    //osgb36 to latitude/longitude converted with http://gridreferencefinder.com/batchConvert/batchConvert.htm
+                    //from RailReferences.csv in http://www.data.gov.uk/dataset/naptan
+                    //XY location (columns 7/8) to latitude/longitude converted with http://gridreferencefinder.com/batchConvert/batchConvert.htm
 #if INTERACTIVE
                     let csvFile = new CsvProvider<"UKStations.csv", Schema="Latitude=float,Longitude=float">()
 #else

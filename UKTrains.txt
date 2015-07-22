@@ -18,6 +18,10 @@ UK Trains provides real-time information for UK national rail stations (excludin
 * No need to manage favourite stations, recent items are remembered
 * Cortana integration
 
+New in 2.15:
+* Updated Penychain station code
+* Added new stations (Apperley Bridge, Bermuda Park, Cranbrook, Coventry Arena, Ebbw Vale Town, Eskbank, Galashiels, Gorebridge, Ilkeston, Kirkstall Forge, Newcourt, Newtongrange, Oxford Parkway, Shawfair, Stow, Tweedbank)
+
 New in 2.14:
 * Fix voice commands not being registered in Windows 10.
 
