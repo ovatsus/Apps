@@ -22,12 +22,12 @@ namespace Common.WP8
 
         public string Version
         {
-            get { return GetManifestAttributeValue("Version"); }
+            get { return "2.15.1.0";/*GetManifestAttributeValue("Version");*/ }
         }
 
         public Guid AppId
         {
-            get { return Guid.Parse(GetManifestAttributeValue("ProductID")); }
+            get { return Guid.Parse("ef62d461-861c-4a9f-9198-8768532cc6aa");/*GetManifestAttributeValue("ProductID"));*/ }
         }
 
         public bool RunningInBackground { get; private set; }
@@ -160,19 +160,19 @@ namespace Common.WP8
             }
         }
 
-        private static string GetManifestAttributeValue(string attributeName)
-        {
-            var xmlReaderSettings = new XmlReaderSettings
-            {
-                XmlResolver = new XmlXapResolver()
-            };
+        //private static string GetManifestAttributeValue(string attributeName)
+        //{
+        //    var xmlReaderSettings = new XmlReaderSettings
+        //    {
+        //        XmlResolver = new XmlXapResolver()
+        //    };
 
-            using (var xmlReader = XmlReader.Create("WMAppManifest.xml", xmlReaderSettings))
-            {
-                xmlReader.ReadToDescendant("App");
-                return xmlReader.GetAttribute(attributeName);
-            }
-        }
+        //    using (var xmlReader = XmlReader.Create("WMAppManifest.xml", xmlReaderSettings))
+        //    {
+        //        xmlReader.ReadToDescendant("App");
+        //        return xmlReader.GetAttribute(attributeName);
+        //    }
+        //}
 
         public static void CheckForReview(Page page)
         {
