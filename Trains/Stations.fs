@@ -40,7 +40,7 @@ module Stations =
 #if INTERACTIVE
                     let csvFile = new CsvProvider<"UKStations.csv", Schema="Latitude=float,Longitude=float">()
 #else
-                    use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UKStations.csv")
+                    use stream = Resources.getResourceStream "UKStations.csv"
                     let csvFile = CsvProvider<"UKStations.csv", Schema="Latitude=float,Longitude=float">.Load stream
 #endif
                     csvFile.Rows
@@ -62,7 +62,7 @@ module Stations =
 #if INTERACTIVE
                     let xml = XmlProvider<"IrelandStations.xml">.GetSample()
 #else
-                    use stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("IrelandStations.xml")
+                    use stream = Resources.getResourceStream "IrelandStations.xml"
                     let xml = XmlProvider<"IrelandStations.xml">.Load stream
 #endif
                     xml.ObjStations

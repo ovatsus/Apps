@@ -1,6 +1,6 @@
 source https://www.nuget.org/api/v2
 
 nuget Coding4Fun.Toolkit.Controls 2.0.7
-nuget FSharp.Data
+nuget FSharp.Data prerelease
 nuget HereLaunchers
 nuget WPtoolkit

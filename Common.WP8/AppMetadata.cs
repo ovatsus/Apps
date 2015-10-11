@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Net;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -36,6 +37,8 @@ namespace Common.WP8
 
         public AppMetadata(Application application, string name, string email, bool usesLocation = false, string mapAuthenticationToken = null, Func<string> getExtraErrorReportingInfo = null)
         {
+            Resources.getResourceStreamFunc = resourceName => Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+
             Name = name;
             Email = email;
             UsesLocation = usesLocation;

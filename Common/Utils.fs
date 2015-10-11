@@ -5,6 +5,11 @@ open System.Globalization
 open System.Text.RegularExpressions
 open FSharp.Data
 
+module Resources =
+
+    let mutable getResourceStreamFunc = Unchecked.defaultof<Func<string, IO.Stream>>
+    let getResourceStream resourceName = getResourceStreamFunc.Invoke resourceName
+
 module Seq =
     
     let inline tryHead (seq:seq<_>) = 
