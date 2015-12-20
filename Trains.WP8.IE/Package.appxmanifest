@@ -4,7 +4,7 @@
   <mp:PhoneIdentity PhoneProductId="0cb5b15c-8ffe-44f5-a6d6-2c635d4eb753" PhonePublisherId="417736af-53cd-4019-abc5-61895f426ea0" />
   <Properties>
     <DisplayName>Trains.WP8.IE</DisplayName>
-    <PublisherDisplayName>guguer</PublisherDisplayName>
+    <PublisherDisplayName>Functional Flow</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
