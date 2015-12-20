@@ -13,7 +13,6 @@ using FSharp.GeoUtils;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Reactive;
 using Microsoft.Phone.Shell;
-using Telerik.Windows.Controls;
 using Windows.Phone.Speech.VoiceCommands;
 
 namespace Trains.WP8
@@ -259,10 +258,10 @@ namespace Trains.WP8
             RefreshRecentItemsList();
         }
 
-        private void OnRecentItemRemoveClick(object sender, ContextMenuItemSelectedEventArgs e)
+        private void OnRecentItemRemoveClick(object sender, RoutedEventArgs e)
         {
             ErrorReporting.Log("OnRecentItemRemoveClick");
-            var dataContext = (DeparturesAndArrivalsTable)((RadContextMenuItem)sender).DataContext;
+            var dataContext = (DeparturesAndArrivalsTable)((MenuItem)sender).DataContext;
             RecentItems.Remove(dataContext);
             RefreshRecentItemsList();
         }

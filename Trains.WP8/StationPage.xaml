@@ -11,7 +11,6 @@
     xmlns:src="clr-namespace:Trains.WP8"
     xmlns:trains="clr-namespace:Trains;assembly=Trains"
     xmlns:commonWP8="clr-namespace:Common.WP8;assembly=Common.WP8"
-    xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Primitives"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -139,11 +138,11 @@
                             </Grid>
                         </ControlTemplate>
                     </Button.Template>
-                    <telerikPrimitives:RadContextMenu.ContextMenu>
-                        <telerikPrimitives:RadContextMenu>
-                            <telerikPrimitives:RadContextMenuItem Content="Send Text Message" Tapped="OnSendTextMessage" />
-                        </telerikPrimitives:RadContextMenu>
-                    </telerikPrimitives:RadContextMenu.ContextMenu>
+                    <toolkit:ContextMenuService.ContextMenu>
+                        <toolkit:ContextMenu>
+                            <toolkit:MenuItem Header="Send Text Message" Click="OnSendTextMessage" />
+                        </toolkit:ContextMenu>
+                    </toolkit:ContextMenuService.ContextMenu>
                 </Button>
             </DataTemplate>
 

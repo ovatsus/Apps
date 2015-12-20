@@ -14,7 +14,6 @@ using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using Nokia.Phone.HereLaunchers;
-using Telerik.Windows.Controls;
 
 namespace Trains.WP8
 {
@@ -389,10 +388,10 @@ namespace Trains.WP8
             Load();
         }
 
-        private void OnSendTextMessage(object sender, ContextMenuItemSelectedEventArgs e)
+        private void OnSendTextMessage(object sender, RoutedEventArgs e)
         {
             ErrorReporting.Log("OnSendTextMessage");
-            var departure = (Departure)((RadContextMenuItem)sender).DataContext;
+            var departure = (Departure)((MenuItem)sender).DataContext;
             var body =
                 "I'm taking the "
                 + departure.Due
