@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Windows;
@@ -23,7 +24,7 @@ namespace Common.WP8
 
         public string Version
         {
-            get { return "2.15.1.0";/*GetManifestAttributeValue("Version");*/ }
+            get { return "2.16.0.0";/*GetManifestAttributeValue("Version");*/ }
         }
 
         public Guid AppId
@@ -37,7 +38,8 @@ namespace Common.WP8
 
         public AppMetadata(Application application, string name, string email, bool usesLocation = false, string mapAuthenticationToken = null, Func<string> getExtraErrorReportingInfo = null)
         {
-            Resources.getResourceStreamFunc = resourceName => Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+            Resources.getResourceStreamFunc = (resourceName, assemblyName) => 
+                AppDomain.CurrentDomain.GetAssemblies().First(asm => asm.GetName().Name == assemblyName).GetManifestResourceStream(resourceName);
 
             Name = name;
             Email = email;

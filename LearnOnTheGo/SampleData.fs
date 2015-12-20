@@ -37,7 +37,7 @@ type SampleData() =
     let getLectures _ _ _ = LazyAsync.fromValue [| |]
 
     let activeCourses, upcomingCourses, finishedCourses = 
-        use stream = Resources.getResourceStream "topics.json"
+        use stream = Resources.getResourceStream "topics.json" "LearnOnTheGo"
         use streamReader = new StreamReader(stream)
         streamReader.ReadLine() |> Parser.parseTopicsJson getLectures |> Array.rev, 
         streamReader.ReadLine() |> Parser.parseTopicsJson getLectures |> Array.rev, 
@@ -52,7 +52,7 @@ type SampleData() =
         DownloadInfo(courseId, courseTopicName, lectureId, lectureTitle, downloaded, index) :> IDownloadInfo
 
     let lectureSections =  
-        use stream = Resources.getResourceStream "lectures.html"
+        use stream = Resources.getResourceStream "lectures.html" "LearnOnTheGo"
         use streamReader = new StreamReader(stream)
         streamReader.ReadToEnd() 
         |> Parser.parseLecturesHtml getHtmlAsync (createDownloadInfo activeCourses.[0].Id activeCourses.[0].Topic.Name)

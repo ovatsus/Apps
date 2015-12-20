@@ -23,7 +23,7 @@ type SampleData() =
     let details = LazyAsync.fromValue [| |]
 
     let departures1 = 
-        use stream = Resources.getResourceStream "UKDepartures.html"
+        use stream = Resources.getResourceStream "UKDepartures.html" "Trains"
         use streamReader = new StreamReader(stream)
         let html = streamReader.ReadToEnd()
         LiveDepartures.UK.getDeparturesFromHtml html None null Unchecked.defaultof<_>
@@ -83,7 +83,7 @@ type SampleData() =
             PropertyChangedEvent = Event<_,_>().Publish } ]
 
     let liveProgress1 = 
-        use stream = Resources.getResourceStream "UKLiveProgress.html"
+        use stream = Resources.getResourceStream "UKLiveProgress.html" "Trains"
         use streamReader = new StreamReader(stream)
         let html = streamReader.ReadToEnd()
         LiveDepartures.UK.getJourneyDetailsFromHtml None (Time.Create(0)) html

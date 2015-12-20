@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
+<Deployment xmlns="http://schemas.microsoft.com/windowsphone/2014/deployment" AppPlatformVersion="8.1">
   <DefaultLanguage xmlns="" code="en-US" />
   <App xmlns="" ProductID="{0CB5B15C-8FFE-44F5-A6D6-2C635D4EB753}" Title="Irish Trains" RuntimeType="Silverlight" Version="1.7.0.0" Genre="apps.normal" Author="Gustavo Guerra" Description="Ireland Trains provides real-time information for Irish Rail train stations." Publisher="Code Beside" PublisherID="{417736af-53cd-4019-abc5-61895f426ea0}">
     <IconPath IsRelative="true" IsResource="false">Assets/ApplicationIcon.png</IconPath>
@@ -18,18 +18,13 @@
           <Count>0</Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/dark/FlipCycleTileMedium.png</BackgroundImageURI>
           <Title>Irish Trains</Title>
-          <BackContent>
-          </BackContent>
-          <BackBackgroundImageURI IsRelative="true" IsResource="false">
-          </BackBackgroundImageURI>
-          <BackTitle>
-          </BackTitle>
+          <BackContent></BackContent>
+          <BackBackgroundImageURI IsRelative="true" IsResource="false"></BackBackgroundImageURI>
+          <BackTitle></BackTitle>
           <LargeBackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/dark/FlipCycleTileLarge.png</LargeBackgroundImageURI>
           <LargeBackContent />
-          <LargeBackBackgroundImageURI IsRelative="true" IsResource="false">
-          </LargeBackBackgroundImageURI>
-          <DeviceLockImageURI IsRelative="true" IsResource="false">
-          </DeviceLockImageURI>
+          <LargeBackBackgroundImageURI IsRelative="true" IsResource="false"></LargeBackBackgroundImageURI>
+          <DeviceLockImageURI IsRelative="true" IsResource="false"></DeviceLockImageURI>
           <HasLarge>True</HasLarge>
         </TemplateFlip>
       </PrimaryToken>

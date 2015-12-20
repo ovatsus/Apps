@@ -7,8 +7,8 @@ open FSharp.Data
 
 module Resources =
 
-    let mutable getResourceStreamFunc = Unchecked.defaultof<Func<string, IO.Stream>>
-    let getResourceStream resourceName = getResourceStreamFunc.Invoke resourceName
+    let mutable getResourceStreamFunc = Unchecked.defaultof<Func<string, string, IO.Stream>>
+    let getResourceStream resourceName assemblyName = getResourceStreamFunc.Invoke(resourceName, assemblyName)
 
 module Seq =
     
