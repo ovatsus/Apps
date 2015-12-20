@@ -20,11 +20,11 @@ type DeparturesAndArrivalsTable =
         | Some callingAt -> sprintf "%s calling at %s" x.Station.Code callingAt.Code
     member x.HasDestinationFilter = x.CallingAt.IsSome
     member x.WithoutFilter = 
-        if not x.HasDestinationFilter then failwith "%A doesn't have a destination filter" x
+        if not x.HasDestinationFilter then failwithf "%A doesn't have a destination filter" x
         { Station = x.Station
           CallingAt = None }
     member x.Reversed =
-        if not x.HasDestinationFilter then failwith "%A can't be reversed" x
+        if not x.HasDestinationFilter then failwithf "%A can't be reversed" x
         { Station = x.CallingAt.Value
           CallingAt = Some x.Station }
 
