@@ -9,7 +9,7 @@ namespace Trains.WP8.UK
         {
             InitializeComponent();
 
-            new AppMetadata(this, "UK Trains", "uktrains@codebeside.org", true, "r4y7eZta5Pa32rpsho9CFA", () => LiveDepartures.UK.LastHtml);
+            new AppMetadata(this, "UK Trains", "2.16.0.0", "uktrains@functionalflow.co.uk", true, "r4y7eZta5Pa32rpsho9CFA", () => LiveDepartures.UK.LastHtml);
             Stations.Country = Country.UK;
         }
     }

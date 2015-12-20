@@ -9,7 +9,7 @@ namespace LearnOnTheGo.WP8
         {
             InitializeComponent();
 
-            new AppMetadata(this, "Learn On The Go", "learnonthego@codebeside.org");
+            new AppMetadata(this, "Learn On The Go", "2.9.0.1", "learnonthego@functionalflow.co.uk");
 
             DownloadInfo.SetupBackgroundTransfers();
             SettingsPage.EnableOrDisableLockScreen();
