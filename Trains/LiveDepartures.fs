@@ -248,16 +248,17 @@ type Departure with
 
                 let index = 
                     match callingAtFilter with
-                    | Some callingAtFilter -> 
+                    | Some (callingAtFilter:string) -> 
+                        let callingAtFilter = callingAtFilter.Replace("'", "")
                         match journeyElements
                               |> Array.tryFindIndex (fun journeyElement -> 
-                                journeyElement.Station = callingAtFilter
+                                journeyElement.Station.Replace("'", "") = callingAtFilter
                                 && isAfterDeparture journeyElement) with
                         | Some index -> Some index
                         | None -> journeyElements 
                                   |> Array.tryFindIndex (fun journeyElement -> 
                                     // Sometimes there's no 100% match, eg: Farringdon vs Farringdon (London)
-                                    (callingAtFilter.StartsWith journeyElement.Station || journeyElement.Station.StartsWith callingAtFilter)
+                                    (callingAtFilter.StartsWith(journeyElement.Station.Replace("'", "")) || journeyElement.Station.Replace("'", "").StartsWith(callingAtFilter))
                                     && isAfterDeparture journeyElement)
                     | None -> Some <| journeyElements.Length - 1
                 
