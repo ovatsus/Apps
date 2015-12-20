@@ -83,9 +83,9 @@ namespace Trains.WP8
                 filterByAnotherDestinationItem.Click += OnFilterByAnotherDestinationClick;
                 ApplicationBar.MenuItems.Insert(0, filterByAnotherDestinationItem);
 
-                var reverseJourneyItem = new ApplicationBarMenuItem("Reverse journey");
+                var reverseJourneyItem = new ApplicationBarIconButton(new Uri("/Assets/Icons/dark/appbar.arrow.left.right.png", UriKind.Relative)) { Text = "Reverse" };
                 reverseJourneyItem.Click += OnReverseJourneyClick;
-                ApplicationBar.MenuItems.Insert(1, reverseJourneyItem);
+                ApplicationBar.Buttons.Insert(2, reverseJourneyItem);
             }
 
             if (!NavigationService.CanGoBack)

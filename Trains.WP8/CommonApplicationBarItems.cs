@@ -20,13 +20,13 @@ namespace Trains.WP8
                 page.ApplicationBar.MenuItems.Add(settingsMenuItem);
             }
 
-            var aboutButton = new ApplicationBarIconButton(new Uri("/Assets/Icons/dark/appbar.information.png", UriKind.Relative)) { Text = "About" };
-            aboutButton.Click += delegate
+            var aboutMenuItem = new ApplicationBarMenuItem("About");
+            aboutMenuItem.Click += delegate
             {
                 ErrorReporting.Log("OnAboutClick");
                 page.NavigationService.Navigate(page.GetUri<AboutPage>());
             };
-            page.ApplicationBar.Buttons.Insert(0, aboutButton);
+            page.ApplicationBar.MenuItems.Add(aboutMenuItem);
         }
     }
 }

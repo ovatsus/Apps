@@ -20,6 +20,7 @@ UK Trains provides real-time information for UK national rail stations (excludin
 
 New in 2.16:
 * Fix arrival time not working for some stations with an apostrophe in the name
+* Small UI tweaks
 
 New in 2.15:
 * Updated Penychain station code

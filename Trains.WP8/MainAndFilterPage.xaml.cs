@@ -222,7 +222,7 @@ namespace Trains.WP8
             hasRecentItemsToDisplay = recentItemsToDisplay.Count != 0;
             recentStations.ItemsSource = recentItemsToDisplay;
 
-            ApplicationBar.MenuItems.OfType<ApplicationBarMenuItem>().Single(item => item.Text == "Clear recent items").IsEnabled = hasRecentItemsToDisplay;
+            ApplicationBar.Buttons.OfType<ApplicationBarIconButton>().Single(item => item.Text == "Clear recent").IsEnabled = hasRecentItemsToDisplay;
         }
 
         private void OnStationClick(object sender, RoutedEventArgs e)
