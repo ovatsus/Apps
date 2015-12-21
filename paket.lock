@@ -2,8 +2,8 @@ NUGET
   remote: https://nuget.org/api/v2
   specs:
     Coding4Fun.Toolkit.Controls (2.0.7) - content: none
-    FSharp.Data (2.3.0-beta1)
-      Zlib.Portable (>= 1.10.0)
+    FSharp.Data (2.3.0-beta2)
+      Zlib.Portable (>= 1.11.0)
     HereLaunchers (1.2.0)
     WPtoolkit (4.2013.8.16) - content: none
-    Zlib.Portable (1.11.0) - framework: portable-net40+sl50+wp80+win80
+    Zlib.Portable (1.11.0) - framework: portable-net45+sl50+win, portable-net45+win, portable-net45+win+wpa81+wp80
