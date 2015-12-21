@@ -22,7 +22,7 @@ namespace Common.WP8
         public readonly bool UsesLocation;
         public readonly string MapAuthenticationToken;
         public readonly Func<string> GetExtraErrorReportingInfo;
-        
+
         public Guid AppId
         {
             get { return CurrentApp.AppId; }

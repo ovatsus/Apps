@@ -268,7 +268,16 @@ namespace Trains.WP8
 
         private async void InstallVoiceCommands()
         {
-            await VoiceCommandService.InstallCommandSetsFromFileAsync(new Uri("ms-appx:///VoiceCommandDefinition_8.1.xml"));
+            try
+            {
+                if (Environment.OSVersion.Version >= new Version(8, 1))
+                {
+                    await VoiceCommandService.InstallCommandSetsFromFileAsync(new Uri("ms-appx:///VoiceCommandDefinition_8.1.xml"));
+                }
+            }
+            catch
+            {
+            }
         }
 
         public static Uri GetUri(PhoneApplicationPage page, Station fromStation = null, Station excludeStation = null, string initialFilter = null, bool removeBackEntry = false)
